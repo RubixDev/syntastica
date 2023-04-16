@@ -78,6 +78,8 @@ impl Renderer for TerminalRenderer {
         if style.bold() {
             params += "1;"
         }
+        // trim last `;`
+        params.truncate(params.len() - 1);
         format!("\x1b[{params}m{text}\x1b[0m").into()
     }
 }
