@@ -53,5 +53,6 @@ langs! {
     "parsers-some", "rs", rust;
     "parsers-some", "py", python;
     "parsers-most", "asm" | "s", asm;
+    // TODO: do not use "" as regex file extension
     "parsers-all", "", regex;
 }
