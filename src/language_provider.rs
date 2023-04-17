@@ -13,7 +13,7 @@ pub struct DefaultLanguageProvider;
 
 #[cfg(feature = "parsers-some")]
 macro_rules! langs {
-    ($($feat:literal, $pattern:pat, $name:ident);* $(;)?) => {
+    ($($feat:literal, $name:ident, $extensions:expr);* $(;)?) => {
         impl LanguageProvider for DefaultLanguageProvider {
             fn prepare(&mut self) -> Result<HashMap<String, HighlightConfiguration>, crate::Error> {
                 let mut configs = HashMap::new();
@@ -36,13 +36,13 @@ macro_rules! langs {
             }
 
             fn by_extension(&self, file_extension: &str) -> Option<Cow<'_, str>> {
-                match file_extension {
-                    $(
-                        #[cfg(feature = $feat)]
-                        $pattern => Some(stringify!($name).into()),
-                    )*
-                    _ => None,
-                }
+                $(
+                    #[cfg(feature = $feat)]
+                    if $extensions.contains(&file_extension) {
+                        return Some(stringify!($name).into());
+                    }
+                )*
+                None
             }
         }
     };
@@ -50,9 +50,8 @@ macro_rules! langs {
 
 #[cfg(feature = "parsers-some")]
 langs! {
-    "parsers-some", "rs", rust;
-    "parsers-some", "py", python;
-    "parsers-most", "asm" | "s", asm;
-    // TODO: do not use "" as regex file extension
-    "parsers-all", "", regex;
+    "parsers-some", rust, ["rs"];
+    "parsers-some", python, ["py"];
+    "parsers-most", asm, ["asm", "s"];
+    "parsers-all", regex, [];
 }
