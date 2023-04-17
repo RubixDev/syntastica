@@ -8,7 +8,7 @@ macro_rules! langs {
             #[cfg(feature = $feat)]
             #[proc_macro]
             pub fn $name(_: proc_macro::TokenStream) -> proc_macro::TokenStream {
-                let _lang = syntastic_parsers::$name();
+                let _lang = syntastica_parsers::$name();
                 let highlights = langs!(@process $process, _lang, $name, include_str!(concat!("../queries/", stringify!($name), "/highlights.scm")));
                 let injections = langs!(@optional $injections, include_str!(concat!("../queries/", stringify!($name), "/injections.scm")));
                 let locals = langs!(@optional $locals, include_str!(concat!("../queries/", stringify!($name), "/locals.scm")));

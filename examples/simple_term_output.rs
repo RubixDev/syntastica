@@ -1,6 +1,6 @@
 use std::collections::BTreeMap;
 
-use syntastic::{config::ThemeValue, renderer::TerminalRenderer};
+use syntastica::{config::ThemeValue, renderer::TerminalRenderer};
 
 fn main() {
     let code = r###"
@@ -19,7 +19,7 @@ fn main() {
     .trim();
     println!(
         "{}",
-        syntastic::highlight(code, "rs", &mut TerminalRenderer, theme().into()).unwrap()
+        syntastica::highlight(code, "rs", &mut TerminalRenderer, theme().into()).unwrap()
     );
 
     let code = r###"
@@ -31,7 +31,7 @@ def fib(n: int) -> int:
     .trim();
     println!(
         "{}",
-        syntastic::highlight(code, "py", &mut TerminalRenderer, theme().into()).unwrap()
+        syntastica::highlight(code, "py", &mut TerminalRenderer, theme().into()).unwrap()
     );
 }
 

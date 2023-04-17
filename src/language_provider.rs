@@ -20,11 +20,11 @@ macro_rules! langs {
                 $(
                     #[cfg(feature = $feat)]
                     {
-                        const QUERIES: (&str, &str, &str) = syntastic_queries::$name!();
+                        const QUERIES: (&str, &str, &str) = syntastica_queries::$name!();
                         configs.insert(
                             stringify!($name).to_owned(),
                             HighlightConfiguration::new(
-                                syntastic_parsers::$name(),
+                                syntastica_parsers::$name(),
                                 QUERIES.0,
                                 QUERIES.1,
                                 QUERIES.2,

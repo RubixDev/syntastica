@@ -1,0 +1,22 @@
+[package]
+name = "syntastica-queries"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+proc-macro = true
+
+[features]
+default = ["all"]
+
+some = ["syntastica-parsers/some"]
+most = ["some", "syntastica-parsers/most"]
+all = ["most", "syntastica-parsers/all"]
+
+[dependencies]
+quote = "1.0.26"
+tree-sitter = "0.20.10"
+
+syntastica-parsers = { version = "0.1.0", path = "../syntastica-parsers", default-features = false, optional = true }

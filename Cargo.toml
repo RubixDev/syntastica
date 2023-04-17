@@ -1,8 +1,8 @@
 [workspace]
-members = ["./syntastic-queries", "./syntastic-parsers"]
+members = ["./syntastica-queries", "./syntastica-parsers"]
 
 [package]
-name = "syntastic"
+name = "syntastica"
 version = "0.1.0"
 edition = "2021"
 
@@ -11,9 +11,9 @@ edition = "2021"
 [features]
 default = ["serde", "parsers-all"]
 
-parsers-some = ["syntastic-parsers/some", "syntastic-queries/some"]
-parsers-most = ["parsers-some", "syntastic-parsers/most", "syntastic-queries/most"]
-parsers-all = ["parsers-most", "syntastic-parsers/all", "syntastic-queries/all"]
+parsers-some = ["syntastica-parsers/some", "syntastica-queries/some"]
+parsers-most = ["parsers-some", "syntastica-parsers/most", "syntastica-queries/most"]
+parsers-all = ["parsers-most", "syntastica-parsers/all", "syntastica-queries/all"]
 
 [dependencies]
 serde = { version = "1.0.160", features = ["derive"], optional = true }
@@ -21,5 +21,5 @@ thiserror = "1.0.40"
 tree-sitter = "0.20.10"
 tree-sitter-highlight = "0.20.1"
 
-syntastic-parsers = { version = "0.1.0", path = "./syntastic-parsers", default-features = false, optional = true }
-syntastic-queries = { version = "0.1.0", path = "./syntastic-queries", default-features = false, optional = true }
+syntastica-parsers = { version = "0.1.0", path = "./syntastica-parsers", default-features = false, optional = true }
+syntastica-queries = { version = "0.1.0", path = "./syntastica-queries", default-features = false, optional = true }
