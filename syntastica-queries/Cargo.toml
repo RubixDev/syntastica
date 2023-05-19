@@ -1,7 +1,11 @@
 [package]
 name = "syntastica-queries"
 version = "0.1.0"
+authors.workspace = true
 edition = "2021"
+license.workspace = true
+repository.workspace = true
+description = "Collection of tree-sitter queries for syntastica"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
