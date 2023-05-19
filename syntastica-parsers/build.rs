@@ -1,6 +1,6 @@
 #[cfg(feature = "some")]
 use std::{
-    fs,
+    env, fs,
     path::{Path, PathBuf},
     process::Command,
 };
@@ -41,7 +41,7 @@ fn compile_parser(
     path: Option<&str>,
 ) -> Result<(), Box<dyn std::error::Error>> {
     // clone repo into `parsers/{name}`, if it does not already exists
-    let repo_dir = PathBuf::from(format!("parsers/{name}"));
+    let repo_dir = PathBuf::from(format!("{}/{name}", env::var("OUT_DIR")?));
     if !repo_dir.exists() {
         println!("cloning repository for {name}");
         fs::create_dir_all(&repo_dir)?;
