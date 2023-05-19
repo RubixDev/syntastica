@@ -48,6 +48,7 @@ pub fn process<'a>(
         highlight_styles.push(style);
     }
 
+    // TODO: do not call `prepare` in here to allow reuse from outside
     let mut configs = language_provider.prepare()?;
     for config in configs.values_mut() {
         config.configure(&highlight_keys);
@@ -62,7 +63,11 @@ pub fn process<'a>(
     let mut out = vec![vec![]];
     let mut style_stack = vec![];
     for event in highlighter.highlight(highlight_config, code.as_bytes(), None, |lang_name| {
-        configs.get(lang_name)
+        configs.get(lang_name).or_else(|| {
+            language_provider
+                .by_extension(lang_name)
+                .and_then(|name| configs.get(name.as_ref()))
+        })
     })? {
         match event? {
             HighlightEvent::HighlightStart(Highlight(highlight)) => style_stack.push(highlight),

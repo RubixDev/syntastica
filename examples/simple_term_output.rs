@@ -1,9 +1,18 @@
+#[cfg(feature = "parsers-all")]
 use std::collections::BTreeMap;
 
+#[cfg(feature = "parsers-all")]
 use syntastica::{config::ThemeValue, renderer::TerminalRenderer};
 
+#[cfg(not(feature = "parsers-all"))]
 fn main() {
-    let code = r###"
+    compile_error!("this example requires the `parsers-all` feature to be enabled");
+}
+
+#[cfg(feature = "parsers-all")]
+fn main() {
+    example(
+        r###"
 fn fib(n: usize) -> usize {
     if n < 2 {
         n
@@ -15,26 +24,285 @@ fn fib(n: usize) -> usize {
 fn main() {
     Regex::new(r"[a-fA-F0-9_]\s(.*)$");
 }
-"###
-    .trim();
-    println!(
-        "{}",
-        syntastica::highlight(code, "rs", &mut TerminalRenderer, theme().into()).unwrap()
+"###,
+        "rs",
     );
 
-    let code = r###"
+    example(
+        r###"
+import re
+
 def fib(n: int) -> int:
     if n < 2:
         return n
     return fib(n - 1) + fib(n - 2)
-"###
-    .trim();
-    println!(
-        "{}",
-        syntastica::highlight(code, "py", &mut TerminalRenderer, theme().into()).unwrap()
+
+def main():
+    re.compile(r'[a-fA-F0-9_]\s(.*)$')
+"###,
+        "py",
+    );
+
+    example(
+        r###"
+int fib(int n) {
+    if (n < 2) {
+        return n;
+    }
+    return fib(n - 1) + fib(n - 2);
+}
+"###,
+        "c",
+    );
+
+    example(
+        r###"
+#include <iostream>
+
+int main() {
+    unsigned int a = 1, b = 1;
+    unsigned int target = 48;
+    for (unsigned int n = 3; n <= target; ++n) {
+        unsigned int fib = a + b;
+        std::cout << "F("<< n << ") = " << fib << std::endl;
+        a = b;
+        b = fib;
+    }
+
+    return 0;
+}
+"###,
+        "cpp",
+    );
+
+    example(
+        r###"
+:root {
+    --bg-dark: #000;
+}
+
+#app.dark {
+    background-color: var(--bg-dark);
+}
+"###,
+        "css",
+    );
+
+    example(
+        r###"
+import (
+    "math/big"
+)
+
+func fib(n uint64) *big.Int {
+    if n < 2 {
+        return big.NewInt(int64(n))
+    }
+    a, b := big.NewInt(0), big.NewInt(1)
+    for n--; n > 0; n-- {
+        a.Add(a, b)
+        a, b = b, a
+    }
+    return b
+}
+
+func main() {
+    regexp.Compile(`[a-fA-F0-9_]\s(.*)$`)
+}
+"###,
+        "go",
+    );
+
+    example(
+        r###"
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="icon" type="image/svg+xml" href="/assets/logo.svg" />
+        <link rel="stylesheet" href="/assets/theme.css" />
+        <link rel="stylesheet" href="/src/global.scss" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="The playground for the rush programming language" />
+        <title>rush Playground</title>
+    </head>
+    <body>
+        <div id="app"></div>
+        <script type="module" src="/src/main.ts"></script>
+        <style>
+            :root {
+                --bg-dark: #000;
+            }
+
+            #app.dark {
+                background-color: var(--bg-dark);
+            }
+        </style>
+        <button style="background-color: red" onclick="alert(window.location.href)">Test</button>
+    </body>
+</html>
+"###,
+        "html",
+    );
+
+    example(
+        r###"
+class Fibonacci {
+    /**
+    * O(log(n))
+    */
+    public static long fib(long n) {
+        if (n <= 0)
+        return 0;
+
+        long i = (int) (n - 1);
+        long a = 1, b = 0, c = 0, d = 1, tmp1,tmp2;
+
+        while (i > 0) {
+            if (i % 2 != 0) {
+                tmp1 = d * b + c * a;
+                tmp2 = d * (b + a) + c * b;
+                a = tmp1;
+                b = tmp2;
+            }
+
+            tmp1 = (long) (Math.pow(c, 2) + Math.pow(d, 2));
+            tmp2 = d * (2 * c + d);
+
+            c = tmp1;
+            d = tmp2;
+
+            i = i / 2;
+        }
+        return a + b;
+    }
+}
+    "###,
+        "java",
+    );
+
+    example(
+        r###"
+var fib = (function(cache){
+    return cache = cache || {}, function(n){
+        if (cache[n]) return cache[n];
+        else return cache[n] = n == 0 ? 0 : n < 0 ? -fib(-n)
+            : n <= 2 ? 1 : fib(n-2) + fib(n-1);
+    };
+})();
+            "###,
+        "js",
+    );
+
+    example(
+        r###"
+{
+    "key": "value",
+    "good": false,
+    "age": 42,
+    "percentage": 0.3,
+    "nothing": null,
+    "list": [1, 2, 3],
+    "object": {
+        "key": "value"
+    }
+}
+            "###,
+        "json",
+    );
+
+    //     example(
+    //         r###"
+    // {
+    //     "key": "value",
+    //     "good": false,
+    //     "age": 42,
+    //     "percentage": 0.3,
+    //     "nothing": null,
+    //     "list": [1, 2, 3],
+    //     // line comment
+    //     "object": {
+    //         "key": /* block comment */ "value"
+    //     }
+    // }
+    //             "###,
+    //         "jsonc",
+    //     );
+    //
+    //     example(
+    //         r###"
+    // {
+    //     key: "value",
+    //     good: false,
+    //     age: 42,
+    //     percentage: 0.3,
+    //     nothing: null,
+    //     list: [1, 2, 3],
+    //     // line comment
+    //     object: {
+    //         "key": /* block comment */ "value",
+    //     },
+    // }
+    //             "###,
+    //         "json5",
+    //     );
+
+    example(
+        r###"
+interface FooProp {
+  name: string;
+  X: number;
+  Y: number;
+}
+declare function AnotherComponent(prop: { name: string });
+function ComponentFoo(prop: FooProp) {
+  return <AnotherComponent name={prop.name} />;
+}
+const Button = (prop: { value: string }, context: { color: string }) => (
+  <button />
+);
+            "###,
+        "tsx",
+    );
+
+    example(
+        r###"
+interface User {
+  name: string;
+  id: number;
+}
+
+class UserAccount {
+  name: string;
+  id: number;
+
+  constructor(name: string, id: number) {
+    this.name = name;
+    this.id = id;
+  }
+}
+
+const user: User = new UserAccount("Murphy", 1);
+            "###,
+        "tsx",
     );
 }
 
+#[cfg(feature = "parsers-all")]
+fn example(code: &str, file_extension: &str) {
+    println!(
+        "{}",
+        syntastica::highlight(
+            code.trim(),
+            file_extension,
+            &mut TerminalRenderer,
+            theme().into()
+        )
+        .unwrap()
+    );
+}
+
+#[cfg(feature = "parsers-all")]
 pub fn theme() -> BTreeMap<String, ThemeValue> {
     BTreeMap::from([
         ("black".to_owned(), ThemeValue::Simple("#181a1f".to_owned())),

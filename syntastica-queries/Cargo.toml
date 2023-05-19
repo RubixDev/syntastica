@@ -9,14 +9,28 @@ edition = "2021"
 proc-macro = true
 
 [features]
-default = ["all"]
+default = []
 
-some = ["syntastica-parsers/some"]
-most = ["some", "syntastica-parsers/most"]
-all = ["most", "syntastica-parsers/all"]
+some = [
+    "dep:syntastica-parsers",
+    "syntastica-parsers?/some",
+]
+most = [
+    "some",
+    "syntastica-parsers?/most",
+]
+all = [
+    "most",
+    "syntastica-parsers?/all",
+]
 
 [dependencies]
 quote = "1.0.26"
 tree-sitter = "0.20.10"
 
-syntastica-parsers = { version = "0.1.0", path = "../syntastica-parsers", default-features = false, optional = true }
+once_cell = "1.17.1"
+regex = "1.7.3"
+syntastica-parsers = { version = "0.1.0", path = "../syntastica-parsers", optional = true }
+
+[dev-dependencies]
+syntastica-parsers = { version = "0.1.0", path = "../syntastica-parsers" }

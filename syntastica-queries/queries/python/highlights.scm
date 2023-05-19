@@ -238,8 +238,8 @@
   "is"
   "not"
   "or"
-  ; "is not"
-  ; "not in"
+  "is not"
+  "not in"
 
   "del"
 ] @keyword.operator
@@ -287,7 +287,7 @@
 [
   "try"
   "except"
-  ; "except*"
+  "except*"
   "raise"
   "finally"
 ] @exception

@@ -50,8 +50,18 @@ macro_rules! langs {
 
 #[cfg(feature = "parsers-some")]
 langs! {
-    "parsers-some", rust, ["rs"];
+    "parsers-some", c, ["c", "h"];
+    "parsers-some", cpp, ["cc", "cpp", "hpp", "h"];
+    "parsers-some", css, ["css"];
+    "parsers-some", go, ["go"];
+    "parsers-some", html, ["html"];
+    "parsers-some", java, ["java"];
+    "parsers-some", javascript, ["js", "jsx", "cjs", "mjs"];
+    "parsers-some", json, ["json"];
     "parsers-some", python, ["py"];
+    "parsers-some", rust, ["rs"];
+    "parsers-some", tsx, ["tsx"];
+    "parsers-some", typescript, ["ts"];
     "parsers-most", asm, ["asm", "s"];
     "parsers-all", regex, [];
 }
