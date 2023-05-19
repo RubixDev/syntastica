@@ -1,3 +1,5 @@
+#![cfg_attr(all(doc, CHANNEL_NIGHTLY), feature(doc_auto_cfg))]
+
 use std::{collections::HashMap, fs, path::Path};
 
 use once_cell::sync::Lazy;

@@ -1,6 +1,7 @@
 use rustc_version::Channel;
 
 fn main() {
+    // for documenting features when using nightly
     let channel = match rustc_version::version_meta().unwrap().channel {
         Channel::Dev => "CHANNEL_DEV",
         Channel::Nightly => "CHANNEL_NIGHTLY",

@@ -5,8 +5,20 @@ use std::{
     process::Command,
 };
 
+use rustc_version::Channel;
+
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     syntastica_macros::parsers_git!();
+
+    // for documenting features when using nightly
+    let channel = match rustc_version::version_meta().unwrap().channel {
+        Channel::Dev => "CHANNEL_DEV",
+        Channel::Nightly => "CHANNEL_NIGHTLY",
+        Channel::Beta => "CHANNEL_BETA",
+        Channel::Stable => "CHANNEL_STABLE",
+    };
+    println!("cargo:rustc-cfg={channel}");
+
     Ok(())
 }
 

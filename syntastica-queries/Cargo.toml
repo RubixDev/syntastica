@@ -35,3 +35,9 @@ syntastica-parsers = { version = "0.1.0", path = "../syntastica-parsers", option
 
 [dev-dependencies]
 syntastica-parsers = { version = "0.1.0", path = "../syntastica-parsers" }
+
+[build-dependencies]
+rustc_version = "0.4.0"
+
+[package.metadata.docs.rs]
+all-features = true
