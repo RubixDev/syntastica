@@ -39,3 +39,6 @@ tree-sitter-highlight = "0.20.1"
 syntastica-macros = { version = "0.1.0", path = "./syntastica-macros", optional = true }
 syntastica-parsers = { version = "0.1.0", path = "./syntastica-parsers", optional = true }
 syntastica-queries = { version = "0.1.0", path = "./syntastica-queries", optional = true }
+
+[dev-dependencies]
+toml = "0.7.4"

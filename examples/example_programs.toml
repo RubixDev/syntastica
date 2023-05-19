@@ -1,0 +1,248 @@
+# A collection of example programs in various different languages,
+# used by the syntastica examples. The keys specify the file extension.
+
+rs = '''
+fn fib(n: usize) -> usize {
+    if n < 2 {
+        n
+    } else {
+        fib(n - 1) + fib(n - 2)
+    }
+}
+
+fn main() {
+    Regex::new(r"[a-fA-F0-9_]\s(.*)$");
+}
+'''
+
+py = '''
+import re
+
+def fib(n: int) -> int:
+    if n < 2:
+        return n
+    return fib(n - 1) + fib(n - 2)
+
+def main():
+    re.compile(r'[a-fA-F0-9_]\s(.*)$')
+'''
+
+c = '''
+int fib(int n) {
+    if (n < 2) {
+        return n;
+    }
+    return fib(n - 1) + fib(n - 2);
+}
+'''
+
+cpp = '''
+#include <iostream>
+
+int main() {
+    unsigned int a = 1, b = 1;
+    unsigned int target = 48;
+    for (unsigned int n = 3; n <= target; ++n) {
+        unsigned int fib = a + b;
+        std::cout << "F("<< n << ") = " << fib << std::endl;
+        a = b;
+        b = fib;
+    }
+
+    return 0;
+}
+'''
+
+css = '''
+:root {
+    --bg-dark: #000;
+}
+
+#app.dark {
+    background-color: var(--bg-dark);
+}
+'''
+
+go = '''
+import (
+    "math/big"
+)
+
+func fib(n uint64) *big.Int {
+    if n < 2 {
+        return big.NewInt(int64(n))
+    }
+    a, b := big.NewInt(0), big.NewInt(1)
+    for n--; n > 0; n-- {
+        a.Add(a, b)
+        a, b = b, a
+    }
+    return b
+}
+
+func main() {
+    regexp.Compile(`[a-fA-F0-9_]\s(.*)$`)
+}
+'''
+
+html = '''
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="icon" type="image/svg+xml" href="/assets/logo.svg" />
+        <link rel="stylesheet" href="/assets/theme.css" />
+        <link rel="stylesheet" href="/src/global.scss" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="The playground for the rush programming language" />
+        <title>rush Playground</title>
+    </head>
+    <body>
+        <div id="app"></div>
+        <script type="module" src="/src/main.ts"></script>
+        <style>
+            :root {
+                --bg-dark: #000;
+            }
+
+            #app.dark {
+                background-color: var(--bg-dark);
+            }
+        </style>
+        <button style="background-color: red" onclick="alert(window.location.href)">Test</button>
+    </body>
+</html>
+'''
+
+java = '''
+class Fibonacci {
+    /**
+    * O(log(n))
+    */
+    public static long fib(long n) {
+        if (n <= 0)
+        return 0;
+
+        long i = (int) (n - 1);
+        long a = 1, b = 0, c = 0, d = 1, tmp1,tmp2;
+
+        while (i > 0) {
+            if (i % 2 != 0) {
+                tmp1 = d * b + c * a;
+                tmp2 = d * (b + a) + c * b;
+                a = tmp1;
+                b = tmp2;
+            }
+
+            tmp1 = (long) (Math.pow(c, 2) + Math.pow(d, 2));
+            tmp2 = d * (2 * c + d);
+
+            c = tmp1;
+            d = tmp2;
+
+            i = i / 2;
+        }
+        return a + b;
+    }
+}
+'''
+
+js = '''
+var fib = (function(cache){
+    return cache = cache || {}, function(n){
+        if (cache[n]) return cache[n];
+        else return cache[n] = n == 0 ? 0 : n < 0 ? -fib(-n)
+            : n <= 2 ? 1 : fib(n-2) + fib(n-1);
+    };
+})();
+'''
+
+json = '''
+{
+    "key": "value",
+    "good": false,
+    "age": 42,
+    "percentage": 0.3,
+    "nothing": null,
+    "list": [1, 2, 3],
+    "object": {
+        "key": "value"
+    }
+}
+'''
+
+tsx = '''
+interface FooProp {
+  name: string;
+  X: number;
+  Y: number;
+}
+declare function AnotherComponent(prop: { name: string });
+function ComponentFoo(prop: FooProp) {
+  return <AnotherComponent name={prop.name} />;
+}
+const Button = (prop: { value: string }, context: { color: string }) => (
+  <button />
+);
+'''
+
+ts = '''
+interface User {
+  name: string;
+  id: number;
+}
+
+class UserAccount {
+  name: string;
+  id: number;
+
+  constructor(name: string, id: number) {
+    this.name = name;
+    this.id = id;
+  }
+}
+
+const user: User = new UserAccount("Murphy", 1);
+'''
+
+asm = '''
+.intel_syntax
+.global _start
+
+.section .text
+
+_start:
+    call        main..main
+    mov         %rdi, 0
+    call        exit
+
+main..main:
+    push        %rbp
+    mov         %rbp, %rsp
+    sub         %rsp, 32
+    mov         qword ptr [%rbp-8], 3
+    lea         %rax, qword ptr [%rbp-8]
+    mov         qword ptr [%rbp-16], %rax
+    lea         %rax, qword ptr [%rbp-16]
+    mov         qword ptr [%rbp-24], %rax
+    mov         %rax, qword ptr [%rbp-24]
+    mov         %rax, qword ptr [%rax]
+    mov         qword ptr [%rbp-32], %rax
+    mov         %rdi, qword ptr [%rbp-24]
+    mov         %rdi, qword ptr [%rdi]
+    mov         %rdi, qword ptr [%rdi]
+    mov         %rsi, qword ptr [%rbp-24]
+    mov         %rsi, qword ptr [%rsi]
+    mov         %rsi, qword ptr [%rsi]
+    call        __rush_internal_pow_int
+    mov         %rdi, %rax
+    mov         %rax, qword ptr [%rbp-32]
+    mov         qword ptr [%rax], %rdi
+    mov         %rdi, qword ptr [%rbp-24]
+    mov         %rdi, qword ptr [%rdi]
+    mov         %rdi, qword ptr [%rdi]
+    call        exit
+main..main.return:
+    leave
+    ret
+'''
