@@ -42,3 +42,9 @@ syntastica-queries = { version = "0.1.0", path = "./syntastica-queries", optiona
 
 [dev-dependencies]
 toml = "0.7.4"
+
+[build-dependencies]
+rustc_version = "0.4.0"
+
+[package.metadata.docs.rs]
+all-features = true

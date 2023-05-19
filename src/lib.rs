@@ -1,3 +1,5 @@
+#![cfg_attr(all(doc, CHANNEL_NIGHTLY), feature(doc_auto_cfg))]
+
 pub mod config;
 mod error;
 mod language_provider;
