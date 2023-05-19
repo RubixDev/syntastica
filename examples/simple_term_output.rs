@@ -286,6 +286,51 @@ const user: User = new UserAccount("Murphy", 1);
             "###,
         "tsx",
     );
+
+    example(
+        r###"
+.intel_syntax
+.global _start
+
+.section .text
+
+_start:
+    call        main..main
+    mov         %rdi, 0
+    call        exit
+
+main..main:
+    push        %rbp
+    mov         %rbp, %rsp
+    sub         %rsp, 32
+    mov         qword ptr [%rbp-8], 3
+    lea         %rax, qword ptr [%rbp-8]
+    mov         qword ptr [%rbp-16], %rax
+    lea         %rax, qword ptr [%rbp-16]
+    mov         qword ptr [%rbp-24], %rax
+    mov         %rax, qword ptr [%rbp-24]
+    mov         %rax, qword ptr [%rax]
+    mov         qword ptr [%rbp-32], %rax
+    mov         %rdi, qword ptr [%rbp-24]
+    mov         %rdi, qword ptr [%rdi]
+    mov         %rdi, qword ptr [%rdi]
+    mov         %rsi, qword ptr [%rbp-24]
+    mov         %rsi, qword ptr [%rsi]
+    mov         %rsi, qword ptr [%rsi]
+    call        __rush_internal_pow_int
+    mov         %rdi, %rax
+    mov         %rax, qword ptr [%rbp-32]
+    mov         qword ptr [%rax], %rdi
+    mov         %rdi, qword ptr [%rbp-24]
+    mov         %rdi, qword ptr [%rdi]
+    mov         %rdi, qword ptr [%rdi]
+    call        exit
+main..main.return:
+    leave
+    ret
+            "###,
+        "asm",
+    );
 }
 
 #[cfg(feature = "parsers-all")]

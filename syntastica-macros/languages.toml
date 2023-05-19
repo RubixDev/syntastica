@@ -192,3 +192,33 @@ crates-io = "tree-sitter-typescript"
 nvim-like = true
 injections = true
 locals = true
+
+[[languages]]
+name = "asm"
+group = "most"
+file-extensions = ["s", "asm"]
+[languages.parser]
+git = { url = "https://github.com/rush-rs/tree-sitter-asm", rev = "36dc26acc7818920de2e103e20a9f42358caf926" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_asm"
+rust-func = "language"
+crates-io = "tree-sitter-asm"
+[languages.queries]
+nvim-like = true
+injections = false
+locals = false
+
+[[languages]]
+name = "regex"
+group = "most"
+file-extensions = []
+[languages.parser]
+git = { url = "https://github.com/tree-sitter/tree-sitter-regex", rev = "e1cfca3c79896ff79842f057ea13e529b66af636" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_regex"
+rust-func = "language"
+crates-io = "tree-sitter-regex"
+[languages.queries]
+nvim-like = false
+injections = false
+locals = false
