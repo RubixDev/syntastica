@@ -4,48 +4,7 @@ use once_cell::sync::Lazy;
 use regex::Regex;
 use tree_sitter::{Language, Query, QueryPredicateArg};
 
-macro_rules! langs {
-    ($($feat:literal, $name:ident, process = $process:tt, injections = $injections:tt, locals = $locals:tt);* $(;)?) => {
-        $(
-            #[cfg(feature = $feat)]
-            #[proc_macro]
-            pub fn $name(_: proc_macro::TokenStream) -> proc_macro::TokenStream {
-                let _lang = syntastica_parsers::$name();
-                let highlights = langs!(@process $process, _lang, $name, "highlights.scm");
-                let injections = langs!(@optional $injections, langs!(@process false, _lang, $name, "injections.scm"));
-                let locals = langs!(@optional $locals, langs!(@process false, _lang, $name, "locals.scm"));
-                quote::quote! { (#highlights, #injections, #locals) }.into()
-            }
-        )*
-    };
-    (@process true, $lang:ident, $name:ident, $filename:expr) => {
-        process_queries($lang, stringify!($name), $filename)
-    };
-    (@process false, $lang:ident, $name:ident, $filename:expr) => {
-        read_queries(stringify!($name), $filename)
-    };
-    (@optional true, $then:expr) => { $then };
-    (@optional false, $then:expr) => { "" };
-}
-
-langs! {
-    "some", c, process = true, injections = true, locals = false;
-    "some", cpp, process = true, injections = true, locals = false;
-    "some", css, process = true, injections = true, locals = false;
-    "some", go, process = true, injections = true, locals = true;
-    "some", html, process = true, injections = true, locals = false;
-    "some", java, process = true, injections = true, locals = true;
-    "some", javascript, process = true, injections = true, locals = true;
-    "some", json, process = true, injections = false, locals = false;
-    "some", python, process = true, injections = true, locals = true;
-    "some", rust, process = true, injections = true, locals = true;
-    "some", tsx, process = true, injections = true, locals = true;
-    "some", typescript, process = true, injections = true, locals = true;
-
-    "most", asm, process = true, injections = false, locals = false;
-
-    "all", regex, process = false, injections = false, locals = false;
-}
+syntastica_macros::queries!();
 
 static QUERIES_DIR: Lazy<String> = Lazy::new(|| {
     format!(

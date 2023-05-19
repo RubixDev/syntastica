@@ -1,34 +1,4 @@
-macro_rules! lang_tests {
-    ($($lang:ident),* $(,)?) => {
-        $(
-            #[test]
-            fn $lang() {
-                let lang = syntastica_parsers::$lang();
-                const QUERIES: (&str, &str, &str) = syntastica_queries::$lang!();
-                validate_query(lang, QUERIES.0, "highlights");
-                validate_query(lang, QUERIES.1, "injections");
-                validate_query(lang, QUERIES.2, "locals");
-            }
-        )*
-    };
-}
-
-lang_tests! {
-    c,
-    cpp,
-    css,
-    go,
-    html,
-    java,
-    javascript,
-    json,
-    python,
-    rust,
-    tsx,
-    typescript,
-    asm,
-    regex,
-}
+syntastica_macros::queries_test!();
 
 fn validate_query(lang: tree_sitter::Language, query: &str, kind: &str) {
     if let Err(err) = tree_sitter::Query::new(lang, query) {

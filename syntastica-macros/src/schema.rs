@@ -1,0 +1,73 @@
+use std::fmt::{self, Display, Formatter};
+
+use serde::Deserialize;
+
+#[derive(Clone, Debug, Deserialize)]
+pub struct LanguageConfig {
+    pub languages: Vec<Language>,
+}
+
+#[derive(Clone, Debug, Deserialize)]
+#[serde(rename_all = "kebab-case")]
+pub struct Language {
+    pub name: String,
+    pub group: Group,
+    pub file_extensions: Vec<String>,
+    // TODO: injection regex
+    pub parser: Parser,
+    pub queries: Queries,
+}
+
+#[derive(Clone, Debug, Deserialize)]
+#[serde(rename_all = "kebab-case")]
+pub enum Group {
+    Some,
+    Most,
+    All,
+}
+
+impl Display for Group {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        match (self, f.alternate()) {
+            (Self::Some, true) => write!(f, "parsers-some"),
+            (Self::Most, true) => write!(f, "parsers-most"),
+            (Self::All, true) => write!(f, "parsers-all"),
+            (Self::Some, false) => write!(f, "some"),
+            (Self::Most, false) => write!(f, "most"),
+            (Self::All, false) => write!(f, "all"),
+        }
+    }
+}
+
+#[derive(Clone, Debug, Deserialize)]
+#[serde(rename_all = "kebab-case")]
+pub struct Parser {
+    pub git: ParserGit,
+    pub external_scanner: ParserExternal,
+    pub ffi_func: String,
+    pub rust_func: Option<String>,
+    pub crates_io: Option<String>,
+}
+
+#[derive(Clone, Debug, Deserialize)]
+#[serde(rename_all = "kebab-case")]
+pub struct ParserGit {
+    pub url: String,
+    pub rev: String,
+    pub path: Option<String>,
+}
+
+#[derive(Clone, Debug, Deserialize)]
+#[serde(rename_all = "kebab-case")]
+pub struct ParserExternal {
+    pub c: bool,
+    pub cpp: bool,
+}
+
+#[derive(Clone, Debug, Deserialize)]
+#[serde(rename_all = "kebab-case")]
+pub struct Queries {
+    pub nvim_like: bool,
+    pub injections: bool,
+    pub locals: bool,
+}

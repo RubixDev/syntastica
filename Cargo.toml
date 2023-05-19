@@ -1,5 +1,5 @@
 [workspace]
-members = ["./syntastica-queries", "./syntastica-parsers"]
+members = ["./syntastica-queries", "./syntastica-parsers", "./syntastica-macros"]
 
 [package]
 name = "syntastica"
@@ -14,6 +14,7 @@ default = []
 parsers-some = [
     "dep:syntastica-parsers",
     "dep:syntastica-queries",
+    "dep:syntastica-macros",
     "syntastica-parsers?/some",
     "syntastica-queries?/some",
 ]
@@ -35,5 +36,6 @@ thiserror = "1.0.40"
 tree-sitter = "0.20.10"
 tree-sitter-highlight = "0.20.1"
 
+syntastica-macros = { version = "0.1.0", path = "./syntastica-macros", optional = true }
 syntastica-parsers = { version = "0.1.0", path = "./syntastica-parsers", optional = true }
 syntastica-queries = { version = "0.1.0", path = "./syntastica-queries", optional = true }

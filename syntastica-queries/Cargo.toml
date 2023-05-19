@@ -30,6 +30,7 @@ tree-sitter = "0.20.10"
 
 once_cell = "1.17.1"
 regex = "1.7.3"
+syntastica-macros = { version = "0.1.0", path = "../syntastica-macros" }
 syntastica-parsers = { version = "0.1.0", path = "../syntastica-parsers", optional = true }
 
 [dev-dependencies]
