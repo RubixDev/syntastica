@@ -9,7 +9,7 @@ use std::{num::ParseIntError, result};
 
 use config::ResolvedConfig;
 pub use error::*;
-use language_provider::LanguageProvider;
+pub use language_provider::*;
 use renderer::Renderer;
 use thiserror::Error;
 use tree_sitter_highlight::{Highlight, HighlightEvent, Highlighter};
@@ -23,8 +23,6 @@ pub fn highlight(
     renderer: &mut impl Renderer,
     config: config::Config,
 ) -> Result<String> {
-    use language_provider::DefaultLanguageProvider;
-
     Ok(render(
         &process(
             code,
