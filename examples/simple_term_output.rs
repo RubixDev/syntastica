@@ -605,11 +605,11 @@ pub fn theme() -> BTreeMap<String, ThemeValue> {
             ThemeValue::Simple("$blue".to_owned()),
         ),
         (
-            "text.enviroment".to_owned(),
+            "text.environment".to_owned(),
             ThemeValue::Simple("$fg".to_owned()),
         ),
         (
-            "text.enviroment.name".to_owned(),
+            "text.environment.name".to_owned(),
             ThemeValue::Simple("$fg".to_owned()),
         ),
         ("note".to_owned(), ThemeValue::Simple("$fg".to_owned())),

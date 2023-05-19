@@ -1,0 +1,49 @@
+{
+  "lineWidth": 120,
+  "indentWidth": 4,
+  "useTabs": false,
+
+  "json": {
+    "indentWidth": 2,
+    "array.preferSingleLine": true
+  },
+
+  "markdown": {
+    "lineWidth": 80,
+    "textWrap": "always"
+  },
+
+  "toml": {
+  },
+
+  "prettier": {
+    "printWidth": 100,
+    "tabWidth": 4,
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "all",
+    "arrowParens": "avoid",
+    "proseWrap": "always",
+
+    "plugin.jsdoc": true,
+    "yml.tabWidth": 2,
+    "yaml.tabWidth": 2,
+    "json.tabWidth": 2,
+    "jsonc.tabWidth": 2,
+    "json5.tabWidth": 2
+  },
+
+  "rustfmt": {
+    "max_width": 100
+  },
+
+  "includes": ["**/*"],
+  "excludes": ["**/target", "**/node_modules", "**/*-lock.json", "syntastica-parsers/parsers"],
+  "plugins": [
+    "https://plugins.dprint.dev/json-0.17.0.wasm",
+    "https://plugins.dprint.dev/markdown-0.15.1.wasm",
+    "https://plugins.dprint.dev/toml-0.5.4.wasm",
+    "https://plugins.dprint.dev/rustfmt-0.6.2.json@886c6f3161cf020c2d75160262b0f56d74a521e05cfb91ec4f956650c8ca76ca",
+    "https://plugins.dprint.dev/prettier-0.17.0.json@5e42cbabab9906ad32ffe1aa67f15824b1c39408840f0afeaddc495dd362e177"
+  ]
+}
