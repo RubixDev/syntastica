@@ -206,3 +206,45 @@ impl ThemeValue {
         }
     }
 }
+
+#[macro_export(local_inner_macros)]
+macro_rules! theme {
+    ($($tt:tt)*) => {
+        theme_impl!($($tt)*)
+    };
+}
+
+#[macro_export(local_inner_macros)]
+#[doc(hidden)]
+macro_rules! theme_impl {
+    () => {};
+    ($($key:literal : $value:tt),* $(,)?) => {{
+        let mut theme = ::std::collections::BTreeMap::new();
+        $(
+            theme.insert($key.to_owned(), theme_impl!(@value $value));
+        )*
+        $crate::config::Config::new(theme)
+    }};
+    (@value $str:literal) => {
+        $crate::config::ThemeValue::Simple($str.to_owned())
+    };
+    (@value {
+        color: $color:tt,
+        underline: $underline:expr,
+        strikethrough: $strikethrough:expr,
+        italic: $italic:expr,
+        bold: $bold:expr,
+        link: $link:tt $(,)?
+    }) => {
+        $crate::config::ThemeValue::Extended {
+            color: theme_impl!(@option $color),
+            underline: $underline,
+            strikethrough: $strikethrough,
+            italic: $italic,
+            bold: $bold,
+            link: theme_impl!(@option $link),
+        }
+    };
+    (@option None) => { None };
+    (@option $str:literal) => { Some($str.to_owned()) };
+}
