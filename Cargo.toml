@@ -1,7 +1,8 @@
 [workspace]
 members = [
+    "./xtask/",
     "./syntastica-queries",
-    "./syntastica-parsers",
+    "./syntastica-parsers-git",
     "./syntastica-macros",
     "./syntastica-themes",
 ]
@@ -23,24 +24,11 @@ description = "Modern and easy syntax highlighting using tree-sitter"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [features]
-default = []
+default = ["queries"]
 
-parsers-some = [
-    "dep:syntastica-parsers",
-    "dep:syntastica-queries",
+queries = [
     "dep:syntastica-macros",
-    "syntastica-parsers?/some",
-    "syntastica-queries?/some",
-]
-parsers-most = [
-    "parsers-some",
-    "syntastica-parsers?/most",
-    "syntastica-queries?/most",
-]
-parsers-all = [
-    "parsers-most",
-    "syntastica-parsers?/all",
-    "syntastica-queries?/all",
+    "dep:syntastica-queries",
 ]
 
 [dependencies]
@@ -51,10 +39,10 @@ tree-sitter = "0.20.10"
 tree-sitter-highlight = "0.20.1"
 
 syntastica-macros = { version = "0.1.0", path = "./syntastica-macros", optional = true }
-syntastica-parsers = { version = "0.1.0", path = "./syntastica-parsers", optional = true }
 syntastica-queries = { version = "0.1.0", path = "./syntastica-queries", optional = true }
 
 [dev-dependencies]
+syntastica-parsers-git = { version = "0.1.0", path = "./syntastica-parsers-git", features = ["all"] }
 syntastica-themes = { version = "0.1.0", path = "./syntastica-themes" }
 toml = "0.7.4"
 

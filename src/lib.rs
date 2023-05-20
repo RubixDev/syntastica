@@ -2,24 +2,24 @@
 
 pub mod config;
 mod error;
-mod language_provider;
+pub mod providers;
 pub mod renderer;
 
 use std::{num::ParseIntError, result};
 
 use config::ResolvedConfig;
 pub use error::*;
-pub use language_provider::*;
+use providers::LanguageProvider;
 use renderer::Renderer;
 use thiserror::Error;
 use tree_sitter_highlight::{Highlight, HighlightEvent, Highlighter};
 
 pub type Highlights<'a> = Vec<Vec<(&'a str, Option<Style>)>>;
 
-#[cfg(feature = "parsers-some")]
 pub fn highlight(
     code: &str,
     file_extension: &str,
+    language_provider: impl LanguageProvider,
     renderer: &mut impl Renderer,
     config: config::Config,
 ) -> Result<String> {
@@ -27,7 +27,7 @@ pub fn highlight(
         &process(
             code,
             file_extension,
-            DefaultLanguageProvider,
+            language_provider,
             config.resolve_links()?,
         )?,
         renderer,

@@ -1,15 +1,8 @@
-#[cfg(feature = "parsers-some")]
 use std::collections::HashMap;
 
-#[cfg(feature = "parsers-some")]
 use syntastica::renderer::TerminalRenderer;
+use syntastica_parsers_git::ParserProviderGit;
 
-#[cfg(not(feature = "parsers-some"))]
-fn main() {
-    compile_error!("this example requires the `parsers-some` feature to be enabled");
-}
-
-#[cfg(feature = "parsers-some")]
 #[rustfmt::skip]
 fn main() {
     let examples: HashMap<String, String> =
@@ -27,11 +20,17 @@ fn main() {
     example(code, syntastica_themes::gruvbox::light(), "gruvbox::light");
 }
 
-#[cfg(feature = "parsers-some")]
 fn example(code: &str, theme: syntastica::config::Config, name: &str) {
     println!(
         "\n\x1b[1m{name}:\x1b[0m\n{0}\n{1}{0}",
         "-".repeat(50),
-        syntastica::highlight(code.trim(), "rs", &mut TerminalRenderer, theme).unwrap()
+        syntastica::highlight(
+            code.trim(),
+            "rs",
+            ParserProviderGit,
+            &mut TerminalRenderer,
+            theme
+        )
+        .unwrap()
     );
 }

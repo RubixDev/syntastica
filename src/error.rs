@@ -11,6 +11,9 @@ pub enum Error {
     #[error("unsuppoerted file extension '{0}'")]
     UnsupportedFileExt(String),
 
+    #[error("missing queries for language '{0}'")]
+    MissingQueries(String),
+
     #[error(transparent)]
     InvalidHex(#[from] crate::ParseHexError),
 

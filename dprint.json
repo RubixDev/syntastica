@@ -38,7 +38,7 @@
   },
 
   "includes": ["**/*"],
-  "excludes": ["**/target", "**/node_modules", "**/*-lock.json", "syntastica-parsers/parsers"],
+  "excludes": ["**/target", "**/node_modules", "**/*-lock.json", "syntastica-queries/src/lib.rs"],
   "plugins": [
     "https://plugins.dprint.dev/json-0.17.0.wasm",
     "https://plugins.dprint.dev/markdown-0.15.1.wasm",

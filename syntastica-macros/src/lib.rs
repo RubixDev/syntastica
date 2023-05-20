@@ -1,7 +1,6 @@
 use once_cell::sync::Lazy;
 use proc_macro::TokenStream;
-use proc_macro2::{Ident, Punct, Spacing, Span};
-use quote::{format_ident, quote, ToTokens, TokenStreamExt};
+use quote::{format_ident, quote};
 use schema::*;
 
 mod schema;
@@ -9,15 +8,6 @@ mod schema;
 static LANGUAGE_CONFIG: Lazy<LanguageConfig> = Lazy::new(|| {
     toml::from_str(include_str!("../languages.toml")).expect("invalid `languages.toml`")
 });
-
-struct Interp(&'static str);
-
-impl ToTokens for Interp {
-    fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {
-        tokens.append(Punct::new('#', Spacing::Alone));
-        tokens.append(Ident::new(self.0, Span::call_site()));
-    }
-}
 
 #[proc_macro]
 pub fn parsers_git(_: TokenStream) -> TokenStream {
@@ -51,17 +41,26 @@ pub fn parsers_ffi(_: TokenStream) -> TokenStream {
         let ffi_func = format_ident!("{}", lang.parser.ffi_func);
         quote! {
             #[cfg(feature = #feat)]
-            fn #ffi_func() -> ::tree_sitter::Language;
+            fn #ffi_func() -> ::syntastica::providers::Language;
         }
     });
-    let func_defs = LANGUAGE_CONFIG.languages.iter().map(|lang| {
+    let get_parsers = LANGUAGE_CONFIG.languages.iter().map(|lang| {
         let feat = lang.group.to_string();
-        let name = format_ident!("{}", lang.name);
+        let name_str = &lang.name;
         let ffi_func = format_ident!("{}", lang.parser.ffi_func);
         quote! {
             #[cfg(feature = #feat)]
-            pub fn #name() -> ::tree_sitter::Language {
-                unsafe { #ffi_func() }
+            _map.insert(#name_str.to_owned(), unsafe { #ffi_func() });
+        }
+    });
+    let by_extension = LANGUAGE_CONFIG.languages.iter().map(|lang| {
+        let feat = lang.group.to_string();
+        let extensions = &lang.file_extensions;
+        let name_str = &lang.name;
+        quote! {
+            #[cfg(feature = #feat)]
+            if [#(#extensions),*].contains(&file_extension) {
+                return ::std::option::Option::Some(#name_str.into());
             }
         }
     });
@@ -69,51 +68,73 @@ pub fn parsers_ffi(_: TokenStream) -> TokenStream {
         extern "C" {
             #(#extern_c)*
         }
-        #(#func_defs)*
+        pub struct ParserProviderGit;
+        impl ::syntastica::providers::ParserProvider for ParserProviderGit {
+            fn get_parsers(
+                &mut self,
+            ) -> ::std::result::Result<
+                ::std::collections::HashMap<::std::string::String, ::syntastica::providers::Language>,
+                ::syntastica::Error,
+            > {
+                let mut _map: ::std::collections::HashMap<::std::string::String, ::syntastica::providers::Language>
+                    = ::std::collections::HashMap::new();
+                #(#get_parsers)*
+                ::std::result::Result::Ok(_map)
+            }
+
+            fn by_extension(
+                &self,
+                file_extension: &str,
+            ) -> ::std::option::Option<::std::borrow::Cow<'_, str>> {
+                #(#by_extension)*
+                ::std::option::Option::None
+            }
+
+            fn by_injection_name(&self, name: &str) -> ::std::option::Option<::std::borrow::Cow<'_, str>> {
+                // TODO: injection regex
+                ::std::option::Option::None
+            }
+        }
     }
     .into()
 }
 
 #[proc_macro]
 pub fn queries(_: TokenStream) -> TokenStream {
-    LANGUAGE_CONFIG
-        .languages
-        .iter()
-        .map(|lang| {
-            let feat = lang.group.to_string();
-            let name = format_ident!("{}", lang.name);
-            let name_str = &lang.name;
-            const HIGHLIGHTS: Interp = Interp("highlights");
-            const INJECTIONS: Interp = Interp("injections");
-            const LOCALS: Interp = Interp("locals");
+    let langs = LANGUAGE_CONFIG.languages.iter().map(|lang| {
+        let name_str = &lang.name;
 
-            let highlights = match lang.queries.nvim_like {
-                true => quote! { process_queries(_lang, #name_str, "highlights.scm") },
-                false => quote! { read_queries(#name_str, "highlights.scm") },
-            };
-            let injections = match lang.queries.injections {
-                true => quote! { read_queries(#name_str, "injections.scm") },
-                false => quote! { "" },
-            };
-            let locals = match lang.queries.locals {
-                true => quote! { read_queries(#name_str, "locals.scm") },
-                false => quote! { "" },
-            };
+        let highlights = match lang.queries.nvim_like {
+            true => quote! { process_queries(lang, #name_str, "highlights.scm") },
+            false => quote! { read_queries(#name_str, "highlights.scm") },
+        };
+        let injections = match lang.queries.injections {
+            true => quote! { read_queries(#name_str, "injections.scm") },
+            false => quote! { String::new() },
+        };
+        let locals = match lang.queries.locals {
+            true => quote! { read_queries(#name_str, "locals.scm") },
+            false => quote! { String::new() },
+        };
 
-            quote! {
-                #[cfg(feature = #feat)]
-                #[proc_macro]
-                pub fn #name(_: ::proc_macro::TokenStream) -> ::proc_macro::TokenStream {
-                    let _lang = ::syntastica_parsers::#name();
-                    let highlights = #highlights;
-                    let injections = #injections;
-                    let locals = #locals;
-                    ::quote::quote! { (#HIGHLIGHTS, #INJECTIONS, #LOCALS) }.into()
-                }
-            }
-        })
-        .collect::<proc_macro2::TokenStream>()
-        .into()
+        quote! {
+            let lang = parsers.remove(#name_str).unwrap();
+            let highlights = #highlights;
+            let injections = #injections;
+            let locals = #locals;
+            _map.insert(#name_str, [highlights, injections, locals]);
+        }
+    });
+    quote! {
+        {
+            let mut parsers = ::syntastica_parsers_git::ParserProviderGit.get_parsers()?;
+            let mut _map: ::std::collections::BTreeMap<&'static str, [::std::string::String; 3]>
+                = ::std::collections::BTreeMap::new();
+            #(#langs)*
+            ::std::result::Result::Ok(_map)
+        }
+    }
+    .into()
 }
 
 #[proc_macro]
@@ -123,14 +144,17 @@ pub fn queries_test(_: TokenStream) -> TokenStream {
         .iter()
         .map(|lang| {
             let name = format_ident!("{}", lang.name);
+            let name_str = &lang.name;
+            let highlights = format_ident!("{}_HIGHLIGHTS", lang.name.to_uppercase());
+            let injections = format_ident!("{}_INJECTIONS", lang.name.to_uppercase());
+            let locals = format_ident!("{}_LOCALS", lang.name.to_uppercase());
             quote! {
                 #[test]
                 fn #name() {
-                    let lang = ::syntastica_parsers::#name();
-                    const QUERIES: (&str, &str, &str) = ::syntastica_queries::#name!();
-                    validate_query(lang, QUERIES.0, "highlights");
-                    validate_query(lang, QUERIES.1, "injections");
-                    validate_query(lang, QUERIES.2, "locals");
+                    let lang = PARSERS.get(#name_str).unwrap().clone();
+                    validate_query(lang, ::syntastica_queries::#highlights, "highlights");
+                    validate_query(lang, ::syntastica_queries::#injections, "injections");
+                    validate_query(lang, ::syntastica_queries::#locals, "locals");
                 }
             }
         })
@@ -139,54 +163,27 @@ pub fn queries_test(_: TokenStream) -> TokenStream {
 }
 
 #[proc_macro]
-pub fn lang_provider_prepare(_: TokenStream) -> TokenStream {
+pub fn queries_provider(_: TokenStream) -> TokenStream {
     let langs = LANGUAGE_CONFIG.languages.iter().map(|lang| {
-        let feat = format!("{:#}", lang.group);
-        let name = format_ident!("{}", lang.name);
         let name_str = &lang.name;
-        quote! {
-            #[cfg(feature = #feat)]
-            {
-                const QUERIES: (&str, &str, &str) = ::syntastica_queries::#name!();
-                configs.insert(
-                    #name_str.to_owned(),
-                    ::tree_sitter_highlight::HighlightConfiguration::new(
-                        ::syntastica_parsers::#name(),
-                        QUERIES.0,
-                        QUERIES.1,
-                        QUERIES.2,
-                    )?,
-                );
-            }
-        }
-    });
-    quote! {
-        {
-            let mut configs = HashMap::new();
-            #(#langs)*
-            Ok(configs)
-        }
-    }
-    .into()
-}
+        let highlights = format_ident!("{}_HIGHLIGHTS", lang.name.to_uppercase());
+        let injections = format_ident!("{}_INJECTIONS", lang.name.to_uppercase());
+        let locals = format_ident!("{}_LOCALS", lang.name.to_uppercase());
 
-#[proc_macro]
-pub fn lang_provider_extensions(_: TokenStream) -> TokenStream {
-    let langs = LANGUAGE_CONFIG.languages.iter().map(|lang| {
-        let feat = format!("{:#}", lang.group);
-        let extensions = &lang.file_extensions;
-        let name_str = &lang.name;
         quote! {
-            #[cfg(feature = #feat)]
-            if [#(#extensions),*].contains(&file_extension) {
-                return Some(#name_str.into());
-            }
+            _map.insert(#name_str.to_owned(), [
+                ::syntastica_queries::#highlights.into(),
+                ::syntastica_queries::#injections.into(),
+                ::syntastica_queries::#locals.into(),
+            ]);
         }
     });
     quote! {
         {
+            let mut _map: ::std::collections::HashMap<::std::string::String, [::std::borrow::Cow<'static, str>; 3]>
+                = ::std::collections::HashMap::new();
             #(#langs)*
-            None
+            ::std::result::Result::Ok(_map)
         }
     }
     .into()

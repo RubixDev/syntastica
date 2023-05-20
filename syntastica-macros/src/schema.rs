@@ -28,13 +28,10 @@ pub enum Group {
 
 impl Display for Group {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        match (self, f.alternate()) {
-            (Self::Some, true) => write!(f, "parsers-some"),
-            (Self::Most, true) => write!(f, "parsers-most"),
-            (Self::All, true) => write!(f, "parsers-all"),
-            (Self::Some, false) => write!(f, "some"),
-            (Self::Most, false) => write!(f, "most"),
-            (Self::All, false) => write!(f, "all"),
+        match self {
+            Self::Some => write!(f, "some"),
+            Self::Most => write!(f, "most"),
+            Self::All => write!(f, "all"),
         }
     }
 }

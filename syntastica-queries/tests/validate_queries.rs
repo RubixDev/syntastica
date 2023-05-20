@@ -1,7 +1,19 @@
+use std::collections::HashMap;
+
+use once_cell::sync::Lazy;
+use syntastica::providers::ParserProvider;
+use tree_sitter::{Language, Query};
+
 syntastica_macros::queries_test!();
 
-fn validate_query(lang: tree_sitter::Language, query: &str, kind: &str) {
-    if let Err(err) = tree_sitter::Query::new(lang, query) {
+static PARSERS: Lazy<HashMap<String, Language>> = Lazy::new(|| {
+    syntastica_parsers_git::ParserProviderGit
+        .get_parsers()
+        .unwrap()
+});
+
+fn validate_query(lang: Language, query: &str, kind: &str) {
+    if let Err(err) = Query::new(lang, query) {
         eprintln!("invalid {kind} queries: {err}");
 
         eprintln!("\n{}", "-".repeat(50));

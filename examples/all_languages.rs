@@ -1,15 +1,8 @@
-#[cfg(feature = "parsers-all")]
 use std::collections::BTreeMap;
 
-#[cfg(feature = "parsers-all")]
 use syntastica::renderer::TerminalRenderer;
+use syntastica_parsers_git::ParserProviderGit;
 
-#[cfg(not(feature = "parsers-all"))]
-fn main() {
-    compile_error!("this example requires the `parsers-all` feature to be enabled");
-}
-
-#[cfg(feature = "parsers-all")]
 fn main() {
     let examples: BTreeMap<String, String> =
         toml::from_str(include_str!("./example_programs.toml")).unwrap();
@@ -20,13 +13,13 @@ fn main() {
     }
 }
 
-#[cfg(feature = "parsers-all")]
 fn example(code: &str, file_extension: &str) {
     println!(
         "{}",
         syntastica::highlight(
             code.trim(),
             file_extension,
+            ParserProviderGit,
             &mut TerminalRenderer,
             syntastica_themes::one::dark()
         )
