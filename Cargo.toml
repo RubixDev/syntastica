@@ -12,7 +12,7 @@ package.repository = "https://github.com/RubixDev/syntastica"
 
 [package]
 name = "syntastica"
-version = "0.1.0"
+version = "0.1.1"
 authors.workspace = true
 edition = "2021"
 keywords = ["tree-sitter", "syntect", "highlight", "parsing", "syntax"]

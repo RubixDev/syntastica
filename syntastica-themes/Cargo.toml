@@ -10,4 +10,4 @@ description = "A collection of themes for syntastica"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-syntastica = { version = "0.1.0", path = ".." }
+syntastica = { version = "0.1.1", path = ".." }
