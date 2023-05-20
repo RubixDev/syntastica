@@ -25,6 +25,7 @@ def fib(n: int) -> int:
 
 def main():
     re.compile(r'[a-fA-F0-9_]\s(.*)$')
+    print(f"fib(10) = {fib(10)}")
 '''
 
 c = '''
