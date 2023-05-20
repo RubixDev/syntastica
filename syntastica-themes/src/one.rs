@@ -1,3 +1,5 @@
+//! The onedark themes in this module were extracted from <https://github.com/navarasu/onedark.nvim>
+
 use std::collections::BTreeMap;
 
 use syntastica::{
@@ -5,7 +7,7 @@ use syntastica::{
     theme,
 };
 
-pub fn onedark() -> Config {
+pub fn dark() -> Config {
     let mut palette = theme! {
         "black": "#181a1f",
         "bg0": "#282c34",
@@ -35,11 +37,11 @@ pub fn onedark() -> Config {
         "diff_text": "#2c5372",
     }
     .into_inner();
-    palette.append(&mut one_theme());
+    palette.append(&mut theme());
     palette.into()
 }
 
-pub fn onedark_darker() -> Config {
+pub fn darker() -> Config {
     let mut palette = theme! {
         "black": "#0e1013",
         "bg0": "#1f2329",
@@ -69,11 +71,11 @@ pub fn onedark_darker() -> Config {
         "diff_text": "#274964",
     }
     .into_inner();
-    palette.append(&mut one_theme());
+    palette.append(&mut theme());
     palette.into()
 }
 
-pub fn onedark_cool() -> Config {
+pub fn cool() -> Config {
     let mut palette = theme! {
         "black": "#151820",
         "bg0": "#242b38",
@@ -103,11 +105,11 @@ pub fn onedark_cool() -> Config {
         "diff_text": "#265478",
     }
     .into_inner();
-    palette.append(&mut one_theme());
+    palette.append(&mut theme());
     palette.into()
 }
 
-pub fn onedark_deep() -> Config {
+pub fn deep() -> Config {
     let mut palette = theme! {
         "black": "#0c0e15",
         "bg0": "#1a212e",
@@ -137,11 +139,11 @@ pub fn onedark_deep() -> Config {
         "diff_text": "#1c4a6e",
     }
     .into_inner();
-    palette.append(&mut one_theme());
+    palette.append(&mut theme());
     palette.into()
 }
 
-pub fn onedark_warm() -> Config {
+pub fn warm() -> Config {
     let mut palette = theme! {
         "black": "#191a1c",
         "bg0": "#2c2d30",
@@ -171,11 +173,11 @@ pub fn onedark_warm() -> Config {
         "diff_text": "#32526c",
     }
     .into_inner();
-    palette.append(&mut one_theme());
+    palette.append(&mut theme());
     palette.into()
 }
 
-pub fn onedark_warmer() -> Config {
+pub fn warmer() -> Config {
     let mut palette = theme! {
         "black": "#101012",
         "bg0": "#232326",
@@ -205,11 +207,11 @@ pub fn onedark_warmer() -> Config {
         "diff_text": "#2c485f",
     }
     .into_inner();
-    palette.append(&mut one_theme());
+    palette.append(&mut theme());
     palette.into()
 }
 
-pub fn onelight() -> Config {
+pub fn light() -> Config {
     let mut palette = theme! {
         "black": "#101012",
         "bg0": "#fafafa",
@@ -239,11 +241,11 @@ pub fn onelight() -> Config {
         "diff_text": "#cad3e0",
     }
     .into_inner();
-    palette.append(&mut one_theme());
+    palette.append(&mut theme());
     palette.into()
 }
 
-fn one_theme() -> BTreeMap<String, ThemeValue> {
+fn theme() -> BTreeMap<String, ThemeValue> {
     theme! {
         "annotation": "$fg",
         "attribute": "$cyan",

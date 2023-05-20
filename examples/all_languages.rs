@@ -28,7 +28,7 @@ fn example(code: &str, file_extension: &str) {
             code.trim(),
             file_extension,
             &mut TerminalRenderer,
-            syntastica_themes::one::onedark()
+            syntastica_themes::one::dark()
         )
         .unwrap()
     );

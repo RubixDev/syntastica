@@ -1,4 +1,4 @@
-//! The gruvbox themes in this module were extracted from <https://github.com/ellisonleao/gruvbox.nvim/tree/main>
+//! The gruvbox themes in this module were extracted from <https://github.com/ellisonleao/gruvbox.nvim>
 
 use std::collections::BTreeMap;
 
