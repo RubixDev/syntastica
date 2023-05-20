@@ -23,6 +23,8 @@ fn main() {
     example(code, syntastica_themes::one::onedark_warm(), "onedark_warm");
     example(code, syntastica_themes::one::onedark_warmer(), "onedark_warmer");
     example(code, syntastica_themes::one::onelight(), "onelight");
+    example(code, syntastica_themes::gruvbox::dark(), "gruvbox dark");
+    example(code, syntastica_themes::gruvbox::light(), "gruvbox light");
 }
 
 #[cfg(feature = "parsers-some")]

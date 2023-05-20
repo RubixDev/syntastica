@@ -1,3 +1,2 @@
+pub mod gruvbox;
 pub mod one;
-
-// TODO: macro for easy theme creation
