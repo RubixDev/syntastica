@@ -1,8 +1,21 @@
-use std::fs;
+use std::{
+    collections::{BTreeMap, HashMap},
+    fs,
+};
 
 use anyhow::Result;
+use syntastica::config::ThemeValue;
 
 mod queries;
+mod theme_gruvbox;
+mod theme_one;
+
+#[derive(Clone, Debug)]
+enum RawThemeValue {
+    Link(String),
+    Styles(HashMap<String, String>),
+    Ignore,
+}
 
 pub fn run() -> Result<()> {
     let mut queries_lib_rs = r###"
@@ -19,7 +32,7 @@ pub fn run() -> Result<()> {
 //! The constants are defined as `<language_name>_<kind>` where `<kind>` is one of `HIGHLIGHTS`,
 //! `INJECTIONS`, or `LOCALS`. The `INJECTIONS` and `LOCALS` may be empty for some languages.
 //!
-//! The source `lib.rs` file is automatically generated with `cargo xtask codegen` inside the
+//! The crate source is automatically generated with `cargo xtask codegen` inside the
 //! syntastica workspace.
 #![cfg_attr(all(doc, CHANNEL_NIGHTLY), feature(doc_auto_cfg))]
 #![cfg_attr(rustfmt, rustfmt_skip)]
@@ -41,5 +54,128 @@ pub const {lang}_LOCALS: &str = {locals:?};
         queries_lib_rs,
     )?;
 
+    fs::write(
+        crate::WORKSPACE_DIR.join("syntastica-themes/src/gruvbox.rs"),
+        theme_gruvbox::make_theme()?,
+    )?;
+    fs::write(
+        crate::WORKSPACE_DIR.join("syntastica-themes/src/one.rs"),
+        theme_one::make_theme()?,
+    )?;
+
     Ok(())
+}
+
+const INDENT: &str = "    ";
+type Theme = BTreeMap<String, ThemeValue>;
+fn to_theme_macro_call(map: &Theme) -> String {
+    let mut out = "theme! {\n".to_owned();
+    for (key, value) in map {
+        let value = match value {
+            ThemeValue::Simple(str) => format!("\"{str}\""),
+            ThemeValue::Extended {
+                color,
+                underline,
+                strikethrough,
+                italic,
+                bold,
+                link,
+            } => {
+                let mut value = "{\n".to_owned();
+                value += &format!(
+                    "{}color: {},\n",
+                    INDENT.repeat(3),
+                    color
+                        .as_ref()
+                        .map(|s| format!("{s:?}"))
+                        .unwrap_or("None".to_owned()),
+                );
+                value += &format!("{}underline: {},\n", INDENT.repeat(3), underline);
+                value += &format!("{}strikethrough: {},\n", INDENT.repeat(3), strikethrough);
+                value += &format!("{}italic: {},\n", INDENT.repeat(3), italic);
+                value += &format!("{}bold: {},\n", INDENT.repeat(3), bold);
+                value += &format!(
+                    "{}link: {},\n",
+                    INDENT.repeat(3),
+                    link.as_ref()
+                        .map(|s| format!("{s:?}"))
+                        .unwrap_or("None".to_owned()),
+                );
+                value += &format!("{}}}", INDENT.repeat(2));
+                value
+            }
+        };
+        out += &format!("{}\"{key}\": {value},\n", INDENT.repeat(2));
+    }
+    out + INDENT + "}"
+}
+
+fn resolve_links(raw_theme: &mut BTreeMap<String, RawThemeValue>) {
+    let mut links_left = true;
+    while links_left {
+        links_left = false;
+        let raw_theme_copy = raw_theme.clone();
+        for (key, value) in &mut *raw_theme {
+            if !key.starts_with('@') {
+                continue;
+            }
+            if let RawThemeValue::Link(link) = value {
+                links_left = true;
+                match raw_theme_copy.get(link) {
+                    Some(new_value) => *value = new_value.clone(),
+                    None => {
+                        eprintln!("warning: ignoring key {key} because of invalid link to {link}");
+                        *value = RawThemeValue::Ignore;
+                    }
+                }
+            }
+        }
+    }
+}
+
+fn make_theme_file(
+    name: &str,
+    url: &str,
+    palettes: BTreeMap<&&str, Theme>,
+    theme: Theme,
+) -> String {
+    let mut out = format!("//! The {name} themes in this module were extracted from <{url}>");
+    out += r###"
+//!
+//! The module source is automatically generated with `cargo xtask codegen` inside the
+//! syntastica workspace.
+
+use std::collections::BTreeMap;
+
+use syntastica::{
+    config::{Config, ThemeValue},
+    theme,
+};
+"###;
+
+    for (variant, palette) in palettes {
+        out += &format!(
+            r###"
+pub fn {variant}() -> Config {{
+    let mut palette = {theme}
+    .into_inner();
+    palette.append(&mut theme());
+    palette.into()
+}}
+"###,
+            theme = to_theme_macro_call(&palette),
+        )
+    }
+
+    out += &format!(
+        r###"
+fn theme() -> BTreeMap<String, ThemeValue> {{
+    {theme}
+    .into_inner()
+}}
+"###,
+        theme = to_theme_macro_call(&theme)
+    );
+
+    out
 }

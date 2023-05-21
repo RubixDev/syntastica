@@ -7,8 +7,9 @@ edition = "2021"
 
 [dependencies]
 anyhow = "1.0.71"
+fancy-regex = "0.11.0"
 once_cell = "1.17.1"
-regex = "1.8.1"
+reqwest = { version = "0.11.18", default-features = false, features = ["rustls-tls", "blocking"] }
 syntastica = { version = "0.1.1", path = ".." }
 syntastica-macros = { version = "0.1.0", path = "../syntastica-macros" }
 syntastica-parsers-git = { version = "0.1.0", path = "../syntastica-parsers-git", features = ["all"] }

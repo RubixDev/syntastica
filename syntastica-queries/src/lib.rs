@@ -11,7 +11,7 @@
 //! The constants are defined as `<language_name>_<kind>` where `<kind>` is one of `HIGHLIGHTS`,
 //! `INJECTIONS`, or `LOCALS`. The `INJECTIONS` and `LOCALS` may be empty for some languages.
 //!
-//! The source `lib.rs` file is automatically generated with `cargo xtask codegen` inside the
+//! The crate source is automatically generated with `cargo xtask codegen` inside the
 //! syntastica workspace.
 #![cfg_attr(all(doc, CHANNEL_NIGHTLY), feature(doc_auto_cfg))]
 #![cfg_attr(rustfmt, rustfmt_skip)]

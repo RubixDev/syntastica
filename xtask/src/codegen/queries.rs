@@ -4,8 +4,8 @@ use std::{
 };
 
 use anyhow::Result;
+use fancy_regex::Regex;
 use once_cell::sync::Lazy;
-use regex::Regex;
 use syntastica::providers::ParserProvider;
 use tree_sitter::{Language, Query, QueryPredicateArg};
 
@@ -23,7 +23,7 @@ fn read_queries(lang_name: &str, filename: &str) -> String {
     let queries =
         fs::read_to_string(&path).unwrap_or_else(|err| panic!("failed to read '{path}': {err}"));
     INHERITS_REGEX
-        .replace_all(&queries, |captures: &regex::Captures| {
+        .replace_all(&queries, |captures: &fancy_regex::Captures| {
             captures[1]
                 .split(',')
                 .map(|lang| format!("\n{}\n", read_queries(lang.trim(), filename)))
