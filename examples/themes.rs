@@ -3,7 +3,6 @@ use std::collections::HashMap;
 use syntastica::renderer::TerminalRenderer;
 use syntastica_parsers_git::ParserProviderGit;
 
-#[rustfmt::skip]
 fn main() {
     let examples: HashMap<String, String> =
         toml::from_str(include_str!("./example_programs.toml")).unwrap();

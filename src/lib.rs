@@ -7,17 +7,17 @@ pub mod renderer;
 
 use std::{num::ParseIntError, result};
 
-use config::ResolvedConfig;
 pub use error::*;
-use providers::LanguageProvider;
+use providers::{ConfiguredLanguages, LanguageProvider, ParserProvider};
 use renderer::Renderer;
 use thiserror::Error;
 use tree_sitter_highlight::{Highlight, HighlightEvent, Highlighter};
 
-pub type Highlights<'a> = Vec<Vec<(&'a str, Option<Style>)>>;
+pub type Highlights<'src> = Vec<Vec<(&'src str, Option<Style>)>>;
 
 pub fn highlight(
     code: &str,
+    // TODO: use "language_name"
     file_extension: &str,
     language_provider: impl LanguageProvider,
     renderer: &mut impl Renderer,
@@ -27,35 +27,26 @@ pub fn highlight(
         &process(
             code,
             file_extension,
+            &ConfiguredLanguages::configure(
+                language_provider.get_languages()?,
+                config.resolve_links()?,
+            ),
             language_provider,
-            config.resolve_links()?,
         )?,
         renderer,
     ))
 }
 
-pub fn process<'a>(
-    code: &'a str,
+pub fn process<'src>(
+    code: &'src str,
+    // TODO: use "language_name"
     file_extension: &str,
-    mut language_provider: impl LanguageProvider,
-    config: ResolvedConfig,
-) -> Result<Highlights<'a>> {
-    let config = config.into_inner();
-    let mut highlight_keys = Vec::with_capacity(config.len());
-    let mut highlight_styles = Vec::with_capacity(config.len());
-    for (key, style) in config {
-        highlight_keys.push(key);
-        highlight_styles.push(style);
-    }
-
-    // TODO: do not call `prepare` in here to allow reuse from outside
-    let mut configs = language_provider.prepare()?;
-    for config in configs.values_mut() {
-        config.configure(&highlight_keys);
-    }
-    let highlight_config = language_provider
-        .by_extension(file_extension)
-        .and_then(|key| configs.get(key.as_ref()))
+    languages: &ConfiguredLanguages,
+    provider: impl ParserProvider,
+) -> Result<Highlights<'src>> {
+    let highlight_config = provider
+        .for_extension(file_extension)
+        .and_then(|key| languages.get(key.as_ref()))
         .ok_or_else(|| Error::UnsupportedFileExt(file_extension.to_owned()))?;
 
     let mut highlighter = Highlighter::new();
@@ -63,10 +54,10 @@ pub fn process<'a>(
     let mut out = vec![vec![]];
     let mut style_stack = vec![];
     for event in highlighter.highlight(highlight_config, code.as_bytes(), None, |lang_name| {
-        configs.get(lang_name).or_else(|| {
-            language_provider
-                .by_extension(lang_name)
-                .and_then(|name| configs.get(name.as_ref()))
+        languages.get(lang_name).or_else(|| {
+            provider
+                .for_injection(lang_name)
+                .and_then(|name| languages.get(name.as_ref()))
         })
     })? {
         match event? {
@@ -80,7 +71,7 @@ pub fn process<'a>(
                 while let Some(line) = lines.next() {
                     let style = style_stack
                         .last()
-                        .map(|style_idx| highlight_styles[*style_idx]);
+                        .map(|style_idx| languages.highlight_styles()[*style_idx]);
                     out.last_mut()
                         .expect("`out` is initialized with one element and never shrinks in size")
                         .push((line, style));

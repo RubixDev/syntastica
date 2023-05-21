@@ -70,19 +70,14 @@ pub fn parsers_ffi(_: TokenStream) -> TokenStream {
         }
         pub struct ParserProviderGit;
         impl ::syntastica::providers::ParserProvider for ParserProviderGit {
-            fn get_parsers(
-                &mut self,
-            ) -> ::std::result::Result<
-                ::std::collections::HashMap<::std::string::String, ::syntastica::providers::Language>,
-                ::syntastica::Error,
-            > {
+            fn get_parsers(&self) -> ::std::result::Result<::syntastica::providers::Parsers, ::syntastica::Error> {
                 let mut _map: ::std::collections::HashMap<::std::string::String, ::syntastica::providers::Language>
                     = ::std::collections::HashMap::new();
                 #(#get_parsers)*
                 ::std::result::Result::Ok(_map)
             }
 
-            fn by_extension(
+            fn for_extension(
                 &self,
                 file_extension: &str,
             ) -> ::std::option::Option<::std::borrow::Cow<'_, str>> {
@@ -90,10 +85,10 @@ pub fn parsers_ffi(_: TokenStream) -> TokenStream {
                 ::std::option::Option::None
             }
 
-            fn by_injection_name(&self, name: &str) -> ::std::option::Option<::std::borrow::Cow<'_, str>> {
-                // TODO: injection regex
-                ::std::option::Option::None
-            }
+            // TODO: injection regex
+            // fn for_injection(&self, name: &str) -> ::std::option::Option<::std::borrow::Cow<'_, str>> {
+            //     ::std::option::Option::None
+            // }
         }
     }
     .into()
@@ -180,8 +175,7 @@ pub fn queries_provider(_: TokenStream) -> TokenStream {
     });
     quote! {
         {
-            let mut _map: ::std::collections::HashMap<::std::string::String, [::std::borrow::Cow<'static, str>; 3]>
-                = ::std::collections::HashMap::new();
+            let mut _map: Queries<'static> = ::std::collections::HashMap::new();
             #(#langs)*
             ::std::result::Result::Ok(_map)
         }
