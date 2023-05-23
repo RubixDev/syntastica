@@ -39,12 +39,28 @@ pub fn run() -> Result<()> {
 "###
     .trim_start()
     .to_owned();
+
+    let queries_dir = crate::WORKSPACE_DIR.join("syntastica-queries/generated_queries");
+    let _ = fs::remove_dir_all(&queries_dir);
+    fs::create_dir_all(&queries_dir)?;
+    fs::write(
+        queries_dir.join("README.md"),
+        include_str!("./codegen/generated_queries_readme.md"),
+    )?;
+
     for (name, [highlights, injections, locals]) in queries::make_queries()? {
+        let lang_dir = queries_dir.join(name);
+        fs::create_dir(&lang_dir)?;
+
+        fs::write(lang_dir.join("highlights.scm"), highlights)?;
+        fs::write(lang_dir.join("injections.scm"), injections)?;
+        fs::write(lang_dir.join("locals.scm"), locals)?;
+
         queries_lib_rs += &format!(
             r###"
-pub const {lang}_HIGHLIGHTS: &str = {highlights:?};
-pub const {lang}_INJECTIONS: &str = {injections:?};
-pub const {lang}_LOCALS: &str = {locals:?};
+pub const {lang}_HIGHLIGHTS: &str = include_str!("../generated_queries/{name}/highlights.scm");
+pub const {lang}_INJECTIONS: &str = include_str!("../generated_queries/{name}/injections.scm");
+pub const {lang}_LOCALS: &str = include_str!("../generated_queries/{name}/locals.scm");
 "###,
             lang = name.to_uppercase()
         )

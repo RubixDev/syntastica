@@ -31,7 +31,7 @@ fn validate(
         .unwrap_or_else(|err| panic!("invalid queries in file '{path}': {err}"));
 
     // run processor
-    let new_queries = processor(group_root_level_captures(
+    let mut new_queries = processor(group_root_level_captures(
         rsexpr::from_slice_multi(&queries)
             .unwrap_or_else(|errs| {
                 panic!(
@@ -50,6 +50,7 @@ fn validate(
     .map(|tree| format!("{tree:#}"))
     .collect::<Vec<_>>()
     .join("\n\n");
+    new_queries.push('\n');
 
     // validate output
     Query::new(lang, &new_queries).unwrap_or_else(|err| {
