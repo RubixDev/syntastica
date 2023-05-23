@@ -149,6 +149,7 @@ fn replace_injection_captures(
         OwnedSexpr::String(_) => {}
         OwnedSexpr::Atom(atom) => match atom.as_slice() {
             [b'@', capture @ ..] if !capture.starts_with(b"_") => match capture {
+                b"injection.content" | b"injection.language" => {}
                 b"content" => *atom = b"@injection.content".to_vec(),
                 b"language" => *atom = b"@injection.language".to_vec(),
                 lang_name => {
