@@ -1,3 +1,5 @@
+use std::convert::Infallible;
+
 use thiserror::Error;
 use tree_sitter::QueryError;
 
@@ -24,4 +26,10 @@ pub enum Error {
 
     #[error(transparent)]
     Highlight(#[from] tree_sitter_highlight::Error),
+}
+
+impl From<Infallible> for Error {
+    fn from(_: Infallible) -> Self {
+        unreachable!("`Infallible` cannot be constructed")
+    }
 }

@@ -6,35 +6,54 @@ pub mod providers;
 pub mod renderer;
 pub mod style;
 
+use config::ResolvedConfig;
 pub use error::*;
+pub use tree_sitter_highlight::Highlighter;
+
 use providers::{ConfiguredLanguages, LanguageProvider, ParserProvider};
 use renderer::Renderer;
 use style::Style;
 use thiserror::Error;
-use tree_sitter_highlight::{Highlight, HighlightEvent, Highlighter};
+use tree_sitter_highlight::{Highlight, HighlightEvent};
 
 pub type Highlights<'src> = Vec<Vec<(&'src str, Option<Style>)>>;
 
-pub fn highlight(
+pub fn highlight<C, E>(
     code: &str,
     // TODO: use "language_name"
     file_extension: &str,
-    language_provider: impl LanguageProvider,
+    language_provider: &impl LanguageProvider,
     renderer: &mut impl Renderer,
-    config: config::Config,
-) -> Result<String> {
+    config: C,
+) -> Result<String>
+where
+    C: TryInto<ResolvedConfig, Error = E>,
+    crate::Error: From<E>,
+{
     Ok(render(
-        &process(
-            code,
-            file_extension,
-            &ConfiguredLanguages::configure(
-                language_provider.get_languages()?,
-                config.resolve_links()?,
-            ),
-            language_provider,
-        )?,
+        &process_once(code, file_extension, language_provider, config)?,
         renderer,
     ))
+}
+
+pub fn process_once<'src, C, E>(
+    code: &'src str,
+    // TODO: use "language_name"
+    file_extension: &str,
+    language_provider: &impl LanguageProvider,
+    config: C,
+) -> Result<Highlights<'src>>
+where
+    C: TryInto<ResolvedConfig, Error = E>,
+    crate::Error: From<E>,
+{
+    process(
+        code,
+        file_extension,
+        &ConfiguredLanguages::try_configure(language_provider, config)?,
+        language_provider,
+        &mut Highlighter::new(),
+    )
 }
 
 pub fn process<'src>(
@@ -42,14 +61,13 @@ pub fn process<'src>(
     // TODO: use "language_name"
     file_extension: &str,
     languages: &ConfiguredLanguages,
-    provider: impl ParserProvider,
+    provider: &impl ParserProvider,
+    highlighter: &mut Highlighter,
 ) -> Result<Highlights<'src>> {
     let highlight_config = provider
         .for_extension(file_extension)
         .and_then(|key| languages.get(key.as_ref()))
         .ok_or_else(|| Error::UnsupportedFileExt(file_extension.to_owned()))?;
-
-    let mut highlighter = Highlighter::new();
 
     let mut out = vec![vec![]];
     let mut style_stack = vec![];

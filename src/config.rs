@@ -130,6 +130,14 @@ impl From<BTreeMap<String, Style>> for ResolvedConfig {
     }
 }
 
+impl TryFrom<Config> for ResolvedConfig {
+    type Error = Error;
+
+    fn try_from(value: Config) -> Result<Self> {
+        value.resolve_links()
+    }
+}
+
 impl ThemeValue {
     fn resolve_link(&self, target: &Self) -> Self {
         match (self, target) {

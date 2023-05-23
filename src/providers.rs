@@ -11,7 +11,6 @@ pub type Queries<'a> = HashMap<String, [Cow<'a, str>; 3]>;
 pub type Languages = HashMap<String, HighlightConfiguration>;
 
 pub struct ConfiguredLanguages {
-    // TODO: wrap in Cow
     langs: Languages,
     highlight_keys: Vec<String>,
     highlight_styles: Vec<Style>,
@@ -36,6 +35,17 @@ impl ConfiguredLanguages {
             highlight_keys,
             highlight_styles,
         }
+    }
+
+    pub fn try_configure<C, E>(provider: &impl LanguageProvider, config: C) -> crate::Result<Self>
+    where
+        C: TryInto<ResolvedConfig, Error = E>,
+        crate::Error: From<E>,
+    {
+        Ok(Self::configure(
+            provider.get_languages()?,
+            config.try_into()?,
+        ))
     }
 
     pub fn highlight_keys(&self) -> &[String] {
