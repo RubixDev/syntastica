@@ -1,6 +1,6 @@
 use std::borrow::Cow;
 
-use crate::Style;
+use crate::style::Style;
 
 pub trait Renderer {
     fn head(&mut self) -> Cow<'static, str> {

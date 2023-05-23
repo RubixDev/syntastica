@@ -1,6 +1,9 @@
 use std::collections::BTreeMap;
 
-use crate::{Color, Error, Result, Style};
+use crate::{
+    style::{Color, Style},
+    Error, Result,
+};
 
 #[derive(Clone, Hash, Debug)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

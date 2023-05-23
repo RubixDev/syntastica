@@ -1,6 +1,8 @@
 use thiserror::Error;
 use tree_sitter::QueryError;
 
+use crate::style::ParseHexError;
+
 pub type Result<T> = std::result::Result<T, Error>;
 
 #[derive(Debug, Error)]
@@ -15,7 +17,7 @@ pub enum Error {
     MissingQueries(String),
 
     #[error(transparent)]
-    InvalidHex(#[from] crate::ParseHexError),
+    InvalidHex(#[from] ParseHexError),
 
     #[error(transparent)]
     MalformedQueries(#[from] QueryError),
