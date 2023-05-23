@@ -3,7 +3,7 @@ use std::{collections::BTreeMap, fs};
 use anyhow::Result;
 use fancy_regex::Regex;
 use once_cell::sync::Lazy;
-use rsexpr::OwnedSexpr;
+use rsexpr::{OwnedSexpr, OwnedSexprs};
 use syntastica::providers::ParserProvider;
 use tree_sitter::{Language, Query};
 
@@ -87,7 +87,7 @@ fn group_root_level_captures(queries: Vec<OwnedSexpr>) -> Vec<OwnedSexpr> {
     while let Some(sexp @ (OwnedSexpr::List(_) | OwnedSexpr::Group(_) | OwnedSexpr::String(_))) =
         iter.next()
     {
-        let mut group = vec![sexp];
+        let mut group = OwnedSexprs::from(vec![sexp]);
         // and include all following `Atom` nodes
         while let Some(OwnedSexpr::Atom(_)) = iter.peek() {
             group.push(iter.next().unwrap());
@@ -155,11 +155,14 @@ fn replace_injection_captures(
                 b"language" => *atom = b"@injection.language".to_vec(),
                 lang_name => {
                     if predicate_count == 0 {
-                        additional_sexp = Some(OwnedSexpr::List(vec![
-                            OwnedSexpr::Atom(b"#set!".to_vec()),
-                            OwnedSexpr::Atom(b"injection.language".to_vec()),
-                            OwnedSexpr::String(lang_name.to_owned()),
-                        ]));
+                        additional_sexp = Some(OwnedSexpr::List(
+                            vec![
+                                OwnedSexpr::Atom(b"#set!".to_vec()),
+                                OwnedSexpr::Atom(b"injection.language".to_vec()),
+                                OwnedSexpr::String(lang_name.to_owned()),
+                            ]
+                            .into(),
+                        ));
                     }
                     *atom = b"@injection.content".to_vec();
                 }

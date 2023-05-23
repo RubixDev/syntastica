@@ -18,6 +18,7 @@ mod parser;
 use std::{
     borrow::Cow,
     fmt::{self, Display, Formatter},
+    ops::{Deref, DerefMut},
 };
 
 pub use error::*;
@@ -68,13 +69,23 @@ pub fn from_slice(input: &(impl AsRef<[u8]> + ?Sized)) -> Result<Sexpr<'_>> {
 ///
 /// ## Errors
 /// If the parsing failed, a list of [`Error`]s is returned.
-pub fn from_slice_multi(input: &(impl AsRef<[u8]> + ?Sized)) -> Result<Vec<Sexpr<'_>>> {
+pub fn from_slice_multi(input: &(impl AsRef<[u8]> + ?Sized)) -> Result<Sexprs<'_>> {
     let (sexprs, errors) = Parser::parse(lex::lex(input.as_ref()));
     match errors.is_empty() {
         true => Ok(sexprs),
         false => Err(errors),
     }
 }
+
+/// A thin wrapper around `Vec<Sexpr>` with its own [`Display`] implementation.
+/// See [`Sexpr`] for more information.
+#[derive(Debug, Clone, Hash, PartialEq, Eq)]
+pub struct Sexprs<'src>(Vec<Sexpr<'src>>);
+
+/// A thin wrapper around `Vec<OwnedSexpr>` with its own [`Display`] implementation.
+/// See [`OwnedSexpr`] for more information.
+#[derive(Debug, Clone, Hash, PartialEq, Eq)]
+pub struct OwnedSexprs(Vec<OwnedSexpr>);
 
 /// A single node of the tree. The [`Atom`](Sexpr::Atom) and [`String`](Sexpr::String) variants
 /// reference the input slice. For an owned version have a look at [`OwnedSexpr`].
@@ -99,13 +110,16 @@ pub fn from_slice_multi(input: &(impl AsRef<[u8]> + ?Sized)) -> Result<Vec<Sexpr
 #[derive(Debug, Clone, Hash, PartialEq, Eq)]
 pub enum Sexpr<'src> {
     /// A list of [`Sexpr`]s surrounded by parentheses `(`, `)`
-    List(Vec<Sexpr<'src>>),
+    List(Sexprs<'src>),
     /// A list of [`Sexpr`]s surrounded by brackets `[`, `]`
-    Group(Vec<Sexpr<'src>>),
+    Group(Sexprs<'src>),
     /// A sequence of bytes surrounded by quotes `"`
     String(Cow<'src, [u8]>),
     /// A sequence of bytes not including whitespace, parens, and quotes
     Atom(&'src [u8]),
+    /// A line comment, including the leading `;`
+    #[cfg(feature = "comments")]
+    Comment(&'src [u8]),
 }
 
 /// An owned version of [`Sexpr`]. You can convert to and from [`Sexpr`] using the [`From`] trait.
@@ -130,34 +144,193 @@ pub enum Sexpr<'src> {
 #[derive(Debug, Clone, Hash, PartialEq, Eq)]
 pub enum OwnedSexpr {
     /// A list of [`OwnedSexpr`]s surrounded by parentheses `(`, `)`
-    List(Vec<OwnedSexpr>),
+    List(OwnedSexprs),
     /// A list of [`OwnedSexpr`]s surrounded by brackets `[`, `]`
-    Group(Vec<OwnedSexpr>),
+    Group(OwnedSexprs),
     /// A sequence of bytes surrounded by quotes `"`
     String(Vec<u8>),
     /// A sequence of bytes not including whitespace, parens, and quotes
     Atom(Vec<u8>),
+    /// A line comment, including the leading `;`
+    #[cfg(feature = "comments")]
+    Comment(Vec<u8>),
 }
 
-impl From<Sexpr<'_>> for OwnedSexpr {
-    fn from(value: Sexpr<'_>) -> Self {
-        match value {
-            Sexpr::List(list) => Self::List(list.into_iter().map(OwnedSexpr::from).collect()),
-            Sexpr::Group(group) => Self::Group(group.into_iter().map(OwnedSexpr::from).collect()),
-            Sexpr::String(string) => Self::String(string.into_owned()),
-            Sexpr::Atom(atom) => Self::Atom(atom.to_vec()),
-        }
+///////////////////////////
+// Trait implementations //
+///////////////////////////
+
+impl<'src> Deref for Sexprs<'src> {
+    type Target = Vec<Sexpr<'src>>;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+impl Deref for OwnedSexprs {
+    type Target = Vec<OwnedSexpr>;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+impl DerefMut for Sexprs<'_> {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.0
+    }
+}
+
+impl DerefMut for OwnedSexprs {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.0
+    }
+}
+
+impl<'src> FromIterator<Sexpr<'src>> for Sexprs<'src> {
+    fn from_iter<T: IntoIterator<Item = Sexpr<'src>>>(iter: T) -> Self {
+        Self(Vec::from_iter(iter))
+    }
+}
+
+impl FromIterator<OwnedSexpr> for OwnedSexprs {
+    fn from_iter<T: IntoIterator<Item = OwnedSexpr>>(iter: T) -> Self {
+        Self(Vec::from_iter(iter))
+    }
+}
+
+impl<'src> IntoIterator for Sexprs<'src> {
+    type Item = Sexpr<'src>;
+    type IntoIter = std::vec::IntoIter<Sexpr<'src>>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.0.into_iter()
+    }
+}
+
+impl IntoIterator for OwnedSexprs {
+    type Item = OwnedSexpr;
+    type IntoIter = std::vec::IntoIter<OwnedSexpr>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.0.into_iter()
+    }
+}
+
+impl<'a, 'src> IntoIterator for &'a Sexprs<'src> {
+    type Item = &'a Sexpr<'src>;
+    type IntoIter = std::slice::Iter<'a, Sexpr<'src>>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.0.iter()
+    }
+}
+
+impl<'a> IntoIterator for &'a OwnedSexprs {
+    type Item = &'a OwnedSexpr;
+    type IntoIter = std::slice::Iter<'a, OwnedSexpr>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.0.iter()
+    }
+}
+
+impl<'a, 'src> IntoIterator for &'a mut Sexprs<'src> {
+    type Item = &'a mut Sexpr<'src>;
+    type IntoIter = std::slice::IterMut<'a, Sexpr<'src>>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.0.iter_mut()
+    }
+}
+
+impl<'a> IntoIterator for &'a mut OwnedSexprs {
+    type Item = &'a mut OwnedSexpr;
+    type IntoIter = std::slice::IterMut<'a, OwnedSexpr>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.0.iter_mut()
+    }
+}
+
+impl<'a> From<&'a OwnedSexprs> for Sexprs<'a> {
+    fn from(value: &'a OwnedSexprs) -> Self {
+        value.iter().map(Sexpr::from).collect()
+    }
+}
+
+impl From<Sexprs<'_>> for OwnedSexprs {
+    fn from(value: Sexprs<'_>) -> Self {
+        value.into_iter().map(OwnedSexpr::from).collect()
+    }
+}
+
+impl<'src> From<Vec<Sexpr<'src>>> for Sexprs<'src> {
+    fn from(value: Vec<Sexpr<'src>>) -> Self {
+        Self(value)
+    }
+}
+
+impl From<Vec<OwnedSexpr>> for OwnedSexprs {
+    fn from(value: Vec<OwnedSexpr>) -> Self {
+        Self(value)
+    }
+}
+
+impl Default for Sexprs<'_> {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+impl Default for OwnedSexprs {
+    fn default() -> Self {
+        Self::new()
     }
 }
 
 impl<'a> From<&'a OwnedSexpr> for Sexpr<'a> {
     fn from(value: &'a OwnedSexpr) -> Self {
         match value {
-            OwnedSexpr::List(list) => Self::List(list.iter().map(Sexpr::from).collect()),
+            OwnedSexpr::List(list) => Self::List(list.into()),
             OwnedSexpr::Group(group) => Self::Group(group.iter().map(Sexpr::from).collect()),
             OwnedSexpr::String(string) => Self::String(Cow::Borrowed(string)),
             OwnedSexpr::Atom(atom) => Self::Atom(atom),
+            #[cfg(feature = "comments")]
+            OwnedSexpr::Comment(comment) => Self::Comment(comment),
         }
+    }
+}
+
+impl From<Sexpr<'_>> for OwnedSexpr {
+    fn from(value: Sexpr<'_>) -> Self {
+        match value {
+            Sexpr::List(list) => Self::List(list.into()),
+            Sexpr::Group(group) => Self::Group(group.into()),
+            Sexpr::String(string) => Self::String(string.into_owned()),
+            Sexpr::Atom(atom) => Self::Atom(atom.to_vec()),
+            #[cfg(feature = "comments")]
+            Sexpr::Comment(comment) => Self::Comment(comment.to_vec()),
+        }
+    }
+}
+
+////////////////////////////
+// Method implementations //
+////////////////////////////
+
+impl<'src> Sexprs<'src> {
+    /// Create a new, empty list of [`Sexpr`]s
+    pub fn new() -> Self {
+        Self(vec![])
+    }
+}
+
+impl OwnedSexprs {
+    /// Create a new, empty list of [`OwnedSexpr`]s
+    pub fn new() -> Self {
+        Self(vec![])
     }
 }
 
@@ -215,7 +388,7 @@ impl<'src> Sexpr<'src> {
         unwrap_list,
         unwrap_list_ref,
         List,
-        Vec<Sexpr<'src>>,
+        Sexprs<'src>,
         "list"
     );
     impl_unwrap!(
@@ -223,7 +396,7 @@ impl<'src> Sexpr<'src> {
         unwrap_group,
         unwrap_group_ref,
         Group,
-        Vec<Sexpr<'src>>,
+        Sexprs<'src>,
         "group"
     );
     impl_unwrap!(
@@ -250,7 +423,7 @@ impl OwnedSexpr {
         unwrap_list,
         unwrap_list_ref,
         List,
-        Vec<OwnedSexpr>,
+        OwnedSexprs,
         "list"
     );
     impl_unwrap!(
@@ -258,7 +431,7 @@ impl OwnedSexpr {
         unwrap_group,
         unwrap_group_ref,
         Group,
-        Vec<OwnedSexpr>,
+        OwnedSexprs,
         "group"
     );
     impl_unwrap!(

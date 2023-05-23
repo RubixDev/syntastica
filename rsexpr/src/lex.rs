@@ -13,6 +13,8 @@ pub(crate) enum Token<'src> {
 
     String(Cow<'src, [u8]>),
     Atom(&'src [u8]),
+    #[cfg(feature = "comments")]
+    Comment(&'src [u8]),
 }
 
 const WHITESPACE: &[u8] = &[b' ', b'\t', b'\r', b'\n'];
@@ -27,9 +29,12 @@ pub(crate) fn lex(input: &[u8]) -> Vec<Token<'_>> {
         match input[index] {
             byte if WHITESPACE.contains(&byte) => index += 1,
             b';' => {
+                let _start_index = index;
                 while index < input.len() && !LINE_BREAKS.contains(&input[index]) {
                     index += 1;
                 }
+                #[cfg(feature = "comments")]
+                tokens.push(Token::Comment(&input[_start_index..index]));
             }
             b'(' => {
                 tokens.push(Token::LParen);
@@ -147,6 +152,16 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "comments")]
+    fn comments() {
+        assert_eq!(
+            lex(b"; comment\natom"),
+            vec![Token::Comment(b"; comment"), Token::Atom(b"atom")]
+        );
+    }
+
+    #[test]
+    #[cfg(not(feature = "comments"))]
     fn comments() {
         assert_eq!(lex(b"; comment\natom"), vec![Token::Atom(b"atom")]);
     }

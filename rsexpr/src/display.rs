@@ -1,8 +1,44 @@
 use std::fmt::{self, Display, Formatter};
 
-use crate::{OwnedSexpr, Sexpr};
+use crate::{OwnedSexpr, OwnedSexprs, Sexpr, Sexprs};
 
 const INDENT: &str = "  ";
+
+impl Display for OwnedSexpr {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        Sexpr::from(self).fmt(f)
+    }
+}
+
+impl Display for OwnedSexprs {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        Sexprs::from(self).fmt(f)
+    }
+}
+
+impl Display for Sexprs<'_> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        let last = self.len() - 1;
+        for (index, sexpr) in self.iter().enumerate() {
+            sexpr.fmt(f)?;
+
+            if f.alternate() && index != last {
+                #[allow(clippy::match_single_binding)]
+                match sexpr {
+                    #[cfg(feature = "comments")]
+                    Sexpr::Comment(_) => writeln!(f)?,
+                    _ => write!(f, "\n\n")?,
+                }
+            }
+        }
+
+        if f.alternate() {
+            writeln!(f)?;
+        }
+
+        Ok(())
+    }
+}
 
 impl Display for Sexpr<'_> {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
@@ -37,6 +73,8 @@ impl Display for Sexpr<'_> {
                         .replace('"', "\\\"")
                 )?,
                 Sexpr::Atom(atom) => write!(f, "{} ", String::from_utf8_lossy(atom))?,
+                #[cfg(feature = "comments")]
+                Sexpr::Comment(_) => {}
             }
         } else {
             match self {
@@ -47,6 +85,7 @@ impl Display for Sexpr<'_> {
                     };
 
                     // keep lists in one line if they start with a predicate
+                    // TODO: comments in here will get lost
                     if let (Some(Self::Atom([b'#', ..])), Sexpr::List(_)) = (children.first(), self)
                     {
                         // call doesn't cause infinite recursion,
@@ -70,6 +109,14 @@ impl Display for Sexpr<'_> {
                                 write!(f, "\n{}", INDENT.repeat(indent_level))?;
                             }
                             child @ (Sexpr::String(_) | Sexpr::Atom(_)) => write!(f, "{child:#}")?,
+                            #[cfg(feature = "comments")]
+                            child @ Sexpr::Comment(_) => {
+                                indent_level += 1;
+                                write!(f, "\n{}", INDENT.repeat(indent_level))?;
+                                write!(f, "{child:#indent_level$}")?;
+                                indent_level -= 1;
+                                write!(f, "\n{}", INDENT.repeat(indent_level))?;
+                            }
                         },
                         _ => {
                             indent_level += 1;
@@ -102,6 +149,9 @@ impl Display for Sexpr<'_> {
                                 let prev_child = &item[0];
                                 let child = &item[1];
                                 match (prev_child, child) {
+                                    // if the previous child was an atom ending with `:` or the
+                                    // current child is and atom starting with `@`, stay on the
+                                    // same line
                                     (
                                         Sexpr::Atom([.., b':']),
                                         child @ (Sexpr::List(_) | Self::Group(_)),
@@ -109,6 +159,7 @@ impl Display for Sexpr<'_> {
                                     | (_, child @ Sexpr::Atom([b'@', ..])) => {
                                         write!(f, " {child:#indent_level$}")?;
                                     }
+                                    // else go to the next line
                                     (_, child) => {
                                         write!(f, "{newline}{child:#indent_level$}")?;
                                     }
@@ -129,15 +180,11 @@ impl Display for Sexpr<'_> {
                         .replace('"', "\\\"")
                 )?,
                 Sexpr::Atom(atom) => write!(f, "{}", String::from_utf8_lossy(atom))?,
+                #[cfg(feature = "comments")]
+                Sexpr::Comment(comment) => write!(f, "{}", String::from_utf8_lossy(comment))?,
             }
         }
 
         Ok(())
-    }
-}
-
-impl Display for OwnedSexpr {
-    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        Sexpr::from(self).fmt(f)
     }
 }

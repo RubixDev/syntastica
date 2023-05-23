@@ -1,6 +1,6 @@
 use std::{unreachable, vec};
 
-use crate::{lex::Token, Error, ParenKind, Sexpr};
+use crate::{lex::Token, Error, ParenKind, Sexpr, Sexprs};
 
 pub(crate) struct Parser<'src> {
     iter: vec::IntoIter<Token<'src>>,
@@ -9,7 +9,7 @@ pub(crate) struct Parser<'src> {
 }
 
 impl<'src> Parser<'src> {
-    pub fn parse(tokens: Vec<Token<'src>>) -> (Vec<Sexpr<'src>>, Vec<Error>) {
+    pub fn parse(tokens: Vec<Token<'src>>) -> (Sexprs<'src>, Vec<Error>) {
         let mut iter = tokens.into_iter();
         let mut parser = Self {
             curr_tok: iter.next(),
@@ -17,7 +17,7 @@ impl<'src> Parser<'src> {
             errors: vec![],
         };
 
-        let mut sexprs = vec![];
+        let mut sexprs = Sexprs::new();
         while let Some(sexpr) = parser.sexpr() {
             sexprs.push(sexpr);
         }
@@ -57,6 +57,11 @@ impl<'src> Parser<'src> {
                 self.next();
                 Some(Sexpr::Atom(atom))
             }
+            #[cfg(feature = "comments")]
+            Token::Comment(comment) => {
+                self.next();
+                Some(Sexpr::Comment(comment))
+            }
             tok @ (Token::RParen | Token::RBrack) => {
                 self.curr_tok = Some(tok);
                 None
@@ -67,7 +72,7 @@ impl<'src> Parser<'src> {
     fn list(&mut self) -> Sexpr<'src> {
         self.next(); // skip opening paren
 
-        let mut children = vec![];
+        let mut children = Sexprs::new();
         while let Some(child) = self.sexpr() {
             children.push(child);
         }
@@ -80,7 +85,7 @@ impl<'src> Parser<'src> {
     fn group(&mut self) -> Sexpr<'src> {
         self.next(); // skip opening bracket
 
-        let mut children = vec![];
+        let mut children = Sexprs::new();
         while let Some(child) = self.sexpr() {
             children.push(child);
         }
@@ -88,5 +93,56 @@ impl<'src> Parser<'src> {
         self.expect_closing(ParenKind::Square);
 
         Sexpr::Group(children)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn nesting() {
+        assert_eq!(
+            Parser::parse(vec![
+                Token::LParen,
+                Token::LParen,
+                Token::LBrack,
+                Token::LParen,
+                Token::RParen,
+                Token::RBrack,
+                Token::RParen,
+                Token::RParen
+            ])
+            .0,
+            vec![Sexpr::List(
+                vec![Sexpr::List(
+                    vec![Sexpr::Group(vec![Sexpr::List(vec![].into())].into())].into()
+                )]
+                .into()
+            )]
+            .into(),
+        );
+    }
+
+    #[test]
+    #[cfg(feature = "comments")]
+    fn comments() {
+        assert_eq!(
+            Parser::parse(vec![Token::Comment(b"; comment")]).0,
+            vec![Sexpr::Comment(b"; comment")].into(),
+        );
+        assert_eq!(
+            Parser::parse(vec![
+                Token::LParen,
+                Token::Comment(b"; comment"),
+                Token::Atom(b"atom"),
+                Token::RParen,
+            ])
+            .0,
+            vec![Sexpr::List(
+                vec![Sexpr::Comment(b"; comment"), Sexpr::Atom(b"atom"),].into()
+            )]
+            .into(),
+        );
     }
 }
