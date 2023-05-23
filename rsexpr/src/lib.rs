@@ -7,6 +7,11 @@
 //!
 //! Have a look at [`Sexpr`], [`OwnedSexpr`], [`from_slice`], and [`from_slice_multi`] for more
 //! information.
+#![cfg_attr(
+    feature = "docs",
+    cfg_attr(doc, doc = ::document_features::document_features!())
+)]
+#![cfg_attr(all(doc, CHANNEL_NIGHTLY), feature(doc_auto_cfg))]
 #![warn(rust_2018_idioms)]
 #![deny(missing_docs)]
 
