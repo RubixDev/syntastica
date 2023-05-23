@@ -88,8 +88,8 @@ pub fn from_slice_multi(input: &(impl AsRef<[u8]> + ?Sized)) -> Result<Vec<Sexpr
 /// For example:
 ///
 /// ```
-/// let sexpr = rsexpr::from_slice(b"[a b c]").unwrap();
-/// assert_eq!(format!("{sexpr}"), "[a b c ]");
+/// let sexpr = rsexpr::from_slice(b"[ a b c ]").unwrap();
+/// assert_eq!(format!("{sexpr}"), "[a b c]");
 /// assert_eq!(format!("{sexpr:#}"), "[
 ///   a
 ///   b
@@ -119,8 +119,8 @@ pub enum Sexpr<'src> {
 /// For example:
 ///
 /// ```
-/// let sexpr = rsexpr::OwnedSexpr::from(rsexpr::from_slice(b"[a b c]").unwrap());
-/// assert_eq!(format!("{sexpr}"), "[a b c ]");
+/// let sexpr = rsexpr::OwnedSexpr::from(rsexpr::from_slice(b"[ a b c ]").unwrap());
+/// assert_eq!(format!("{sexpr}"), "[a b c]");
 /// assert_eq!(format!("{sexpr:#}"), "[
 ///   a
 ///   b
