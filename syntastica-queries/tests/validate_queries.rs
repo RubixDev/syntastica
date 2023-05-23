@@ -7,7 +7,7 @@ use tree_sitter::{Language, Query};
 syntastica_macros::queries_test!();
 
 static PARSERS: Lazy<HashMap<String, Language>> = Lazy::new(|| {
-    syntastica_parsers_git::ParserProviderGit
+    syntastica_parsers_git::ParserProviderGit::all()
         .get_parsers()
         .unwrap()
 });

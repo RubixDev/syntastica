@@ -50,7 +50,9 @@ pub fn parsers_ffi(_: TokenStream) -> TokenStream {
         let ffi_func = format_ident!("{}", lang.parser.ffi_func);
         quote! {
             #[cfg(feature = #feat)]
-            _map.insert(#name_str.to_owned(), unsafe { #ffi_func() });
+            if self.0.map_or(true, |langs| langs.contains(&#name_str)) {
+                _map.insert(#name_str.to_owned(), unsafe { #ffi_func() });
+            }
         }
     });
     let by_extension = LANGUAGE_CONFIG.languages.iter().map(|lang| {
@@ -68,8 +70,11 @@ pub fn parsers_ffi(_: TokenStream) -> TokenStream {
         extern "C" {
             #(#extern_c)*
         }
-        pub struct ParserProviderGit;
-        impl ::syntastica::providers::ParserProvider for ParserProviderGit {
+
+        // TODO: maybe create enum with all supported languages
+        pub struct ParserProviderGit<'a>(::std::option::Option<&'a [&'a str]>);
+
+        impl ::syntastica::providers::ParserProvider for ParserProviderGit<'_> {
             fn get_parsers(&self) -> ::std::result::Result<::syntastica::providers::Parsers, ::syntastica::Error> {
                 // TODO: use `with_capacity`
                 let mut _map: ::std::collections::HashMap<::std::string::String, ::syntastica::providers::Language>
@@ -127,7 +132,7 @@ pub fn queries(_: TokenStream) -> TokenStream {
     });
     quote! {
         {
-            let mut parsers = ::syntastica_parsers_git::ParserProviderGit.get_parsers()?;
+            let mut parsers = ::syntastica_parsers_git::ParserProviderGit::all().get_parsers()?;
             let mut _map: ::std::collections::BTreeMap<&'static str, [::std::string::String; 3]>
                 = ::std::collections::BTreeMap::new();
             #(#langs)*

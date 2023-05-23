@@ -34,8 +34,14 @@ fn example(
             &syntastica::process(
                 code.trim(),
                 "rs",
-                &ConfiguredLanguages::try_configure(&ParserProviderGit, theme).unwrap(),
-                &ParserProviderGit,
+                &ConfiguredLanguages::try_configure(
+                    &ParserProviderGit::with_languages(&["rust"]),
+                    theme
+                )
+                .unwrap(),
+                // list of supported languages does not matter here, because this `ParserProvider`
+                // is only used for calling `for_extension` and `for_injection`
+                &ParserProviderGit::all(),
                 highlighter
             )
             .unwrap(),

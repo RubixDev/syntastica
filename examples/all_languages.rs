@@ -4,9 +4,11 @@ use syntastica::{providers::ConfiguredLanguages, renderer::TerminalRenderer, Hig
 use syntastica_parsers_git::ParserProviderGit;
 
 fn main() {
-    let languages =
-        ConfiguredLanguages::try_configure(&ParserProviderGit, syntastica_themes::one::dark())
-            .unwrap();
+    let languages = ConfiguredLanguages::try_configure(
+        &ParserProviderGit::all(),
+        syntastica_themes::one::dark(),
+    )
+    .unwrap();
     let mut highlighter = Highlighter::new();
 
     let examples: BTreeMap<String, String> =
@@ -32,7 +34,7 @@ fn example(
                 code.trim(),
                 file_extension,
                 languages,
-                &ParserProviderGit,
+                &ParserProviderGit::all(),
                 highlighter
             )
             .unwrap(),

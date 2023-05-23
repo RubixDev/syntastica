@@ -5,3 +5,17 @@ compile_error!("current feature set includes no parsers");
 
 #[cfg(feature = "some")]
 syntastica_macros::parsers_ffi!();
+
+#[cfg(feature = "some")]
+impl ParserProviderGit<'static> {
+    pub fn all() -> Self {
+        Self(None)
+    }
+}
+
+#[cfg(feature = "some")]
+impl<'src> ParserProviderGit<'src> {
+    pub fn with_languages(languages: &'src [&'src str]) -> Self {
+        Self(Some(languages))
+    }
+}
