@@ -1,0 +1,15 @@
+[package]
+name = "rsexpr"
+version = "0.1.0"
+authors.workspace = true
+categories = ["parser-implementations"]
+edition = "2021"
+keywords = ["s-expression", "sexp", "sexpr", "parser", "tree-sitter"]
+license.workspace = true
+repository.workspace = true
+description = "Small and simple S-expression parsing and manipulation with support for square-bracketed groups and strings"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+thiserror = "1.0.40"

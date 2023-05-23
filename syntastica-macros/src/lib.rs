@@ -71,6 +71,7 @@ pub fn parsers_ffi(_: TokenStream) -> TokenStream {
         pub struct ParserProviderGit;
         impl ::syntastica::providers::ParserProvider for ParserProviderGit {
             fn get_parsers(&self) -> ::std::result::Result<::syntastica::providers::Parsers, ::syntastica::Error> {
+                // TODO: use `with_capacity`
                 let mut _map: ::std::collections::HashMap<::std::string::String, ::syntastica::providers::Language>
                     = ::std::collections::HashMap::new();
                 #(#get_parsers)*
@@ -100,16 +101,20 @@ pub fn queries(_: TokenStream) -> TokenStream {
         let name_str = &lang.name;
 
         let highlights = match lang.queries.nvim_like {
-            true => quote! { process_queries(lang, #name_str, "highlights.scm") },
+            true => quote! { validate(lang, #name_str, "highlights.scm", process_highlights) },
             false => quote! { read_queries(#name_str, "highlights.scm") },
         };
-        let injections = match lang.queries.injections {
-            true => quote! { read_queries(#name_str, "injections.scm") },
-            false => quote! { String::new() },
+        let injections = match (lang.queries.nvim_like, lang.queries.injections) {
+            (true, true) => {
+                quote! { validate(lang, #name_str, "injections.scm", process_injections) }
+            }
+            (false, true) => quote! { read_queries(#name_str, "injections.scm") },
+            (_, false) => quote! { String::new() },
         };
-        let locals = match lang.queries.locals {
-            true => quote! { read_queries(#name_str, "locals.scm") },
-            false => quote! { String::new() },
+        let locals = match (lang.queries.nvim_like, lang.queries.locals) {
+            (true, true) => quote! { validate(lang, #name_str, "locals.scm", process_locals) },
+            (false, true) => quote! { read_queries(#name_str, "locals.scm") },
+            (_, false) => quote! { String::new() },
         };
 
         quote! {
@@ -175,6 +180,7 @@ pub fn queries_provider(_: TokenStream) -> TokenStream {
     });
     quote! {
         {
+            // TODO: use `with_capacity`
             let mut _map: Queries<'static> = ::std::collections::HashMap::new();
             #(#langs)*
             ::std::result::Result::Ok(_map)

@@ -1,6 +1,7 @@
 [workspace]
 members = [
-    "./xtask/",
+    "./xtask",
+    "./rsexpr",
     "./syntastica-queries",
     "./syntastica-parsers-git",
     "./syntastica-macros",

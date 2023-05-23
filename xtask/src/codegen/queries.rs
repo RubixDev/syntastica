@@ -1,13 +1,11 @@
-use std::{
-    collections::{BTreeMap, HashMap},
-    fs,
-};
+use std::{collections::BTreeMap, fs};
 
 use anyhow::Result;
 use fancy_regex::Regex;
 use once_cell::sync::Lazy;
+use rsexpr::OwnedSexpr;
 use syntastica::providers::ParserProvider;
-use tree_sitter::{Language, Query, QueryPredicateArg};
+use tree_sitter::{Language, Query};
 
 static QUERIES_DIR: Lazy<String> =
     Lazy::new(|| format!("{}/queries", crate::WORKSPACE_DIR.display()));
@@ -18,10 +16,58 @@ pub fn make_queries() -> Result<BTreeMap<&'static str, [String; 3]>> {
     syntastica_macros::queries!()
 }
 
+fn validate(
+    lang: Language,
+    lang_name: &str,
+    filename: &str,
+    processor: impl Fn(Vec<OwnedSexpr>) -> Vec<OwnedSexpr>,
+) -> String {
+    // read input
+    let path = format!("{}/{lang_name}/{filename}", *QUERIES_DIR);
+    let queries = read_queries(lang_name, filename);
+
+    // validate input
+    Query::new(lang, &queries)
+        .unwrap_or_else(|err| panic!("invalid queries in file '{path}': {err}"));
+
+    // run processor
+    let new_queries = processor(group_root_level_captures(
+        rsexpr::from_slice_multi(&queries)
+            .unwrap_or_else(|errs| {
+                panic!(
+                    "invalid queries in file '{path}': {}",
+                    errs.iter()
+                        .map(rsexpr::Error::to_string)
+                        .collect::<Vec<_>>()
+                        .join(", ")
+                )
+            })
+            .into_iter()
+            .map(OwnedSexpr::from)
+            .collect(),
+    ))
+    .into_iter()
+    .map(|tree| format!("{tree:#}"))
+    .collect::<Vec<_>>()
+    .join("\n\n");
+
+    // validate output
+    Query::new(lang, &new_queries).unwrap_or_else(|err| {
+        panic!("processing queries in file '{path}' resulted in invalid queries: {err}")
+    });
+
+    new_queries
+}
+
 fn read_queries(lang_name: &str, filename: &str) -> String {
     let path = format!("{}/{lang_name}/{filename}", *QUERIES_DIR);
-    let queries =
-        fs::read_to_string(&path).unwrap_or_else(|err| panic!("failed to read '{path}': {err}"));
+    let queries = match fs::read_to_string(&path) {
+        Ok(queries) => queries,
+        Err(err) => {
+            eprintln!("warning: failed to read '{path}': {err}");
+            String::new()
+        }
+    };
     INHERITS_REGEX
         .replace_all(&queries, |captures: &fancy_regex::Captures| {
             captures[1]
@@ -32,140 +78,167 @@ fn read_queries(lang_name: &str, filename: &str) -> String {
         .into_owned()
 }
 
-fn process_queries(lang: Language, lang_name: &str, filename: &str) -> String {
-    let path = format!("{}/{lang_name}/{filename}", *QUERIES_DIR);
-    let queries = read_queries(lang_name, filename);
-    let query = Query::new(lang, &queries)
-        .unwrap_or_else(|err| panic!("invalid queries in file '{path}': {err}"));
+fn group_root_level_captures(queries: Vec<OwnedSexpr>) -> Vec<OwnedSexpr> {
+    let mut new_queries = Vec::with_capacity(queries.len());
+    let mut iter = queries.into_iter().peekable();
 
-    let start_bytes: Vec<_> = (0..query.pattern_count())
-        .map(|index| {
-            (
-                query.start_byte_for_pattern(index),
-                query
-                    .general_predicates(index)
-                    .iter()
-                    .filter_map(|predicate| match predicate.operator.as_ref() {
-                        "lua-match?" => Some((
-                            "#lua-match?",
-                            (
-                                "#match?",
-                                vec![
-                                    clone_predicate_arg(&predicate.args[0]),
-                                    QueryPredicateArg::String(match &predicate.args[1] {
-                                        QueryPredicateArg::String(str) => {
-                                            lua_to_regex(str).into_boxed_str()
-                                        }
-                                        _ => panic!("second arg to #lua-match? must be string"),
-                                    }),
-                                ],
-                            ),
-                        )),
-                        "not-lua-match?" => Some((
-                            "#not-lua-match?",
-                            (
-                                "#not-match?",
-                                vec![
-                                    clone_predicate_arg(&predicate.args[0]),
-                                    QueryPredicateArg::String(match &predicate.args[1] {
-                                        QueryPredicateArg::String(str) => {
-                                            lua_to_regex(str).into_boxed_str()
-                                        }
-                                        _ => panic!("second arg to #not-lua-match? must be string"),
-                                    }),
-                                ],
-                            ),
-                        )),
-                        "any-of?" => Some((
-                            "#any-of?",
-                            (
-                                "#match?",
-                                vec![
-                                    clone_predicate_arg(&predicate.args[0]),
-                                    QueryPredicateArg::String(
-                                        format!(
-                                            "^({})$",
-                                            predicate.args[1..]
-                                                .iter()
-                                                .map(|arg| match arg {
-                                                    QueryPredicateArg::String(str) => str.as_ref(),
-                                                    _ => panic!("args to #any-of? must be strings"),
-                                                })
-                                                .collect::<Vec<_>>()
-                                                .join("|")
-                                        )
-                                        .into_boxed_str(),
-                                    ),
-                                ],
-                            ),
-                        )),
-                        "contains?" => Some((
-                            "#contains?",
-                            (
-                                "#match?",
-                                vec![
-                                    clone_predicate_arg(&predicate.args[0]),
-                                    clone_predicate_arg(&predicate.args[1]),
-                                ],
-                            ),
-                        )),
-                        _ => None,
-                    })
-                    .collect::<HashMap<_, _>>(),
-            )
-        })
-        .collect();
-    let queries: String = start_bytes
-        .iter()
-        .enumerate()
-        .map(|(index, (start, predicate_replacements))| {
-            let mut q = match start_bytes.get(index + 1) {
-                Some((end, _)) => &queries[*start..*end],
-                None => &queries[*start..],
-            }
-            .to_string();
-            for (predicate, replacement) in predicate_replacements {
-                q = q.replace(
-                    &format!(
-                        "{}{}",
-                        predicate,
-                        q.split_once(predicate)
-                            .expect("invalid replacement")
-                            .1
-                            .split_once(')')
-                            .expect("invalid replacement")
-                            .0
-                    ),
-                    &format!(
-                        "{} {}",
-                        replacement.0,
-                        display_predicate_args(&query, &replacement.1)
-                    ),
-                );
-            }
-            q
-        })
-        .rev()
-        .collect();
+    // groups start with `List`, `Group`, or `String` nodes
+    while let Some(sexp @ (OwnedSexpr::List(_) | OwnedSexpr::Group(_) | OwnedSexpr::String(_))) =
+        iter.next()
+    {
+        let mut group = vec![sexp];
+        // and include all following `Atom` nodes
+        while let Some(OwnedSexpr::Atom(_)) = iter.peek() {
+            group.push(iter.next().unwrap());
+        }
+        new_queries.push(match group.len() {
+            // if the group only consists of one item, there is no need to wrap it
+            1 => group.swap_remove(0),
+            _ => OwnedSexpr::List(group),
+        });
+    }
+
+    new_queries
+}
+
+fn process_locals(mut queries: Vec<OwnedSexpr>) -> Vec<OwnedSexpr> {
+    for query in &mut queries {
+        replace_locals_captures(query);
+    }
     queries
 }
 
-fn clone_predicate_arg(arg: &QueryPredicateArg) -> QueryPredicateArg {
-    match arg {
-        QueryPredicateArg::Capture(num) => QueryPredicateArg::Capture(*num),
-        QueryPredicateArg::String(str) => QueryPredicateArg::String(str.clone()),
+fn replace_locals_captures(tree: &mut OwnedSexpr) {
+    match tree {
+        OwnedSexpr::Atom(atom) => match atom.as_slice() {
+            b"@scope" => *atom = b"@local.scope".to_vec(),
+            b"@reference" => *atom = b"@local.reference".to_vec(),
+            other => {
+                match std::str::from_utf8(other)
+                    .ok()
+                    .and_then(|str| str.split('.').next())
+                {
+                    Some("@definition") => *atom = b"@local.definition".to_vec(),
+                    Some(_) | None => {}
+                }
+            }
+        },
+        OwnedSexpr::String(_) => {}
+        OwnedSexpr::List(list) | OwnedSexpr::Group(list) => {
+            for subtree in list {
+                replace_locals_captures(subtree);
+            }
+        }
     }
 }
 
-fn display_predicate_args(query: &Query, args: &[QueryPredicateArg]) -> String {
-    args.iter()
-        .map(|arg| match arg {
-            QueryPredicateArg::Capture(num) => {
-                format!("@{}", query.capture_names()[*num as usize])
+fn process_injections(mut queries: Vec<OwnedSexpr>) -> Vec<OwnedSexpr> {
+    for query in &mut queries {
+        replace_injection_captures(query, 0);
+    }
+    queries
+}
+
+fn replace_injection_captures(
+    tree: &mut OwnedSexpr,
+    mut predicate_count: usize,
+) -> (bool, Option<OwnedSexpr>) {
+    let mut is_predicate = false;
+    let mut additional_sexp = None;
+    match tree {
+        OwnedSexpr::String(_) => {}
+        OwnedSexpr::Atom(atom) => match atom.as_slice() {
+            [b'@', capture @ ..] if !capture.starts_with(b"_") => match capture {
+                b"content" => *atom = b"@injection.content".to_vec(),
+                b"language" => *atom = b"@injection.language".to_vec(),
+                lang_name => {
+                    if predicate_count == 0 {
+                        additional_sexp = Some(OwnedSexpr::List(vec![
+                            OwnedSexpr::Atom(b"#set!".to_vec()),
+                            OwnedSexpr::Atom(b"injection.language".to_vec()),
+                            OwnedSexpr::String(lang_name.to_owned()),
+                        ]));
+                    }
+                    *atom = b"@injection.content".to_vec();
+                }
+            },
+            [b'#', ..] => is_predicate = true,
+            _ => {}
+        },
+        OwnedSexpr::List(subtrees) | OwnedSexpr::Group(subtrees) => {
+            let mut insertions = vec![];
+            for (index, subtree) in subtrees.iter_mut().enumerate() {
+                let (is_predicate, additional_sexp) =
+                    replace_injection_captures(subtree, predicate_count);
+                if is_predicate {
+                    predicate_count += 1;
+                }
+                if let Some(additional_sexp) = additional_sexp {
+                    insertions.push((index + 1 + insertions.len(), additional_sexp));
+                }
             }
-            QueryPredicateArg::String(str) => format!("\"{str}\""),
-        } + " ")
-        .collect()
+            for (index, sexp) in insertions {
+                subtrees.insert(index, sexp);
+            }
+        }
+    }
+    (is_predicate, additional_sexp)
+}
+
+fn process_highlights(mut queries: Vec<OwnedSexpr>) -> Vec<OwnedSexpr> {
+    queries.reverse();
+
+    for query in &mut queries {
+        replace_highlight_predicates(query);
+    }
+
+    queries
+}
+
+fn replace_highlight_predicates(tree: &mut OwnedSexpr) {
+    if let OwnedSexpr::List(list) | OwnedSexpr::Group(list) = tree {
+        match list.first() {
+            Some(OwnedSexpr::Atom(atom)) if atom.first() == Some(&b'#') => {
+                let match_predicate = OwnedSexpr::Atom(match &atom[..4] == b"#not" {
+                    false => b"#match?".to_vec(),
+                    true => b"#not-match?".to_vec(),
+                });
+                match atom.as_slice() {
+                    b"#lua-match?" | b"#not-lua-match?" => {
+                        list[0] = match_predicate;
+                        list[2] = OwnedSexpr::String(
+                            lua_to_regex(std::str::from_utf8(list[2].unwrap_string_ref()).unwrap())
+                                .into_bytes(),
+                        );
+                        list.truncate(3);
+                    }
+                    b"#any-of?" | b"#not-any-of?" => {
+                        list[0] = match_predicate;
+                        list[2] = OwnedSexpr::String(
+                            format!(
+                                    "^({})$",
+                                    list[2..]
+                                        .iter()
+                                        .map(|arg| std::str::from_utf8(arg.unwrap_string_ref())
+                                            .unwrap())
+                                        .collect::<Vec<_>>()
+                                        .join("|")
+                                )
+                            .into_bytes(),
+                        );
+                        list.truncate(3);
+                    }
+                    b"#contains?" | b"#not-contains?" => list[0] = match_predicate,
+                    _ => {}
+                }
+            }
+            _ => {
+                for subtree in list {
+                    replace_highlight_predicates(subtree);
+                }
+            }
+        }
+    }
 }
 
 fn lua_to_regex(lua_pattern: &str) -> String {
