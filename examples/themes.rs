@@ -5,7 +5,7 @@ use syntastica::{
     renderer::TerminalRenderer,
     Highlighter,
 };
-use syntastica_parsers_git::ParserProviderGit;
+use syntastica_parsers_git::ParserProviderImpl;
 use syntastica_themes as themes;
 
 fn main() {
@@ -31,7 +31,7 @@ fn example(
     theme: syntastica::config::Config,
     name: &str,
 ) {
-    let provider = ParserProviderGit::with_languages(&["rust"]);
+    let provider = ParserProviderImpl::with_languages(&["rust"]);
     println!(
         "\n\x1b[1m{name}:\x1b[0m\n{0}\n{1}{0}",
         "-".repeat(50),

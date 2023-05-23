@@ -5,11 +5,11 @@ use syntastica::{
     renderer::TerminalRenderer,
     Highlighter,
 };
-use syntastica_parsers_git::ParserProviderGit;
+use syntastica_parsers_git::ParserProviderImpl;
 
 fn main() {
     let languages = ConfiguredLanguages::try_configure(
-        &ParserProviderGit::all(),
+        &ParserProviderImpl::all(),
         syntastica_themes::one::dark(),
     )
     .unwrap();
@@ -38,7 +38,7 @@ fn example(
                 code.trim(),
                 file_extension,
                 languages,
-                |lang_name| ParserProviderGit::all().for_injection(lang_name),
+                |lang_name| ParserProviderImpl::all().for_injection(lang_name),
                 highlighter
             )
             .unwrap(),

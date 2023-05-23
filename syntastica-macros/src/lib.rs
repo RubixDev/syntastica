@@ -72,9 +72,9 @@ pub fn parsers_ffi(_: TokenStream) -> TokenStream {
         }
 
         // TODO: maybe create enum with all supported languages
-        pub struct ParserProviderGit<'a>(::std::option::Option<&'a [&'a str]>);
+        pub struct ParserProviderImpl<'a>(::std::option::Option<&'a [&'a str]>);
 
-        impl ::syntastica::providers::ParserProvider for ParserProviderGit<'_> {
+        impl ::syntastica::providers::ParserProvider for ParserProviderImpl<'_> {
             fn get_parsers(&self) -> ::std::result::Result<::syntastica::providers::Parsers, ::syntastica::Error> {
                 // TODO: use `with_capacity`
                 let mut _map: ::std::collections::HashMap<::std::string::String, ::syntastica::providers::Language>
@@ -132,7 +132,7 @@ pub fn queries(_: TokenStream) -> TokenStream {
     });
     quote! {
         {
-            let mut parsers = ::syntastica_parsers_git::ParserProviderGit::all().get_parsers()?;
+            let mut parsers = ::syntastica_parsers_git::ParserProviderImpl::all().get_parsers()?;
             let mut _map: ::std::collections::BTreeMap<&'static str, [::std::string::String; 3]>
                 = ::std::collections::BTreeMap::new();
             #(#langs)*
