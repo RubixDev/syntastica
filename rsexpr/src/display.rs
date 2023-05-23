@@ -11,23 +11,27 @@ impl Display for Sexpr<'_> {
 
         if !pretty {
             match self {
-                Sexpr::List(children) => {
-                    write!(f, "(")?;
-                    for child in children {
-                        write!(f, "{child}")?;
-                    }
-                    write!(f, ")")?;
-                }
-                Sexpr::Group(children) => {
-                    write!(f, "[")?;
-                    for child in children {
-                        write!(f, "{child}")?;
-                    }
-                    write!(f, "]")?;
+                Sexpr::List(children) | Sexpr::Group(children) => {
+                    let (open_paren, close_paren) = match self {
+                        Sexpr::List(_) => ('(', ')'),
+                        _ => ('[', ']'),
+                    };
+
+                    let children = children
+                        .iter()
+                        .map(|child| format!("{child}"))
+                        .collect::<String>();
+
+                    write!(
+                        f,
+                        "{open_paren}{}{close_paren}",
+                        // trim possible whitespace at end
+                        children.trim_end(),
+                    )?;
                 }
                 Sexpr::String(string) => write!(
                     f,
-                    "\"{}\"",
+                    "\"{}\" ",
                     String::from_utf8_lossy(string)
                         .replace('\\', r"\\")
                         .replace('"', "\\\"")
@@ -43,18 +47,12 @@ impl Display for Sexpr<'_> {
                     };
 
                     // keep lists in one line if they start with a predicate
-                    if let Some(Self::Atom([b'#', ..])) = children.first() {
+                    if let (Some(Self::Atom([b'#', ..])), Sexpr::List(_)) = (children.first(), self)
+                    {
                         // call doesn't cause infinite recursion,
                         // because `f.alternate()` is different
                         #[allow(clippy::recursive_format_impl)]
-                        let non_pretty = format!("{self}");
-
-                        return write!(
-                            f,
-                            "{}{close_paren}",
-                            // trim possible whitespace before closing paren
-                            non_pretty[..non_pretty.len() - 1].trim_end(),
-                        );
+                        return write!(f, "{self}");
                     }
 
                     write!(f, "{open_paren}")?;
