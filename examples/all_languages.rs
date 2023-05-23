@@ -1,6 +1,10 @@
 use std::collections::BTreeMap;
 
-use syntastica::{providers::ConfiguredLanguages, renderer::TerminalRenderer, Highlighter};
+use syntastica::{
+    providers::{ConfiguredLanguages, ParserProvider},
+    renderer::TerminalRenderer,
+    Highlighter,
+};
 use syntastica_parsers_git::ParserProviderGit;
 
 fn main() {
@@ -34,7 +38,7 @@ fn example(
                 code.trim(),
                 file_extension,
                 languages,
-                &ParserProviderGit::all(),
+                |lang_name| ParserProviderGit::all().for_injection(lang_name),
                 highlighter
             )
             .unwrap(),

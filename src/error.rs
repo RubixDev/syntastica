@@ -12,6 +12,9 @@ pub enum Error {
     #[error("link to unknown key '{0}'")]
     InvalidLink(String),
 
+    #[error("unsuppoerted language with name '{0}'")]
+    UnsupportedLanguage(String),
+
     #[error("unsuppoerted file extension '{0}'")]
     UnsupportedFileExt(String),
 

@@ -6,11 +6,13 @@ pub mod providers;
 pub mod renderer;
 pub mod style;
 
+use std::borrow::Cow;
+
 use config::ResolvedConfig;
 pub use error::*;
 pub use tree_sitter_highlight::Highlighter;
 
-use providers::{ConfiguredLanguages, LanguageProvider, ParserProvider};
+use providers::{ConfiguredLanguages, LanguageProvider};
 use renderer::Renderer;
 use style::Style;
 use thiserror::Error;
@@ -20,8 +22,7 @@ pub type Highlights<'src> = Vec<Vec<(&'src str, Option<Style>)>>;
 
 pub fn highlight<C, E>(
     code: &str,
-    // TODO: use "language_name"
-    file_extension: &str,
+    language_name: &str,
     language_provider: &impl LanguageProvider,
     renderer: &mut impl Renderer,
     config: C,
@@ -31,15 +32,14 @@ where
     crate::Error: From<E>,
 {
     Ok(render(
-        &process_once(code, file_extension, language_provider, config)?,
+        &process_once(code, language_name, language_provider, config)?,
         renderer,
     ))
 }
 
 pub fn process_once<'src, C, E>(
     code: &'src str,
-    // TODO: use "language_name"
-    file_extension: &str,
+    language_name: &str,
     language_provider: &impl LanguageProvider,
     config: C,
 ) -> Result<Highlights<'src>>
@@ -49,34 +49,30 @@ where
 {
     process(
         code,
-        file_extension,
+        language_name,
         &ConfiguredLanguages::try_configure(language_provider, config)?,
-        language_provider,
+        |lang_name| language_provider.for_injection(lang_name),
         &mut Highlighter::new(),
     )
 }
 
 pub fn process<'src>(
     code: &'src str,
-    // TODO: use "language_name"
-    file_extension: &str,
+    language_name: &str,
     languages: &ConfiguredLanguages,
-    provider: &impl ParserProvider,
+    injection_callback: impl Fn(&str) -> Option<Cow<'_, str>>,
     highlighter: &mut Highlighter,
 ) -> Result<Highlights<'src>> {
-    let highlight_config = provider
-        .for_extension(file_extension)
-        .and_then(|key| languages.get(key.as_ref()))
-        .ok_or_else(|| Error::UnsupportedFileExt(file_extension.to_owned()))?;
+    let highlight_config = languages
+        .get(language_name)
+        .ok_or_else(|| Error::UnsupportedLanguage(language_name.to_owned()))?;
 
     let mut out = vec![vec![]];
     let mut style_stack = vec![];
     for event in highlighter.highlight(highlight_config, code.as_bytes(), None, |lang_name| {
-        languages.get(lang_name).or_else(|| {
-            provider
-                .for_injection(lang_name)
-                .and_then(|name| languages.get(name.as_ref()))
-        })
+        languages
+            .get(lang_name)
+            .or_else(|| injection_callback(lang_name).and_then(|name| languages.get(name.as_ref())))
     })? {
         match event? {
             HighlightEvent::HighlightStart(Highlight(highlight)) => style_stack.push(highlight),

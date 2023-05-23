@@ -1,13 +1,17 @@
 use std::collections::HashMap;
 
-use syntastica::{providers::ConfiguredLanguages, renderer::TerminalRenderer, Highlighter};
+use syntastica::{
+    providers::{ConfiguredLanguages, ParserProvider},
+    renderer::TerminalRenderer,
+    Highlighter,
+};
 use syntastica_parsers_git::ParserProviderGit;
 use syntastica_themes as themes;
 
 fn main() {
     let examples: HashMap<String, String> =
         toml::from_str(include_str!("./example_programs.toml")).unwrap();
-    let code = &examples["rs"];
+    let code = &examples["rust"];
     let mut hl = Highlighter::new();
 
     example(code, &mut hl, themes::one::dark(), "one::dark");
@@ -27,21 +31,16 @@ fn example(
     theme: syntastica::config::Config,
     name: &str,
 ) {
+    let provider = ParserProviderGit::with_languages(&["rust"]);
     println!(
         "\n\x1b[1m{name}:\x1b[0m\n{0}\n{1}{0}",
         "-".repeat(50),
         syntastica::render(
             &syntastica::process(
                 code.trim(),
-                "rs",
-                &ConfiguredLanguages::try_configure(
-                    &ParserProviderGit::with_languages(&["rust"]),
-                    theme
-                )
-                .unwrap(),
-                // list of supported languages does not matter here, because this `ParserProvider`
-                // is only used for calling `for_extension` and `for_injection`
-                &ParserProviderGit::all(),
+                "rust",
+                &ConfiguredLanguages::try_configure(&provider, theme).unwrap(),
+                |lang_name| provider.for_injection(lang_name),
                 highlighter
             )
             .unwrap(),

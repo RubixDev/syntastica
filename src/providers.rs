@@ -68,9 +68,9 @@ impl Deref for ConfiguredLanguages {
 pub trait ParserProvider {
     fn get_parsers(&self) -> Result<Parsers, crate::Error>;
 
-    fn for_extension(&self, file_extension: &str) -> Option<Cow<'_, str>>;
+    fn for_extension<'a>(&self, file_extension: &'a str) -> Option<Cow<'a, str>>;
 
-    fn for_injection(&self, name: &str) -> Option<Cow<'_, str>> {
+    fn for_injection<'a>(&self, name: &'a str) -> Option<Cow<'a, str>> {
         self.for_extension(name)
     }
 }

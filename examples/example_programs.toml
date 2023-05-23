@@ -1,7 +1,7 @@
 # A collection of example programs in various different languages,
-# used by the syntastica examples. The keys specify the file extension.
+# used by the syntastica examples. The keys specify the language name.
 
-rs = '''
+rust = '''
 fn fib(n: usize) -> usize {
     if n < 2 {
         n
@@ -15,7 +15,7 @@ fn main() {
 }
 '''
 
-py = '''
+python = '''
 import re
 
 def fib(n: int) -> int:
@@ -148,7 +148,7 @@ class Fibonacci {
 }
 '''
 
-js = '''
+javascript = '''
 var fib = (function(cache){
     return cache = cache || {}, function(n){
         if (cache[n]) return cache[n];
@@ -187,7 +187,7 @@ const Button = (prop: { value: string }, context: { color: string }) => (
 );
 '''
 
-ts = '''
+typescript = '''
 interface User {
   name: string;
   id: number;
@@ -248,7 +248,7 @@ main..main.return:
     ret
 '''
 
-sh = '''
+bash = '''
 #!/bin/bash
 
 fib()

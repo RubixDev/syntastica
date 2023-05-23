@@ -83,16 +83,16 @@ pub fn parsers_ffi(_: TokenStream) -> TokenStream {
                 ::std::result::Result::Ok(_map)
             }
 
-            fn for_extension(
+            fn for_extension<'a>(
                 &self,
-                file_extension: &str,
-            ) -> ::std::option::Option<::std::borrow::Cow<'_, str>> {
+                file_extension: &'a str,
+            ) -> ::std::option::Option<::std::borrow::Cow<'a, str>> {
                 #(#by_extension)*
                 ::std::option::Option::None
             }
 
             // TODO: injection regex
-            // fn for_injection(&self, name: &str) -> ::std::option::Option<::std::borrow::Cow<'_, str>> {
+            // fn for_injection<'a>(&self, name: &'a str) -> ::std::option::Option<::std::borrow::Cow<'a, str>> {
             //     ::std::option::Option::None
             // }
         }
