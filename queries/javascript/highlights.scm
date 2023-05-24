@@ -1,39 +1,51 @@
 ;; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/javascript/highlights.scm
 ;; Licensed under the Apache License 2.0
-
 ; inherits: ecma,jsx
-
 ;;; Parameters
-(formal_parameters (identifier) @parameter)
+(formal_parameters
+  (identifier) @parameter
+)
 
 (formal_parameters
   (rest_pattern
-    (identifier) @parameter))
+    (identifier) @parameter
+  )
+)
 
 ;; ({ a }) => null
 (formal_parameters
   (object_pattern
-    (shorthand_property_identifier_pattern) @parameter))
+    (shorthand_property_identifier_pattern) @parameter
+  )
+)
 
 ;; ({ a: b }) => null
 (formal_parameters
   (object_pattern
     (pair_pattern
-      value: (identifier) @parameter)))
+      value: (identifier) @parameter
+    )
+  )
+)
 
 ;; ([ a ]) => null
 (formal_parameters
   (array_pattern
-    (identifier) @parameter))
+    (identifier) @parameter
+  )
+)
 
 ;; a => null
 (arrow_function
-  parameter: (identifier) @parameter)
+  parameter: (identifier) @parameter
+)
 
 ;; optional parameters
 (formal_parameters
   (assignment_pattern
-    left: (identifier) @parameter))
+    left: (identifier) @parameter
+  )
+)
 
 ;; punctuation
 (optional_chain) @punctuation.delimiter

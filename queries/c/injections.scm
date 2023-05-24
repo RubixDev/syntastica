@@ -1,5 +1,9 @@
-((comment) @injection.content
- (#set! injection.language "comment"))
+(
+  (comment) @injection.content
+  (#set! injection.language "comment")
+)
 
-((preproc_arg) @injection.content
- (#set! injection.language "c"))
+(
+  (preproc_arg) @injection.content
+  (#set! injection.language "c")
+)

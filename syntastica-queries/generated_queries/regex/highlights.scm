@@ -1,6 +1,5 @@
 ;; Forked from https://github.com/tree-sitter/tree-sitter-regex
 ;; The MIT License (MIT) Copyright (c) 2014 Max Brunsfeld
-
 [
   "("
   ")"
@@ -47,13 +46,17 @@
   [
     (decimal_digits) @number
     "," @punctuation.delimiter
-  ])
+  ]
+)
 
 (character_class
   [
     "^" @operator
-    (class_range "-" @operator)
-  ])
+    (class_range
+      "-" @operator
+    )
+  ]
+)
 
 (class_character) @constant.character
 

@@ -1,6 +1,5 @@
 ;; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/c/highlights.scm
 ;; Licensed under the Apache License 2.0
-
 (identifier) @variable
 
 [
@@ -25,10 +24,10 @@
 ] @repeat
 
 [
- "if"
- "else"
- "case"
- "switch"
+  "if"
+  "else"
+  "case"
+  "switch"
 ] @conditional
 
 [
@@ -45,42 +44,47 @@
 
 "#include" @include
 
-[ ";" ":" "," ] @punctuation.delimiter
+[
+  ";"
+  ":"
+  ","
+] @punctuation.delimiter
 
 "..." @punctuation.special
 
-[ "(" ")" "[" "]" "{" "}"] @punctuation.bracket
+[
+  "("
+  ")"
+  "["
+  "]"
+  "{"
+  "}"
+] @punctuation.bracket
 
 [
   "="
-
   "-"
   "*"
   "/"
   "+"
   "%"
-
   "~"
   "|"
   "&"
   "^"
   "<<"
   ">>"
-
   "->"
   "."
-
   "<"
   "<="
   ">="
   ">"
   "=="
   "!="
-
   "!"
   "&&"
   "||"
-
   "-="
   "+="
   "*="
@@ -97,43 +101,64 @@
 
 ;; Make sure the comma operator is given a highlight group after the comma
 ;; punctuator so the operator is highlighted properly.
-(comma_expression [ "," ] @operator)
+(comma_expression
+  [","] @operator
+)
 
 [
- (true)
- (false)
+  (true)
+  (false)
 ] @boolean
 
-(conditional_expression [ "?" ":" ] @conditional.ternary)
+(conditional_expression
+  [
+    "?"
+    ":"
+  ] @conditional.ternary
+)
 
 (string_literal) @string
+
 (system_lib_string) @string
+
 (escape_sequence) @string.escape
 
 (null) @constant.builtin
+
 (number_literal) @number
+
 (char_literal) @character
 
 [
- (preproc_arg)
- (preproc_defined)
-]  @function.macro
+  (preproc_arg)
+  (preproc_defined)
+] @function.macro
 
-(((field_expression
-     (field_identifier) @property)) @_parent
- (#not-has-parent? @_parent template_method function_declarator call_expression))
+(
+  (
+    (field_expression
+      (field_identifier) @property
+    )
+  ) @_parent
+  (#not-has-parent? @_parent template_method function_declarator call_expression)
+)
 
 (field_designator) @property
-(((field_identifier) @property)
- (#has-ancestor? @property field_declaration)
- (#not-has-ancestor? @property function_declarator))
+
+(
+  (
+    (field_identifier) @property
+  )
+  (#has-ancestor? @property field_declaration)
+  (#not-has-ancestor? @property function_declarator)
+)
 
 (statement_identifier) @label
 
 [
- (type_identifier)
- (sized_type_specifier)
- (type_descriptor)
+  (type_identifier)
+  (sized_type_specifier)
+  (type_descriptor)
 ] @type
 
 (storage_class_specifier) @storageclass
@@ -141,54 +166,81 @@
 (type_qualifier) @type.qualifier
 
 (linkage_specification
-  "extern" @storageclass)
+  "extern" @storageclass
+)
 
 (type_definition
-  declarator: (type_identifier) @type.definition)
+  declarator: (type_identifier) @type.definition
+)
 
 (primitive_type) @type.builtin
 
-((identifier) @constant
- (#lua-match? @constant "^[A-Z][A-Z0-9_]+$"))
-(enumerator
-  name: (identifier) @constant)
-(case_statement
-  value: (identifier) @constant)
+(
+  (identifier) @constant
+  (#lua-match? @constant "^[A-Z][A-Z0-9_]+$")
+)
 
-((identifier) @constant.builtin
-    (#any-of? @constant.builtin "stderr" "stdin" "stdout"))
+(enumerator
+  name: (identifier) @constant
+)
+
+(case_statement
+  value: (identifier) @constant
+)
+
+(
+  (identifier) @constant.builtin
+  (#any-of? @constant.builtin "stderr" "stdin" "stdout")
+)
 
 ;; Preproc def / undef
 (preproc_def
-  name: (_) @constant)
+  name: (_) @constant
+)
+
 (preproc_call
   directive: (preproc_directive) @_u
   argument: (_) @constant
-  (#eq? @_u "#undef"))
+  (#eq? @_u "#undef")
+)
 
 (call_expression
-  function: (identifier) @function.call)
+  function: (identifier) @function.call
+)
+
 (call_expression
   function: (field_expression
-    field: (field_identifier) @function.call))
+    field: (field_identifier) @function.call
+  )
+)
+
 (function_declarator
-  declarator: (identifier) @function)
+  declarator: (identifier) @function
+)
+
 (preproc_function_def
-  name: (identifier) @function.macro)
+  name: (identifier) @function.macro
+)
 
 (comment) @comment @spell
 
-((comment) @comment.documentation
-  (#lua-match? @comment.documentation "^/[*][*][^*].*[*]/$"))
+(
+  (comment) @comment.documentation
+  (#lua-match? @comment.documentation "^/[*][*][^*].*[*]/$")
+)
 
 ;; Parameters
 (parameter_declaration
-  declarator: (identifier) @parameter)
+  declarator: (identifier) @parameter
+)
 
 (parameter_declaration
-  declarator: (pointer_declarator) @parameter)
+  declarator: (pointer_declarator) @parameter
+)
 
-(preproc_params (identifier) @parameter)
+(preproc_params
+  (identifier) @parameter
+)
 
 [
   "__attribute__"

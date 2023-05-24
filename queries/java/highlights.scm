@@ -1,49 +1,57 @@
 ;; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/java/highlights.scm
 ;; Licensed under the Apache License 2.0
-
 ; CREDITS @maxbrunsfeld (maxbrunsfeld@gmail.com)
-
 ; Variables
-
 (identifier) @variable
 
 ; Methods
-
 (method_declaration
-  name: (identifier) @method)
+  name: (identifier) @method
+)
+
 (method_invocation
-  name: (identifier) @method.call)
+  name: (identifier) @method.call
+)
 
 (super) @function.builtin
 
 ; Parameters
-
 (formal_parameter
-  name: (identifier) @parameter)
+  name: (identifier) @parameter
+)
 
 (catch_formal_parameter
-  name: (identifier) @parameter)
+  name: (identifier) @parameter
+)
 
 (spread_parameter
- (variable_declarator
-   name: (identifier) @parameter)) ; int... foo
+  (variable_declarator
+    name: (identifier) @parameter
+  )
+)
 
+; int... foo
 ;; Lambda parameter
+(inferred_parameters
+  (identifier) @parameter
+)
 
-(inferred_parameters (identifier) @parameter) ; (x,y) -> ...
-
+; (x,y) -> ...
 (lambda_expression
-    parameters: (identifier) @parameter) ; x -> ...
+  parameters: (identifier) @parameter
+)
 
+; x -> ...
 ; Annotations
-
 (annotation
-  name: (identifier) @attribute)
+  name: (identifier) @attribute
+)
+
 (marker_annotation
-  name: (identifier) @attribute)
+  name: (identifier) @attribute
+)
 
 ; Operators
-
 [
   "@"
   "+"
@@ -84,40 +92,67 @@
 ] @operator
 
 ; Types
-
 (interface_declaration
-  name: (identifier) @type)
-(class_declaration
-  name: (identifier) @type)
-(record_declaration
-  name: (identifier) @type)
-(enum_declaration
-  name: (identifier) @type)
-(constructor_declaration
-  name: (identifier) @type)
-(type_identifier) @type
-((method_invocation
-  object: (identifier) @type)
- (#lua-match? @type "^[A-Z]"))
-((method_reference
-  . (identifier) @type)
- (#lua-match? @type "^[A-Z]"))
+  name: (identifier) @type
+)
 
-((field_access
-  object: (identifier) @type)
-  (#lua-match? @type "^[A-Z]"))
-((scoped_identifier
-  scope: (identifier) @type)
-  (#lua-match? @type "^[A-Z]"))
+(class_declaration
+  name: (identifier) @type
+)
+
+(record_declaration
+  name: (identifier) @type
+)
+
+(enum_declaration
+  name: (identifier) @type
+)
+
+(constructor_declaration
+  name: (identifier) @type
+)
+
+(type_identifier) @type
+
+(
+  (method_invocation
+    object: (identifier) @type
+  )
+  (#lua-match? @type "^[A-Z]")
+)
+
+(
+  (method_reference
+    .
+    (identifier) @type
+  )
+  (#lua-match? @type "^[A-Z]")
+)
+
+(
+  (field_access
+    object: (identifier) @type
+  )
+  (#lua-match? @type "^[A-Z]")
+)
+
+(
+  (scoped_identifier
+    scope: (identifier) @type
+  )
+  (#lua-match? @type "^[A-Z]")
+)
 
 ; Fields
-
 (field_declaration
   declarator: (variable_declarator
-    name: (identifier) @field))
+    name: (identifier) @field
+  )
+)
 
 (field_access
-  field: (identifier) @field)
+  field: (identifier) @field
+)
 
 [
   (boolean_type)
@@ -127,14 +162,14 @@
 ] @type.builtin
 
 ; Variables
-
-((identifier) @constant
-  (#lua-match? @constant "^[A-Z_][A-Z%d_]+$"))
+(
+  (identifier) @constant
+  (#lua-match? @constant "^[A-Z_][A-Z%d_]+$")
+)
 
 (this) @variable.builtin
 
 ; Literals
-
 (string_literal) @string
 
 (escape_sequence) @string.escape
@@ -161,7 +196,6 @@
 (null_literal) @constant.builtin
 
 ; Keywords
-
 [
   "assert"
   "class"
@@ -178,7 +212,8 @@
 ] @keyword
 
 (synchronized_statement
-  "synchronized" @keyword)
+  "synchronized" @keyword
+)
 
 [
   "abstract"
@@ -196,7 +231,8 @@
 ] @type.qualifier
 
 (modifiers
-  "synchronized" @type.qualifier)
+  "synchronized" @type.qualifier
+)
 
 [
   "transient"
@@ -208,12 +244,9 @@
   "yield"
 ] @keyword.return
 
-[
-  "new"
-] @keyword.operator
+["new"] @keyword.operator
 
 ; Conditionals
-
 [
   "if"
   "else"
@@ -221,10 +254,14 @@
   "case"
 ] @conditional
 
-(ternary_expression ["?" ":"] @conditional.ternary)
+(ternary_expression
+  [
+    "?"
+    ":"
+  ] @conditional.ternary
+)
 
 ; Loops
-
 [
   "for"
   "while"
@@ -234,7 +271,6 @@
 ] @repeat
 
 ; Includes
-
 [
   "exports"
   "import"
@@ -247,7 +283,6 @@
 ] @include
 
 ; Punctuation
-
 [
   ";"
   "."
@@ -255,17 +290,36 @@
   ","
 ] @punctuation.delimiter
 
-[ "{" "}" ] @punctuation.bracket
+[
+  "{"
+  "}"
+] @punctuation.bracket
 
-[ "[" "]" ] @punctuation.bracket
+[
+  "["
+  "]"
+] @punctuation.bracket
 
-[ "(" ")" ] @punctuation.bracket
+[
+  "("
+  ")"
+] @punctuation.bracket
 
-(type_arguments [ "<" ">" ] @punctuation.bracket)
-(type_parameters [ "<" ">" ] @punctuation.bracket)
+(type_arguments
+  [
+    "<"
+    ">"
+  ] @punctuation.bracket
+)
+
+(type_parameters
+  [
+    "<"
+    ">"
+  ] @punctuation.bracket
+)
 
 ; Exceptions
-
 [
   "throw"
   "throws"
@@ -275,22 +329,27 @@
 ] @exception
 
 ; Labels
-
 (labeled_statement
-  (identifier) @label)
+  (identifier) @label
+)
 
 ; Comments
-
 [
   (line_comment)
   (block_comment)
 ] @comment @spell
 
-((block_comment) @comment.documentation
-  (#lua-match? @comment.documentation "^/[*][*][^*].*[*]/$"))
+(
+  (block_comment) @comment.documentation
+  (#lua-match? @comment.documentation "^/[*][*][^*].*[*]/$")
+)
 
-((line_comment) @comment.documentation
-  (#lua-match? @comment.documentation "^///[^/]"))
+(
+  (line_comment) @comment.documentation
+  (#lua-match? @comment.documentation "^///[^/]")
+)
 
-((line_comment) @comment.documentation
-  (#lua-match? @comment.documentation "^///$"))
+(
+  (line_comment) @comment.documentation
+  (#lua-match? @comment.documentation "^///$")
+)
