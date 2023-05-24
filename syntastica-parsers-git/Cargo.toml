@@ -26,7 +26,7 @@ docs = ["dep:document-features", "dep:rustc_version"]
 
 [dependencies]
 document-features = { version = "0.2.7", optional = true }
-syntastica = { version = "0.1.1", path = "..", default-features = false }
+syntastica = { version = "0.2.0", path = "..", default-features = false }
 syntastica-macros = { version = "0.2.0", path = "../syntastica-macros" }
 
 [build-dependencies]

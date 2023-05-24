@@ -1,6 +1,6 @@
 [package]
 name = "syntastica-queries"
-version = "0.1.0"
+version = "0.2.0"
 authors.workspace = true
 edition = "2021"
 license.workspace = true
@@ -13,9 +13,9 @@ description = "Collection of tree-sitter queries for syntastica"
 
 [dev-dependencies]
 once_cell = "1.17.1"
-syntastica = { version = "0.1.1", path = ".." }
-syntastica-macros = { version = "0.1.0", path = "../syntastica-macros" }
-syntastica-parsers-git = { version = "0.1.0", path = "../syntastica-parsers-git", features = ["all"] }
+syntastica = { version = "0.2.0", path = ".." }
+syntastica-macros = { version = "0.2.0", path = "../syntastica-macros" }
+syntastica-parsers-git = { version = "0.1.1", path = "../syntastica-parsers-git", features = ["all"] }
 tree-sitter = "0.20.10"
 
 [build-dependencies]
