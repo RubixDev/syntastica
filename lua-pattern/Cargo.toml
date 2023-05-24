@@ -1,0 +1,20 @@
+[package]
+name = "lua-pattern"
+version = "0.1.0"
+authors.workspace = true
+categories = ["parser-implementations"]
+edition = "2021"
+keywords = ["lua", "regex", "lua-pattern", "parser"]
+license.workspace = true
+repository.workspace = true
+description = "Parser for Lua patterns and conversion to Regular Expressions"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[features]
+default = []
+
+to-regex = []
+
+[dependencies]
+thiserror = "1.0.40"

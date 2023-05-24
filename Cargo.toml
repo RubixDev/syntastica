@@ -2,6 +2,7 @@
 members = [
     "./xtask",
     "./rsexpr",
+    "./lua-pattern",
     "./syntastica-queries",
     "./syntastica-parsers-git",
     "./syntastica-macros",

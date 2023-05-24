@@ -6,7 +6,7 @@ use crate::ParenKind;
 pub type Result<T> = std::result::Result<T, Vec<Error>>;
 
 /// The crate error type.
-#[derive(Debug, Error)]
+#[derive(Debug, Error, PartialEq, Eq)]
 pub enum Error {
     /// The input is missing a closing parenthesis
     #[error("missing closing parenthesis `{0}`")]
