@@ -29,7 +29,6 @@ impl Parser {
         mem::swap(&mut self.next_tok, &mut self.curr_tok);
         // overwrite next_tok (which is now what curr_tok was) with the next token
         self.next_tok = self.tokens.pop_front().unwrap_or(Token::Eof);
-        println!("{:?}, {:?}", self.curr_tok, self.next_tok);
     }
 
     fn check_quantifier(&mut self, child: PatternObject) -> PatternObject {
@@ -93,10 +92,7 @@ impl Parser {
                 }
 
                 tok if tok == end => {}
-                tok => {
-                    dbg!(objects);
-                    return Err(Error::UnexpectedToken(tok));
-                }
+                tok => return Err(Error::UnexpectedToken(tok)),
             }
         }
 
