@@ -4,17 +4,50 @@ use crate::{Class, PatternObject, Quantifier, SetPatternObject};
 
 #[derive(Debug, thiserror::Error, PartialEq, Eq)]
 #[allow(clippy::enum_variant_names)]
+/// The error type for errors that can occur during conversion to regular expressions.
+/// See [`try_to_regex`] for more information.
 pub enum ToRegexError {
-    #[error("the given pattern includes a balanced pattern (eg. `%b{{}}`) which cannot be represented by regex")]
+    /// The input pattern includes a balanced pattern (eg. `%b{}`) which cannot be represented by
+    /// regular expressions.
+    #[error("the input pattern includes a balanced pattern (eg. `%b{{}}`) which cannot be represented by regex")]
     BalancedUsed,
 
-    #[error("the given pattern includes a frontier pattern (eg. `%f[a-z]`) which cannot be represented by regex")]
+    /// The input pattern includes a frontier pattern (eg. `%f[a-z]`) which cannot be represented
+    /// by regular expressions.
+    #[error("the input pattern includes a frontier pattern (eg. `%f[a-z]`) which cannot be represented by regex")]
     FrontierUsed,
 
-    #[error("the given pattern includes a capture backreference, which may not be supported by some regex engines")]
+    /// The input pattern includes a capture backreference (eg. `%1`), but `allow_capture_refs` was
+    /// set to false.
+    #[error("the input pattern includes a capture backreference, which may not be supported by some regex engines")]
     CaptureRefUsed,
 }
 
+/// Try to convert a parsed Lua pattern into a regular expression string.
+///
+/// The `allow_capture_refs` parameter specifies whether to allow backreferences to capture groups.
+/// Set this to `false` when using the output with the
+/// [`regex` crate](https://crates.io/crates/regex), or to `true` when using the
+/// [`fancy-regex` crate](https://crates.io/crates/fancy-regex).
+///
+/// # Returns
+/// The function returns a [`String`] if the conversion was successful, and a [`ToRegexError`]
+/// otherwise.
+///
+/// # Errors
+/// Converting a Lua pattern to a RegEx can fail in up to three ways.
+///
+/// 1. Lua patterns support balanced bracket matching using the `%b` operator. This is not
+///    supported by RegEx. Thus, an error will be returned if the input pattern makes use of this
+///    feature.
+/// 2. Lua patterns support so-called frontier patterns. This is not supported by RegEx. Thus,
+///    an error will be returned if the input pattern makes use of this feature.
+/// 3. Lua patterns support references to previous capture groups. Some RegEx engines also support
+///    this feature, but not all. For this reason, uses of such backreferences will result in an
+///    error, if `allow_capture_refs` is set to `false`.
+///
+/// Also see [`ToRegexError`] for further information.
+// TODO: lookahead + lookbehind might be able to emulate the behaviour of frontiers
 pub fn try_to_regex(
     pattern: &[PatternObject],
     allow_capture_refs: bool,

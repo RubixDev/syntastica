@@ -1,3 +1,25 @@
+#![doc = include_str!("../README.md")]
+//! ## Usage
+//! Lua patterns can be parsed to a tree with [`parse`].
+//! Parsed patterns can be converted to regex strings with [`try_to_regex`].
+//!
+//! For example:
+//! ```
+//! use lua_pattern::{Class, PatternObject};
+//!
+//! let tree = lua_pattern::parse("%l").unwrap();
+//! assert_eq!(tree, [PatternObject::Class(Class::Lowercase)]);
+//! #[cfg(feature = "to-regex")]
+//! assert_eq!(lua_pattern::try_to_regex(&tree, false).unwrap(), "[a-z]");
+//! ```
+#![cfg_attr(
+    feature = "docs",
+    cfg_attr(doc, doc = ::document_features::document_features!())
+)]
+#![cfg_attr(all(doc, CHANNEL_NIGHTLY), feature(doc_auto_cfg))]
+#![warn(rust_2018_idioms)]
+#![deny(missing_docs)]
+
 mod error;
 mod lexer;
 mod parser;
@@ -11,111 +33,152 @@ pub use error::*;
 use lexer::Lexer;
 use parser::Parser;
 
+#[cfg(feature = "to-regex")]
+pub use to_regex::*;
+
 ///////////////
 // Functions //
 ///////////////
 
+/// Parse the given input string as a Lua pattern.
+///
+/// # Returns
+/// This function returns a vector of [`PatternObject`]s if parsing was successful, or an [`Error`]
+/// if the pattern could not be parsed.
+///
+/// # Errors
+/// To see the possible errors, have a look at [`Error`].
 pub fn parse(pattern: impl AsRef<str>) -> Result<Pattern> {
     Parser::parse(Lexer::lex(pattern.as_ref())?)
 }
-
-#[cfg(feature = "to-regex")]
-pub use to_regex::try_to_regex;
 
 ///////////
 // Types //
 ///////////
 
+/// A list of [`PatternObject`]s, representing an entire Lua pattern.
 pub type Pattern = Vec<PatternObject>;
 
+/// A single object of a Lua pattern.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum PatternObject {
+    /// Match any character (`.`).
     Any,
+    /// Match the start of the string (`^`).
     Start,
+    /// Match the end of the string (`$`).
     End,
 
+    /// A sequence of characters to match literally (eg. `Hello, World!`).
     String(String),
+    /// A [`PatternObject`] followed by a [`Quantifier`] (eg. `a?`, `.*`).
     Quantifier(Quantifier, Box<PatternObject>),
+    /// An escaped character to match literally (eg. `%%`).
     Escaped(char),
+    /// A [character class](Class) (eg. `%w`, `%L`).
     Class(Class),
+    /// A reference to a previous capture group (eg. `%1`).
     CaptureRef(u8),
+    /// A balanced pattern (eg. `%bxy`). Matches all characters starting at `x` until the
+    /// corresponding `y`.
     Balanced(char, char),
+    /// A frontier pattern (eg. `%f[a-z]`). Matches if the following character matches the set and
+    /// the previous character does not match the set.
     Frontier(Box<PatternObject>),
 
+    /// A capture group with a numeric ID and the contained [`Pattern`] (eg. `(a)`).
     Capture(u8, Pattern),
+    /// A set of [`SetPatternObject`]s (eg. `[a-z_%u]`). Matches if any of the contained entries
+    /// matches.
     Set(Vec<SetPatternObject>),
+    /// An inverted set of [`SetPatternObject`]s (eg. `[^a-z_%u]`). Matches if none of the
+    /// contained entries match.
     InverseSet(Vec<SetPatternObject>),
 }
 
+/// An entry of a [set](PatternObject::Set) or [inverted set](PatternObject::InverseSet).
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum SetPatternObject {
+    /// A character to match literally (eg. `a`).
     Char(char),
+    /// An escaped character to match literally (eg. `%%`, `%]`).
     Escaped(char),
+    /// A range of characters (eg. `a-z`). Matches if any character in the range matches.
     Range(char, char),
+    /// A [character class](Class) (eg. `%w`, `%L`).
     Class(Class),
 }
 
+/// A quantifier, specifying the amount of times the leading [`PatternObject`] can occur.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Quantifier {
-    /// `*`
+    /// Allow zero or more occurrences, taking the longest matching sequence (`*`).
     ZeroOrMore,
-    /// `+`
+    /// Allow one or more occurrences, taking the longest matching sequence (`+`).
     OneOrMore,
-    /// `-`
+    /// Allow zero or more occurrences, taking the shortest matching sequence (`-`).
     ZeroOrMoreLazy,
-    /// `?`
+    /// Allow zero or one occurrences (`?`).
     ZeroOrOne,
 }
 
+/// A character class, matching any character contained in the class.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Class {
-    /// `%a`
+    /// Matches any letter; equivalent to `[a-zA-Z]` (`%a`).
     Letters,
-    /// `%c`
+    /// Matches any control character; equivalent to `[\0-\31]` (`%c`).
     Controls,
-    /// `%d`
+    /// Matches any digit; equivalent to `[0-9]` (`%d`).
     Digits,
-    /// `%g`
+    /// Matches any printable character except space; equivalent to `[\33-\126]` (`%g`).
     Printable,
-    /// `%l`
+    /// Matches any lowercase letter; equivalent to `[a-z]` (`%l`).
     Lowercase,
-    /// `%p`
+    /// Matches any punctuation character; equivalent to ``[!"#$%&'()*+,-./[\%]^_`{|}~]`` (`%p`).
     Punctuations,
-    /// `%s`
+    /// Matches any whitespace character; equivalent to `[ \t\n\v\f\r]` (`%s`).
     Spaces,
-    /// `%u`
+    /// Matches any uppercase letter; equivalent to `[A-Z]` (`%u`).
     Uppercase,
-    /// `%w`
+    /// Matches any alphanumeric character (digit or letter); equivalent to `[a-zA-Z0-9]` (`%w`).
     Alphanumerics,
-    /// `%x`
+    /// Matches any hexadecimal digit; equivalent to `[0-9a-fA-F]` (`%x`).
     Hexadecimals,
-    /// `%z`
+    /// Matches the NULL character / `0` byte; equivalent to `\0` (`%z`).
     ZeroByte,
 
-    /// `%A`
+    /// Matches any character, **except** all letters; equivalent to `[^a-zA-Z]` (`%A`).
     NotLetters,
-    /// `%C`
+    /// Matches any character, **except** all control characters; equivalent to `[^\0-\31]` (`%C`).
     NotControls,
-    /// `%D`
+    /// Matches any character, **except** all digits; equivalent to `[^0-9]` (`%D`).
     NotDigits,
-    /// `%G`
+    /// Matches any character, **except** all printable characters, but including space; equivalent
+    /// to `[^\33-\126]` (`%G`).
     NotPrintable,
-    /// `%L`
+    /// Matches any character, **except** all lowercase letters; equivalent to `[^a-z]` (`%L`).
     NotLowercase,
-    /// `%P`
+    /// Matches any character, **except** all punctuation characters; equivalent to
+    /// ``[^!"#$%&'()*+,-./[\%]^_`{|}~]`` (`%P`).
     NotPunctuations,
-    /// `%S`
+    /// Matches any character, **except** all whitespace characters; equivalent to `[^ \t\n\v\f\r]`
+    /// (`%S`).
     NotSpaces,
-    /// `%U`
+    /// Matches any character, **except** all uppercase letters; equivalent to `[^A-Z]` (`%U`).
     NotUppercase,
-    /// `%W`
+    /// Matches any character, **except** all alphanumeric characters (digits and letters);
+    /// equivalent to `[^a-zA-Z0-9]` (`%W`).
     NotAlphanumerics,
-    /// `%X`
+    /// Matches any character, **except** all hexadecimal digits; equivalent to `[^0-9a-fA-F]`
+    /// (`%X`).
     NotHexadecimals,
-    /// `%Z`
+    /// Matches the character, **except** the NULL character / `0` byte; equivalent to `[^\0]`
+    /// (`%Z`).
     NotZeroByte,
 }
 
+/// A token as used by the internal lexer. Exposed to the public API for use in [`Error`]s.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Token {
     /// `^`

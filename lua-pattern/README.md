@@ -1,6 +1,6 @@
 # lua-pattern
 
-Parser for Lua patterns and conversion to Regular Expressions.
+Parser for Lua patterns and conversion to regular expressions.
 
 This crate provides a basic parser for Lua patterns, and, with the `to-regex`
 feature enabled, conversion to standard regular expressions as usable by the

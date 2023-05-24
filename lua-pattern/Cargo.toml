@@ -7,14 +7,26 @@ edition = "2021"
 keywords = ["lua", "regex", "lua-pattern", "parser"]
 license.workspace = true
 repository.workspace = true
-description = "Parser for Lua patterns and conversion to Regular Expressions"
+description = "Parser for Lua patterns and conversion to regular expressions"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [features]
+#! ## Features
 default = []
 
+## Provide [`try_to_regex`] for converting a parsed pattern to a regex
 to-regex = []
 
+## Meant to be enabled when building docs
+docs = ["dep:document-features", "dep:rustc_version"]
+
 [dependencies]
+document-features = { version = "0.2.7", optional = true }
 thiserror = "1.0.40"
+
+[build-dependencies]
+rustc_version = { version = "0.4.0", optional = true }
+
+[package.metadata.docs.rs]
+all-features = true
