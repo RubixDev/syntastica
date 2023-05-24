@@ -85,13 +85,21 @@ impl Display for Sexpr<'_> {
                     };
 
                     // keep lists in one line if they start with a predicate
-                    // TODO: comments in here will get lost
                     if let (Some(Self::Atom([b'#', ..])), Sexpr::List(_)) = (children.first(), self)
                     {
-                        // call doesn't cause infinite recursion,
-                        // because `f.alternate()` is different
-                        #[allow(clippy::recursive_format_impl)]
-                        return write!(f, "{self}");
+                        #[cfg(feature = "comments")]
+                        let has_comment_child = children
+                            .iter()
+                            .any(|child| matches!(child, Sexpr::Comment(_)));
+                        #[cfg(not(feature = "comments"))]
+                        let has_comment_child = false;
+
+                        if !has_comment_child {
+                            // call doesn't cause infinite recursion,
+                            // because `f.alternate()` is different
+                            #[allow(clippy::recursive_format_impl)]
+                            return write!(f, "{self}");
+                        }
                     }
 
                     write!(f, "{open_paren}")?;
