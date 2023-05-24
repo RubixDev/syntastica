@@ -27,8 +27,9 @@ fn validate(
     let queries = read_queries(lang_name, filename);
 
     // validate input
-    Query::new(lang, &queries)
-        .unwrap_or_else(|err| panic!("invalid queries in file '{path}': {err}"));
+    if let Err(err) = Query::new(lang, &queries) {
+        eprintln!("warning: invalid input queries in file '{path}': {err}");
+    }
 
     // run processor
     let mut new_queries = processor(group_root_level_captures(
@@ -53,9 +54,11 @@ fn validate(
     new_queries.push('\n');
 
     // validate output
-    Query::new(lang, &new_queries).unwrap_or_else(|err| {
-        panic!("processing queries in file '{path}' resulted in invalid queries: {err}")
-    });
+    if let Err(err) = Query::new(lang, &new_queries) {
+        eprintln!(
+            "warning: processing queries in file '{path}' resulted in invalid queries: {err}"
+        );
+    }
 
     new_queries
 }
@@ -105,6 +108,7 @@ fn group_root_level_captures(queries: Vec<OwnedSexpr>) -> Vec<OwnedSexpr> {
 fn process_locals(mut queries: Vec<OwnedSexpr>) -> Vec<OwnedSexpr> {
     for query in &mut queries {
         replace_locals_captures(query);
+        replace_predicates(query);
     }
     queries
 }
@@ -136,6 +140,7 @@ fn replace_locals_captures(tree: &mut OwnedSexpr) {
 fn process_injections(mut queries: Vec<OwnedSexpr>) -> Vec<OwnedSexpr> {
     for query in &mut queries {
         replace_injection_captures(query, 0);
+        replace_predicates(query);
     }
     queries
 }
@@ -194,13 +199,13 @@ fn process_highlights(mut queries: Vec<OwnedSexpr>) -> Vec<OwnedSexpr> {
     queries.reverse();
 
     for query in &mut queries {
-        replace_highlight_predicates(query);
+        replace_predicates(query);
     }
 
     queries
 }
 
-fn replace_highlight_predicates(tree: &mut OwnedSexpr) {
+fn replace_predicates(tree: &mut OwnedSexpr) {
     if let OwnedSexpr::List(list) | OwnedSexpr::Group(list) = tree {
         match list.first() {
             Some(OwnedSexpr::Atom(atom)) if atom.first() == Some(&b'#') => {
@@ -239,7 +244,7 @@ fn replace_highlight_predicates(tree: &mut OwnedSexpr) {
             }
             _ => {
                 for subtree in list {
-                    replace_highlight_predicates(subtree);
+                    replace_predicates(subtree);
                 }
             }
         }
@@ -250,8 +255,11 @@ fn lua_to_regex(lua_pattern: &str) -> String {
     // TODO: correctly parse lua patterns (https://www.lua.org/pil/20.2.html and https://gitspartv.github.io/lua-patterns/)
     lua_pattern
         .replace('\\', r"\\")
+        .replace('{', r"\{")
+        .replace('}', r"\}")
         .replace("%.", r"\.")
-        .replace("%%", r"%")
+        .replace("%^", r"\^")
+        .replace("%$", r"\$")
         .replace("%a", r"[a-zA-Z]")
         .replace("%A", r"[^a-zA-Z]")
         .replace("%c", r"[\0-\31]")
@@ -274,4 +282,5 @@ fn lua_to_regex(lua_pattern: &str) -> String {
         .replace("%X", r"[^0-9a-fA-F]")
         .replace("%z", r"\0")
         .replace("%Z", r"[^\0]")
+        .replace("%%", r"%")
 }

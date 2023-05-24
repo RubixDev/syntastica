@@ -1,7 +1,7 @@
 (
   (
     (comment) @_jsdoc_comment
-    (#lua-match? @_jsdoc_comment "^/[*][*][^*].*[*]/$")
+    (#match? @_jsdoc_comment "^/[*][*][^*].*[*]/$")
   ) @injection.content
   (#set! injection.language "jsdoc")
 )
@@ -132,7 +132,7 @@
 
 (
   (template_string) @injection.content
-  (#lua-match? @injection.content "^`#graphql")
+  (#match? @injection.content "^`#graphql")
   (#offset! @injection.content 0 1 0 -1)
   (#set! injection.language "graphql")
 )
@@ -140,7 +140,7 @@
 (assignment_expression
   left: (member_expression
     property: (property_identifier) @_prop
-    (#any-of? @_prop "innerHTML" "outerHTML")
+    (#match? @_prop "^(innerHTML|outerHTML)$")
   )
   right: (template_string) @injection.content
   (#offset! @injection.content 0 1 0 -1)
@@ -150,7 +150,7 @@
 (assignment_expression
   left: (member_expression
     property: (property_identifier) @_prop
-    (#any-of? @_prop "innerHTML" "outerHTML")
+    (#match? @_prop "^(innerHTML|outerHTML)$")
   )
   right: (string) @injection.content
   (#offset! @injection.content 0 1 0 -1)

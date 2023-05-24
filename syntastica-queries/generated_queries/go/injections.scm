@@ -5,7 +5,7 @@
 
 (call_expression
   (selector_expression) @_function
-  (#any-of? @_function "regexp.Match" "regexp.MatchReader" "regexp.MatchString" "regexp.Compile" "regexp.CompilePOSIX" "regexp.MustCompile" "regexp.MustCompilePOSIX")
+  (#match? @_function "^(regexp.Match|regexp.MatchReader|regexp.MatchString|regexp.Compile|regexp.CompilePOSIX|regexp.MustCompile|regexp.MustCompilePOSIX)$")
   (argument_list
     .
     [
