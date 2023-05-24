@@ -49,7 +49,7 @@ pub fn parsers_ffi(_: TokenStream) -> TokenStream {
         let name_str = &lang.name;
         let ffi_func = format_ident!("{}", lang.parser.ffi_func);
         quote! {
-            #[cfg(feature = #feat)]
+            #[cfg(all(feature = #feat, not(DOCS_RS)))]
             if self.0.map_or(true, |langs| langs.contains(&#name_str)) {
                 _map.insert(#name_str.to_owned(), unsafe { #ffi_func() });
             }
@@ -67,6 +67,7 @@ pub fn parsers_ffi(_: TokenStream) -> TokenStream {
         }
     });
     quote! {
+        #[cfg(not(DOCS_RS))]
         extern "C" {
             #(#extern_c)*
         }

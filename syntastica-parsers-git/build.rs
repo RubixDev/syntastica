@@ -8,7 +8,12 @@ use std::{
 use rustc_version::Channel;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    syntastica_macros::parsers_git!();
+    println!("cargo:rerun-if-env-changed=DOCS_RS");
+    if std::env::var("DOCS_RS").is_err() {
+        syntastica_macros::parsers_git!();
+    } else {
+        println!("cargo:rustc-cfg=DOCS_RS");
+    }
 
     // for documenting features when using nightly
     let channel = match rustc_version::version_meta().unwrap().channel {
@@ -18,6 +23,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         Channel::Stable => "CHANNEL_STABLE",
     };
     println!("cargo:rustc-cfg={channel}");
+    println!("cargo:rerun-if-changed=build.rs");
 
     Ok(())
 }
