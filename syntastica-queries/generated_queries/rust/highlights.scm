@@ -279,27 +279,27 @@
 
 (
   (block_comment) @comment.documentation
-  (#match? @comment.documentation "^/[*][!]")
+  (#match? @comment.documentation "^\\/[\\*][!]")
 )
 
 (
   (block_comment) @comment.documentation
-  (#match? @comment.documentation "^/[*][*][^*].*[*]/$")
+  (#match? @comment.documentation "^\\/[\\*][\\*][^\\*].*[\\*]\\/$")
 )
 
 (
   (line_comment) @comment.documentation
-  (#match? @comment.documentation "^//!")
+  (#match? @comment.documentation "^\\/\\/!")
 )
 
 (
   (line_comment) @comment.documentation
-  (#match? @comment.documentation "^///$")
+  (#match? @comment.documentation "^\\/\\/\\/$")
 )
 
 (
   (line_comment) @comment.documentation
-  (#match? @comment.documentation "^///[^/]")
+  (#match? @comment.documentation "^\\/\\/\\/[^\\/]")
 )
 
 (

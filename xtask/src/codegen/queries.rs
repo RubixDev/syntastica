@@ -251,36 +251,14 @@ fn replace_predicates(tree: &mut OwnedSexpr) {
     }
 }
 
-fn lua_to_regex(lua_pattern: &str) -> String {
-    // TODO: correctly parse lua patterns (https://www.lua.org/pil/20.2.html and https://gitspartv.github.io/lua-patterns/)
-    lua_pattern
-        .replace('\\', r"\\")
-        .replace('{', r"\{")
-        .replace('}', r"\}")
-        .replace("%.", r"\.")
-        .replace("%^", r"\^")
-        .replace("%$", r"\$")
-        .replace("%a", r"[a-zA-Z]")
-        .replace("%A", r"[^a-zA-Z]")
-        .replace("%c", r"[\0-\31]")
-        .replace("%C", r"[^\0-\31]")
-        .replace("%d", r"[0-9]")
-        .replace("%D", r"[^0-9]")
-        .replace("%g", r"[\33-\126]")
-        .replace("%G", r"[^\33-\126]")
-        .replace("%l", r"[a-z]")
-        .replace("%L", r"[^a-z]")
-        .replace("%p", r##"[!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]"##)
-        .replace("%P", r##"[^!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]"##)
-        .replace("%s", r"[ \t\n\v\f\r]")
-        .replace("%S", r"[^ \t\n\v\f\r]")
-        .replace("%u", r"[A-Z]")
-        .replace("%U", r"[^A-Z]")
-        .replace("%w", r"[a-zA-Z0-9]")
-        .replace("%W", r"[^a-zA-Z0-9]")
-        .replace("%x", r"[0-9a-fA-F]")
-        .replace("%X", r"[^0-9a-fA-F]")
-        .replace("%z", r"\0")
-        .replace("%Z", r"[^\0]")
-        .replace("%%", r"%")
+fn lua_to_regex(pattern: &str) -> String {
+    lua_pattern::try_to_regex(
+        &lua_pattern::parse(pattern)
+            .unwrap_or_else(|err| panic!("Lua pattern `{pattern}` could not be parsed: {err}")),
+        false,
+        false,
+    )
+    .unwrap_or_else(|err| {
+        panic!("Lua pattern `{pattern}` could not be converted into a regex: {err}")
+    })
 }

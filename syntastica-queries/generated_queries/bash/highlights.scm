@@ -3,7 +3,7 @@
     .
     (comment) @preproc
   )
-  (#match? @preproc "^#!/")
+  (#match? @preproc "^#!\\/")
 )
 
 (
