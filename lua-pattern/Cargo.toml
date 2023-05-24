@@ -1,6 +1,6 @@
 [package]
 name = "lua-pattern"
-version = "0.1.0"
+version = "0.1.1"
 authors.workspace = true
 categories = ["parser-implementations"]
 edition = "2021"

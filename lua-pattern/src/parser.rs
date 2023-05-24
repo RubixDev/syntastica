@@ -52,7 +52,7 @@ impl Parser {
                 Token::Char(_) => objects.push(self.parse_string()),
                 Token::LBrack => {
                     let set = self.parse_set()?;
-                    objects.push(PatternObject::Set(set.0, set.1));
+                    objects.push(self.check_quantifier(PatternObject::Set(set.0, set.1)));
                 }
                 Token::LParen => objects.push(self.parse_capture()?),
 
