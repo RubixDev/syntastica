@@ -50,7 +50,10 @@ impl Parser {
         while self.curr_tok != end {
             match self.curr_tok {
                 Token::Char(_) => objects.push(self.parse_string()),
-                Token::LBrack => objects.push(self.parse_set()?),
+                Token::LBrack => {
+                    let set = self.parse_set()?;
+                    objects.push(PatternObject::Set(set.0, set.1));
+                }
                 Token::LParen => objects.push(self.parse_capture()?),
 
                 Token::Start => {
@@ -67,7 +70,8 @@ impl Parser {
                 }
                 Token::Frontier => {
                     self.next();
-                    objects.push(PatternObject::Frontier(Box::new(self.parse_set()?)));
+                    let set = self.parse_set()?;
+                    objects.push(PatternObject::Frontier(set.0, set.1));
                 }
                 Token::CaptureRef(id) if id <= self.capture_id => {
                     self.next();
@@ -114,7 +118,7 @@ impl Parser {
         self.check_quantifier(PatternObject::String(string))
     }
 
-    fn parse_set(&mut self) -> Result<PatternObject> {
+    fn parse_set(&mut self) -> Result<(bool, Vec<SetPatternObject>)> {
         self.next();
         let mut children = vec![];
         let inverted = self.curr_tok == Token::Inverse;
@@ -152,10 +156,7 @@ impl Parser {
         }
         self.next();
 
-        Ok(match inverted {
-            true => PatternObject::InverseSet(children),
-            false => PatternObject::Set(children),
-        })
+        Ok((inverted, children))
     }
 
     fn parse_capture(&mut self) -> Result<PatternObject> {
@@ -272,25 +273,31 @@ mod tests {
                     PatternObject::Class(Class::NotLetters),
                 ],
             ),
-            PatternObject::Set(vec![
-                SetPatternObject::Char('a'),
-                SetPatternObject::Char('s'),
-                SetPatternObject::Char('d'),
-            ]),
+            PatternObject::Set(
+                false,
+                vec![
+                    SetPatternObject::Char('a'),
+                    SetPatternObject::Char('s'),
+                    SetPatternObject::Char('d'),
+                ],
+            ),
             PatternObject::Frontier(
-                PatternObject::InverseSet(vec![
+                true,
+                vec![
                     SetPatternObject::Char('n'),
                     SetPatternObject::Char('o'),
                     SetPatternObject::Char('t'),
-                ])
-                .into(),
+                ],
             ),
             PatternObject::CaptureRef(1),
             PatternObject::Balanced('{', '}'),
-            PatternObject::Set(vec![
-                SetPatternObject::Escaped(']'),
-                SetPatternObject::Range('a', 'z'),
-            ]),
+            PatternObject::Set(
+                false,
+                vec![
+                    SetPatternObject::Escaped(']'),
+                    SetPatternObject::Range('a', 'z'),
+                ],
+            ),
             PatternObject::String("$".to_owned()),
             PatternObject::End,
         ]);

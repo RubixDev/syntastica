@@ -1,7 +1,7 @@
 #![doc = include_str!("../README.md")]
 //! ## Usage
-//! Lua patterns can be parsed to a tree with [`parse`].
-//! Parsed patterns can be converted to regex strings with [`try_to_regex`].
+//! - Lua patterns can be parsed to a tree with [`parse`].
+//! - Parsed patterns can be converted to regex strings with [`try_to_regex`].
 //!
 //! For example:
 //! ```
@@ -10,7 +10,7 @@
 //! let tree = lua_pattern::parse("%l").unwrap();
 //! assert_eq!(tree, [PatternObject::Class(Class::Lowercase)]);
 //! #[cfg(feature = "to-regex")]
-//! assert_eq!(lua_pattern::try_to_regex(&tree, false).unwrap(), "[a-z]");
+//! assert_eq!(lua_pattern::try_to_regex(&tree, false, false).unwrap(), "[a-z]");
 //! ```
 #![cfg_attr(
     feature = "docs",
@@ -83,20 +83,19 @@ pub enum PatternObject {
     /// corresponding `y`.
     Balanced(char, char),
     /// A frontier pattern (eg. `%f[a-z]`). Matches if the following character matches the set and
-    /// the previous character does not match the set.
-    Frontier(Box<PatternObject>),
+    /// the previous character does not match the set. The `bool` indicated whether the set is
+    /// inverted.
+    Frontier(bool, Vec<SetPatternObject>),
 
     /// A capture group with a numeric ID and the contained [`Pattern`] (eg. `(a)`).
     Capture(u8, Pattern),
-    /// A set of [`SetPatternObject`]s (eg. `[a-z_%u]`). Matches if any of the contained entries
-    /// matches.
-    Set(Vec<SetPatternObject>),
-    /// An inverted set of [`SetPatternObject`]s (eg. `[^a-z_%u]`). Matches if none of the
-    /// contained entries match.
-    InverseSet(Vec<SetPatternObject>),
+    /// A set of [`SetPatternObject`]s (eg. `[a-z_%u]`, `[^a-z_%u]`), the `bool` specifies whether
+    /// the set is inverted. If the set is _not_ inverted, it matches if any of the contained
+    /// entries matches. Otherwise, it matches if none of the contained entries match.
+    Set(bool, Vec<SetPatternObject>),
 }
 
-/// An entry of a [set](PatternObject::Set) or [inverted set](PatternObject::InverseSet).
+/// An entry of a [set](PatternObject::Set).
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum SetPatternObject {
     /// A character to match literally (eg. `a`).

@@ -12,15 +12,15 @@ pub enum ToRegexError {
     #[error("the input pattern includes a balanced pattern (eg. `%b{{}}`) which cannot be represented by regex")]
     BalancedUsed,
 
-    /// The input pattern includes a frontier pattern (eg. `%f[a-z]`) which cannot be represented
-    /// by regular expressions.
-    #[error("the input pattern includes a frontier pattern (eg. `%f[a-z]`) which cannot be represented by regex")]
-    FrontierUsed,
-
     /// The input pattern includes a capture backreference (eg. `%1`), but `allow_capture_refs` was
-    /// set to false.
+    /// set to `false`.
     #[error("the input pattern includes a capture backreference, which may not be supported by some regex engines")]
     CaptureRefUsed,
+
+    /// The input pattern includes a frontier pattern (eg. `%f[a-z]`), but `allow_lookaround` was
+    /// set to `false`.
+    #[error("the input pattern includes a frontier pattern (eg. `%f[a-z]`) which cannot be represented by regex")]
+    FrontierUsed,
 }
 
 /// Try to convert a parsed Lua pattern into a regular expression string.
@@ -40,38 +40,41 @@ pub enum ToRegexError {
 /// 1. Lua patterns support balanced bracket matching using the `%b` operator. This is not
 ///    supported by RegEx. Thus, an error will be returned if the input pattern makes use of this
 ///    feature.
-/// 2. Lua patterns support so-called frontier patterns. This is not supported by RegEx. Thus,
-///    an error will be returned if the input pattern makes use of this feature.
-/// 3. Lua patterns support references to previous capture groups. Some RegEx engines also support
+/// 2. Lua patterns support references to previous capture groups. Some RegEx engines also support
 ///    this feature, but not all. For this reason, uses of such backreferences will result in an
 ///    error, if `allow_capture_refs` is set to `false`.
+/// 3. Lua patterns support so-called frontier patterns. Their behaviour can be emulated using
+///    lookaround, but only some RegEx engines support that. Therefore, if the input includes a
+///    frontier pattern and `allow_lookaround` is set to `false`, an error will be returned.
 ///
 /// Also see [`ToRegexError`] for further information.
-// TODO: lookahead + lookbehind might be able to emulate the behaviour of frontiers
 pub fn try_to_regex(
     pattern: &[PatternObject],
     allow_capture_refs: bool,
+    allow_lookaround: bool,
 ) -> Result<String, ToRegexError> {
-    from_pattern(pattern, allow_capture_refs)
+    from_pattern(pattern, allow_capture_refs, allow_lookaround)
 }
 
 fn from_pattern(
     pattern: &[PatternObject],
     allow_capture_refs: bool,
+    allow_lookaround: bool,
 ) -> Result<String, ToRegexError> {
     pattern
         .iter()
-        .map(|obj| from_pattern_object(obj, allow_capture_refs))
+        .map(|obj| from_pattern_object(obj, allow_capture_refs, allow_lookaround))
         .collect::<Result<_, _>>()
 }
 
 fn from_pattern_object(
     object: &PatternObject,
     allow_capture_refs: bool,
+    allow_lookaround: bool,
 ) -> Result<Cow<'static, str>, ToRegexError> {
     match object {
         PatternObject::Balanced(_, _) => Err(ToRegexError::BalancedUsed),
-        PatternObject::Frontier(_) => Err(ToRegexError::FrontierUsed),
+        PatternObject::Frontier(_, _) if !allow_lookaround => Err(ToRegexError::FrontierUsed),
         PatternObject::CaptureRef(_) if !allow_capture_refs => Err(ToRegexError::CaptureRefUsed),
 
         PatternObject::Any => Ok(".".into()),
@@ -85,17 +88,26 @@ fn from_pattern_object(
 
         PatternObject::Quantifier(quantifier, child) => Ok(format!(
             "{}{}",
-            from_pattern_object(child, allow_capture_refs)?,
+            from_pattern_object(child, allow_capture_refs, allow_lookaround)?,
             from_quantifier(quantifier)
         )
         .into()),
         PatternObject::Class(class) => Ok(from_class(class).into()),
         PatternObject::CaptureRef(id) => Ok(format!("\\{id}").into()),
-        PatternObject::Capture(_, pattern) => {
-            Ok(format!("({})", from_pattern(pattern, allow_capture_refs)?).into())
-        }
-        PatternObject::Set(set) => Ok(from_set(set, false).into()),
-        PatternObject::InverseSet(set) => Ok(from_set(set, true).into()),
+        PatternObject::Capture(_, pattern) => Ok(format!(
+            "({})",
+            from_pattern(pattern, allow_capture_refs, allow_lookaround)?
+        )
+        .into()),
+        PatternObject::Set(inverted, set) => Ok(from_set(set, *inverted).into()),
+        PatternObject::Frontier(inverted, set) => Ok(format!(
+            "(?<{}{})(?{}{})",
+            if *inverted { "=" } else { "!" },
+            from_set(set, false),
+            if *inverted { "!" } else { "=" },
+            from_set(set, false),
+        )
+        .into()),
     }
 }
 
@@ -207,25 +219,42 @@ mod tests {
                     PatternObject::Class(Class::NotLetters),
                 ],
             ),
-            PatternObject::Set(vec![
-                SetPatternObject::Char('a'),
-                SetPatternObject::Char('s'),
-                SetPatternObject::Char('d'),
-            ]),
-            PatternObject::InverseSet(vec![
-                SetPatternObject::Char('n'),
-                SetPatternObject::Char('o'),
-                SetPatternObject::Char('t'),
-            ]),
+            PatternObject::Set(
+                false,
+                vec![
+                    SetPatternObject::Char('a'),
+                    SetPatternObject::Char('s'),
+                    SetPatternObject::Char('d'),
+                ],
+            ),
+            PatternObject::Set(
+                true,
+                vec![
+                    SetPatternObject::Char('n'),
+                    SetPatternObject::Char('o'),
+                    SetPatternObject::Char('t'),
+                ],
+            ),
+            PatternObject::Frontier(
+                true,
+                vec![
+                    SetPatternObject::Char('n'),
+                    SetPatternObject::Char('o'),
+                    SetPatternObject::Char('t'),
+                ],
+            ),
             PatternObject::CaptureRef(1),
-            PatternObject::Set(vec![
-                SetPatternObject::Escaped(']'),
-                SetPatternObject::Range('a', 'z'),
-            ]),
+            PatternObject::Set(
+                false,
+                vec![
+                    SetPatternObject::Escaped(']'),
+                    SetPatternObject::Range('a', 'z'),
+                ],
+            ),
             PatternObject::String("$".to_owned()),
             PatternObject::End,
         ];
 
-        assert_eq!(try_to_regex(&input, true), Ok(r##"^\^charsq+w*?e*r?.\.([a-zA-Z][\0-\31][0-9][\33-\126][a-z][!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~][ \t\n\v\f\r][A-Z][a-zA-Z0-9][0-9a-fA-F]\0[^a-zA-Z])[asd][^not]\1[\]a-z]\$$"##.to_owned()));
+        assert_eq!(try_to_regex(&input, true, true), Ok(r##"^\^charsq+w*?e*r?.\.([a-zA-Z][\0-\31][0-9][\33-\126][a-z][!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~][ \t\n\v\f\r][A-Z][a-zA-Z0-9][0-9a-fA-F]\0[^a-zA-Z])[asd][^not](?<=[not])(?![not])\1[\]a-z]\$$"##.to_owned()));
     }
 }
