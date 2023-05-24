@@ -1,29 +1,38 @@
 [package]
 name = "syntastica-parsers-git"
-version = "0.1.0"
+version = "0.1.1"
 authors.workspace = true
 edition = "2021"
 license.workspace = true
 repository.workspace = true
-description = "Collection of tree-sitter queries for syntastica"
+description = "Collection of tree-sitter parsers for syntastica, fetching with git in the build-script"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [features]
+#! ## Features
 default = []
 
+#! At least one of **`some`**, **`most`**, and **`all`** must be enabled.
+## Include parsers for the most widely known supported languages
 some = []
+## Implies **`some`**. Include parsers for most common languages
 most = ["some"]
+## Implies **`most`**. Include parsers for all supported languages
 all = ["most"]
 
+## Meant to be enabled when building docs
+docs = ["dep:document-features", "dep:rustc_version"]
+
 [dependencies]
+document-features = { version = "0.2.7", optional = true }
 syntastica = { version = "0.1.1", path = "..", default-features = false }
-syntastica-macros = { version = "0.1.0", path = "../syntastica-macros" }
+syntastica-macros = { version = "0.2.0", path = "../syntastica-macros" }
 
 [build-dependencies]
 cc = "1.0.79"
 syntastica-macros = { version = "0.1.0", path = "../syntastica-macros" }
-rustc_version = "0.4.0"
+rustc_version = { version = "0.4.0", optional = true }
 
 [package.metadata.docs.rs]
 all-features = true

@@ -44,14 +44,33 @@ pub fn parsers_ffi(_: TokenStream) -> TokenStream {
             fn #ffi_func() -> ::syntastica::providers::Language;
         }
     });
+    let functions = LANGUAGE_CONFIG.languages.iter().map(|lang| {
+        let feat = lang.group.to_string();
+        let name = format_ident!("{}", lang.name);
+        let ffi_func = format_ident!("{}", lang.parser.ffi_func);
+        let doc = format!(
+            "Get the parser for [{}]({}/tree/{}).",
+            lang.name, lang.parser.git.url, lang.parser.git.rev,
+        );
+        quote! {
+            #[cfg(feature = #feat)]
+            #[doc = #doc]
+            pub fn #name() -> ::syntastica::providers::Language {
+                #[cfg(not(feature = "docs"))]
+                unsafe { #ffi_func() }
+                #[cfg(feature = "docs")]
+                ::std::unimplemented!()
+            }
+        }
+    });
     let get_parsers = LANGUAGE_CONFIG.languages.iter().map(|lang| {
         let feat = lang.group.to_string();
+        let name = format_ident!("{}", lang.name);
         let name_str = &lang.name;
-        let ffi_func = format_ident!("{}", lang.parser.ffi_func);
         quote! {
-            #[cfg(all(feature = #feat, not(DOCS_RS)))]
+            #[cfg(all(feature = #feat, not(feature = "docs")))]
             if self.0.map_or(true, |langs| langs.contains(&#name_str)) {
-                _map.insert(#name_str.to_owned(), unsafe { #ffi_func() });
+                _map.insert(#name_str.to_owned(), #name());
             }
         }
     });
@@ -67,12 +86,17 @@ pub fn parsers_ffi(_: TokenStream) -> TokenStream {
         }
     });
     quote! {
-        #[cfg(not(DOCS_RS))]
+        #[cfg(not(feature = "docs"))]
         extern "C" {
             #(#extern_c)*
         }
 
+        #(#functions)*
+
         // TODO: maybe create enum with all supported languages
+        /// An implementation of [`ParserProvider`](::syntastica::providers::ParserProvider),
+        /// providing all parsers in the enabled feature set (see [`all`](ParserProviderImpl::all))
+        /// or a subset of them (see [`with_languages`](ParserProviderImpl::with_languages)).
         pub struct ParserProviderImpl<'a>(::std::option::Option<&'a [&'a str]>);
 
         impl ::syntastica::providers::ParserProvider for ParserProviderImpl<'_> {

@@ -1,20 +1,26 @@
+#![doc = include_str!("../README.md")]
+#![cfg_attr(
+    feature = "docs",
+    cfg_attr(doc, doc = ::document_features::document_features!())
+)]
 #![cfg_attr(all(doc, CHANNEL_NIGHTLY), feature(doc_auto_cfg))]
+#![warn(rust_2018_idioms)]
+#![deny(missing_docs)]
 
 #[cfg(not(feature = "some"))]
 compile_error!("current feature set includes no parsers");
 
-#[cfg(feature = "some")]
 syntastica_macros::parsers_ffi!();
 
-#[cfg(feature = "some")]
 impl ParserProviderImpl<'static> {
+    /// Create a new [`ParserProviderImpl`] with all languages in the enabled feature set.
     pub fn all() -> Self {
         Self(None)
     }
 }
 
-#[cfg(feature = "some")]
 impl<'src> ParserProviderImpl<'src> {
+    /// Create a new [`ParserProviderImpl`] with support for specific languages.
     pub fn with_languages(languages: &'src [&'src str]) -> Self {
         Self(Some(languages))
     }

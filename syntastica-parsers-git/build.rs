@@ -5,24 +5,22 @@ use std::{
     process::Command,
 };
 
-use rustc_version::Channel;
-
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    println!("cargo:rerun-if-env-changed=DOCS_RS");
-    if std::env::var("DOCS_RS").is_err() {
+    if cfg!(not(feature = "docs")) {
         syntastica_macros::parsers_git!();
-    } else {
-        println!("cargo:rustc-cfg=DOCS_RS");
     }
 
     // for documenting features when using nightly
-    let channel = match rustc_version::version_meta().unwrap().channel {
-        Channel::Dev => "CHANNEL_DEV",
-        Channel::Nightly => "CHANNEL_NIGHTLY",
-        Channel::Beta => "CHANNEL_BETA",
-        Channel::Stable => "CHANNEL_STABLE",
-    };
-    println!("cargo:rustc-cfg={channel}");
+    #[cfg(feature = "docs")]
+    {
+        let channel = match rustc_version::version_meta().unwrap().channel {
+            rustc_version::Channel::Dev => "CHANNEL_DEV",
+            rustc_version::Channel::Nightly => "CHANNEL_NIGHTLY",
+            rustc_version::Channel::Beta => "CHANNEL_BETA",
+            rustc_version::Channel::Stable => "CHANNEL_STABLE",
+        };
+        println!("cargo:rustc-cfg={channel}");
+    }
     println!("cargo:rerun-if-changed=build.rs");
 
     Ok(())
