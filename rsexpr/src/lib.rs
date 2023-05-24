@@ -99,7 +99,8 @@ pub struct OwnedSexprs(Vec<OwnedSexpr>);
 /// [`Sexpr`] implements the [`Display`] trait for serializing to strings. By default, the output
 /// will try to minimize the amount of spaces used and the resulting output will be on one line.
 /// Enabling the formatter's `alternate` flag using `#`, causes the output to be human-friendly /
-/// pretty-printed.
+/// pretty-printed. Setting the `precision` with `.` additionally allows to specify the number of
+/// spaces used for indentation (2 by default).
 ///
 /// For example:
 ///
@@ -110,6 +111,11 @@ pub struct OwnedSexprs(Vec<OwnedSexpr>);
 ///   a
 ///   b
 ///   c
+/// ]");
+/// assert_eq!(format!("{sexpr:#.4}"), "[
+///     a
+///     b
+///     c
 /// ]");
 /// ```
 #[derive(Debug, Clone, Hash, PartialEq, Eq)]
@@ -133,17 +139,23 @@ pub enum Sexpr<'src> {
 /// [`OwnedSexpr`] implements the [`Display`] trait for serializing to strings. By default, the output
 /// will try to minimize the amount of spaces used and the resulting output will be on one line.
 /// Enabling the formatter's `alternate` flag using `#`, causes the output to be human-friendly /
-/// pretty-printed.
+/// pretty-printed. Setting the `precision` with `.` additionally allows to specify the number of
+/// spaces used for indentation (2 by default).
 ///
 /// For example:
 ///
 /// ```
-/// let sexpr = rsexpr::OwnedSexpr::from(rsexpr::from_slice(b"[ a b c ]").unwrap());
+/// let sexpr = rsexpr::from_slice(b"[ a b c ]").unwrap();
 /// assert_eq!(format!("{sexpr}"), "[a b c]");
 /// assert_eq!(format!("{sexpr:#}"), "[
 ///   a
 ///   b
 ///   c
+/// ]");
+/// assert_eq!(format!("{sexpr:#.4}"), "[
+///     a
+///     b
+///     c
 /// ]");
 /// ```
 #[derive(Debug, Clone, Hash, PartialEq, Eq)]

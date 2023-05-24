@@ -2,8 +2,6 @@ use std::fmt::{self, Display, Formatter};
 
 use crate::{OwnedSexpr, OwnedSexprs, Sexpr, Sexprs};
 
-const INDENT: &str = "  ";
-
 impl Display for OwnedSexpr {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         Sexpr::from(self).fmt(f)
@@ -44,6 +42,8 @@ impl Display for Sexpr<'_> {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         let pretty = f.alternate();
         let mut indent_level = f.width().unwrap_or(0);
+        let indent_width = f.precision().unwrap_or(2);
+        let indent = |level| " ".repeat(indent_width * level);
 
         if !pretty {
             match self {
@@ -111,24 +111,24 @@ impl Display for Sexpr<'_> {
                             }
                             child @ (Sexpr::List(_) | Sexpr::Group(_)) => {
                                 indent_level += 1;
-                                write!(f, "\n{}", INDENT.repeat(indent_level))?;
-                                write!(f, "{child:#indent_level$}")?;
+                                write!(f, "\n{}", indent(indent_level))?;
+                                write!(f, "{child:#indent_level$.indent_width$}")?;
                                 indent_level -= 1;
-                                write!(f, "\n{}", INDENT.repeat(indent_level))?;
+                                write!(f, "\n{}", indent(indent_level))?;
                             }
                             child @ (Sexpr::String(_) | Sexpr::Atom(_)) => write!(f, "{child:#}")?,
                             #[cfg(feature = "comments")]
                             child @ Sexpr::Comment(_) => {
                                 indent_level += 1;
-                                write!(f, "\n{}", INDENT.repeat(indent_level))?;
-                                write!(f, "{child:#indent_level$}")?;
+                                write!(f, "\n{}", indent(indent_level))?;
+                                write!(f, "{child:#indent_level$.indent_width$}")?;
                                 indent_level -= 1;
-                                write!(f, "\n{}", INDENT.repeat(indent_level))?;
+                                write!(f, "\n{}", indent(indent_level))?;
                             }
                         },
                         _ => {
                             indent_level += 1;
-                            let newline = format!("\n{}", INDENT.repeat(indent_level));
+                            let newline = format!("\n{}", indent(indent_level));
                             let mut iter = children.windows(2).peekable();
 
                             // if the first child is a string or atom, keep it on the same line
@@ -149,7 +149,7 @@ impl Display for Sexpr<'_> {
                             if let (Some([child, _]), _) | (_, Some(child)) =
                                 (iter.peek(), second_child)
                             {
-                                write!(f, "{child:#indent_level$}")?;
+                                write!(f, "{child:#indent_level$.indent_width$}")?;
                             }
 
                             // write all other children
@@ -165,17 +165,17 @@ impl Display for Sexpr<'_> {
                                         child @ (Sexpr::List(_) | Self::Group(_)),
                                     )
                                     | (_, child @ Sexpr::Atom([b'@', ..])) => {
-                                        write!(f, " {child:#indent_level$}")?;
+                                        write!(f, " {child:#indent_level$.indent_width$}")?;
                                     }
                                     // else go to the next line
                                     (_, child) => {
-                                        write!(f, "{newline}{child:#indent_level$}")?;
+                                        write!(f, "{newline}{child:#indent_level$.indent_width$}")?;
                                     }
                                 }
                             }
 
                             indent_level -= 1;
-                            write!(f, "\n{}", INDENT.repeat(indent_level))?;
+                            write!(f, "\n{}", indent(indent_level))?;
                         }
                     }
                     write!(f, "{close_paren}")?;
