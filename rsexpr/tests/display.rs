@@ -49,4 +49,29 @@ fn comments() {
 "###
         .trim_start()
     );
+
+    assert_eq!(
+        format!(
+            "{:#}",
+            rsexpr::from_slice_multi(
+                r###"
+"string" @string
+(list) @list
+["a" "b"] @group
+"###
+            )
+            .unwrap()
+        ),
+        r###"
+"string" @string
+
+(list) @list
+
+[
+  "a"
+  "b"
+] @group
+"###
+        .trim_start()
+    );
 }

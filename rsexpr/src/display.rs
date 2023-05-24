@@ -17,14 +17,15 @@ impl Display for OwnedSexprs {
 impl Display for Sexprs<'_> {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         let last = self.len() - 1;
-        for (index, sexpr) in self.iter().enumerate() {
+        let mut iter = self.iter().enumerate().peekable();
+        while let Some((index, sexpr)) = iter.next() {
             sexpr.fmt(f)?;
 
             if f.alternate() && index != last {
-                #[allow(clippy::match_single_binding)]
                 match sexpr {
                     #[cfg(feature = "comments")]
                     Sexpr::Comment(_) => writeln!(f)?,
+                    _ if matches!(iter.peek(), Some((_, Sexpr::Atom(_)))) => write!(f, " ")?,
                     _ => write!(f, "\n\n")?,
                 }
             }
