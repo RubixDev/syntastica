@@ -67,6 +67,11 @@ all = [
 ## Meant to be enabled when building docs
 docs = ["dep:document-features", "dep:rustc_version"]
 
+[dependencies.tree-sitter-asm]
+optional = true
+git = "https://github.com/rush-rs/tree-sitter-asm"
+rev = "36dc26acc7818920de2e103e20a9f42358caf926"
+
 [dependencies.tree-sitter-bash]
 optional = true
 git = "https://github.com/tree-sitter/tree-sitter-bash"
@@ -112,17 +117,12 @@ optional = true
 git = "https://github.com/tree-sitter/tree-sitter-python"
 rev = "62827156d01c74dc1538266344e788da74536b8a"
 
-[dependencies.tree-sitter-rust]
-optional = true
-git = "https://github.com/tree-sitter/tree-sitter-rust"
-rev = "0a70e15da977489d954c219af9b50b8a722630ee"
-
-[dependencies.tree-sitter-asm]
-optional = true
-git = "https://github.com/rush-rs/tree-sitter-asm"
-rev = "36dc26acc7818920de2e103e20a9f42358caf926"
-
 [dependencies.tree-sitter-regex]
 optional = true
 git = "https://github.com/tree-sitter/tree-sitter-regex"
 rev = "e1cfca3c79896ff79842f057ea13e529b66af636"
+
+[dependencies.tree-sitter-rust]
+optional = true
+git = "https://github.com/tree-sitter/tree-sitter-rust"
+rev = "0a70e15da977489d954c219af9b50b8a722630ee"
