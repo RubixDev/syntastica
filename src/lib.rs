@@ -70,9 +70,20 @@ pub fn process<'src>(
     let mut out = vec![vec![]];
     let mut style_stack = vec![];
     for event in highlighter.highlight(highlight_config, code.as_bytes(), None, |lang_name| {
+        // if `lang_name` matches a language/parser name in `languages`, use that language
         languages
             .get(lang_name)
+            // else if `injection_callback` returns a name, try getting a language for that name
             .or_else(|| injection_callback(lang_name).and_then(|name| languages.get(name.as_ref())))
+            // else, `lang_name` might be a mimetype like `text/css`, so try both again with the
+            // text after the last `/`
+            .or_else(|| {
+                lang_name.rsplit_once('/').and_then(|(_, name)| {
+                    languages.get(name).or_else(|| {
+                        injection_callback(name).and_then(|name| languages.get(name.as_ref()))
+                    })
+                })
+            })
     })? {
         match event? {
             HighlightEvent::HighlightStart(Highlight(highlight)) => style_stack.push(highlight),
