@@ -13,12 +13,19 @@ description = "Collection of tree-sitter parsers for syntastica, fetching with g
 #! ## Features
 default = []
 
-#! At least one of **`some`**, **`most`**, and **`all`** must be enabled.
-## Include parsers for the most widely known supported languages
+#! At least one of
+#! <span class="stab portability"><code>some</code></span>,
+#! <span class="stab portability"><code>most</code></span>, and
+#! <span class="stab portability"><code>all</code></span>
+#! must be enabled.
+
+## Include parsers for the most widely known supported languages.
 some = []
-## Implies **`some`**. Include parsers for most common languages
+## Implies <span class="stab portability"><code>some</code></span>.
+## Include parsers for most common languages.
 most = ["some"]
-## Implies **`most`**. Include parsers for all supported languages
+## Implies <span class="stab portability"><code>most</code></span>.
+## Include parsers for all supported languages.
 all = ["most"]
 
 ## Meant to be enabled when building docs
