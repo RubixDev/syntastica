@@ -20,7 +20,7 @@ fn validate(
     lang: Language,
     lang_name: &str,
     filename: &str,
-    processor: impl Fn(Vec<OwnedSexpr>) -> Vec<OwnedSexpr>,
+    processor: impl Fn(OwnedSexprs) -> OwnedSexprs,
 ) -> String {
     // read input
     let path = format!("{}/{lang_name}/{filename}", *QUERIES_DIR);
@@ -82,8 +82,8 @@ fn read_queries(lang_name: &str, filename: &str) -> String {
         .into_owned()
 }
 
-fn group_root_level_captures(queries: Vec<OwnedSexpr>) -> Vec<OwnedSexpr> {
-    let mut new_queries = Vec::with_capacity(queries.len());
+fn group_root_level_captures(queries: OwnedSexprs) -> OwnedSexprs {
+    let mut new_queries = OwnedSexprs::from(Vec::with_capacity(queries.len()));
     let mut iter = queries.into_iter().peekable();
 
     // groups start with `List`, `Group`, or `String` nodes
@@ -105,7 +105,7 @@ fn group_root_level_captures(queries: Vec<OwnedSexpr>) -> Vec<OwnedSexpr> {
     new_queries
 }
 
-fn process_locals(mut queries: Vec<OwnedSexpr>) -> Vec<OwnedSexpr> {
+fn process_locals(mut queries: OwnedSexprs) -> OwnedSexprs {
     for query in &mut queries {
         replace_locals_captures(query);
         replace_predicates(query);
@@ -137,7 +137,7 @@ fn replace_locals_captures(tree: &mut OwnedSexpr) {
     }
 }
 
-fn process_injections(mut queries: Vec<OwnedSexpr>) -> Vec<OwnedSexpr> {
+fn process_injections(mut queries: OwnedSexprs) -> OwnedSexprs {
     for query in &mut queries {
         replace_injection_captures(query, 0);
         replace_predicates(query);
@@ -195,7 +195,7 @@ fn replace_injection_captures(
     (is_predicate, additional_sexp)
 }
 
-fn process_highlights(mut queries: Vec<OwnedSexpr>) -> Vec<OwnedSexpr> {
+fn process_highlights(mut queries: OwnedSexprs) -> OwnedSexprs {
     queries.reverse();
 
     for query in &mut queries {
