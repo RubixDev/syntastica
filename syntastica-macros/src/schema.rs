@@ -7,7 +7,7 @@ pub struct LanguageConfig {
     pub languages: Vec<Language>,
 }
 
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "kebab-case")]
 pub struct Language {
     pub name: String,
@@ -18,7 +18,7 @@ pub struct Language {
     pub queries: Queries,
 }
 
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "kebab-case")]
 pub enum Group {
     Some,
@@ -36,7 +36,7 @@ impl Display for Group {
     }
 }
 
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "kebab-case")]
 pub struct Parser {
     pub git: ParserGit,
@@ -46,7 +46,7 @@ pub struct Parser {
     pub crates_io: Option<String>,
 }
 
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "kebab-case")]
 pub struct ParserGit {
     pub url: String,
@@ -54,14 +54,14 @@ pub struct ParserGit {
     pub path: Option<String>,
 }
 
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "kebab-case")]
 pub struct ParserExternal {
     pub c: bool,
     pub cpp: bool,
 }
 
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "kebab-case")]
 pub struct Queries {
     pub nvim_like: bool,

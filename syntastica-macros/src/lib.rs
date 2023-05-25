@@ -85,6 +85,24 @@ pub fn parsers_ffi(_: TokenStream) -> TokenStream {
             }
         }
     });
+    let lang_count_some = LANGUAGE_CONFIG
+        .languages
+        .iter()
+        .filter(|lang| lang.group == Group::Some)
+        .count();
+    let lang_count_all = LANGUAGE_CONFIG.languages.len();
+    let lang_count_most = lang_count_all - lang_count_some;
+    let lang_count = quote! {
+        if cfg!(feature = "all") {
+            #lang_count_all
+        } else if cfg!(feature = "most") {
+            #lang_count_most
+        } else if cfg!(feature = "some") {
+            #lang_count_some
+        } else {
+            0
+        }
+    };
     quote! {
         #[cfg(not(feature = "docs"))]
         extern "C" {
@@ -101,9 +119,8 @@ pub fn parsers_ffi(_: TokenStream) -> TokenStream {
 
         impl ::syntastica::providers::ParserProvider for ParserProviderImpl<'_> {
             fn get_parsers(&self) -> ::std::result::Result<::syntastica::providers::Parsers, ::syntastica::Error> {
-                // TODO: use `with_capacity`
                 let mut _map: ::std::collections::HashMap<::std::string::String, ::syntastica::providers::Language>
-                    = ::std::collections::HashMap::new();
+                    = ::std::collections::HashMap::with_capacity(#lang_count);
                 #(#get_parsers)*
                 ::std::result::Result::Ok(_map)
             }
@@ -208,10 +225,10 @@ pub fn queries_provider(_: TokenStream) -> TokenStream {
             ]);
         }
     });
+    let lang_count = LANGUAGE_CONFIG.languages.len();
     quote! {
         {
-            // TODO: use `with_capacity`
-            let mut _map: Queries<'static> = ::std::collections::HashMap::new();
+            let mut _map: Queries<'static> = ::std::collections::HashMap::with_capacity(#lang_count);
             #(#langs)*
             ::std::result::Result::Ok(_map)
         }
