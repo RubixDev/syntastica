@@ -26,6 +26,16 @@ pub enum Group {
     All,
 }
 
+impl Group {
+    pub fn next_smaller(&self) -> Option<Self> {
+        match self {
+            Group::Some => None,
+            Group::Most => Some(Group::Some),
+            Group::All => Some(Group::Most),
+        }
+    }
+}
+
 impl Display for Group {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         match self {
@@ -43,7 +53,8 @@ pub struct Parser {
     pub external_scanner: ParserExternal,
     pub ffi_func: String,
     pub rust_func: Option<String>,
-    pub crates_io: Option<String>,
+    pub package: String,
+    pub crates_io: bool,
 }
 
 #[derive(Clone, Debug, Deserialize, PartialEq, Eq)]

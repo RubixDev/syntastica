@@ -5,6 +5,7 @@ members = [
     "./lua-pattern",
     "./syntastica-queries",
     "./syntastica-parsers-git",
+    "./syntastica-parsers-gitdep",
     "./syntastica-macros",
     "./syntastica-themes",
     "./syntastica-highlight",

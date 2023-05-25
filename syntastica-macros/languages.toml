@@ -7,7 +7,8 @@ git = { url = "https://github.com/tree-sitter/tree-sitter-bash", rev = "ee2a8f99
 external-scanner = { c = false, cpp = true }
 ffi-func = "tree_sitter_bash"
 rust-func = "language"
-crates-io = "tree-sitter-bash"
+package = "tree-sitter-bash"
+crates-io = true
 [languages.queries]
 nvim-like = true
 injections = true
@@ -22,7 +23,8 @@ git = { url = "https://github.com/tree-sitter/tree-sitter-c", rev = "cac392ac3d7
 external-scanner = { c = false, cpp = false }
 ffi-func = "tree_sitter_c"
 rust-func = "language"
-crates-io = "tree-sitter-c"
+package = "tree-sitter-c"
+crates-io = true
 [languages.queries]
 nvim-like = true
 injections = true
@@ -37,7 +39,8 @@ git = { url = "https://github.com/tree-sitter/tree-sitter-cpp", rev = "70aed2e9e
 external-scanner = { c = false, cpp = true }
 ffi-func = "tree_sitter_cpp"
 rust-func = "language"
-crates-io = "tree-sitter-cpp"
+package = "tree-sitter-cpp"
+crates-io = true
 [languages.queries]
 nvim-like = true
 injections = true
@@ -52,7 +55,8 @@ git = { url = "https://github.com/tree-sitter/tree-sitter-css", rev = "769203d0f
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_css"
 rust-func = "language"
-crates-io = "tree-sitter-css"
+package = "tree-sitter-css"
+crates-io = true
 [languages.queries]
 nvim-like = true
 injections = true
@@ -67,7 +71,8 @@ git = { url = "https://github.com/tree-sitter/tree-sitter-go", rev = "64457ea6b7
 external-scanner = { c = false, cpp = false }
 ffi-func = "tree_sitter_go"
 rust-func = "language"
-crates-io = "tree-sitter-go"
+package = "tree-sitter-go"
+crates-io = true
 [languages.queries]
 nvim-like = true
 injections = true
@@ -81,8 +86,10 @@ file-extensions = ["html"]
 git = { url = "https://github.com/tree-sitter/tree-sitter-html", rev = "86c253e675e7fdd1c0482efe0706f24bafbc3a7d" }
 external-scanner = { c = false, cpp = true }
 ffi-func = "tree_sitter_html"
-rust-func = "language"
-crates-io = "tree-sitter-html"
+# unsupported because of incompatible old tree-sitter dependency
+# rust-func = "language"
+package = "tree-sitter-html"
+crates-io = false
 [languages.queries]
 nvim-like = true
 injections = true
@@ -97,7 +104,8 @@ git = { url = "https://github.com/tree-sitter/tree-sitter-java", rev = "c194ee5e
 external-scanner = { c = false, cpp = false }
 ffi-func = "tree_sitter_java"
 rust-func = "language"
-crates-io = "tree-sitter-java"
+package = "tree-sitter-java"
+crates-io = true
 [languages.queries]
 nvim-like = true
 injections = true
@@ -112,7 +120,8 @@ git = { url = "https://github.com/tree-sitter/tree-sitter-javascript", rev = "57
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_javascript"
 rust-func = "language"
-crates-io = "tree-sitter-javascript"
+package = "tree-sitter-javascript"
+crates-io = true
 [languages.queries]
 nvim-like = true
 injections = true
@@ -127,7 +136,8 @@ git = { url = "https://github.com/tree-sitter/tree-sitter-json", rev = "40a81c01
 external-scanner = { c = false, cpp = false }
 ffi-func = "tree_sitter_json"
 rust-func = "language"
-crates-io = "tree-sitter-json"
+package = "tree-sitter-json"
+crates-io = true
 [languages.queries]
 nvim-like = true
 injections = false
@@ -142,7 +152,8 @@ git = { url = "https://github.com/tree-sitter/tree-sitter-python", rev = "628271
 external-scanner = { c = false, cpp = true }
 ffi-func = "tree_sitter_python"
 rust-func = "language"
-crates-io = "tree-sitter-python"
+package = "tree-sitter-python"
+crates-io = true
 [languages.queries]
 nvim-like = true
 injections = true
@@ -157,7 +168,8 @@ git = { url = "https://github.com/tree-sitter/tree-sitter-rust", rev = "0a70e15d
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_rust"
 rust-func = "language"
-crates-io = "tree-sitter-rust"
+package = "tree-sitter-rust"
+crates-io = true
 [languages.queries]
 nvim-like = true
 injections = true
@@ -171,8 +183,10 @@ file-extensions = ["tsx"]
 git = { url = "https://github.com/tree-sitter/tree-sitter-typescript", rev = "286e90c32060032225f636a573d0e999f7766c97", path = "tsx" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_tsx"
-rust-func = "language_tsx"
-crates-io = "tree-sitter-typescript"
+# unsupported because of incompatible old tree-sitter dependency
+# rust-func = "language_tsx"
+package = "tree-sitter-typescript"
+crates-io = false
 [languages.queries]
 nvim-like = true
 injections = true
@@ -186,8 +200,10 @@ file-extensions = ["ts"]
 git = { url = "https://github.com/tree-sitter/tree-sitter-typescript", rev = "286e90c32060032225f636a573d0e999f7766c97", path = "typescript" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_typescript"
-rust-func = "language_typescript"
-crates-io = "tree-sitter-typescript"
+# unsupported because of incompatible old tree-sitter dependency
+# rust-func = "language_typescript"
+package = "tree-sitter-typescript"
+crates-io = false
 [languages.queries]
 nvim-like = true
 injections = true
@@ -202,7 +218,8 @@ git = { url = "https://github.com/rush-rs/tree-sitter-asm", rev = "36dc26acc7818
 external-scanner = { c = false, cpp = false }
 ffi-func = "tree_sitter_asm"
 rust-func = "language"
-crates-io = "tree-sitter-asm"
+package = "tree-sitter-asm"
+crates-io = true
 [languages.queries]
 nvim-like = true
 injections = false
@@ -217,7 +234,8 @@ git = { url = "https://github.com/tree-sitter/tree-sitter-regex", rev = "e1cfca3
 external-scanner = { c = false, cpp = false }
 ffi-func = "tree_sitter_regex"
 rust-func = "language"
-crates-io = "tree-sitter-regex"
+package = "tree-sitter-regex"
+crates-io = true
 [languages.queries]
 nvim-like = false
 injections = false

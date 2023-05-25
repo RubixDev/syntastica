@@ -31,7 +31,10 @@ fn try_main() -> Result<()> {
 Usage: Run with `cargo xtask <task>`, eg. `cargo xtask codegen`.
 
     Tasks:
-        codegen: Generate `lib.rs` for `syntastica-queries` and certain themes for `syntastica-themes`
+        codegen:                Run all codegen subtasks
+        codegen queries:        Generate the `lib.rs` file for syntastica-themes
+        codegen parsers-gitdep: Generate parts of the `Cargo.toml` for syntastica-parsers-gitdep
+        codegen themes:         Generate the themes for syntastica-themes
             "###
             .trim(),
         ),

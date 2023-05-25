@@ -1,11 +1,12 @@
 use std::{
     collections::{BTreeMap, HashMap},
-    fs,
+    env, fs,
 };
 
 use anyhow::Result;
 use syntastica::config::ThemeValue;
 
+mod parsers_gitdep;
 mod queries;
 mod theme_gruvbox;
 mod theme_one;
@@ -17,8 +18,13 @@ enum RawThemeValue {
     Ignore,
 }
 
+fn is_arg(test: &str) -> bool {
+    env::args().nth(2).map_or(true, |arg| arg == test)
+}
+
 pub fn run() -> Result<()> {
-    let mut queries_lib_rs = r###"
+    if is_arg("queries") {
+        let mut queries_lib_rs = r###"
 //! This crate defines constants for three types of tree-sitter queries for lots of parsers.
 //! It is intended to be used via [syntastica](https://crates.io/crates/syntastica).
 //!
@@ -37,47 +43,54 @@ pub fn run() -> Result<()> {
 #![cfg_attr(all(doc, CHANNEL_NIGHTLY), feature(doc_auto_cfg))]
 #![cfg_attr(rustfmt, rustfmt_skip)]
 "###
-    .trim_start()
-    .to_owned();
+        .trim_start()
+        .to_owned();
 
-    let queries_dir = crate::WORKSPACE_DIR.join("syntastica-queries/generated_queries");
-    let _ = fs::remove_dir_all(&queries_dir);
-    fs::create_dir_all(&queries_dir)?;
-    fs::write(
-        queries_dir.join("README.md"),
-        include_str!("./codegen/generated_queries_readme.md"),
-    )?;
+        let queries_dir = crate::WORKSPACE_DIR.join("syntastica-queries/generated_queries");
+        let _ = fs::remove_dir_all(&queries_dir);
+        fs::create_dir_all(&queries_dir)?;
+        fs::write(
+            queries_dir.join("README.md"),
+            include_str!("./codegen/generated_queries_readme.md"),
+        )?;
 
-    for (name, [highlights, injections, locals]) in queries::make_queries()? {
-        let lang_dir = queries_dir.join(name);
-        fs::create_dir(&lang_dir)?;
+        for (name, [highlights, injections, locals]) in queries::make_queries()? {
+            let lang_dir = queries_dir.join(name);
+            fs::create_dir(&lang_dir)?;
 
-        fs::write(lang_dir.join("highlights.scm"), highlights)?;
-        fs::write(lang_dir.join("injections.scm"), injections)?;
-        fs::write(lang_dir.join("locals.scm"), locals)?;
+            fs::write(lang_dir.join("highlights.scm"), highlights)?;
+            fs::write(lang_dir.join("injections.scm"), injections)?;
+            fs::write(lang_dir.join("locals.scm"), locals)?;
 
-        queries_lib_rs += &format!(
-            r###"
+            queries_lib_rs += &format!(
+                r###"
 pub const {lang}_HIGHLIGHTS: &str = include_str!("../generated_queries/{name}/highlights.scm");
 pub const {lang}_INJECTIONS: &str = include_str!("../generated_queries/{name}/injections.scm");
 pub const {lang}_LOCALS: &str = include_str!("../generated_queries/{name}/locals.scm");
 "###,
-            lang = name.to_uppercase()
-        )
+                lang = name.to_uppercase()
+            )
+        }
+        fs::write(
+            crate::WORKSPACE_DIR.join("syntastica-queries/src/lib.rs"),
+            queries_lib_rs,
+        )?;
     }
-    fs::write(
-        crate::WORKSPACE_DIR.join("syntastica-queries/src/lib.rs"),
-        queries_lib_rs,
-    )?;
 
-    fs::write(
-        crate::WORKSPACE_DIR.join("syntastica-themes/src/gruvbox.rs"),
-        theme_gruvbox::make_theme()?,
-    )?;
-    fs::write(
-        crate::WORKSPACE_DIR.join("syntastica-themes/src/one.rs"),
-        theme_one::make_theme()?,
-    )?;
+    if is_arg("parsers-gitdep") {
+        parsers_gitdep::write()?;
+    }
+
+    if is_arg("themes") {
+        fs::write(
+            crate::WORKSPACE_DIR.join("syntastica-themes/src/gruvbox.rs"),
+            theme_gruvbox::make_theme()?,
+        )?;
+        fs::write(
+            crate::WORKSPACE_DIR.join("syntastica-themes/src/one.rs"),
+            theme_one::make_theme()?,
+        )?;
+    }
 
     Ok(())
 }

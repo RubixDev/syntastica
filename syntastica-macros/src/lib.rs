@@ -63,28 +63,87 @@ pub fn parsers_ffi(_: TokenStream) -> TokenStream {
             }
         }
     });
-    let get_parsers = LANGUAGE_CONFIG.languages.iter().map(|lang| {
+    parsers(
+        functions,
+        |_| true,
+        Some(quote! {
+            #[cfg(not(feature = "docs"))]
+            extern "C" {
+                #(#extern_c)*
+            }
+        }),
+    )
+}
+
+#[proc_macro]
+pub fn parsers_gitdep(_: TokenStream) -> TokenStream {
+    let functions = LANGUAGE_CONFIG.languages.iter().map(|lang| {
         let feat = lang.group.to_string();
         let name = format_ident!("{}", lang.name);
-        let name_str = &lang.name;
-        quote! {
-            #[cfg(all(feature = #feat, not(feature = "docs")))]
-            if self.0.map_or(true, |langs| langs.contains(&#name_str)) {
-                _map.insert(#name_str.to_owned(), #name());
-            }
-        }
-    });
-    let by_extension = LANGUAGE_CONFIG.languages.iter().map(|lang| {
-        let feat = lang.group.to_string();
-        let extensions = &lang.file_extensions;
-        let name_str = &lang.name;
+        let (doc, body) = match &lang.parser.rust_func {
+            Some(func) => {
+                let func = format_ident!("{func}");
+                let package = format_ident!("{}", lang.parser.package.replace('-', "_"));
+                (
+                    format!(
+                        "Get the parser for [{}]({}/tree/{}).",
+                        lang.name, lang.parser.git.url, lang.parser.git.rev,
+                    ),
+                    quote! { #package::#func() }
+                )
+            },
+            None => (
+                "**This parser is not supported by this parser collection and thus this function will panic!**"
+                    .to_owned(),
+                quote! { ::std::unimplemented!() }
+            ),
+        };
         quote! {
             #[cfg(feature = #feat)]
-            if [#(#extensions),*].contains(&file_extension) {
-                return ::std::option::Option::Some(#name_str.into());
+            #[doc = #doc]
+            pub fn #name() -> ::syntastica::providers::Language {
+                #body
             }
         }
     });
+    parsers(functions, |lang| lang.parser.rust_func.is_some(), None)
+}
+
+fn parsers(
+    functions: impl Iterator<Item = proc_macro2::TokenStream>,
+    filter: impl Fn(&&Language) -> bool,
+    extra: Option<proc_macro2::TokenStream>,
+) -> TokenStream {
+    let get_parsers = LANGUAGE_CONFIG
+        .languages
+        .iter()
+        .filter(&filter)
+        .map(|lang| {
+            let feat = lang.group.to_string();
+            let name = format_ident!("{}", lang.name);
+            let name_str = &lang.name;
+            quote! {
+                #[cfg(all(feature = #feat, not(feature = "docs")))]
+                if self.0.map_or(true, |langs| langs.contains(&#name_str)) {
+                    _map.insert(#name_str.to_owned(), #name());
+                }
+            }
+        });
+    let by_extension = LANGUAGE_CONFIG
+        .languages
+        .iter()
+        .filter(&filter)
+        .map(|lang| {
+            let feat = lang.group.to_string();
+            let extensions = &lang.file_extensions;
+            let name_str = &lang.name;
+            quote! {
+                #[cfg(feature = #feat)]
+                if [#(#extensions),*].contains(&file_extension) {
+                    return ::std::option::Option::Some(#name_str.into());
+                }
+            }
+        });
     let lang_count_some = LANGUAGE_CONFIG
         .languages
         .iter()
@@ -104,10 +163,7 @@ pub fn parsers_ffi(_: TokenStream) -> TokenStream {
         }
     };
     quote! {
-        #[cfg(not(feature = "docs"))]
-        extern "C" {
-            #(#extern_c)*
-        }
+        #extra
 
         #(#functions)*
 
@@ -140,6 +196,76 @@ pub fn parsers_ffi(_: TokenStream) -> TokenStream {
         }
     }
     .into()
+}
+
+#[proc_macro]
+pub fn parsers_gitdep_toml_deps(_: TokenStream) -> TokenStream {
+    let mut added_packages = vec![];
+    LANGUAGE_CONFIG
+        .languages
+        .iter()
+        .filter(|lang| lang.parser.rust_func.is_some())
+        .filter_map(|lang| {
+            let package = &lang.parser.package;
+            let url = &lang.parser.git.url;
+            let rev = &lang.parser.git.rev;
+            if added_packages.contains(&package) {
+                None
+            } else {
+                added_packages.push(package);
+                let dep_str = format!(
+                    r##"
+[dependencies.{package}]
+optional = true
+git = "{url}"
+rev = "{rev}"
+"##
+                );
+                Some(quote! {
+                    toml += #dep_str;
+                })
+            }
+        })
+        .collect::<proc_macro2::TokenStream>()
+        .into()
+}
+
+#[proc_macro]
+pub fn parsers_gitdep_toml_feature_some(_: TokenStream) -> TokenStream {
+    parsers_gitdep_toml_feature(Group::Some)
+}
+
+#[proc_macro]
+pub fn parsers_gitdep_toml_feature_most(_: TokenStream) -> TokenStream {
+    parsers_gitdep_toml_feature(Group::Most)
+}
+
+#[proc_macro]
+pub fn parsers_gitdep_toml_feature_all(_: TokenStream) -> TokenStream {
+    parsers_gitdep_toml_feature(Group::All)
+}
+
+fn parsers_gitdep_toml_feature(group: Group) -> TokenStream {
+    let mut added_packages = vec![];
+    let mut feature_str = format!("{group} = [\n");
+    if let Some(group) = group.next_smaller() {
+        feature_str += &format!("    \"{group}\",\n");
+    }
+    for lang in LANGUAGE_CONFIG
+        .languages
+        .iter()
+        .filter(|lang| lang.parser.rust_func.is_some() && lang.group == group)
+    {
+        let package = &lang.parser.package;
+        if added_packages.contains(&package) {
+            continue;
+        }
+        added_packages.push(package);
+        feature_str += &format!("    \"dep:{package}\",\n");
+    }
+    feature_str += "]\n";
+
+    quote! { toml += #feature_str; }.into()
 }
 
 #[proc_macro]
