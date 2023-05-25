@@ -1,6 +1,6 @@
 use std::{borrow::Cow, collections::HashMap, debug_assert, ops::Deref};
 
-use tree_sitter_highlight::HighlightConfiguration;
+use syntastica_highlight::HighlightConfiguration;
 
 pub use tree_sitter::Language;
 
@@ -14,6 +14,7 @@ pub struct ConfiguredLanguages {
     langs: Languages,
     highlight_keys: Vec<String>,
     highlight_styles: Vec<Style>,
+    default_index: Option<usize>,
 }
 
 impl ConfiguredLanguages {
@@ -21,7 +22,11 @@ impl ConfiguredLanguages {
         let config = config.into_inner();
         let mut highlight_keys = Vec::with_capacity(config.len());
         let mut highlight_styles = Vec::with_capacity(config.len());
-        for (key, style) in config {
+        let mut default_index = None;
+        for (index, (key, style)) in config.into_iter().enumerate() {
+            if key == "text" {
+                default_index = Some(index);
+            }
             highlight_keys.push(key);
             highlight_styles.push(style);
         }
@@ -34,6 +39,7 @@ impl ConfiguredLanguages {
             langs: unconfigured,
             highlight_keys,
             highlight_styles,
+            default_index,
         }
     }
 
@@ -54,6 +60,10 @@ impl ConfiguredLanguages {
 
     pub fn highlight_styles(&self) -> &[Style] {
         &self.highlight_styles
+    }
+
+    pub fn default_style(&self) -> Option<Style> {
+        self.default_index.map(|idx| self.highlight_styles[idx])
     }
 }
 

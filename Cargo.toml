@@ -7,9 +7,10 @@ members = [
     "./syntastica-parsers-git",
     "./syntastica-macros",
     "./syntastica-themes",
+    "./syntastica-highlight",
 ]
 
-package.authors = ["RubixDev"]
+package.authors = ["RubixDev <silas.groh@t-online.de>"]
 package.license = "GPL-3.0-only"
 package.repository = "https://github.com/RubixDev/syntastica"
 
@@ -28,18 +29,14 @@ description = "Modern and easy syntax highlighting using tree-sitter"
 [features]
 default = ["queries"]
 
-queries = [
-    "dep:syntastica-macros",
-    "dep:syntastica-queries",
-]
+queries = ["dep:syntastica-macros", "dep:syntastica-queries"]
 
 [dependencies]
 serde = { version = "1.0.160", features = ["derive"], optional = true }
 thiserror = "1.0.40"
-
 tree-sitter = "0.20.10"
-tree-sitter-highlight = "0.20.1"
 
+syntastica-highlight = { version = "0.1.0", path = "syntastica-highlight" }
 syntastica-macros = { version = "0.2.0", path = "./syntastica-macros", optional = true }
 syntastica-queries = { version = "0.2.0", path = "./syntastica-queries", optional = true }
 

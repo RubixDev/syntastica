@@ -28,7 +28,7 @@ pub enum Error {
     MalformedQueries(#[from] QueryError),
 
     #[error(transparent)]
-    Highlight(#[from] tree_sitter_highlight::Error),
+    Highlight(#[from] syntastica_highlight::Error),
 }
 
 impl From<Infallible> for Error {

@@ -10,13 +10,13 @@ use std::borrow::Cow;
 
 use config::ResolvedConfig;
 pub use error::*;
-pub use tree_sitter_highlight::Highlighter;
+pub use syntastica_highlight::Highlighter;
 
 use providers::{ConfiguredLanguages, LanguageProvider};
 use renderer::Renderer;
 use style::Style;
+use syntastica_highlight::{Highlight, HighlightEvent};
 use thiserror::Error;
-use tree_sitter_highlight::{Highlight, HighlightEvent};
 
 pub type Highlights<'src> = Vec<Vec<(&'src str, Option<Style>)>>;
 
@@ -83,9 +83,7 @@ pub fn process<'src>(
                 let ends_with_newline = code[start..end].ends_with('\n');
                 let mut lines = code[start..end].lines().peekable();
                 while let Some(line) = lines.next() {
-                    let style = style_stack
-                        .last()
-                        .map(|style_idx| languages.highlight_styles()[*style_idx]);
+                    let style = find_style(&style_stack, languages);
                     out.last_mut()
                         .expect("`out` is initialized with one element and never shrinks in size")
                         .push((line, style));
@@ -99,6 +97,24 @@ pub fn process<'src>(
     }
 
     Ok(out)
+}
+
+fn find_style(stack: &[usize], langs: &ConfiguredLanguages) -> Option<Style> {
+    for index in stack.iter().rev() {
+        let capture_name = langs.highlight_keys().get(*index).map(|name| name.as_str());
+
+        // keep `@none` captures unstyled
+        if capture_name == Some("none") {
+            return None;
+        }
+
+        // try to get style for capture
+        if let Some(style) = langs.highlight_styles().get(*index) {
+            return Some(*style);
+        }
+    }
+
+    langs.default_style()
 }
 
 pub fn render(highlights: &Highlights<'_>, renderer: &mut impl Renderer) -> String {
