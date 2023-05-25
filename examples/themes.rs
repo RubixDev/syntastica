@@ -31,6 +31,8 @@ fn example(
     theme: syntastica::config::Config,
     name: &str,
 ) {
+    let theme = theme.resolve_links().unwrap();
+    let bg_color = theme.get("bg0").copied().map(|style| style.color());
     let provider = ParserProviderImpl::with_languages(&["rust"]);
     println!(
         "\n\x1b[1m{name}:\x1b[0m\n{0}\n{1}{0}",
@@ -44,7 +46,7 @@ fn example(
                 highlighter
             )
             .unwrap(),
-            &mut TerminalRenderer
+            &mut TerminalRenderer::new(bg_color),
         )
     );
 }

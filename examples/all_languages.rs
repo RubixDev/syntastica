@@ -42,7 +42,7 @@ fn example(
                 highlighter
             )
             .unwrap(),
-            &mut TerminalRenderer
+            &mut TerminalRenderer::new(None),
         )
     );
 }

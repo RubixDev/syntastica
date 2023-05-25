@@ -1,4 +1,4 @@
-use std::collections::BTreeMap;
+use std::{borrow::Borrow, collections::BTreeMap, ops::Index};
 
 use crate::{
     style::{Color, Style},
@@ -121,6 +121,26 @@ impl ResolvedConfig {
 
     pub fn into_inner(self) -> BTreeMap<String, Style> {
         self.0
+    }
+
+    pub fn get<Q>(&self, key: &Q) -> Option<&Style>
+    where
+        String: Borrow<Q>,
+        Q: Ord + ?Sized,
+    {
+        self.0.get(key)
+    }
+}
+
+impl<Q> Index<&Q> for ResolvedConfig
+where
+    String: Borrow<Q>,
+    Q: Ord + ?Sized,
+{
+    type Output = Style;
+
+    fn index(&self, key: &Q) -> &Self::Output {
+        self.get(key).expect("no entry found for key")
     }
 }
 
