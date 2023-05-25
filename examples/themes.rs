@@ -1,11 +1,11 @@
 use std::collections::HashMap;
 
 use syntastica::{
-    providers::{ConfiguredLanguages, ParserProvider},
+    providers::{ConfiguredLanguages, LanguageProvider},
     renderer::TerminalRenderer,
     Highlighter,
 };
-use syntastica_parsers_git::ParserProviderImpl;
+use syntastica_parsers_git::LanguageProviderImpl;
 use syntastica_themes as themes;
 
 fn main() {
@@ -33,7 +33,7 @@ fn example(
 ) {
     let theme = theme.resolve_links().unwrap();
     let bg_color = theme.get("bg0").copied().map(|style| style.color());
-    let provider = ParserProviderImpl::with_languages(&["rust"]);
+    let provider = LanguageProviderImpl::with_languages(&["rust"]);
     println!(
         "\n\x1b[1m{name}:\x1b[0m\n{0}\n{1}{0}",
         "-".repeat(50),

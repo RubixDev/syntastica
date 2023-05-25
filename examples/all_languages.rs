@@ -1,15 +1,15 @@
 use std::collections::BTreeMap;
 
 use syntastica::{
-    providers::{ConfiguredLanguages, ParserProvider},
+    providers::{ConfiguredLanguages, LanguageProvider},
     renderer::TerminalRenderer,
     Highlighter,
 };
-use syntastica_parsers_git::ParserProviderImpl;
+use syntastica_parsers_git::LanguageProviderImpl;
 
 fn main() {
     let languages = ConfiguredLanguages::try_configure(
-        &ParserProviderImpl::all(),
+        &LanguageProviderImpl::all(),
         syntastica_themes::one::dark(),
     )
     .unwrap();
@@ -38,7 +38,7 @@ fn example(
                 code.trim(),
                 file_extension,
                 languages,
-                |lang_name| ParserProviderImpl::all().for_injection(lang_name),
+                |lang_name| LanguageProviderImpl::all().for_injection(lang_name),
                 highlighter
             )
             .unwrap(),

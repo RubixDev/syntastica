@@ -1,13 +1,13 @@
 use std::collections::HashMap;
 
 use once_cell::sync::Lazy;
-use syntastica::providers::ParserProvider;
+use syntastica::providers::LanguageProvider;
 use tree_sitter::{Language, Query};
 
 syntastica_macros::queries_test!();
 
 static PARSERS: Lazy<HashMap<String, Language>> = Lazy::new(|| {
-    syntastica_parsers_git::ParserProviderImpl::all()
+    syntastica_parsers_git::LanguageProviderImpl::all()
         .get_parsers()
         .unwrap()
 });

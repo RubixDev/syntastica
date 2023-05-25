@@ -4,7 +4,7 @@ use anyhow::Result;
 use fancy_regex::Regex;
 use once_cell::sync::Lazy;
 use rsexpr::{OwnedSexpr, OwnedSexprs};
-use syntastica::providers::ParserProvider;
+use syntastica::providers::LanguageProvider;
 use tree_sitter::{Language, Query};
 
 static QUERIES_DIR: Lazy<String> =

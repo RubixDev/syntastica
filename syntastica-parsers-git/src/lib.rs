@@ -12,15 +12,15 @@ compile_error!("current feature set includes no parsers");
 
 syntastica_macros::parsers_ffi!();
 
-impl ParserProviderImpl<'static> {
-    /// Create a new [`ParserProviderImpl`] with all languages in the enabled feature set.
+impl LanguageProviderImpl<'static> {
+    /// Create a new [`LanguageProviderImpl`] with all languages in the enabled feature set.
     pub fn all() -> Self {
         Self(None)
     }
 }
 
-impl<'src> ParserProviderImpl<'src> {
-    /// Create a new [`ParserProviderImpl`] with support for specific languages.
+impl<'src> LanguageProviderImpl<'src> {
+    /// Create a new [`LanguageProviderImpl`] with support for specific languages.
     pub fn with_languages(languages: &'src [&'src str]) -> Self {
         Self(Some(languages))
     }

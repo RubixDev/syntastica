@@ -75,18 +75,16 @@ impl Deref for ConfiguredLanguages {
     }
 }
 
-pub trait ParserProvider {
+pub trait LanguageProvider {
     fn get_parsers(&self) -> Result<Parsers, crate::Error>;
+
+    fn get_queries(&self) -> Result<Queries, crate::Error>;
 
     fn for_extension<'a>(&self, file_extension: &'a str) -> Option<Cow<'a, str>>;
 
     fn for_injection<'a>(&self, name: &'a str) -> Option<Cow<'a, str>> {
         self.for_extension(name)
     }
-}
-
-pub trait LanguageProvider: ParserProvider {
-    fn get_queries(&self) -> Result<Queries, crate::Error>;
 
     fn get_languages(&self) -> Result<Languages, crate::Error> {
         let parsers = self.get_parsers()?;
@@ -105,15 +103,5 @@ pub trait LanguageProvider: ParserProvider {
         }
 
         Ok(map)
-    }
-}
-
-#[cfg(feature = "queries")]
-impl<T> LanguageProvider for T
-where
-    T: ParserProvider,
-{
-    fn get_queries(&self) -> Result<Queries, crate::Error> {
-        syntastica_macros::queries_provider!()
     }
 }

@@ -129,6 +129,20 @@ fn parsers(
                 }
             }
         });
+    let get_queries = LANGUAGE_CONFIG.languages.iter().map(|lang| {
+        let name_str = &lang.name;
+        let highlights = format_ident!("{}_HIGHLIGHTS", lang.name.to_uppercase());
+        let injections = format_ident!("{}_INJECTIONS", lang.name.to_uppercase());
+        let locals = format_ident!("{}_LOCALS", lang.name.to_uppercase());
+
+        quote! {
+            _map.insert(#name_str.to_owned(), [
+                ::syntastica_queries::#highlights.into(),
+                ::syntastica_queries::#injections.into(),
+                ::syntastica_queries::#locals.into(),
+            ]);
+        }
+    });
     let by_extension = LANGUAGE_CONFIG
         .languages
         .iter()
@@ -151,7 +165,7 @@ fn parsers(
         .count();
     let lang_count_all = LANGUAGE_CONFIG.languages.len();
     let lang_count_most = lang_count_all - lang_count_some;
-    let lang_count = quote! {
+    let lang_count_parsers = quote! {
         if cfg!(feature = "all") {
             #lang_count_all
         } else if cfg!(feature = "most") {
@@ -168,16 +182,21 @@ fn parsers(
         #(#functions)*
 
         // TODO: maybe create enum with all supported languages
-        /// An implementation of [`ParserProvider`](::syntastica::providers::ParserProvider),
-        /// providing all parsers in the enabled feature set (see [`all`](ParserProviderImpl::all))
-        /// or a subset of them (see [`with_languages`](ParserProviderImpl::with_languages)).
-        pub struct ParserProviderImpl<'a>(::std::option::Option<&'a [&'a str]>);
+        /// An implementation of [`LanguageProvider`](::syntastica::providers::LanguageProvider),
+        /// providing all parsers in the enabled feature set (see [`all`](LanguageProviderImpl::all))
+        /// or a subset of them (see [`with_languages`](LanguageProviderImpl::with_languages)).
+        pub struct LanguageProviderImpl<'a>(::std::option::Option<&'a [&'a str]>);
 
-        impl ::syntastica::providers::ParserProvider for ParserProviderImpl<'_> {
+        impl ::syntastica::providers::LanguageProvider for LanguageProviderImpl<'_> {
             fn get_parsers(&self) -> ::std::result::Result<::syntastica::providers::Parsers, ::syntastica::Error> {
-                let mut _map: ::std::collections::HashMap<::std::string::String, ::syntastica::providers::Language>
-                    = ::std::collections::HashMap::with_capacity(#lang_count);
+                let mut _map: ::syntastica::providers::Parsers = ::std::collections::HashMap::with_capacity(#lang_count_parsers);
                 #(#get_parsers)*
+                ::std::result::Result::Ok(_map)
+            }
+
+            fn get_queries(&self) -> ::std::result::Result<::syntastica::providers::Queries, ::syntastica::Error> {
+                let mut _map: ::syntastica::providers::Queries = ::std::collections::HashMap::with_capacity(#lang_count_all);
+                #(#get_queries)*
                 ::std::result::Result::Ok(_map)
             }
 
@@ -300,7 +319,7 @@ pub fn queries(_: TokenStream) -> TokenStream {
     });
     quote! {
         {
-            let mut parsers = ::syntastica_parsers_git::ParserProviderImpl::all().get_parsers()?;
+            let mut parsers = ::syntastica_parsers_git::LanguageProviderImpl::all().get_parsers()?;
             let mut _map: ::std::collections::BTreeMap<&'static str, [::std::string::String; 3]>
                 = ::std::collections::BTreeMap::new();
             #(#langs)*
@@ -333,31 +352,4 @@ pub fn queries_test(_: TokenStream) -> TokenStream {
         })
         .collect::<proc_macro2::TokenStream>()
         .into()
-}
-
-#[proc_macro]
-pub fn queries_provider(_: TokenStream) -> TokenStream {
-    let langs = LANGUAGE_CONFIG.languages.iter().map(|lang| {
-        let name_str = &lang.name;
-        let highlights = format_ident!("{}_HIGHLIGHTS", lang.name.to_uppercase());
-        let injections = format_ident!("{}_INJECTIONS", lang.name.to_uppercase());
-        let locals = format_ident!("{}_LOCALS", lang.name.to_uppercase());
-
-        quote! {
-            _map.insert(#name_str.to_owned(), [
-                ::syntastica_queries::#highlights.into(),
-                ::syntastica_queries::#injections.into(),
-                ::syntastica_queries::#locals.into(),
-            ]);
-        }
-    });
-    let lang_count = LANGUAGE_CONFIG.languages.len();
-    quote! {
-        {
-            let mut _map: Queries<'static> = ::std::collections::HashMap::with_capacity(#lang_count);
-            #(#langs)*
-            ::std::result::Result::Ok(_map)
-        }
-    }
-    .into()
 }
