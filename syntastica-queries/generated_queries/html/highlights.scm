@@ -1,23 +1,15 @@
-("<!"
-  @tag.delimiter
-)
+"<!" @tag.delimiter
 
-(
-  (doctype) @constant
-)
+(doctype) @constant
 
-("="
-  @operator
-)
+"=" @operator
 
-(
-  [
-    "<"
-    ">"
-    "</"
-    "/>"
-  ] @tag.delimiter
-)
+[
+  "<"
+  ">"
+  "</"
+  "/>"
+] @tag.delimiter
 
 (
   (attribute
@@ -99,26 +91,16 @@
   (#match? @_tag "^(h[0-9]|title)$")
 )
 
-(
-  (text) @text @spell
-)
+(text) @text @spell
 
 (attribute
   (quoted_attribute_value) @string
 )
 
-(
-  (attribute_name) @tag.attribute
-)
+(attribute_name) @tag.attribute
 
-(
-  (comment) @comment
-)
+(comment) @comment
 
-(
-  (erroneous_end_tag_name) @error
-)
+(erroneous_end_tag_name) @error
 
-(
-  (tag_name) @tag
-)
+(tag_name) @tag

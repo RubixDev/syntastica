@@ -32,26 +32,24 @@ fn validate(
     }
 
     // run processor
-    let mut new_queries = processor(group_root_level_captures(
-        rsexpr::from_slice_multi(&queries)
-            .unwrap_or_else(|errs| {
-                panic!(
-                    "invalid queries in file '{path}': {}",
-                    errs.iter()
-                        .map(rsexpr::Error::to_string)
-                        .collect::<Vec<_>>()
-                        .join(", ")
-                )
-            })
-            .into_iter()
-            .map(OwnedSexpr::from)
-            .collect(),
-    ))
-    .into_iter()
-    .map(|tree| format!("{tree:#}"))
-    .collect::<Vec<_>>()
-    .join("\n\n");
-    new_queries.push('\n');
+    let new_queries = format!(
+        "{:#}",
+        ungroup_root_level_captures(processor(group_root_level_captures(
+            rsexpr::from_slice_multi(&queries)
+                .unwrap_or_else(|errs| {
+                    panic!(
+                        "invalid queries in file '{path}': {}",
+                        errs.iter()
+                            .map(rsexpr::Error::to_string)
+                            .collect::<Vec<_>>()
+                            .join(", ")
+                    )
+                })
+                .into_iter()
+                .map(OwnedSexpr::from)
+                .collect(),
+        )))
+    );
 
     // validate output
     if let Err(err) = Query::new(lang, &new_queries) {
@@ -100,6 +98,30 @@ fn group_root_level_captures(queries: OwnedSexprs) -> OwnedSexprs {
             1 => group.swap_remove(0),
             _ => OwnedSexpr::List(group),
         });
+    }
+
+    new_queries
+}
+
+fn ungroup_root_level_captures(queries: OwnedSexprs) -> OwnedSexprs {
+    let mut new_queries = OwnedSexprs::from(Vec::with_capacity(queries.len()));
+
+    for query in queries {
+        match query {
+            OwnedSexpr::List(list)
+                if list
+                    .first()
+                    .map_or(false, |sexpr| !matches!(sexpr, OwnedSexpr::Atom(_)))
+                    && list
+                        .iter()
+                        .filter(|sexpr| matches!(sexpr, OwnedSexpr::List(_)))
+                        .count()
+                        <= 1 =>
+            {
+                new_queries.extend(list);
+            }
+            _ => new_queries.push(query),
+        }
     }
 
     new_queries

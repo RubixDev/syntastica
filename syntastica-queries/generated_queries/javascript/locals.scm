@@ -1,34 +1,18 @@
-(
-  (statement_block) @local.scope
-)
+(statement_block) @local.scope
 
-(
-  (function) @local.scope
-)
+(function) @local.scope
 
-(
-  (arrow_function) @local.scope
-)
+(arrow_function) @local.scope
 
-(
-  (function_declaration) @local.scope
-)
+(function_declaration) @local.scope
 
-(
-  (method_definition) @local.scope
-)
+(method_definition) @local.scope
 
-(
-  (for_statement) @local.scope
-)
+(for_statement) @local.scope
 
-(
-  (for_in_statement) @local.scope
-)
+(for_in_statement) @local.scope
 
-(
-  (catch_clause) @local.scope
-)
+(catch_clause) @local.scope
 
 (variable_declarator
   name: (identifier) @local.definition
@@ -56,13 +40,9 @@
   (#set! definition.var.scope parent)
 )
 
-(
-  (identifier) @local.reference
-)
+(identifier) @local.reference
 
-(
-  (shorthand_property_identifier) @local.reference
-)
+(shorthand_property_identifier) @local.reference
 
 (field_definition
   property: [

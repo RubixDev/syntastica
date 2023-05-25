@@ -6,9 +6,7 @@
   (#match? @preproc "^#!\\/")
 )
 
-(
-  (regex) @string.regex
-)
+(regex) @string.regex
 
 (case_item
   value: (word) @parameter
@@ -19,9 +17,7 @@
   (#match? @constant "^[A-Z][A-Z_0-9]*$")
 )
 
-(
-  (variable_name) @variable
-)
+(variable_name) @variable
 
 (expansion
   [
@@ -78,13 +74,9 @@
   ] @punctuation.bracket
 )
 
-(
-  (test_operator) @string
-)
+(test_operator) @string
 
-(
-  (comment) @comment @spell
-)
+(comment) @comment @spell
 
 (
   (word) @boolean
@@ -96,110 +88,86 @@
   (#match? @constant.builtin "^SIG(HUP|INT|QUIT|ILL|TRAP|ABRT|BUS|FPE|KILL|USR[12]|SEGV|PIPE|ALRM|TERM|STKFLT|CHLD|CONT|STOP|TSTP|TT(IN|OU)|URG|XCPU|XFSZ|VTALRM|PROF|WINCH|IO|PWR|SYS|RTMIN([+]([1-9]|1[0-5]))?|RTMAX(-([1-9]|1[0-4]))?)$")
 )
 
-(
-  (special_variable_name) @constant
-)
+(special_variable_name) @constant
 
-("function"
-  @keyword.function
-)
+"function" @keyword.function
 
-(
-  [
-    "declare"
-    "export"
-    "local"
-    "readonly"
-    "unset"
-  ] @keyword
-)
+[
+  "declare"
+  "export"
+  "local"
+  "readonly"
+  "unset"
+] @keyword
 
-(
-  [
-    "for"
-    "do"
-    "done"
-    "while"
-  ] @repeat
-)
+[
+  "for"
+  "do"
+  "done"
+  "while"
+] @repeat
 
-(
-  [
-    "if"
-    "then"
-    "else"
-    "elif"
-    "fi"
-    "case"
-    "in"
-    "esac"
-  ] @conditional
-)
+[
+  "if"
+  "then"
+  "else"
+  "elif"
+  "fi"
+  "case"
+  "in"
+  "esac"
+] @conditional
 
 (variable_assignment
   (word) @string
 )
 
-(
-  [
-    (string)
-    (raw_string)
-    (ansi_c_string)
-    (heredoc_body)
-  ] @string @spell
-)
+[
+  (string)
+  (raw_string)
+  (ansi_c_string)
+  (heredoc_body)
+] @string @spell
 
-(
-  [
-    ">"
-    ">>"
-    "<"
-    "<<"
-    "&"
-    "&&"
-    "|"
-    "||"
-    "="
-    "=~"
-    "=="
-    "!="
-  ] @operator
-)
+[
+  ">"
+  ">>"
+  "<"
+  "<<"
+  "&"
+  "&&"
+  "|"
+  "||"
+  "="
+  "=~"
+  "=="
+  "!="
+] @operator
 
-(
-  ["$"] @punctuation.special
-)
+["$"] @punctuation.special
 
-(
-  [
-    ";"
-    ";;"
-    (heredoc_start)
-  ] @punctuation.delimiter
-)
+[
+  ";"
+  ";;"
+  (heredoc_start)
+] @punctuation.delimiter
 
-(
-  [
-    "("
-    ")"
-    "(("
-    "))"
-    "{"
-    "}"
-    "["
-    "]"
-    "[["
-    "]]"
-  ] @punctuation.bracket
-)
+[
+  "("
+  ")"
+  "(("
+  "))"
+  "{"
+  "}"
+  "["
+  "]"
+  "[["
+  "]]"
+] @punctuation.bracket
 
-(
-  (expansion
-    "${" @punctuation.special
-    "}" @punctuation.special
-  ) @none
-)
+(expansion
+  "${" @punctuation.special
+  "}" @punctuation.special
+) @none
 
-(
-  (simple_expansion) @none
-)
+(simple_expansion) @none

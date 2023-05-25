@@ -1,41 +1,31 @@
-(
-  (ERROR) @error
-)
+(ERROR) @error
 
-(
-  [
-    "{"
-    ")"
-    "("
-    "}"
-  ] @punctuation.bracket
-)
+[
+  "{"
+  ")"
+  "("
+  "}"
+] @punctuation.bracket
 
-(
-  [
-    "#"
-    ","
-    "."
-    ":"
-    "::"
-    ";"
-  ] @punctuation.delimiter
-)
+[
+  "#"
+  ","
+  "."
+  ":"
+  "::"
+  ";"
+] @punctuation.delimiter
 
-(
-  [
-    (integer_value)
-    (float_value)
-  ] @number
-)
+[
+  (integer_value)
+  (float_value)
+] @number
 
-(
-  [
-    (string_value)
-    (color_value)
-    (unit)
-  ] @string
-)
+[
+  (string_value)
+  (color_value)
+  (unit)
+] @string
 
 (
   (plain_value) @type
@@ -47,19 +37,15 @@
   (#match? @type.definition "^--")
 )
 
-(
-  (namespace_name) @namespace
-)
+(namespace_name) @namespace
 
-(
-  [
-    (class_name)
-    (id_name)
-    (property_name)
-    (feature_name)
-    (attribute_name)
-  ] @property
-)
+[
+  (class_name)
+  (id_name)
+  (property_name)
+  (feature_name)
+  (attribute_name)
+] @property
 
 (pseudo_class_selector
   (class_name) @property
@@ -74,60 +60,46 @@
   (plain_value) @string
 )
 
-(
-  (important) @type.qualifier
-)
+(important) @type.qualifier
 
-(
-  [
-    "~"
-    ">"
-    "+"
-    "-"
-    "*"
-    "/"
-    "="
-    "^="
-    "|="
-    "~="
-    "$="
-    "*="
-    "and"
-    "or"
-    "not"
-    "only"
-  ] @operator
-)
+[
+  "~"
+  ">"
+  "+"
+  "-"
+  "*"
+  "/"
+  "="
+  "^="
+  "|="
+  "~="
+  "$="
+  "*="
+  "and"
+  "or"
+  "not"
+  "only"
+] @operator
 
-(
-  (function_name) @function
-)
+(function_name) @function
 
-(
-  [
-    (tag_name)
-    (nesting_selector)
-    (universal_selector)
-  ] @type
-)
+[
+  (tag_name)
+  (nesting_selector)
+  (universal_selector)
+] @type
 
-(
-  (comment) @comment @spell
-)
+(comment) @comment @spell
 
-("@import"
-  @include
-)
+"@import" @include
 
-(
-  [
-    "@media"
-    "@charset"
-    "@namespace"
-    "@supports"
-    "@keyframes"
-    (at_keyword)
-    (to)
-    (from)
-  ] @keyword
-)
+[
+  "@media"
+  "@charset"
+  "@namespace"
+  "@supports"
+  "@keyframes"
+  (at_keyword)
+  (to)
+  (from)
+] @keyword

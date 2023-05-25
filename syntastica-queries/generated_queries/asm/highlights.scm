@@ -1,49 +1,35 @@
-(
-  [
-    ","
-    ":"
-  ] @punctuation.delimiter
-)
+[
+  ","
+  ":"
+] @punctuation.delimiter
 
-(
-  [
-    "("
-    ")"
-    "["
-    "]"
-  ] @punctuation.bracket
-)
+[
+  "("
+  ")"
+  "["
+  "]"
+] @punctuation.bracket
 
-(
-  [
-    "+"
-    "-"
-    "*"
-  ] @operator
-)
+[
+  "+"
+  "-"
+  "*"
+] @operator
 
-(
-  [
-    "byte"
-    "word"
-    "dword"
-    "qword"
-    "ptr"
-    "rel"
-  ] @keyword
-)
+[
+  "byte"
+  "word"
+  "dword"
+  "qword"
+  "ptr"
+  "rel"
+] @keyword
 
-(
-  (string) @string
-)
+(string) @string
 
-(
-  (int) @number
-)
+(int) @number
 
-(
-  (line_comment) @comment @spell
-)
+(line_comment) @comment @spell
 
 (instruction
   kind: (_) @function.call
@@ -53,9 +39,7 @@
   kind: (_) @function.builtin
 )
 
-(
-  (reg) @variable.builtin
-)
+(reg) @variable.builtin
 
 (label
   (ident) @label

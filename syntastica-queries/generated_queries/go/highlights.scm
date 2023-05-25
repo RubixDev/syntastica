@@ -3,9 +3,7 @@
   (#not-has-parent? @spell import_spec)
 )
 
-(
-  (ERROR) @error
-)
+(ERROR) @error
 
 (source_file
   (comment)
@@ -41,9 +39,7 @@
   + @comment.documentation
 )
 
-(
-  (comment) @comment @spell
-)
+(comment) @comment @spell
 
 (field_declaration
   name: (field_identifier) @field
@@ -56,84 +52,46 @@
   )
 )
 
-(
-  (nil) @constant.builtin
-)
+(nil) @constant.builtin
 
-(
-  [
-    (true)
-    (false)
-  ] @boolean
-)
+[
+  (true)
+  (false)
+] @boolean
 
-(
-  (imaginary_literal) @number
-)
+(imaginary_literal) @number
 
-(
-  (float_literal) @float
-)
+(float_literal) @float
 
-(
-  (int_literal) @number
-)
+(int_literal) @number
 
-(
-  (escape_sequence) @string.escape
-)
+(escape_sequence) @string.escape
 
-(
-  (rune_literal) @string
-)
+(rune_literal) @string
 
-(
-  (raw_string_literal) @string @spell
-)
+(raw_string_literal) @string @spell
 
-(
-  (interpreted_string_literal) @string
-)
+(interpreted_string_literal) @string
 
-("]"
-  @punctuation.bracket
-)
+"]" @punctuation.bracket
 
-("["
-  @punctuation.bracket
-)
+"[" @punctuation.bracket
 
-("}"
-  @punctuation.bracket
-)
+"}" @punctuation.bracket
 
-("{"
-  @punctuation.bracket
-)
+"{" @punctuation.bracket
 
-(")"
-  @punctuation.bracket
-)
+")" @punctuation.bracket
 
-("("
-  @punctuation.bracket
-)
+"(" @punctuation.bracket
 
-(";"
-  @punctuation.delimiter
-)
+";" @punctuation.delimiter
 
-(":"
-  @punctuation.delimiter
-)
+":" @punctuation.delimiter
 
-(","
-  @punctuation.delimiter
-)
+"," @punctuation.delimiter
 
-("."
-  @punctuation.delimiter
-)
+"." @punctuation.delimiter
 
 (
   (identifier) @function.builtin
@@ -145,96 +103,82 @@
   (#match? @type.builtin "^(any|bool|byte|complex128|complex64|error|float32|float64|int|int16|int32|int64|int8|rune|string|uint|uint16|uint32|uint64|uint8|uintptr)$")
 )
 
-(
-  [
-    "else"
-    "case"
-    "switch"
-    "if"
-  ] @conditional
-)
+[
+  "else"
+  "case"
+  "switch"
+  "if"
+] @conditional
 
-(
-  [
-    "import"
-    "package"
-  ] @include
-)
+[
+  "import"
+  "package"
+] @include
 
-("for"
-  @repeat
-)
+"for" @repeat
 
-("return"
-  @keyword.return
-)
+"return" @keyword.return
 
-("func"
-  @keyword.function
-)
+"func" @keyword.function
 
-(
-  [
-    "break"
-    "chan"
-    "const"
-    "continue"
-    "default"
-    "defer"
-    "go"
-    "goto"
-    "interface"
-    "map"
-    "range"
-    "select"
-    "struct"
-    "type"
-    "var"
-    "fallthrough"
-  ] @keyword
-)
+[
+  "break"
+  "chan"
+  "const"
+  "continue"
+  "default"
+  "defer"
+  "go"
+  "goto"
+  "interface"
+  "map"
+  "range"
+  "select"
+  "struct"
+  "type"
+  "var"
+  "fallthrough"
+] @keyword
 
-(
-  [
-    "--"
-    "-"
-    "-="
-    ":="
-    "!"
-    "!="
-    "..."
-    "*"
-    "*"
-    "*="
-    "/"
-    "/="
-    "&"
-    "&&"
-    "&="
-    "%"
-    "%="
-    "^"
-    "^="
-    "+"
-    "++"
-    "+="
-    "<-"
-    "<"
-    "<<"
-    "<<="
-    "<="
-    "="
-    "=="
-    ">"
-    ">="
-    ">>"
-    ">>="
-    "|"
-    "|="
-    "||"
-    "~"
-  ] @operator
-)
+[
+  "--"
+  "-"
+  "-="
+  ":="
+  "!"
+  "!="
+  "..."
+  "*"
+  "*"
+  "*="
+  "/"
+  "/="
+  "&"
+  "&&"
+  "&="
+  "%"
+  "%="
+  "^"
+  "^="
+  "+"
+  "++"
+  "+="
+  "<-"
+  "<"
+  "<<"
+  "<<="
+  "<="
+  "="
+  "=="
+  ">"
+  ">="
+  ">>"
+  ">>="
+  "|"
+  "|="
+  "||"
+  "~"
+] @operator
 
 (method_spec
   name: (field_identifier) @method
@@ -267,9 +211,7 @@
   (#eq? @constant "_")
 )
 
-(
-  (label_name) @label
-)
+(label_name) @label
 
 (variadic_parameter_declaration
   (identifier) @parameter
@@ -279,22 +221,14 @@
   (identifier) @parameter
 )
 
-(
-  (package_identifier) @namespace
-)
+(package_identifier) @namespace
 
-(
-  (identifier) @variable
-)
+(identifier) @variable
 
-(
-  (field_identifier) @property
-)
+(field_identifier) @property
 
 (type_spec
   name: (type_identifier) @type.definition
 )
 
-(
-  (type_identifier) @type
-)
+(type_identifier) @type

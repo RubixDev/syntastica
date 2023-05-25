@@ -1,10 +1,8 @@
-(
-  [
-    (module)
-    (function_definition)
-    (lambda)
-  ] @local.scope
-)
+[
+  (module)
+  (function_definition)
+  (lambda)
+] @local.scope
 
 (parameters
   (identifier) @local.definition
@@ -54,6 +52,4 @@
   alias: (identifier) @local.definition
 )
 
-(
-  (identifier) @local.reference
-)
+(identifier) @local.reference

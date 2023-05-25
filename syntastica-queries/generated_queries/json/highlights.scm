@@ -4,9 +4,7 @@
   (#set! conceal "\"")
 )
 
-(
-  (escape_sequence) @string.escape
-)
+(escape_sequence) @string.escape
 
 (
   ("\""
@@ -15,29 +13,21 @@
   (#set! conceal "")
 )
 
-(
-  [
-    "["
-    "]"
-    "{"
-    "}"
-  ] @punctuation.bracket
-)
+[
+  "["
+  "]"
+  "{"
+  "}"
+] @punctuation.bracket
 
-(
-  [
-    ","
-    ":"
-  ] @punctuation.delimiter
-)
+[
+  ","
+  ":"
+] @punctuation.delimiter
 
-(
-  (ERROR) @error
-)
+(ERROR) @error
 
-(
-  (string_content) @spell
-)
+(string_content) @spell
 
 (array
   (string) @string
@@ -51,17 +41,11 @@
   key: (string) @label
 )
 
-(
-  (number) @number
-)
+(number) @number
 
-(
-  (null) @constant.builtin
-)
+(null) @constant.builtin
 
-(
-  [
-    (true)
-    (false)
-  ] @boolean
-)
+[
+  (true)
+  (false)
+] @boolean

@@ -1,6 +1,4 @@
-(
-  (function_definition) @local.scope
-)
+(function_definition) @local.scope
 
 (variable_assignment
   name: (variable_name) @local.definition
@@ -10,10 +8,6 @@
   name: (word) @local.definition
 )
 
-(
-  (variable_name) @local.reference
-)
+(variable_name) @local.reference
 
-(
-  (word) @local.reference
-)
+(word) @local.reference

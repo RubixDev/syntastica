@@ -1,6 +1,4 @@
-(
-  (optional_chain) @punctuation.delimiter
-)
+(optional_chain) @punctuation.delimiter
 
 (formal_parameters
   (assignment_pattern
@@ -42,9 +40,7 @@
   (identifier) @parameter
 )
 
-(
-  (jsx_text) @none
-)
+(jsx_text) @none
 
 (jsx_self_closing_element
   (
@@ -153,70 +149,56 @@
   "default" @keyword
 )
 
-(
-  [
-    "throw"
-    "try"
-    "catch"
-    "finally"
-  ] @exception
-)
+[
+  "throw"
+  "try"
+  "catch"
+  "finally"
+] @exception
 
-(
-  [
-    "new"
-    "delete"
-  ] @keyword.operator
-)
+[
+  "new"
+  "delete"
+] @keyword.operator
 
-(
-  ["function"] @keyword.function
-)
+["function"] @keyword.function
 
-(
-  [
-    "return"
-    "yield"
-  ] @keyword.return
-)
+[
+  "return"
+  "yield"
+] @keyword.return
 
-(
-  [
-    "async"
-    "await"
-  ] @keyword.coroutine
-)
+[
+  "async"
+  "await"
+] @keyword.coroutine
 
-(
-  [
-    "break"
-    "class"
-    "const"
-    "debugger"
-    "export"
-    "extends"
-    "get"
-    "in"
-    "instanceof"
-    "let"
-    "set"
-    "static"
-    "target"
-    "typeof"
-    "var"
-    "with"
-  ] @keyword
-)
+[
+  "break"
+  "class"
+  "const"
+  "debugger"
+  "export"
+  "extends"
+  "get"
+  "in"
+  "instanceof"
+  "let"
+  "set"
+  "static"
+  "target"
+  "typeof"
+  "var"
+  "with"
+] @keyword
 
-(
-  [
-    "for"
-    "of"
-    "do"
-    "while"
-    "continue"
-  ] @repeat
-)
+[
+  "for"
+  "of"
+  "do"
+  "while"
+  "continue"
+] @repeat
 
 (namespace_import
   "as" @include
@@ -234,41 +216,33 @@
   "as" @include
 )
 
-(
-  [
-    "import"
-    "from"
-  ] @include
-)
+[
+  "import"
+  "from"
+] @include
 
-(
-  [
-    "if"
-    "else"
-    "switch"
-    "case"
-  ] @conditional
-)
+[
+  "if"
+  "else"
+  "switch"
+  "case"
+] @conditional
 
-(
-  (template_substitution
-    [
-      "${"
-      "}"
-    ] @punctuation.special
-  ) @none
-)
-
-(
+(template_substitution
   [
-    "("
-    ")"
-    "["
-    "]"
-    "{"
+    "${"
     "}"
-  ] @punctuation.bracket
-)
+  ] @punctuation.special
+) @none
+
+[
+  "("
+  ")"
+  "["
+  "]"
+  "{"
+  "}"
+] @punctuation.bracket
 
 (unary_expression
   [
@@ -298,51 +272,49 @@
   "/" @operator
 )
 
-(
-  [
-    "--"
-    "-"
-    "-="
-    "&&"
-    "+"
-    "++"
-    "+="
-    "&="
-    "/="
-    "**="
-    "<<="
-    "<"
-    "<="
-    "<<"
-    "="
-    "=="
-    "==="
-    "!="
-    "!=="
-    "=>"
-    ">"
-    ">="
-    ">>"
-    "||"
-    "%"
-    "%="
-    "*"
-    "**"
-    ">>>"
-    "&"
-    "|"
-    "^"
-    "??"
-    "*="
-    ">>="
-    ">>>="
-    "^="
-    "|="
-    "&&="
-    "||="
-    "??="
-  ] @operator
-)
+[
+  "--"
+  "-"
+  "-="
+  "&&"
+  "+"
+  "++"
+  "+="
+  "&="
+  "/="
+  "**="
+  "<<="
+  "<"
+  "<="
+  "<<"
+  "="
+  "=="
+  "==="
+  "!="
+  "!=="
+  "=>"
+  ">"
+  ">="
+  ">>"
+  "||"
+  "%"
+  "%="
+  "*"
+  "**"
+  ">>>"
+  "&"
+  "|"
+  "^"
+  "??"
+  "*="
+  ">>="
+  ">>>="
+  "^="
+  "|="
+  "&&="
+  "||="
+  "??="
+] @operator
 
 (switch_case
   ":" @punctuation.delimiter
@@ -356,89 +328,61 @@
   ":" @punctuation.delimiter
 )
 
-(","
-  @punctuation.delimiter
-)
+"," @punctuation.delimiter
 
-("."
-  @punctuation.delimiter
-)
+"." @punctuation.delimiter
 
-(";"
-  @punctuation.delimiter
-)
+";" @punctuation.delimiter
 
-("..."
-  @punctuation.special
-)
+"..." @punctuation.special
 
 (
   (identifier) @number
   (#match? @number "^(NaN|Infinity)$")
 )
 
-(
-  (number) @number
-)
+(number) @number
 
 (regex
   "/" @punctuation.bracket
 )
 
-(
-  (regex_pattern) @string.regex
-)
+(regex_pattern) @string.regex
 
-(
-  (escape_sequence) @string.escape
-)
+(escape_sequence) @string.escape
 
-(
-  (template_string) @string
-)
+(template_string) @string
 
-(
-  (string) @string @spell
-)
+(string) @string @spell
 
 (
   (string_fragment) @preproc
   (#eq? @preproc "use strict")
 )
 
-(
-  (hash_bang_line) @preproc
-)
+(hash_bang_line) @preproc
 
 (
   (comment) @comment.documentation
   (#match? @comment.documentation "^\\/[\\*][\\*][^\\*].*[\\*]\\/$")
 )
 
-(
-  (comment) @comment @spell
-)
+(comment) @comment @spell
 
-(
-  [
-    (null)
-    (undefined)
-  ] @constant.builtin
-)
+[
+  (null)
+  (undefined)
+] @constant.builtin
 
-(
-  [
-    (true)
-    (false)
-  ] @boolean
-)
+[
+  (true)
+  (false)
+] @boolean
 
-(
-  [
-    (this)
-    (super)
-  ] @variable.builtin
-)
+[
+  (this)
+  (super)
+] @variable.builtin
 
 (namespace_import
   (identifier) @namespace
@@ -568,26 +512,16 @@
   (#match? @type "^[A-Z]")
 )
 
-(
-  (variable_declarator
-    name: (object_pattern
-      (shorthand_property_identifier_pattern)
-    )
-  ) @variable
-)
+(variable_declarator
+  name: (object_pattern
+    (shorthand_property_identifier_pattern)
+  )
+) @variable
 
-(
-  (private_property_identifier) @property
-)
+(private_property_identifier) @property
 
-(
-  (shorthand_property_identifier) @property
-)
+(shorthand_property_identifier) @property
 
-(
-  (property_identifier) @property
-)
+(property_identifier) @property
 
-(
-  (identifier) @variable
-)
+(identifier) @variable

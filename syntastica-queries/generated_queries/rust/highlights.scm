@@ -29,15 +29,13 @@
   "#" @punctuation.special
 )
 
-(
-  [
-    ","
-    "."
-    ":"
-    "::"
-    ";"
-  ] @punctuation.delimiter
-)
+[
+  ","
+  "."
+  ":"
+  "::"
+  ";"
+] @punctuation.delimiter
 
 (for_lifetimes
   [
@@ -71,82 +69,72 @@
   "|" @punctuation.bracket
 )
 
-(
-  [
-    "("
-    ")"
-    "["
-    "]"
-    "{"
-    "}"
-  ] @punctuation.bracket
-)
+[
+  "("
+  ")"
+  "["
+  "]"
+  "{"
+  "}"
+] @punctuation.bracket
 
-(
-  [
-    "!"
-    "!="
-    "%"
-    "%="
-    "&"
-    "&&"
-    "&="
-    "*"
-    "*="
-    "+"
-    "+="
-    "-"
-    "-="
-    "->"
-    ".."
-    "..="
-    "/"
-    "/="
-    "<"
-    "<<"
-    "<<="
-    "<="
-    "="
-    "=="
-    "=>"
-    ">"
-    ">="
-    ">>"
-    ">>="
-    "?"
-    "@"
-    "^"
-    "^="
-    "|"
-    "|="
-    "||"
-  ] @operator
-)
+[
+  "!"
+  "!="
+  "%"
+  "%="
+  "&"
+  "&&"
+  "&="
+  "*"
+  "*="
+  "+"
+  "+="
+  "-"
+  "-="
+  "->"
+  ".."
+  "..="
+  "/"
+  "/="
+  "<"
+  "<<"
+  "<<="
+  "<="
+  "="
+  "=="
+  "=>"
+  ">"
+  ">="
+  ">>"
+  ">>="
+  "?"
+  "@"
+  "^"
+  "^="
+  "|"
+  "|="
+  "||"
+] @operator
 
 (for_expression
   "for" @repeat
 )
 
-("for"
-  @keyword
-)
+"for" @keyword
 
-(
-  [
-    "break"
-    "continue"
-    "in"
-    "loop"
-    "while"
-  ] @repeat
-)
+[
+  "break"
+  "continue"
+  "in"
+  "loop"
+  "while"
+] @repeat
 
-(
-  [
-    "else"
-    "if"
-  ] @conditional
-)
+[
+  "else"
+  "if"
+] @conditional
 
 (visibility_modifier
   [
@@ -180,16 +168,12 @@
   "as" @keyword.operator
 )
 
-(
-  [
-    "return"
-    "yield"
-  ] @keyword.return
-)
+[
+  "return"
+  "yield"
+] @keyword.return
 
-("fn"
-  @keyword.function
-)
+"fn" @keyword.function
 
 (lifetime
   [
@@ -198,84 +182,62 @@
   ] @storageclass.lifetime
 )
 
-(
-  [
-    "const"
-    "static"
-  ] @storageclass
-)
+[
+  "const"
+  "static"
+] @storageclass
 
-(
-  [
-    "ref"
-    (mutable_specifier)
-  ] @type.qualifier
-)
+[
+  "ref"
+  (mutable_specifier)
+] @type.qualifier
 
-(
-  [
-    "async"
-    "await"
-  ] @keyword.coroutine
-)
+[
+  "async"
+  "await"
+] @keyword.coroutine
 
-(
-  [
-    "default"
-    "dyn"
-    "enum"
-    "extern"
-    "impl"
-    "let"
-    "match"
-    "move"
-    "pub"
-    "struct"
-    "trait"
-    "type"
-    "union"
-    "unsafe"
-    "where"
-  ] @keyword
-)
+[
+  "default"
+  "dyn"
+  "enum"
+  "extern"
+  "impl"
+  "let"
+  "match"
+  "move"
+  "pub"
+  "struct"
+  "trait"
+  "type"
+  "union"
+  "unsafe"
+  "where"
+] @keyword
 
 (use_as_clause
   "as" @include
 )
 
-(
-  [
-    "use"
-    "mod"
-  ] @include
-)
+[
+  "use"
+  "mod"
+] @include
 
-(
-  (char_literal) @character
-)
+(char_literal) @character
 
-(
-  (escape_sequence) @string.escape
-)
+(escape_sequence) @string.escape
 
-(
-  [
-    (raw_string_literal)
-    (string_literal)
-  ] @string
-)
+[
+  (raw_string_literal)
+  (string_literal)
+] @string
 
-(
-  (float_literal) @float
-)
+(float_literal) @float
 
-(
-  (integer_literal) @number
-)
+(integer_literal) @number
 
-(
-  (boolean_literal) @boolean
-)
+(boolean_literal) @boolean
 
 (
   (block_comment) @comment.documentation
@@ -302,12 +264,10 @@
   (#match? @comment.documentation "^\\/\\/\\/[^\\/]")
 )
 
-(
-  [
-    (line_comment)
-    (block_comment)
-  ] @comment @spell
-)
+[
+  (line_comment)
+  (block_comment)
+] @comment @spell
 
 (macro_invocation
   macro: (scoped_identifier
@@ -337,13 +297,9 @@
   "macro_rules!" @function.macro
 )
 
-(
-  (metavariable) @function.macro
-)
+(metavariable) @function.macro
 
-("$"
-  @function.macro
-)
+"$" @function.macro
 
 (
   (identifier) @constant.builtin
@@ -406,12 +362,10 @@
   path: (identifier) @namespace
 )
 
-(
-  [
-    (crate)
-    (super)
-  ] @namespace
-)
+[
+  (crate)
+  (super)
+] @namespace
 
 (
   (scoped_identifier
@@ -524,9 +478,7 @@
   ] @label
 )
 
-(
-  (self) @variable.builtin
-)
+(self) @variable.builtin
 
 (mod_item
   name: (identifier) @namespace
@@ -536,17 +488,11 @@
   (identifier) @field
 )
 
-(
-  (field_identifier) @field
-)
+(field_identifier) @field
 
-(
-  (primitive_type) @type.builtin
-)
+(primitive_type) @type.builtin
 
-(
-  (type_identifier) @type
-)
+(type_identifier) @type
 
 (
   (identifier) @constant
@@ -562,6 +508,4 @@
   (#match? @type "^[A-Z]")
 )
 
-(
-  (identifier) @variable
-)
+(identifier) @variable

@@ -1,6 +1,4 @@
-(
-  (ERROR) @error
-)
+(ERROR) @error
 
 (
   (class_definition
@@ -59,31 +57,27 @@
   name: (identifier) @type
 )
 
-(
-  [
-    ","
-    "."
-    ":"
-    ";"
-    (ellipsis)
-  ] @punctuation.delimiter
-)
+[
+  ","
+  "."
+  ":"
+  ";"
+  (ellipsis)
+] @punctuation.delimiter
 
 (interpolation
   "{" @punctuation.special
   "}" @punctuation.special
 )
 
-(
-  [
-    "("
-    ")"
-    "["
-    "]"
-    "{"
-    "}"
-  ] @punctuation.bracket
-)
+[
+  "("
+  ")"
+  "["
+  "]"
+  "{"
+  "}"
+] @punctuation.bracket
 
 (try_statement
   (else_clause
@@ -95,42 +89,34 @@
   "from" @exception
 )
 
-(
-  [
-    "try"
-    "except"
-    "except*"
-    "raise"
-    "finally"
-  ] @exception
-)
+[
+  "try"
+  "except"
+  "except*"
+  "raise"
+  "finally"
+] @exception
 
-(
-  [
-    "for"
-    "while"
-    "break"
-    "continue"
-  ] @repeat
-)
+[
+  "for"
+  "while"
+  "break"
+  "continue"
+] @repeat
 
-(
-  [
-    "if"
-    "elif"
-    "else"
-    "match"
-    "case"
-  ] @conditional
-)
+[
+  "if"
+  "elif"
+  "else"
+  "match"
+  "case"
+] @conditional
 
 (aliased_import
   "as" @include
 )
 
-("import"
-  @include
-)
+"import" @include
 
 (import_from_statement
   "from" @include
@@ -145,95 +131,83 @@
   "from" @keyword.return
 )
 
-(
-  [
-    "return"
-    "yield"
-  ] @keyword.return
-)
+[
+  "return"
+  "yield"
+] @keyword.return
 
-(
-  [
-    "async"
-    "await"
-  ] @keyword.coroutine
-)
+[
+  "async"
+  "await"
+] @keyword.coroutine
 
-(
-  [
-    "assert"
-    "class"
-    "exec"
-    "global"
-    "nonlocal"
-    "pass"
-    "print"
-    "with"
-    "as"
-  ] @keyword
-)
+[
+  "assert"
+  "class"
+  "exec"
+  "global"
+  "nonlocal"
+  "pass"
+  "print"
+  "with"
+  "as"
+] @keyword
 
-(
-  [
-    "def"
-    "lambda"
-  ] @keyword.function
-)
+[
+  "def"
+  "lambda"
+] @keyword.function
 
-(
-  [
-    "and"
-    "in"
-    "is"
-    "not"
-    "or"
-    "is not"
-    "not in"
-    "del"
-  ] @keyword.operator
-)
+[
+  "and"
+  "in"
+  "is"
+  "not"
+  "or"
+  "is not"
+  "not in"
+  "del"
+] @keyword.operator
 
-(
-  [
-    "-"
-    "-="
-    ":="
-    "!="
-    "*"
-    "**"
-    "**="
-    "*="
-    "/"
-    "//"
-    "//="
-    "/="
-    "&"
-    "&="
-    "%"
-    "%="
-    "^"
-    "^="
-    "+"
-    "+="
-    "<"
-    "<<"
-    "<<="
-    "<="
-    "<>"
-    "="
-    "=="
-    ">"
-    ">="
-    ">>"
-    ">>="
-    "@"
-    "@="
-    "|"
-    "|="
-    "~"
-    "->"
-  ] @operator
-)
+[
+  "-"
+  "-="
+  ":="
+  "!="
+  "*"
+  "**"
+  "**="
+  "*="
+  "/"
+  "//"
+  "//="
+  "/="
+  "&"
+  "&="
+  "%"
+  "%="
+  "^"
+  "^="
+  "+"
+  "+="
+  "<"
+  "<<"
+  "<<="
+  "<="
+  "<>"
+  "="
+  "=="
+  ">"
+  ">="
+  ">>"
+  ">>="
+  "@"
+  "@="
+  "|"
+  "|="
+  "~"
+  "->"
+] @operator
 
 (function_definition
   body: (block
@@ -260,13 +234,9 @@
   )
 )
 
-(
-  (escape_sequence) @string.escape
-)
+(escape_sequence) @string.escape
 
-(
-  (string) @string
-)
+(string) @string
 
 (
   (module
@@ -276,17 +246,11 @@
   (#match? @preproc "^#!/")
 )
 
-(
-  (comment) @comment @spell
-)
+(comment) @comment @spell
 
-(
-  (float) @float
-)
+(float) @float
 
-(
-  (integer) @number
-)
+(integer) @number
 
 (
   (identifier) @variable.builtin
@@ -298,16 +262,12 @@
   (#eq? @variable.builtin "self")
 )
 
-(
-  [
-    (true)
-    (false)
-  ] @boolean
-)
+[
+  (true)
+  (false)
+] @boolean
 
-(
-  (none) @constant.builtin
-)
+(none) @constant.builtin
 
 (parameters
   (dictionary_splat_pattern
@@ -499,10 +459,6 @@
   (#match? @type "^[A-Z].*[a-z]")
 )
 
-(
-  (interpolation) @none
-)
+(interpolation) @none
 
-(
-  (identifier) @variable
-)
+(identifier) @variable

@@ -1,6 +1,4 @@
-(
-  (block) @local.scope
-)
+(block) @local.scope
 
 (parameter_declaration
   (identifier) @local.definition
@@ -34,10 +32,6 @@
   )
 )
 
-(
-  (identifier) @local.reference
-)
+(identifier) @local.reference
 
-(
-  (field_identifier) @local.reference
-)
+(field_identifier) @local.reference

@@ -13,26 +13,22 @@
   (#match? @comment.documentation "^\\/[\\*][\\*][^\\*].*[\\*]\\/$")
 )
 
-(
-  [
-    (line_comment)
-    (block_comment)
-  ] @comment @spell
-)
+[
+  (line_comment)
+  (block_comment)
+] @comment @spell
 
 (labeled_statement
   (identifier) @label
 )
 
-(
-  [
-    "throw"
-    "throws"
-    "finally"
-    "try"
-    "catch"
-  ] @exception
-)
+[
+  "throw"
+  "throws"
+  "finally"
+  "try"
+  "catch"
+] @exception
 
 (type_parameters
   [
@@ -48,58 +44,46 @@
   ] @punctuation.bracket
 )
 
-(
-  [
-    "("
-    ")"
-  ] @punctuation.bracket
-)
+[
+  "("
+  ")"
+] @punctuation.bracket
 
-(
-  [
-    "["
-    "]"
-  ] @punctuation.bracket
-)
+[
+  "["
+  "]"
+] @punctuation.bracket
 
-(
-  [
-    "{"
-    "}"
-  ] @punctuation.bracket
-)
+[
+  "{"
+  "}"
+] @punctuation.bracket
 
-(
-  [
-    ";"
-    "."
-    "..."
-    ","
-  ] @punctuation.delimiter
-)
+[
+  ";"
+  "."
+  "..."
+  ","
+] @punctuation.delimiter
 
-(
-  [
-    "exports"
-    "import"
-    "module"
-    "opens"
-    "package"
-    "provides"
-    "requires"
-    "uses"
-  ] @include
-)
+[
+  "exports"
+  "import"
+  "module"
+  "opens"
+  "package"
+  "provides"
+  "requires"
+  "uses"
+] @include
 
-(
-  [
-    "for"
-    "while"
-    "do"
-    "continue"
-    "break"
-  ] @repeat
-)
+[
+  "for"
+  "while"
+  "do"
+  "continue"
+  "break"
+] @repeat
 
 (ternary_expression
   [
@@ -108,131 +92,101 @@
   ] @conditional.ternary
 )
 
-(
-  [
-    "if"
-    "else"
-    "switch"
-    "case"
-  ] @conditional
-)
+[
+  "if"
+  "else"
+  "switch"
+  "case"
+] @conditional
 
-(
-  ["new"] @keyword.operator
-)
+["new"] @keyword.operator
 
-(
-  [
-    "return"
-    "yield"
-  ] @keyword.return
-)
+[
+  "return"
+  "yield"
+] @keyword.return
 
-(
-  [
-    "transient"
-    "volatile"
-  ] @storageclass
-)
+[
+  "transient"
+  "volatile"
+] @storageclass
 
 (modifiers
   "synchronized" @type.qualifier
 )
 
-(
-  [
-    "abstract"
-    "final"
-    "native"
-    "non-sealed"
-    "open"
-    "private"
-    "protected"
-    "public"
-    "sealed"
-    "static"
-    "strictfp"
-    "transitive"
-  ] @type.qualifier
-)
+[
+  "abstract"
+  "final"
+  "native"
+  "non-sealed"
+  "open"
+  "private"
+  "protected"
+  "public"
+  "sealed"
+  "static"
+  "strictfp"
+  "transitive"
+] @type.qualifier
 
 (synchronized_statement
   "synchronized" @keyword
 )
 
-(
-  [
-    "assert"
-    "class"
-    "record"
-    "default"
-    "enum"
-    "extends"
-    "implements"
-    "instanceof"
-    "interface"
-    "permits"
-    "to"
-    "with"
-  ] @keyword
-)
+[
+  "assert"
+  "class"
+  "record"
+  "default"
+  "enum"
+  "extends"
+  "implements"
+  "instanceof"
+  "interface"
+  "permits"
+  "to"
+  "with"
+] @keyword
 
-(
-  (null_literal) @constant.builtin
-)
+(null_literal) @constant.builtin
 
-(
-  [
-    (true)
-    (false)
-  ] @boolean
-)
+[
+  (true)
+  (false)
+] @boolean
 
-(
-  [
-    (decimal_floating_point_literal)
-    (hex_floating_point_literal)
-  ] @float
-)
+[
+  (decimal_floating_point_literal)
+  (hex_floating_point_literal)
+] @float
 
-(
-  [
-    (hex_integer_literal)
-    (decimal_integer_literal)
-    (octal_integer_literal)
-    (binary_integer_literal)
-  ] @number
-)
+[
+  (hex_integer_literal)
+  (decimal_integer_literal)
+  (octal_integer_literal)
+  (binary_integer_literal)
+] @number
 
-(
-  (character_literal) @character
-)
+(character_literal) @character
 
-(
-  (escape_sequence) @string.escape
-)
+(escape_sequence) @string.escape
 
-(
-  (string_literal) @string
-)
+(string_literal) @string
 
-(
-  (this) @variable.builtin
-)
+(this) @variable.builtin
 
 (
   (identifier) @constant
   (#match? @constant "^[A-Z_][A-Z[0-9]_]+$")
 )
 
-(
-  [
-    (boolean_type)
-    (integral_type)
-    (floating_point_type)
-    (void_type)
-  ] @type.builtin
-)
+[
+  (boolean_type)
+  (integral_type)
+  (floating_point_type)
+  (void_type)
+] @type.builtin
 
 (field_access
   field: (identifier) @field
@@ -273,9 +227,7 @@
   (#match? @type "^[A-Z]")
 )
 
-(
-  (type_identifier) @type
-)
+(type_identifier) @type
 
 (constructor_declaration
   name: (identifier) @type
@@ -297,46 +249,44 @@
   name: (identifier) @type
 )
 
-(
-  [
-    "@"
-    "+"
-    ":"
-    "++"
-    "-"
-    "--"
-    "&"
-    "&&"
-    "|"
-    "||"
-    "!"
-    "!="
-    "=="
-    "*"
-    "/"
-    "%"
-    "<"
-    "<="
-    ">"
-    ">="
-    "="
-    "-="
-    "+="
-    "*="
-    "/="
-    "%="
-    "->"
-    "^"
-    "^="
-    "&="
-    "|="
-    "~"
-    ">>"
-    ">>>"
-    "<<"
-    "::"
-  ] @operator
-)
+[
+  "@"
+  "+"
+  ":"
+  "++"
+  "-"
+  "--"
+  "&"
+  "&&"
+  "|"
+  "||"
+  "!"
+  "!="
+  "=="
+  "*"
+  "/"
+  "%"
+  "<"
+  "<="
+  ">"
+  ">="
+  "="
+  "-="
+  "+="
+  "*="
+  "/="
+  "%="
+  "->"
+  "^"
+  "^="
+  "&="
+  "|="
+  "~"
+  ">>"
+  ">>>"
+  "<<"
+  "::"
+] @operator
 
 (marker_annotation
   name: (identifier) @attribute
@@ -368,9 +318,7 @@
   name: (identifier) @parameter
 )
 
-(
-  (super) @function.builtin
-)
+(super) @function.builtin
 
 (method_invocation
   name: (identifier) @method.call
@@ -380,6 +328,4 @@
   name: (identifier) @method
 )
 
-(
-  (identifier) @variable
-)
+(identifier) @variable

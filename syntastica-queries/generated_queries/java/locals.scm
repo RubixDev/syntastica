@@ -1,6 +1,4 @@
-(
-  (program) @local.scope
-)
+(program) @local.scope
 
 (class_declaration
   body: (_) @local.scope
@@ -14,21 +12,13 @@
   body: (_) @local.scope
 )
 
-(
-  (lambda_expression) @local.scope
-)
+(lambda_expression) @local.scope
 
-(
-  (enhanced_for_statement) @local.scope
-)
+(enhanced_for_statement) @local.scope
 
-(
-  (block) @local.scope
-)
+(block) @local.scope
 
-(
-  (if_statement) @local.scope
-)
+(if_statement) @local.scope
 
 (if_statement
   consequence: (_) @local.scope
@@ -38,17 +28,11 @@
   alternative: (_) @local.scope
 )
 
-(
-  (try_statement) @local.scope
-)
+(try_statement) @local.scope
 
-(
-  (catch_clause) @local.scope
-)
+(catch_clause) @local.scope
 
-(
-  (for_statement) @local.scope
-)
+(for_statement) @local.scope
 
 (for_statement
   body: (_) @local.scope
@@ -62,13 +46,9 @@
   body: (_) @local.scope
 )
 
-(
-  (constructor_declaration) @local.scope
-)
+(constructor_declaration) @local.scope
 
-(
-  (method_declaration) @local.scope
-)
+(method_declaration) @local.scope
 
 (package_declaration
   (identifier) @local.definition
@@ -122,10 +102,6 @@
   )
 )
 
-(
-  (identifier) @local.reference
-)
+(identifier) @local.reference
 
-(
-  (type_identifier) @local.reference
-)
+(type_identifier) @local.reference

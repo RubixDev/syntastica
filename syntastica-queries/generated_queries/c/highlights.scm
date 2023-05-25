@@ -1,22 +1,18 @@
-(
-  (ERROR) @error
-)
+(ERROR) @error
 
-(
-  [
-    "__attribute__"
-    "__cdecl"
-    "__clrcall"
-    "__stdcall"
-    "__fastcall"
-    "__thiscall"
-    "__vectorcall"
-    "_unaligned"
-    "__unaligned"
-    "__declspec"
-    (attribute_declaration)
-  ] @attribute
-)
+[
+  "__attribute__"
+  "__cdecl"
+  "__clrcall"
+  "__stdcall"
+  "__fastcall"
+  "__thiscall"
+  "__vectorcall"
+  "_unaligned"
+  "__unaligned"
+  "__declspec"
+  (attribute_declaration)
+] @attribute
 
 (preproc_params
   (identifier) @parameter
@@ -35,9 +31,7 @@
   (#match? @comment.documentation "^\\/[\\*][\\*][^\\*].*[\\*]\\/$")
 )
 
-(
-  (comment) @comment @spell
-)
+(comment) @comment @spell
 
 (preproc_function_def
   name: (identifier) @function.macro
@@ -85,9 +79,7 @@
   (#match? @constant "^[A-Z][A-Z0-9_]+$")
 )
 
-(
-  (primitive_type) @type.builtin
-)
+(primitive_type) @type.builtin
 
 (type_definition
   declarator: (type_identifier) @type.definition
@@ -97,25 +89,17 @@
   "extern" @storageclass
 )
 
-(
-  (type_qualifier) @type.qualifier
-)
+(type_qualifier) @type.qualifier
 
-(
-  (storage_class_specifier) @storageclass
-)
+(storage_class_specifier) @storageclass
 
-(
-  [
-    (type_identifier)
-    (sized_type_specifier)
-    (type_descriptor)
-  ] @type
-)
+[
+  (type_identifier)
+  (sized_type_specifier)
+  (type_descriptor)
+] @type
 
-(
-  (statement_identifier) @label
-)
+(statement_identifier) @label
 
 (
   (
@@ -125,9 +109,7 @@
   (#not-has-ancestor? @property function_declarator)
 )
 
-(
-  (field_designator) @property
-)
+(field_designator) @property
 
 (
   (
@@ -138,36 +120,22 @@
   (#not-has-parent? @_parent template_method function_declarator call_expression)
 )
 
-(
-  [
-    (preproc_arg)
-    (preproc_defined)
-  ] @function.macro
-)
+[
+  (preproc_arg)
+  (preproc_defined)
+] @function.macro
 
-(
-  (char_literal) @character
-)
+(char_literal) @character
 
-(
-  (number_literal) @number
-)
+(number_literal) @number
 
-(
-  (null) @constant.builtin
-)
+(null) @constant.builtin
 
-(
-  (escape_sequence) @string.escape
-)
+(escape_sequence) @string.escape
 
-(
-  (system_lib_string) @string
-)
+(system_lib_string) @string
 
-(
-  (string_literal) @string
-)
+(string_literal) @string
 
 (conditional_expression
   [
@@ -176,138 +144,110 @@
   ] @conditional.ternary
 )
 
-(
-  [
-    (true)
-    (false)
-  ] @boolean
-)
+[
+  (true)
+  (false)
+] @boolean
 
 (comma_expression
   [","] @operator
 )
 
-(
-  [
-    "="
-    "-"
-    "*"
-    "/"
-    "+"
-    "%"
-    "~"
-    "|"
-    "&"
-    "^"
-    "<<"
-    ">>"
-    "->"
-    "."
-    "<"
-    "<="
-    ">="
-    ">"
-    "=="
-    "!="
-    "!"
-    "&&"
-    "||"
-    "-="
-    "+="
-    "*="
-    "/="
-    "%="
-    "|="
-    "&="
-    "^="
-    ">>="
-    "<<="
-    "--"
-    "++"
-  ] @operator
-)
+[
+  "="
+  "-"
+  "*"
+  "/"
+  "+"
+  "%"
+  "~"
+  "|"
+  "&"
+  "^"
+  "<<"
+  ">>"
+  "->"
+  "."
+  "<"
+  "<="
+  ">="
+  ">"
+  "=="
+  "!="
+  "!"
+  "&&"
+  "||"
+  "-="
+  "+="
+  "*="
+  "/="
+  "%="
+  "|="
+  "&="
+  "^="
+  ">>="
+  "<<="
+  "--"
+  "++"
+] @operator
 
-(
-  [
-    "("
-    ")"
-    "["
-    "]"
-    "{"
-    "}"
-  ] @punctuation.bracket
-)
+[
+  "("
+  ")"
+  "["
+  "]"
+  "{"
+  "}"
+] @punctuation.bracket
 
-("..."
-  @punctuation.special
-)
+"..." @punctuation.special
 
-(
-  [
-    ";"
-    ":"
-    ","
-  ] @punctuation.delimiter
-)
+[
+  ";"
+  ":"
+  ","
+] @punctuation.delimiter
 
-("#include"
-  @include
-)
+"#include" @include
 
-("#define"
-  @define
-)
+"#define" @define
 
-(
-  [
-    "#if"
-    "#ifdef"
-    "#ifndef"
-    "#else"
-    "#elif"
-    "#endif"
-    (preproc_directive)
-  ] @preproc
-)
+[
+  "#if"
+  "#ifdef"
+  "#ifndef"
+  "#else"
+  "#elif"
+  "#endif"
+  (preproc_directive)
+] @preproc
 
-(
-  [
-    "if"
-    "else"
-    "case"
-    "switch"
-  ] @conditional
-)
+[
+  "if"
+  "else"
+  "case"
+  "switch"
+] @conditional
 
-(
-  [
-    "while"
-    "for"
-    "do"
-    "continue"
-    "break"
-  ] @repeat
-)
+[
+  "while"
+  "for"
+  "do"
+  "continue"
+  "break"
+] @repeat
 
-("return"
-  @keyword.return
-)
+"return" @keyword.return
 
-("sizeof"
-  @keyword.operator
-)
+"sizeof" @keyword.operator
 
-(
-  [
-    "default"
-    "enum"
-    "struct"
-    "typedef"
-    "union"
-    "goto"
-  ] @keyword
-)
+[
+  "default"
+  "enum"
+  "struct"
+  "typedef"
+  "union"
+  "goto"
+] @keyword
 
-(
-  (identifier) @variable
-)
+(identifier) @variable

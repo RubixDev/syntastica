@@ -1,10 +1,8 @@
-(
-  [
-    (function_item)
-    (closure_expression)
-    (block)
-  ] @local.scope
-)
+[
+  (function_item)
+  (closure_expression)
+  (block)
+] @local.scope
 
 (parameter
   (identifier) @local.definition
@@ -14,6 +12,4 @@
   (identifier) @local.definition
 )
 
-(
-  (identifier) @local.reference
-)
+(identifier) @local.reference

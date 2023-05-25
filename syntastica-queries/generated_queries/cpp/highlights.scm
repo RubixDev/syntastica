@@ -1,6 +1,4 @@
-(
-  (literal_suffix) @operator
-)
+(literal_suffix) @operator
 
 (template_argument_list
   [
@@ -9,97 +7,71 @@
   ] @punctuation.bracket
 )
 
-("::"
-  @punctuation.delimiter
-)
+"::" @punctuation.delimiter
 
-("<=>"
-  @operator
-)
+"<=>" @operator
 
-(
-  [
-    "new"
-    "delete"
-    "xor"
-    "bitand"
-    "bitor"
-    "compl"
-    "not"
-    "xor_eq"
-    "and_eq"
-    "or_eq"
-    "not_eq"
-    "and"
-    "or"
-  ] @keyword.operator
-)
+[
+  "new"
+  "delete"
+  "xor"
+  "bitand"
+  "bitor"
+  "compl"
+  "not"
+  "xor_eq"
+  "and_eq"
+  "or_eq"
+  "not_eq"
+  "and"
+  "or"
+] @keyword.operator
 
-(
-  [
-    "public"
-    "private"
-    "protected"
-    "virtual"
-    "final"
-  ] @type.qualifier
-)
+[
+  "public"
+  "private"
+  "protected"
+  "virtual"
+  "final"
+] @type.qualifier
 
-(
-  [
-    "co_yield"
-    "co_return"
-  ] @keyword.coroutine.return
-)
+[
+  "co_yield"
+  "co_return"
+] @keyword.coroutine.return
 
-(
-  ["co_await"] @keyword.coroutine
-)
+["co_await"] @keyword.coroutine
 
-(
-  [
-    "class"
-    "decltype"
-    "explicit"
-    "friend"
-    "namespace"
-    "override"
-    "template"
-    "typename"
-    "using"
-    "concept"
-    "requires"
-  ] @keyword
-)
+[
+  "class"
+  "decltype"
+  "explicit"
+  "friend"
+  "namespace"
+  "override"
+  "template"
+  "typename"
+  "using"
+  "concept"
+  "requires"
+] @keyword
 
-(
-  [
-    "try"
-    "catch"
-    "noexcept"
-    "throw"
-  ] @exception
-)
+[
+  "try"
+  "catch"
+  "noexcept"
+  "throw"
+] @exception
 
-(
-  (raw_string_literal) @string
-)
+(raw_string_literal) @string
 
-(
-  (false) @boolean
-)
+(false) @boolean
 
-(
-  (true) @boolean
-)
+(true) @boolean
 
-(
-  (nullptr) @constant.builtin
-)
+(nullptr) @constant.builtin
 
-(
-  (this) @variable.builtin
-)
+(this) @variable.builtin
 
 (
   (field_initializer
@@ -243,17 +215,11 @@
   )
 )
 
-("static_assert"
-  @function.builtin
-)
+"static_assert" @function.builtin
 
-("operator"
-  @function
-)
+"operator" @function
 
-(
-  (operator_name) @function
-)
+(operator_name) @function
 
 (function_declarator
   (template_function
@@ -325,13 +291,9 @@
   (#match? @type "^[A-Z]")
 )
 
-(
-  (namespace_identifier) @namespace
-)
+(namespace_identifier) @namespace
 
-(
-  (auto) @type.builtin
-)
+(auto) @type.builtin
 
 (alias_declaration
   name: (type_identifier) @type.definition
@@ -381,25 +343,21 @@
   (#match? @field "(^_|^m_|_$)")
 )
 
-(
-  (ERROR) @error
-)
+(ERROR) @error
 
-(
-  [
-    "__attribute__"
-    "__cdecl"
-    "__clrcall"
-    "__stdcall"
-    "__fastcall"
-    "__thiscall"
-    "__vectorcall"
-    "_unaligned"
-    "__unaligned"
-    "__declspec"
-    (attribute_declaration)
-  ] @attribute
-)
+[
+  "__attribute__"
+  "__cdecl"
+  "__clrcall"
+  "__stdcall"
+  "__fastcall"
+  "__thiscall"
+  "__vectorcall"
+  "_unaligned"
+  "__unaligned"
+  "__declspec"
+  (attribute_declaration)
+] @attribute
 
 (preproc_params
   (identifier) @parameter
@@ -418,9 +376,7 @@
   (#match? @comment.documentation "^\\/[\\*][\\*][^\\*].*[\\*]\\/$")
 )
 
-(
-  (comment) @comment @spell
-)
+(comment) @comment @spell
 
 (preproc_function_def
   name: (identifier) @function.macro
@@ -468,9 +424,7 @@
   (#match? @constant "^[A-Z][A-Z0-9_]+$")
 )
 
-(
-  (primitive_type) @type.builtin
-)
+(primitive_type) @type.builtin
 
 (type_definition
   declarator: (type_identifier) @type.definition
@@ -480,25 +434,17 @@
   "extern" @storageclass
 )
 
-(
-  (type_qualifier) @type.qualifier
-)
+(type_qualifier) @type.qualifier
 
-(
-  (storage_class_specifier) @storageclass
-)
+(storage_class_specifier) @storageclass
 
-(
-  [
-    (type_identifier)
-    (sized_type_specifier)
-    (type_descriptor)
-  ] @type
-)
+[
+  (type_identifier)
+  (sized_type_specifier)
+  (type_descriptor)
+] @type
 
-(
-  (statement_identifier) @label
-)
+(statement_identifier) @label
 
 (
   (
@@ -508,9 +454,7 @@
   (#not-has-ancestor? @property function_declarator)
 )
 
-(
-  (field_designator) @property
-)
+(field_designator) @property
 
 (
   (
@@ -521,36 +465,22 @@
   (#not-has-parent? @_parent template_method function_declarator call_expression)
 )
 
-(
-  [
-    (preproc_arg)
-    (preproc_defined)
-  ] @function.macro
-)
+[
+  (preproc_arg)
+  (preproc_defined)
+] @function.macro
 
-(
-  (char_literal) @character
-)
+(char_literal) @character
 
-(
-  (number_literal) @number
-)
+(number_literal) @number
 
-(
-  (null) @constant.builtin
-)
+(null) @constant.builtin
 
-(
-  (escape_sequence) @string.escape
-)
+(escape_sequence) @string.escape
 
-(
-  (system_lib_string) @string
-)
+(system_lib_string) @string
 
-(
-  (string_literal) @string
-)
+(string_literal) @string
 
 (conditional_expression
   [
@@ -559,138 +489,110 @@
   ] @conditional.ternary
 )
 
-(
-  [
-    (true)
-    (false)
-  ] @boolean
-)
+[
+  (true)
+  (false)
+] @boolean
 
 (comma_expression
   [","] @operator
 )
 
-(
-  [
-    "="
-    "-"
-    "*"
-    "/"
-    "+"
-    "%"
-    "~"
-    "|"
-    "&"
-    "^"
-    "<<"
-    ">>"
-    "->"
-    "."
-    "<"
-    "<="
-    ">="
-    ">"
-    "=="
-    "!="
-    "!"
-    "&&"
-    "||"
-    "-="
-    "+="
-    "*="
-    "/="
-    "%="
-    "|="
-    "&="
-    "^="
-    ">>="
-    "<<="
-    "--"
-    "++"
-  ] @operator
-)
+[
+  "="
+  "-"
+  "*"
+  "/"
+  "+"
+  "%"
+  "~"
+  "|"
+  "&"
+  "^"
+  "<<"
+  ">>"
+  "->"
+  "."
+  "<"
+  "<="
+  ">="
+  ">"
+  "=="
+  "!="
+  "!"
+  "&&"
+  "||"
+  "-="
+  "+="
+  "*="
+  "/="
+  "%="
+  "|="
+  "&="
+  "^="
+  ">>="
+  "<<="
+  "--"
+  "++"
+] @operator
 
-(
-  [
-    "("
-    ")"
-    "["
-    "]"
-    "{"
-    "}"
-  ] @punctuation.bracket
-)
+[
+  "("
+  ")"
+  "["
+  "]"
+  "{"
+  "}"
+] @punctuation.bracket
 
-("..."
-  @punctuation.special
-)
+"..." @punctuation.special
 
-(
-  [
-    ";"
-    ":"
-    ","
-  ] @punctuation.delimiter
-)
+[
+  ";"
+  ":"
+  ","
+] @punctuation.delimiter
 
-("#include"
-  @include
-)
+"#include" @include
 
-("#define"
-  @define
-)
+"#define" @define
 
-(
-  [
-    "#if"
-    "#ifdef"
-    "#ifndef"
-    "#else"
-    "#elif"
-    "#endif"
-    (preproc_directive)
-  ] @preproc
-)
+[
+  "#if"
+  "#ifdef"
+  "#ifndef"
+  "#else"
+  "#elif"
+  "#endif"
+  (preproc_directive)
+] @preproc
 
-(
-  [
-    "if"
-    "else"
-    "case"
-    "switch"
-  ] @conditional
-)
+[
+  "if"
+  "else"
+  "case"
+  "switch"
+] @conditional
 
-(
-  [
-    "while"
-    "for"
-    "do"
-    "continue"
-    "break"
-  ] @repeat
-)
+[
+  "while"
+  "for"
+  "do"
+  "continue"
+  "break"
+] @repeat
 
-("return"
-  @keyword.return
-)
+"return" @keyword.return
 
-("sizeof"
-  @keyword.operator
-)
+"sizeof" @keyword.operator
 
-(
-  [
-    "default"
-    "enum"
-    "struct"
-    "typedef"
-    "union"
-    "goto"
-  ] @keyword
-)
+[
+  "default"
+  "enum"
+  "struct"
+  "typedef"
+  "union"
+  "goto"
+] @keyword
 
-(
-  (identifier) @variable
-)
+(identifier) @variable
