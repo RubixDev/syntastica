@@ -17,6 +17,12 @@ package.authors = ["RubixDev <silas.groh@t-online.de>"]
 package.license = "GPL-3.0-only"
 package.repository = "https://github.com/RubixDev/syntastica"
 
+[workspace.metadata.release]
+enable-all-features = true
+sign-commit = true
+sign-tag = true
+shared-version = true
+
 [package]
 name = "syntastica"
 version = "0.3.0"
