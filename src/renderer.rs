@@ -121,12 +121,12 @@ fn find_style(mut key: &'static str, theme: &ResolvedTheme) -> Option<Style> {
 /// let theme = theme! { "keyword": "#ff0000" }.resolve_links().unwrap();
 ///
 /// // define highlights
-/// let highlights = vec![vec![("<fn>", Some("keyword"))]];
+/// let highlights = vec![vec![("<fn>", Some("keyword")), ("none", None)]];
 ///
 /// // render to HTML
 /// let output = syntastica::render(&highlights, &mut HtmlRenderer, theme);
 ///
-/// assert_eq!(output, r#"<span style="color: rgb(255, 0, 0);">&lt;fn&gt;</span><br>"#);
+/// assert_eq!(output, r#"<span style="color: rgb(255, 0, 0);">&lt;fn&gt;</span>none<br>"#);
 /// ```
 pub struct HtmlRenderer;
 
@@ -202,12 +202,12 @@ impl Renderer for HtmlRenderer {
 /// let theme = theme! { "keyword": "#ff0000" }.resolve_links().unwrap();
 ///
 /// // define highlights
-/// let highlights = vec![vec![("fn", Some("keyword"))]];
+/// let highlights = vec![vec![("fn", Some("keyword")), (" none", None)]];
 ///
 /// // render to a string without a background color
 /// let output = syntastica::render(&highlights, &mut TerminalRenderer::new(None), theme);
 ///
-/// assert_eq!(output, "\x1b[38;2;255;0;0mfn\x1b[0m\n");
+/// assert_eq!(output, "\x1b[38;2;255;0;0mfn\x1b[0m none\n");
 /// ```
 pub struct TerminalRenderer {
     background_color: Option<Color>,
