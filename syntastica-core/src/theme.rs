@@ -8,10 +8,10 @@ use crate::{
 #[derive(Clone, Hash, Debug)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(feature = "serde", serde(transparent))]
-pub struct Config(BTreeMap<String, ThemeValue>);
+pub struct Theme(BTreeMap<String, ThemeValue>);
 
 #[derive(Clone, Hash, Debug)]
-pub struct ResolvedConfig(BTreeMap<String, Style>);
+pub struct ResolvedTheme(BTreeMap<String, Style>);
 
 #[derive(Clone, Hash, Debug)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -32,7 +32,7 @@ pub enum ThemeValue {
     },
 }
 
-impl Config {
+impl Theme {
     pub fn new(highlights: BTreeMap<String, ThemeValue>) -> Self {
         Self(highlights)
     }
@@ -41,9 +41,9 @@ impl Config {
         self.0
     }
 
-    pub fn resolve_links(mut self) -> Result<ResolvedConfig> {
+    pub fn resolve_links(mut self) -> Result<ResolvedTheme> {
         self.resolve_links_impl()?;
-        Ok(ResolvedConfig::new(
+        Ok(ResolvedTheme::new(
             self.0
                 .into_iter()
                 .map(|(key, value)| {
@@ -108,13 +108,13 @@ impl Config {
     }
 }
 
-impl From<BTreeMap<String, ThemeValue>> for Config {
+impl From<BTreeMap<String, ThemeValue>> for Theme {
     fn from(highlights: BTreeMap<String, ThemeValue>) -> Self {
         Self::new(highlights)
     }
 }
 
-impl ResolvedConfig {
+impl ResolvedTheme {
     pub fn new(highlights: BTreeMap<String, Style>) -> Self {
         Self(highlights)
     }
@@ -132,7 +132,7 @@ impl ResolvedConfig {
     }
 }
 
-impl<Q> Index<&Q> for ResolvedConfig
+impl<Q> Index<&Q> for ResolvedTheme
 where
     String: Borrow<Q>,
     Q: Ord + ?Sized,
@@ -144,16 +144,16 @@ where
     }
 }
 
-impl From<BTreeMap<String, Style>> for ResolvedConfig {
+impl From<BTreeMap<String, Style>> for ResolvedTheme {
     fn from(highlights: BTreeMap<String, Style>) -> Self {
         Self::new(highlights)
     }
 }
 
-impl TryFrom<Config> for ResolvedConfig {
+impl TryFrom<Theme> for ResolvedTheme {
     type Error = Error;
 
-    fn try_from(value: Config) -> Result<Self> {
+    fn try_from(value: Theme) -> Result<Self> {
         value.resolve_links()
     }
 }
@@ -254,10 +254,10 @@ macro_rules! theme_impl {
         $(
             theme.insert($key.to_owned(), theme_impl!(@value $value));
         )*
-        $crate::config::Config::new(theme)
+        $crate::theme::Theme::new(theme)
     }};
     (@value $str:literal) => {
-        $crate::config::ThemeValue::Simple($str.to_owned())
+        $crate::theme::ThemeValue::Simple($str.to_owned())
     };
     (@value {
         color: $color:tt,
@@ -267,7 +267,7 @@ macro_rules! theme_impl {
         bold: $bold:expr,
         link: $link:tt $(,)?
     }) => {
-        $crate::config::ThemeValue::Extended {
+        $crate::theme::ThemeValue::Extended {
             color: theme_impl!(@option $color),
             underline: $underline,
             strikethrough: $strikethrough,

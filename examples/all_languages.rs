@@ -8,11 +8,7 @@ use syntastica::{
 use syntastica_parsers_git::LanguageProviderImpl;
 
 fn main() {
-    let languages = ConfiguredLanguages::try_configure(
-        &LanguageProviderImpl::all(),
-        syntastica_themes::one::dark(),
-    )
-    .unwrap();
+    let languages = ConfiguredLanguages::try_configure(&LanguageProviderImpl::all()).unwrap();
     let mut highlighter = Highlighter::new();
 
     let examples: BTreeMap<String, String> =
@@ -44,6 +40,7 @@ fn example(
                 highlighter
             )?,
             &mut TerminalRenderer::new(None),
+            syntastica_themes::one::dark().resolve_links()?,
         )
     );
     Ok(())

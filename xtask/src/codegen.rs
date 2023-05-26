@@ -4,7 +4,7 @@ use std::{
 };
 
 use anyhow::Result;
-use syntastica_core::config::ThemeValue;
+use syntastica_core::theme::ThemeValue;
 
 mod parsers_dep;
 mod parsers_gitdep;
@@ -217,15 +217,15 @@ fn make_theme_file(
 use std::collections::BTreeMap;
 
 use syntastica_core::{
-    config::{Config, ThemeValue},
     theme,
+    theme::{Theme, ThemeValue},
 };
 "###;
 
     for (variant, palette) in palettes {
         out += &format!(
             r###"
-pub fn {variant}() -> Config {{
+pub fn {variant}() -> Theme {{
     let mut palette = {theme}
     .into_inner();
     palette.append(&mut theme());

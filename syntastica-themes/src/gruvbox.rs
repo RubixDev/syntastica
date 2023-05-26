@@ -6,11 +6,11 @@
 use std::collections::BTreeMap;
 
 use syntastica_core::{
-    config::{Config, ThemeValue},
     theme,
+    theme::{Theme, ThemeValue},
 };
 
-pub fn dark() -> Config {
+pub fn dark() -> Theme {
     let mut palette = theme! {
         "aqua": "#8ec07c",
         "bg0": "#282828",
@@ -42,7 +42,7 @@ pub fn dark() -> Config {
     palette.into()
 }
 
-pub fn light() -> Config {
+pub fn light() -> Theme {
     let mut palette = theme! {
         "aqua": "#427b58",
         "bg0": "#fbf1c7",

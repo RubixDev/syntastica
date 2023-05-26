@@ -12,23 +12,31 @@ fn main() {
     let examples: HashMap<String, String> =
         toml::from_str(include_str!("./example_programs.toml")).unwrap();
     let code = &examples["rust"];
-    let mut hl = Highlighter::new();
+    let mut highlighter = Highlighter::new();
+    let languages = ConfiguredLanguages::try_configure(&LanguageProviderImpl::with_languages(&[
+        "rust", "regex",
+    ]))
+    .unwrap();
+    run_examples(code, &mut highlighter, &languages);
+}
 
-    example(code, &mut hl, themes::one::dark(), "one::dark");
-    example(code, &mut hl, themes::one::darker(), "one::darker");
-    example(code, &mut hl, themes::one::cool(), "one::cool");
-    example(code, &mut hl, themes::one::deep(), "one::deep");
-    example(code, &mut hl, themes::one::warm(), "one::warm");
-    example(code, &mut hl, themes::one::warmer(), "one::warmer");
-    example(code, &mut hl, themes::one::light(), "one::light");
-    example(code, &mut hl, themes::gruvbox::dark(), "gruvbox::dark");
-    example(code, &mut hl, themes::gruvbox::light(), "gruvbox::light");
+fn run_examples(c: &str, h: &mut Highlighter, l: &ConfiguredLanguages) {
+    example(c, h, l, themes::one::dark(), "one::dark");
+    example(c, h, l, themes::one::darker(), "one::darker");
+    example(c, h, l, themes::one::cool(), "one::cool");
+    example(c, h, l, themes::one::deep(), "one::deep");
+    example(c, h, l, themes::one::warm(), "one::warm");
+    example(c, h, l, themes::one::warmer(), "one::warmer");
+    example(c, h, l, themes::one::light(), "one::light");
+    example(c, h, l, themes::gruvbox::dark(), "gruvbox::dark");
+    example(c, h, l, themes::gruvbox::light(), "gruvbox::light");
 }
 
 fn example(
     code: &str,
     highlighter: &mut Highlighter,
-    theme: syntastica::config::Config,
+    languages: &ConfiguredLanguages,
+    theme: syntastica::theme::Theme,
     name: &str,
 ) {
     let theme = theme.resolve_links().unwrap();
@@ -41,12 +49,13 @@ fn example(
             &syntastica::process(
                 code.trim(),
                 "rust",
-                &ConfiguredLanguages::try_configure(&provider, theme).unwrap(),
+                languages,
                 |lang_name| provider.for_injection(lang_name),
                 highlighter
             )
             .unwrap(),
             &mut TerminalRenderer::new(bg_color),
+            theme,
         )
     );
 }

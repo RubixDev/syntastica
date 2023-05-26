@@ -7,45 +7,41 @@ use std::borrow::Cow;
 pub use syntastica_core::*;
 pub use syntastica_highlight::Highlighter;
 
-use config::ResolvedConfig;
 use providers::{ConfiguredLanguages, LanguageProvider};
 use renderer::Renderer;
 use style::Style;
 use syntastica_highlight::{Highlight, HighlightEvent};
+use theme::ResolvedTheme;
 
-pub type Highlights<'src> = Vec<Vec<(&'src str, Option<Style>)>>;
+pub type Highlights<'src> = Vec<Vec<(&'src str, Option<&'static str>)>>;
 
-pub fn highlight<C, E>(
+pub fn highlight<T, E>(
     code: &str,
     language_name: &str,
     language_provider: &impl LanguageProvider,
     renderer: &mut impl Renderer,
-    config: C,
+    theme: T,
 ) -> Result<String>
 where
-    C: TryInto<ResolvedConfig, Error = E>,
+    T: TryInto<ResolvedTheme, Error = E>,
     crate::Error: From<E>,
 {
     Ok(render(
-        &process_once(code, language_name, language_provider, config)?,
+        &process_once(code, language_name, language_provider)?,
         renderer,
+        theme.try_into()?,
     ))
 }
 
-pub fn process_once<'src, C, E>(
+pub fn process_once<'src>(
     code: &'src str,
     language_name: &str,
     language_provider: &impl LanguageProvider,
-    config: C,
-) -> Result<Highlights<'src>>
-where
-    C: TryInto<ResolvedConfig, Error = E>,
-    crate::Error: From<E>,
-{
+) -> Result<Highlights<'src>> {
     process(
         code,
         language_name,
-        &ConfiguredLanguages::try_configure(language_provider, config)?,
+        &ConfiguredLanguages::try_configure(language_provider)?,
         |lang_name| language_provider.for_injection(lang_name),
         &mut Highlighter::new(),
     )
@@ -89,7 +85,13 @@ pub fn process<'src>(
                 let ends_with_newline = code[start..end].ends_with('\n');
                 let mut lines = code[start..end].lines().peekable();
                 while let Some(line) = lines.next() {
-                    let style = find_style(&style_stack, languages);
+                    let style = style_stack.last().and_then(|idx| {
+                        let key = THEME_KEYS[*idx];
+                        match key {
+                            "none" => None,
+                            _ => Some(key),
+                        }
+                    });
                     out.last_mut()
                         .expect("`out` is initialized with one element and never shrinks in size")
                         .push((line, style));
@@ -105,35 +107,86 @@ pub fn process<'src>(
     Ok(out)
 }
 
-fn find_style(stack: &[usize], langs: &ConfiguredLanguages) -> Option<Style> {
-    for index in stack.iter().rev() {
-        let capture_name = langs.highlight_keys().get(*index).map(|name| name.as_str());
-
-        // keep `@none` captures unstyled
-        if capture_name == Some("none") {
-            return None;
-        }
-
-        // try to get style for capture
-        if let Some(style) = langs.highlight_styles().get(*index) {
-            return Some(*style);
-        }
-    }
-
-    langs.default_style()
-}
-
-pub fn render(highlights: &Highlights<'_>, renderer: &mut impl Renderer) -> String {
+pub fn render(
+    highlights: &Highlights<'_>,
+    renderer: &mut impl Renderer,
+    theme: ResolvedTheme,
+) -> String {
     let mut out = renderer.head().into_owned();
     for line in highlights {
         for (text, style) in line {
             let unstyled = renderer.unstyled(text);
-            match style {
-                Some(style) => out += &renderer.styled(&unstyled, *style),
+            match style.and_then(|key| find_style(key, &theme)) {
+                Some(style) => out += &renderer.styled(&unstyled, style),
                 None => out += &unstyled,
             }
         }
         out += &renderer.newline();
     }
     out + &renderer.tail()
+}
+
+/// Try to find the best possible style supported by the them given a theme key. For example, if
+/// `key` is `keyword.operator` but `theme` only has a style defined for `keyword`, then the style
+/// for `keyword` is used.
+fn find_style(mut key: &'static str, theme: &ResolvedTheme) -> Option<Style> {
+    // if the theme contains the entire key, use that
+    if let Some(style) = theme.get(key) {
+        return Some(*style);
+    }
+
+    // otherwise continue to strip the right-most part of the key
+    while let Some((rest, _)) = key.rsplit_once('.') {
+        // until the theme contains the key
+        if let Some(style) = theme.get(rest) {
+            return Some(*style);
+        }
+        key = rest;
+    }
+
+    // or when the theme doesn't have any matching style, try to use the `text` style as a fallback
+    theme.get("text").copied()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn style_finding() {
+        let theme = theme! {
+            "keyword": "#000000",
+            "keyword.return": "#ff0000",
+        }
+        .resolve_links()
+        .unwrap();
+
+        assert_eq!(
+            find_style("keyword.return", &theme),
+            Some(Style::color_only(255, 0, 0)),
+        );
+        assert_eq!(
+            find_style("keyword.operator", &theme),
+            Some(Style::color_only(0, 0, 0)),
+        );
+        assert_eq!(
+            find_style("keyword", &theme),
+            Some(Style::color_only(0, 0, 0)),
+        );
+        assert_eq!(find_style("other", &theme), None);
+    }
+
+    #[test]
+    fn style_fallback() {
+        let theme = theme! {
+            "text": "#000000",
+        }
+        .resolve_links()
+        .unwrap();
+
+        assert_eq!(
+            find_style("other", &theme),
+            Some(Style::color_only(0, 0, 0))
+        );
+    }
 }

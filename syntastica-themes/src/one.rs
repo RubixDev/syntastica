@@ -6,11 +6,11 @@
 use std::collections::BTreeMap;
 
 use syntastica_core::{
-    config::{Config, ThemeValue},
     theme,
+    theme::{Theme, ThemeValue},
 };
 
-pub fn cool() -> Config {
+pub fn cool() -> Theme {
     let mut palette = theme! {
         "bg0": "#242b38",
         "bg1": "#2d3343",
@@ -44,7 +44,7 @@ pub fn cool() -> Config {
     palette.into()
 }
 
-pub fn dark() -> Config {
+pub fn dark() -> Theme {
     let mut palette = theme! {
         "bg0": "#282c34",
         "bg1": "#31353f",
@@ -78,7 +78,7 @@ pub fn dark() -> Config {
     palette.into()
 }
 
-pub fn darker() -> Config {
+pub fn darker() -> Theme {
     let mut palette = theme! {
         "bg0": "#1f2329",
         "bg1": "#282c34",
@@ -112,7 +112,7 @@ pub fn darker() -> Config {
     palette.into()
 }
 
-pub fn deep() -> Config {
+pub fn deep() -> Theme {
     let mut palette = theme! {
         "bg0": "#1a212e",
         "bg1": "#21283b",
@@ -146,7 +146,7 @@ pub fn deep() -> Config {
     palette.into()
 }
 
-pub fn light() -> Config {
+pub fn light() -> Theme {
     let mut palette = theme! {
         "bg0": "#fafafa",
         "bg1": "#f0f0f0",
@@ -180,7 +180,7 @@ pub fn light() -> Config {
     palette.into()
 }
 
-pub fn warm() -> Config {
+pub fn warm() -> Theme {
     let mut palette = theme! {
         "bg0": "#2c2d30",
         "bg1": "#35373b",
@@ -214,7 +214,7 @@ pub fn warm() -> Config {
     palette.into()
 }
 
-pub fn warmer() -> Config {
+pub fn warmer() -> Theme {
     let mut palette = theme! {
         "bg0": "#232326",
         "bg1": "#2c2d31",

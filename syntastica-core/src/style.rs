@@ -2,7 +2,7 @@ use std::{num::ParseIntError, result};
 
 use thiserror::Error;
 
-#[derive(Clone, Copy, Hash, Debug)]
+#[derive(Clone, Copy, Hash, Debug, PartialEq, Eq)]
 pub struct Style {
     color: Color,
     underline: bool,
@@ -26,6 +26,10 @@ impl Style {
             italic,
             bold,
         }
+    }
+
+    pub fn color_only(red: u8, green: u8, blue: u8) -> Self {
+        Self::new(Color::new(red, green, blue), false, false, false, false)
     }
 
     pub fn color(&self) -> Color {
@@ -57,7 +61,7 @@ pub enum ParseHexError {
     InvalidDigit(#[from] ParseIntError),
 }
 
-#[derive(Clone, Copy, Hash, Debug)]
+#[derive(Clone, Copy, Hash, Debug, PartialEq, Eq)]
 pub struct Color {
     red: u8,
     green: u8,
