@@ -16,7 +16,7 @@ impl Display for OwnedSexprs {
 
 impl Display for Sexprs<'_> {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        let last = self.len() - 1;
+        let last = self.len().saturating_sub(1);
         let mut iter = self.iter().enumerate().peekable();
         while let Some((index, sexpr)) = iter.next() {
             sexpr.fmt(f)?;

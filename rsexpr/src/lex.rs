@@ -83,7 +83,7 @@ fn lex_string<'src>(input: &'src [u8], index: &mut usize) -> Token<'src> {
                 *index += 1;
                 break;
             }
-            b'\\' if *index == input.len() - 1 => {
+            b'\\' if *index == input.len().wrapping_sub(1) => {
                 end_index = *index;
                 *index += 1;
                 break;
