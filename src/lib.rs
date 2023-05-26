@@ -1,16 +1,14 @@
 #![cfg_attr(all(doc, CHANNEL_NIGHTLY), feature(doc_auto_cfg))]
 
+mod processor;
 pub mod renderer;
 
-use std::borrow::Cow;
-
+pub use processor::Processor;
 pub use syntastica_core::*;
-pub use syntastica_highlight::Highlighter;
 
-use providers::{ConfiguredLanguages, LanguageProvider};
+use providers::LanguageProvider;
 use renderer::Renderer;
 use style::Style;
-use syntastica_highlight::{Highlight, HighlightEvent};
 use theme::ResolvedTheme;
 
 pub type Highlights<'src> = Vec<Vec<(&'src str, Option<&'static str>)>>;
@@ -27,84 +25,10 @@ where
     crate::Error: From<E>,
 {
     Ok(render(
-        &process_once(code, language_name, language_provider)?,
+        &Processor::process_once(code, language_name, language_provider)?,
         renderer,
         theme.try_into()?,
     ))
-}
-
-pub fn process_once<'src>(
-    code: &'src str,
-    language_name: &str,
-    language_provider: &impl LanguageProvider,
-) -> Result<Highlights<'src>> {
-    process(
-        code,
-        language_name,
-        &ConfiguredLanguages::try_configure(language_provider)?,
-        |lang_name| language_provider.for_injection(lang_name),
-        &mut Highlighter::new(),
-    )
-}
-
-pub fn process<'src>(
-    code: &'src str,
-    language_name: &str,
-    languages: &ConfiguredLanguages,
-    injection_callback: impl Fn(&str) -> Option<Cow<'_, str>>,
-    highlighter: &mut Highlighter,
-) -> Result<Highlights<'src>> {
-    let highlight_config = languages
-        .get(language_name)
-        .ok_or_else(|| Error::UnsupportedLanguage(language_name.to_owned()))?;
-
-    let mut out = vec![vec![]];
-    let mut style_stack = vec![];
-    for event in highlighter.highlight(highlight_config, code.as_bytes(), None, |lang_name| {
-        // if `lang_name` matches a language/parser name in `languages`, use that language
-        languages
-            .get(lang_name)
-            // else if `injection_callback` returns a name, try getting a language for that name
-            .or_else(|| injection_callback(lang_name).and_then(|name| languages.get(name.as_ref())))
-            // else, `lang_name` might be a mimetype like `text/css`, so try both again with the
-            // text after the last `/`
-            .or_else(|| {
-                lang_name.rsplit_once('/').and_then(|(_, name)| {
-                    languages.get(name).or_else(|| {
-                        injection_callback(name).and_then(|name| languages.get(name.as_ref()))
-                    })
-                })
-            })
-    })? {
-        match event? {
-            HighlightEvent::HighlightStart(Highlight(highlight)) => style_stack.push(highlight),
-            HighlightEvent::HighlightEnd => {
-                style_stack.pop();
-            }
-            HighlightEvent::Source { start, end } => {
-                let ends_with_newline = code[start..end].ends_with('\n');
-                let mut lines = code[start..end].lines().peekable();
-                while let Some(line) = lines.next() {
-                    let style = style_stack.last().and_then(|idx| {
-                        let key = THEME_KEYS[*idx];
-                        match key {
-                            "none" => None,
-                            _ => Some(key),
-                        }
-                    });
-                    out.last_mut()
-                        .expect("`out` is initialized with one element and never shrinks in size")
-                        .push((line, style));
-
-                    if lines.peek().is_some() || ends_with_newline {
-                        out.push(vec![]);
-                    }
-                }
-            }
-        }
-    }
-
-    Ok(out)
 }
 
 pub fn render(
