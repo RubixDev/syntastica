@@ -1,0 +1,17 @@
+[package]
+name = "syntastica-core"
+version = "0.3.0"
+authors.workspace = true
+edition = "2021"
+license.workspace = true
+repository.workspace = true
+description = "Shared types and traits used by other syntastica crates"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+syntastica-highlight = { version = "0.3.0", path = "../syntastica-highlight" }
+thiserror = "1.0.40"
+tree-sitter = "0.20.10"
+
+serde = { version = "1.0.160", features = ["derive"], optional = true }

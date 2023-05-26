@@ -11,14 +11,6 @@ description = "Collection of tree-sitter queries for syntastica"
 
 [dependencies]
 
-[dev-dependencies]
-once_cell = "1.17.1"
-syntastica = { version = "0.3.0", path = ".." }
-syntastica-macros = { version = "0.3.0", path = "../syntastica-macros" }
-syntastica-parsers = { version = "0.3.0", path = "../syntastica-parsers", features = ["all"] }
-syntastica-parsers-git = { version = "0.3.0", path = "../syntastica-parsers-git", features = ["all"] }
-tree-sitter = "0.20.10"
-
 [build-dependencies]
 rustc_version = "0.4.0"
 

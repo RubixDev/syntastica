@@ -4,7 +4,7 @@ use syntastica_highlight::HighlightConfiguration;
 
 pub use tree_sitter::Language;
 
-use crate::{config::ResolvedConfig, Style};
+use crate::{config::ResolvedConfig, style::Style};
 
 pub type Parsers = HashMap<String, Language>;
 pub type Queries<'a> = HashMap<String, [Cow<'a, str>; 3]>;

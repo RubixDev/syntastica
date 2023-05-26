@@ -2,7 +2,7 @@ use std::collections::{BTreeMap, HashMap};
 
 use anyhow::Result;
 use fancy_regex::Regex;
-use syntastica::config::ThemeValue;
+use syntastica_core::config::ThemeValue;
 
 use crate::codegen;
 

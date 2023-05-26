@@ -41,7 +41,7 @@ pub fn parsers_ffi(_: TokenStream) -> TokenStream {
         let ffi_func = format_ident!("{}", lang.parser.ffi_func);
         quote! {
             #[cfg(feature = #feat)]
-            fn #ffi_func() -> ::syntastica::providers::Language;
+            fn #ffi_func() -> ::syntastica_core::providers::Language;
         }
     });
     let functions = LANGUAGE_CONFIG.languages.iter().map(|lang| {
@@ -55,7 +55,7 @@ pub fn parsers_ffi(_: TokenStream) -> TokenStream {
         quote! {
             #[cfg(feature = #feat)]
             #[doc = #doc]
-            pub fn #name() -> ::syntastica::providers::Language {
+            pub fn #name() -> ::syntastica_core::providers::Language {
                 #[cfg(not(feature = "docs"))]
                 unsafe { #ffi_func() }
                 #[cfg(feature = "docs")]
@@ -111,7 +111,7 @@ fn parsers_rust(crates_io: bool, query_suffix: &str) -> TokenStream {
         quote! {
             #[cfg(feature = #feat)]
             #[doc = #doc]
-            pub fn #name() -> ::syntastica::providers::Language {
+            pub fn #name() -> ::syntastica_core::providers::Language {
                 #body
             }
         }
@@ -198,20 +198,20 @@ fn parsers(
         #(#functions)*
 
         // TODO: maybe create enum with all supported languages
-        /// An implementation of [`LanguageProvider`](::syntastica::providers::LanguageProvider),
+        /// An implementation of [`LanguageProvider`](::syntastica_core::providers::LanguageProvider),
         /// providing all parsers in the enabled feature set (see [`all`](LanguageProviderImpl::all))
         /// or a subset of them (see [`with_languages`](LanguageProviderImpl::with_languages)).
         pub struct LanguageProviderImpl<'a>(::std::option::Option<&'a [&'a str]>);
 
-        impl ::syntastica::providers::LanguageProvider for LanguageProviderImpl<'_> {
-            fn get_parsers(&self) -> ::std::result::Result<::syntastica::providers::Parsers, ::syntastica::Error> {
-                let mut _map: ::syntastica::providers::Parsers = ::std::collections::HashMap::with_capacity(#lang_count_parsers);
+        impl ::syntastica_core::providers::LanguageProvider for LanguageProviderImpl<'_> {
+            fn get_parsers(&self) -> ::std::result::Result<::syntastica_core::providers::Parsers, ::syntastica_core::Error> {
+                let mut _map: ::syntastica_core::providers::Parsers = ::std::collections::HashMap::with_capacity(#lang_count_parsers);
                 #(#get_parsers)*
                 ::std::result::Result::Ok(_map)
             }
 
-            fn get_queries(&self) -> ::std::result::Result<::syntastica::providers::Queries, ::syntastica::Error> {
-                let mut _map: ::syntastica::providers::Queries = ::std::collections::HashMap::with_capacity(#lang_count_all);
+            fn get_queries(&self) -> ::std::result::Result<::syntastica_core::providers::Queries, ::syntastica_core::Error> {
+                let mut _map: ::syntastica_core::providers::Queries = ::std::collections::HashMap::with_capacity(#lang_count_all);
                 #(#get_queries)*
                 ::std::result::Result::Ok(_map)
             }

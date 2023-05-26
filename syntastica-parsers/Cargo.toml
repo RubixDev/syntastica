@@ -11,7 +11,7 @@ description = "Collection of tree-sitter parsers for syntastica, using parsers a
 
 [dependencies]
 document-features = { version = "0.2.7", optional = true }
-syntastica = { version = "0.3.0", path = "..", default-features = false }
+syntastica-core = { version = "0.3.0", path = "../syntastica-core" }
 syntastica-macros = { version = "0.3.0", path = "../syntastica-macros" }
 syntastica-queries = { version = "0.3.0", path = "../syntastica-queries" }
 

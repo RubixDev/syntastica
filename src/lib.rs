@@ -1,22 +1,17 @@
 #![cfg_attr(all(doc, CHANNEL_NIGHTLY), feature(doc_auto_cfg))]
 
-pub mod config;
-mod error;
-pub mod providers;
 pub mod renderer;
-pub mod style;
 
 use std::borrow::Cow;
 
-use config::ResolvedConfig;
-pub use error::*;
+pub use syntastica_core::*;
 pub use syntastica_highlight::Highlighter;
 
+use config::ResolvedConfig;
 use providers::{ConfiguredLanguages, LanguageProvider};
 use renderer::Renderer;
 use style::Style;
 use syntastica_highlight::{Highlight, HighlightEvent};
-use thiserror::Error;
 
 pub type Highlights<'src> = Vec<Vec<(&'src str, Option<Style>)>>;
 

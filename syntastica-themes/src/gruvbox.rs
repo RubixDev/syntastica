@@ -5,7 +5,7 @@
 
 use std::collections::BTreeMap;
 
-use syntastica::{
+use syntastica_core::{
     config::{Config, ThemeValue},
     theme,
 };

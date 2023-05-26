@@ -4,7 +4,7 @@ use std::{
 };
 
 use anyhow::Result;
-use syntastica::config::ThemeValue;
+use syntastica_core::config::ThemeValue;
 
 mod parsers_dep;
 mod parsers_gitdep;
@@ -216,7 +216,7 @@ fn make_theme_file(
 
 use std::collections::BTreeMap;
 
-use syntastica::{
+use syntastica_core::{
     config::{Config, ThemeValue},
     theme,
 };
