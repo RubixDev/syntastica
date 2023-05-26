@@ -8,6 +8,7 @@ use anyhow::Result;
 use once_cell::sync::Lazy;
 
 mod codegen;
+mod set_version;
 
 pub static WORKSPACE_DIR: Lazy<PathBuf> = Lazy::new(|| {
     Path::new(env!("CARGO_MANIFEST_DIR"))
@@ -36,10 +37,12 @@ Usage: Run with `cargo xtask <task>`, eg. `cargo xtask codegen`.
         codegen parsers-dep:    Generate parts of the `Cargo.toml` for syntastica-parsers
         codegen parsers-gitdep: Generate parts of the `Cargo.toml` for syntastica-parsers-gitdep
         codegen themes:         Generate the themes for syntastica-themes
+        set-version <version>:  Set the version of all syntastica crates
             "###
             .trim(),
         ),
         "codegen" => codegen::run()?,
+        "set-version" => set_version::run()?,
         task => eprintln!(
             "unknown task '{task}', run `cargo xtask --help` to see a list of available tasks"
         ),
