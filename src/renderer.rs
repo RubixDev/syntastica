@@ -4,6 +4,7 @@
 
 use std::borrow::Cow;
 
+use aho_corasick::AhoCorasick;
 use syntastica_core::theme::ResolvedTheme;
 
 use crate::{
@@ -120,12 +121,12 @@ fn find_style(mut key: &'static str, theme: &ResolvedTheme) -> Option<Style> {
 /// let theme = theme! { "keyword": "#ff0000" }.resolve_links().unwrap();
 ///
 /// // define highlights
-/// let highlights = vec![vec![("fn", Some("keyword"))]];
+/// let highlights = vec![vec![("<fn>", Some("keyword"))]];
 ///
 /// // render to HTML
 /// let output = syntastica::render(&highlights, &mut HtmlRenderer, theme);
 ///
-/// assert_eq!(output, r#"<span style="color: rgb(255, 0, 0);">fn</span><br>"#);
+/// assert_eq!(output, r#"<span style="color: rgb(255, 0, 0);">&lt;fn&gt;</span><br>"#);
 /// ```
 pub struct HtmlRenderer;
 
@@ -150,13 +151,19 @@ impl Renderer for HtmlRenderer {
     }
 
     fn unstyled(&mut self, text: &str) -> Cow<'static, str> {
-        // TODO: don't use `.replace` chains
-        text.replace('&', "&amp;")
-            .replace('<', "&lt;")
-            .replace('>', "&gt;")
-            .replace(' ', "&nbsp;<wbr>")
-            .replace('\n', "<br>")
-            .replace('\t', "&nbsp;&nbsp;&nbsp;&nbsp;<wbr>")
+        AhoCorasick::new(["&", "<", ">", " ", "\n", "\t"])
+            .unwrap()
+            .replace_all(
+                text,
+                &[
+                    "&amp;",
+                    "&lt;",
+                    "&gt;",
+                    "&nbsp;<wbr>",
+                    "<br>",
+                    "&nbsp;&nbsp;&nbsp;&nbsp;<wbr>",
+                ],
+            )
             .into()
     }
 

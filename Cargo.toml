@@ -41,6 +41,7 @@ default = []
 serde = ["syntastica-core/serde"]
 
 [dependencies]
+aho-corasick = "1.0.1"
 thiserror = "1.0.40"
 tree-sitter = "0.20.10"
 
