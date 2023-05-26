@@ -44,6 +44,7 @@
   declarator: (field_identifier) @method
 )
 
+; crates.io skip
 (concept_definition
   name: (identifier) @type.definition
 )
@@ -308,7 +309,9 @@
   "template"
   "typename"
   "using"
+  ; crates.io skip
   "concept"
+  ; crates.io skip
   "requires"
 ] @keyword
 
@@ -330,19 +333,31 @@
 [
   "new"
   "delete"
+  ; crates.io skip
   "xor"
+  ; crates.io skip
   "bitand"
+  ; crates.io skip
   "bitor"
+  ; crates.io skip
   "compl"
+  ; crates.io skip
   "not"
+  ; crates.io skip
   "xor_eq"
+  ; crates.io skip
   "and_eq"
+  ; crates.io skip
   "or_eq"
+  ; crates.io skip
   "not_eq"
+  ; crates.io skip
   "and"
+  ; crates.io skip
   "or"
 ] @keyword.operator
 
+; crates.io skip
 "<=>" @operator
 
 "::" @punctuation.delimiter

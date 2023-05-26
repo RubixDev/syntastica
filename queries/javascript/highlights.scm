@@ -48,4 +48,5 @@
 )
 
 ;; punctuation
+; crates.io skip
 (optional_chain) @punctuation.delimiter

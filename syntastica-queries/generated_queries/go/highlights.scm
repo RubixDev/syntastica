@@ -73,25 +73,21 @@
 
 (interpreted_string_literal) @string
 
-"]" @punctuation.bracket
+[
+  "("
+  ")"
+  "{"
+  "}"
+  "["
+  "]"
+] @punctuation.bracket
 
-"[" @punctuation.bracket
-
-"}" @punctuation.bracket
-
-"{" @punctuation.bracket
-
-")" @punctuation.bracket
-
-"(" @punctuation.bracket
-
-";" @punctuation.delimiter
-
-":" @punctuation.delimiter
-
-"," @punctuation.delimiter
-
-"." @punctuation.delimiter
+[
+  "."
+  ","
+  ":"
+  ";"
+] @punctuation.delimiter
 
 (
   (identifier) @function.builtin

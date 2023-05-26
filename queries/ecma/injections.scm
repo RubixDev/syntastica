@@ -68,6 +68,7 @@
   )
 )
 
+; crates.io skip
 (
   (glimmer_template) @injection.content
   (#set! injection.language "glimmer")

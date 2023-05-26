@@ -172,6 +172,7 @@
 ; Literals
 (string_literal) @string
 
+; crates.io skip
 (escape_sequence) @string.escape
 
 (character_literal) @character

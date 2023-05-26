@@ -72,16 +72,26 @@ pub fn parsers_ffi(_: TokenStream) -> TokenStream {
                 #(#extern_c)*
             }
         }),
+        "",
     )
 }
 
 #[proc_macro]
 pub fn parsers_gitdep(_: TokenStream) -> TokenStream {
+    parsers_rust(false, "")
+}
+
+#[proc_macro]
+pub fn parsers_dep(_: TokenStream) -> TokenStream {
+    parsers_rust(true, "_CRATES_IO")
+}
+
+fn parsers_rust(crates_io: bool, query_suffix: &str) -> TokenStream {
     let functions = LANGUAGE_CONFIG.languages.iter().map(|lang| {
         let feat = lang.group.to_string();
         let name = format_ident!("{}", lang.name);
         let (doc, body) = match &lang.parser.rust_func {
-            Some(func) => {
+            Some(func) if (!crates_io || lang.parser.crates_io.is_some()) => {
                 let func = format_ident!("{func}");
                 let package = format_ident!("{}", lang.parser.package.replace('-', "_"));
                 (
@@ -92,7 +102,7 @@ pub fn parsers_gitdep(_: TokenStream) -> TokenStream {
                     quote! { #package::#func() }
                 )
             },
-            None => (
+            _ => (
                 "**This parser is not supported by this parser collection and thus this function will panic!**"
                     .to_owned(),
                 quote! { ::std::unimplemented!() }
@@ -106,13 +116,19 @@ pub fn parsers_gitdep(_: TokenStream) -> TokenStream {
             }
         }
     });
-    parsers(functions, |lang| lang.parser.rust_func.is_some(), None)
+    parsers(
+        functions,
+        |lang| lang.parser.rust_func.is_some() && (!crates_io || lang.parser.crates_io.is_some()),
+        None,
+        query_suffix,
+    )
 }
 
 fn parsers(
     functions: impl Iterator<Item = proc_macro2::TokenStream>,
     filter: impl Fn(&&Language) -> bool,
     extra: Option<proc_macro2::TokenStream>,
+    query_suffix: &str,
 ) -> TokenStream {
     let get_parsers = LANGUAGE_CONFIG
         .languages
@@ -131,9 +147,9 @@ fn parsers(
         });
     let get_queries = LANGUAGE_CONFIG.languages.iter().map(|lang| {
         let name_str = &lang.name;
-        let highlights = format_ident!("{}_HIGHLIGHTS", lang.name.to_uppercase());
-        let injections = format_ident!("{}_INJECTIONS", lang.name.to_uppercase());
-        let locals = format_ident!("{}_LOCALS", lang.name.to_uppercase());
+        let highlights = format_ident!("{}_HIGHLIGHTS{query_suffix}", lang.name.to_uppercase());
+        let injections = format_ident!("{}_INJECTIONS{query_suffix}", lang.name.to_uppercase());
+        let locals = format_ident!("{}_LOCALS{query_suffix}", lang.name.to_uppercase());
 
         quote! {
             _map.insert(#name_str.to_owned(), [
@@ -219,11 +235,20 @@ fn parsers(
 
 #[proc_macro]
 pub fn parsers_gitdep_toml_deps(_: TokenStream) -> TokenStream {
+    parsers_toml_deps(true)
+}
+
+#[proc_macro]
+pub fn parsers_dep_toml_deps(_: TokenStream) -> TokenStream {
+    parsers_toml_deps(false)
+}
+
+fn parsers_toml_deps(git: bool) -> TokenStream {
     let mut added_packages = vec![];
     LANGUAGE_CONFIG
         .languages
         .iter()
-        .filter(|lang| lang.parser.rust_func.is_some())
+        .filter(|lang| lang.parser.rust_func.is_some() && (git || lang.parser.crates_io.is_some()))
         .filter_map(|lang| {
             let package = &lang.parser.package;
             let url = &lang.parser.git.url;
@@ -232,14 +257,29 @@ pub fn parsers_gitdep_toml_deps(_: TokenStream) -> TokenStream {
                 None
             } else {
                 added_packages.push(package);
-                let dep_str = format!(
-                    r##"
+                let dep_str = if git {
+                    format!(
+                        r##"
 [dependencies.{package}]
 optional = true
 git = "{url}"
 rev = "{rev}"
 "##
-                );
+                    )
+                } else {
+                    format!(
+                        r##"
+[dependencies.{package}]
+optional = true
+version = "{version}"
+"##,
+                        version = lang
+                            .parser
+                            .crates_io
+                            .as_ref()
+                            .expect("`None` is filtered above if `git` is `false`")
+                    )
+                };
                 Some(quote! {
                     toml += #dep_str;
                 })
@@ -251,30 +291,45 @@ rev = "{rev}"
 
 #[proc_macro]
 pub fn parsers_gitdep_toml_feature_some(_: TokenStream) -> TokenStream {
-    parsers_gitdep_toml_feature(Group::Some)
+    parsers_toml_feature(Group::Some, false)
 }
 
 #[proc_macro]
 pub fn parsers_gitdep_toml_feature_most(_: TokenStream) -> TokenStream {
-    parsers_gitdep_toml_feature(Group::Most)
+    parsers_toml_feature(Group::Most, false)
 }
 
 #[proc_macro]
 pub fn parsers_gitdep_toml_feature_all(_: TokenStream) -> TokenStream {
-    parsers_gitdep_toml_feature(Group::All)
+    parsers_toml_feature(Group::All, false)
 }
 
-fn parsers_gitdep_toml_feature(group: Group) -> TokenStream {
+#[proc_macro]
+pub fn parsers_dep_toml_feature_some(_: TokenStream) -> TokenStream {
+    parsers_toml_feature(Group::Some, true)
+}
+
+#[proc_macro]
+pub fn parsers_dep_toml_feature_most(_: TokenStream) -> TokenStream {
+    parsers_toml_feature(Group::Most, true)
+}
+
+#[proc_macro]
+pub fn parsers_dep_toml_feature_all(_: TokenStream) -> TokenStream {
+    parsers_toml_feature(Group::All, true)
+}
+
+fn parsers_toml_feature(group: Group, crates_io: bool) -> TokenStream {
     let mut added_packages = vec![];
     let mut feature_str = format!("{group} = [\n");
     if let Some(group) = group.next_smaller() {
         feature_str += &format!("    \"{group}\",\n");
     }
-    for lang in LANGUAGE_CONFIG
-        .languages
-        .iter()
-        .filter(|lang| lang.parser.rust_func.is_some() && lang.group == group)
-    {
+    for lang in LANGUAGE_CONFIG.languages.iter().filter(|lang| {
+        lang.parser.rust_func.is_some()
+            && lang.group == group
+            && (!crates_io || lang.parser.crates_io.is_some())
+    }) {
         let package = &lang.parser.package;
         if added_packages.contains(&package) {
             continue;
@@ -287,40 +342,81 @@ fn parsers_gitdep_toml_feature(group: Group) -> TokenStream {
     quote! { toml += #feature_str; }.into()
 }
 
+fn query_file(
+    lang: &Language,
+    enabled: bool,
+    filename: &str,
+    func: &str,
+    crates_io: bool,
+) -> proc_macro2::TokenStream {
+    let name_str = &lang.name;
+    let func = format_ident!("{func}");
+    match (lang.queries.nvim_like, enabled) {
+        (true, true) => {
+            quote! { validate(lang, #name_str, #filename, Some(#func), #crates_io) }
+        }
+        (false, true) => quote! { validate(lang, #name_str, #filename, None, #crates_io) },
+        (_, false) => quote! { String::new() },
+    }
+}
+
 #[proc_macro]
 pub fn queries(_: TokenStream) -> TokenStream {
     let langs = LANGUAGE_CONFIG.languages.iter().map(|lang| {
         let name_str = &lang.name;
 
-        let highlights = match lang.queries.nvim_like {
-            true => quote! { validate(lang, #name_str, "highlights.scm", process_highlights) },
-            false => quote! { read_queries(#name_str, "highlights.scm") },
-        };
-        let injections = match (lang.queries.nvim_like, lang.queries.injections) {
-            (true, true) => {
-                quote! { validate(lang, #name_str, "injections.scm", process_injections) }
-            }
-            (false, true) => quote! { read_queries(#name_str, "injections.scm") },
-            (_, false) => quote! { String::new() },
-        };
-        let locals = match (lang.queries.nvim_like, lang.queries.locals) {
-            (true, true) => quote! { validate(lang, #name_str, "locals.scm", process_locals) },
-            (false, true) => quote! { read_queries(#name_str, "locals.scm") },
-            (_, false) => quote! { String::new() },
-        };
+        let highlights = query_file(lang, true, "highlights.scm", "process_highlights", false);
+        let injections = query_file(
+            lang,
+            lang.queries.injections,
+            "injections.scm",
+            "process_injections",
+            false,
+        );
+        let locals = query_file(
+            lang,
+            lang.queries.locals,
+            "locals.scm",
+            "process_locals",
+            false,
+        );
+
+        let highlights_crates_io =
+            query_file(lang, true, "highlights.scm", "process_highlights", true);
+        let injections_crates_io = query_file(
+            lang,
+            lang.queries.injections,
+            "injections.scm",
+            "process_injections",
+            true,
+        );
+        let locals_crates_io = query_file(
+            lang,
+            lang.queries.locals,
+            "locals.scm",
+            "process_locals",
+            true,
+        );
 
         quote! {
             let lang = parsers.remove(#name_str).unwrap();
-            let highlights = #highlights;
-            let injections = #injections;
-            let locals = #locals;
-            _map.insert(#name_str, [highlights, injections, locals]);
+            _map.insert(
+                #name_str,
+                [
+                    #highlights,
+                    #injections,
+                    #locals,
+                    #highlights_crates_io,
+                    #injections_crates_io,
+                    #locals_crates_io,
+                ],
+            );
         }
     });
     quote! {
         {
             let mut parsers = ::syntastica_parsers_git::LanguageProviderImpl::all().get_parsers()?;
-            let mut _map: ::std::collections::BTreeMap<&'static str, [::std::string::String; 3]>
+            let mut _map: ::std::collections::BTreeMap<&'static str, [::std::string::String; 6]>
                 = ::std::collections::BTreeMap::new();
             #(#langs)*
             ::std::result::Result::Ok(_map)
@@ -340,6 +436,32 @@ pub fn queries_test(_: TokenStream) -> TokenStream {
             let highlights = format_ident!("{}_HIGHLIGHTS", lang.name.to_uppercase());
             let injections = format_ident!("{}_INJECTIONS", lang.name.to_uppercase());
             let locals = format_ident!("{}_LOCALS", lang.name.to_uppercase());
+            quote! {
+                #[test]
+                fn #name() {
+                    let lang = PARSERS.get(#name_str).unwrap().clone();
+                    validate_query(lang, ::syntastica_queries::#highlights, "highlights");
+                    validate_query(lang, ::syntastica_queries::#injections, "injections");
+                    validate_query(lang, ::syntastica_queries::#locals, "locals");
+                }
+            }
+        })
+        .collect::<proc_macro2::TokenStream>()
+        .into()
+}
+
+#[proc_macro]
+pub fn queries_test_crates_io(_: TokenStream) -> TokenStream {
+    LANGUAGE_CONFIG
+        .languages
+        .iter()
+        .filter(|lang| lang.parser.rust_func.is_some() && lang.parser.crates_io.is_some())
+        .map(|lang| {
+            let name = format_ident!("{}", lang.name);
+            let name_str = &lang.name;
+            let highlights = format_ident!("{}_HIGHLIGHTS_CRATES_IO", lang.name.to_uppercase());
+            let injections = format_ident!("{}_INJECTIONS_CRATES_IO", lang.name.to_uppercase());
+            let locals = format_ident!("{}_LOCALS_CRATES_IO", lang.name.to_uppercase());
             quote! {
                 #[test]
                 fn #name() {

@@ -416,7 +416,9 @@
   "is"
   "not"
   "or"
+  ; crates.io skip
   "is not"
+  ; crates.io skip
   "not in"
   "del"
 ] @keyword.operator
@@ -484,7 +486,9 @@
 
 [
   "try"
+  ; crates.io skip
   "except"
+  ; crates.io skip
   "except*"
   "raise"
   "finally"

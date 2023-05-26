@@ -12,7 +12,7 @@ static QUERIES_DIR: Lazy<String> =
 static INHERITS_REGEX: Lazy<Regex> =
     Lazy::new(|| Regex::new(r";+\s*inherits\s*:?\s*([a-z_,()-]+)\s*").unwrap());
 
-pub fn make_queries() -> Result<BTreeMap<&'static str, [String; 3]>> {
+pub fn make_queries() -> Result<BTreeMap<&'static str, [String; 6]>> {
     syntastica_macros::queries!()
 }
 
@@ -20,7 +20,8 @@ fn validate(
     lang: Language,
     lang_name: &str,
     filename: &str,
-    processor: impl Fn(OwnedSexprs) -> OwnedSexprs,
+    processor: Option<fn(&mut OwnedSexprs)>,
+    crates_io: bool,
 ) -> String {
     // read input
     let path = format!("{}/{lang_name}/{filename}", *QUERIES_DIR);
@@ -32,24 +33,29 @@ fn validate(
     }
 
     // run processor
-    let new_queries = format!(
-        "{:#}",
-        ungroup_root_level_captures(processor(group_root_level_captures(
-            rsexpr::from_slice_multi(&queries)
-                .unwrap_or_else(|errs| {
-                    panic!(
-                        "invalid queries in file '{path}': {}",
-                        errs.iter()
-                            .map(rsexpr::Error::to_string)
-                            .collect::<Vec<_>>()
-                            .join(", ")
-                    )
-                })
-                .into_iter()
-                .map(OwnedSexpr::from)
-                .collect(),
-        )))
-    );
+    let mut new_queries = rsexpr::from_slice_multi(&queries)
+        .unwrap_or_else(|errs| {
+            panic!(
+                "invalid queries in file '{path}': {}",
+                errs.iter()
+                    .map(rsexpr::Error::to_string)
+                    .collect::<Vec<_>>()
+                    .join(", ")
+            )
+        })
+        .into_iter()
+        .map(OwnedSexpr::from)
+        .collect();
+    new_queries = group_root_level_captures(new_queries);
+    if crates_io {
+        strip_for_crates_io(&mut new_queries);
+    }
+    remove_comments(&mut new_queries);
+    if let Some(func) = processor {
+        func(&mut new_queries);
+    }
+    new_queries = ungroup_root_level_captures(new_queries);
+    let new_queries = format!("{new_queries:#}");
 
     // validate output
     if let Err(err) = Query::new(lang, &new_queries) {
@@ -84,20 +90,22 @@ fn group_root_level_captures(queries: OwnedSexprs) -> OwnedSexprs {
     let mut new_queries = OwnedSexprs::from(Vec::with_capacity(queries.len()));
     let mut iter = queries.into_iter().peekable();
 
-    // groups start with `List`, `Group`, or `String` nodes
-    while let Some(sexp @ (OwnedSexpr::List(_) | OwnedSexpr::Group(_) | OwnedSexpr::String(_))) =
-        iter.next()
-    {
-        let mut group = OwnedSexprs::from(vec![sexp]);
-        // and include all following `Atom` nodes
-        while let Some(OwnedSexpr::Atom(_)) = iter.peek() {
-            group.push(iter.next().unwrap());
+    while let Some(sexpr) = iter.next() {
+        // groups start with `List`, `Group`, `String`, or `Comment` nodes
+        if let OwnedSexpr::List(_) | OwnedSexpr::Group(_) | OwnedSexpr::String(_) = sexpr {
+            let mut group = OwnedSexprs::from(vec![sexpr]);
+            // and include all following `Atom` nodes
+            while let Some(OwnedSexpr::Atom(_)) = iter.peek() {
+                group.push(iter.next().unwrap());
+            }
+            new_queries.push(match group.len() {
+                // if the group only consists of one item, there is no need to wrap it
+                1 => group.swap_remove(0),
+                _ => OwnedSexpr::List(group),
+            });
+        } else {
+            new_queries.push(sexpr);
         }
-        new_queries.push(match group.len() {
-            // if the group only consists of one item, there is no need to wrap it
-            1 => group.swap_remove(0),
-            _ => OwnedSexpr::List(group),
-        });
     }
 
     new_queries
@@ -120,6 +128,8 @@ fn ungroup_root_level_captures(queries: OwnedSexprs) -> OwnedSexprs {
             {
                 new_queries.extend(list);
             }
+            // remove empty groups
+            OwnedSexpr::List(list) if list.is_empty() => {}
             _ => new_queries.push(query),
         }
     }
@@ -127,12 +137,37 @@ fn ungroup_root_level_captures(queries: OwnedSexprs) -> OwnedSexprs {
     new_queries
 }
 
-fn process_locals(mut queries: OwnedSexprs) -> OwnedSexprs {
-    for query in &mut queries {
+// TODO: preserve "Forked from" comments
+fn remove_comments(queries: &mut OwnedSexprs) {
+    queries.retain(|sexpr| !matches!(sexpr, OwnedSexpr::Comment(_)));
+    for query in queries {
+        if let OwnedSexpr::List(children) | OwnedSexpr::Group(children) = query {
+            remove_comments(children);
+        }
+    }
+}
+
+fn strip_for_crates_io(queries: &mut OwnedSexprs) {
+    let mut delete_next = false;
+    queries.retain(|query| {
+        let delete_this = delete_next;
+        delete_next =
+            matches!(query, OwnedSexpr::Comment(comment) if comment == b"; crates.io skip");
+        !delete_this
+    });
+
+    for query in queries {
+        if let OwnedSexpr::List(children) | OwnedSexpr::Group(children) = query {
+            strip_for_crates_io(children);
+        }
+    }
+}
+
+fn process_locals(queries: &mut OwnedSexprs) {
+    for query in queries {
         replace_locals_captures(query);
         replace_predicates(query);
     }
-    queries
 }
 
 fn replace_locals_captures(tree: &mut OwnedSexpr) {
@@ -151,6 +186,7 @@ fn replace_locals_captures(tree: &mut OwnedSexpr) {
             }
         },
         OwnedSexpr::String(_) => {}
+        OwnedSexpr::Comment(_) => {}
         OwnedSexpr::List(list) | OwnedSexpr::Group(list) => {
             for subtree in list {
                 replace_locals_captures(subtree);
@@ -159,12 +195,11 @@ fn replace_locals_captures(tree: &mut OwnedSexpr) {
     }
 }
 
-fn process_injections(mut queries: OwnedSexprs) -> OwnedSexprs {
-    for query in &mut queries {
+fn process_injections(queries: &mut OwnedSexprs) {
+    for query in queries {
         replace_injection_captures(query, 0);
         replace_predicates(query);
     }
-    queries
 }
 
 fn replace_injection_captures(
@@ -175,6 +210,7 @@ fn replace_injection_captures(
     let mut additional_sexp = None;
     match tree {
         OwnedSexpr::String(_) => {}
+        OwnedSexpr::Comment(_) => {}
         OwnedSexpr::Atom(atom) => match atom.as_slice() {
             [b'@', capture @ ..] if !capture.starts_with(b"_") => match capture {
                 b"injection.content" | b"injection.language" => {}
@@ -217,14 +253,11 @@ fn replace_injection_captures(
     (is_predicate, additional_sexp)
 }
 
-fn process_highlights(mut queries: OwnedSexprs) -> OwnedSexprs {
+fn process_highlights(queries: &mut OwnedSexprs) {
     queries.reverse();
-
-    for query in &mut queries {
+    for query in queries {
         replace_predicates(query);
     }
-
-    queries
 }
 
 fn replace_predicates(tree: &mut OwnedSexpr) {

@@ -4,6 +4,7 @@ members = [
     "./rsexpr",
     "./lua-pattern",
     "./syntastica-queries",
+    "./syntastica-parsers",
     "./syntastica-parsers-git",
     "./syntastica-parsers-gitdep",
     "./syntastica-macros",

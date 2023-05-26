@@ -20,7 +20,9 @@ fn main() {
 
     for (file_ext, code) in &examples {
         println!("\n\x1b[1m{file_ext}:\x1b[0m\n{}", "-".repeat(50));
-        example(&languages, &mut highlighter, code, file_ext);
+        if let Err(err) = example(&languages, &mut highlighter, code, file_ext) {
+            println!("ERROR: {err}");
+        }
         println!("{}", "-".repeat(50))
     }
 }
@@ -30,7 +32,7 @@ fn example(
     highlighter: &mut Highlighter,
     code: &str,
     file_extension: &str,
-) {
+) -> syntastica::Result<()> {
     println!(
         "{}",
         syntastica::render(
@@ -40,9 +42,9 @@ fn example(
                 languages,
                 |lang_name| LanguageProviderImpl::all().for_injection(lang_name),
                 highlighter
-            )
-            .unwrap(),
+            )?,
             &mut TerminalRenderer::new(None),
         )
     );
+    Ok(())
 }

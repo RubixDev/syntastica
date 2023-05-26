@@ -95,6 +95,7 @@
   "|"
   "|="
   "||"
+  ; crates.io skip
   "~"
 ] @operator
 
@@ -149,25 +150,21 @@
 )
 
 ; Delimiters
-"." @punctuation.delimiter
+[
+  "."
+  ","
+  ":"
+  ";"
+] @punctuation.delimiter
 
-"," @punctuation.delimiter
-
-":" @punctuation.delimiter
-
-";" @punctuation.delimiter
-
-"(" @punctuation.bracket
-
-")" @punctuation.bracket
-
-"{" @punctuation.bracket
-
-"}" @punctuation.bracket
-
-"[" @punctuation.bracket
-
-"]" @punctuation.bracket
+[
+  "("
+  ")"
+  "{"
+  "}"
+  "["
+  "]"
+] @punctuation.bracket
 
 ; Literals
 (interpreted_string_literal) @string
@@ -191,6 +188,7 @@
 
 (nil) @constant.builtin
 
+; crates.io skip
 (keyed_element
   .
   (literal_element

@@ -89,7 +89,7 @@ pub trait LanguageProvider {
     fn get_languages(&self) -> Result<Languages, crate::Error> {
         let parsers = self.get_parsers()?;
         let queries = self.get_queries()?;
-        debug_assert!(parsers.len() == queries.len());
+        debug_assert!(parsers.len() <= queries.len());
 
         let mut map = HashMap::with_capacity(parsers.len());
         for (name, parser) in parsers {

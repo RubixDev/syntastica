@@ -33,6 +33,7 @@ Usage: Run with `cargo xtask <task>`, eg. `cargo xtask codegen`.
     Tasks:
         codegen:                Run all codegen subtasks
         codegen queries:        Generate the `lib.rs` file for syntastica-themes
+        codegen parsers-dep:    Generate parts of the `Cargo.toml` for syntastica-parsers
         codegen parsers-gitdep: Generate parts of the `Cargo.toml` for syntastica-parsers-gitdep
         codegen themes:         Generate the themes for syntastica-themes
             "###

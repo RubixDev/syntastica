@@ -8,7 +8,7 @@ external-scanner = { c = false, cpp = false }
 ffi-func = "tree_sitter_asm"
 rust-func = "language"
 package = "tree-sitter-asm"
-crates-io = true
+crates-io = "0.1.0"
 [languages.queries]
 nvim-like = true
 injections = false
@@ -24,7 +24,7 @@ external-scanner = { c = false, cpp = true }
 ffi-func = "tree_sitter_bash"
 rust-func = "language"
 package = "tree-sitter-bash"
-crates-io = true
+# crates-io = "0.19.0"
 [languages.queries]
 nvim-like = true
 injections = true
@@ -40,7 +40,7 @@ external-scanner = { c = false, cpp = false }
 ffi-func = "tree_sitter_c"
 rust-func = "language"
 package = "tree-sitter-c"
-crates-io = true
+crates-io = "0.20.2"
 [languages.queries]
 nvim-like = true
 injections = true
@@ -56,7 +56,7 @@ external-scanner = { c = false, cpp = true }
 ffi-func = "tree_sitter_cpp"
 rust-func = "language"
 package = "tree-sitter-cpp"
-crates-io = true
+crates-io = "0.20.0"
 [languages.queries]
 nvim-like = true
 injections = true
@@ -72,7 +72,7 @@ external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_css"
 rust-func = "language"
 package = "tree-sitter-css"
-crates-io = true
+crates-io = "0.19.0"
 [languages.queries]
 nvim-like = true
 injections = true
@@ -88,7 +88,7 @@ external-scanner = { c = false, cpp = false }
 ffi-func = "tree_sitter_go"
 rust-func = "language"
 package = "tree-sitter-go"
-crates-io = true
+crates-io = "0.19.1"
 [languages.queries]
 nvim-like = true
 injections = true
@@ -105,7 +105,7 @@ ffi-func = "tree_sitter_html"
 # unsupported because of incompatible old tree-sitter dependency
 # rust-func = "language"
 package = "tree-sitter-html"
-crates-io = false
+crates-io = "0.19.0"
 [languages.queries]
 nvim-like = true
 injections = true
@@ -121,7 +121,7 @@ external-scanner = { c = false, cpp = false }
 ffi-func = "tree_sitter_java"
 rust-func = "language"
 package = "tree-sitter-java"
-crates-io = true
+crates-io = "0.20.0"
 [languages.queries]
 nvim-like = true
 injections = true
@@ -137,7 +137,7 @@ external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_javascript"
 rust-func = "language"
 package = "tree-sitter-javascript"
-crates-io = true
+crates-io = "0.20.0"
 [languages.queries]
 nvim-like = true
 injections = true
@@ -153,7 +153,7 @@ external-scanner = { c = false, cpp = false }
 ffi-func = "tree_sitter_json"
 rust-func = "language"
 package = "tree-sitter-json"
-crates-io = true
+crates-io = "0.19.0"
 [languages.queries]
 nvim-like = true
 injections = false
@@ -169,7 +169,7 @@ external-scanner = { c = false, cpp = true }
 ffi-func = "tree_sitter_python"
 rust-func = "language"
 package = "tree-sitter-python"
-crates-io = true
+crates-io = "0.20.2"
 [languages.queries]
 nvim-like = true
 injections = true
@@ -185,7 +185,7 @@ external-scanner = { c = false, cpp = false }
 ffi-func = "tree_sitter_regex"
 rust-func = "language"
 package = "tree-sitter-regex"
-crates-io = true
+# crates-io = ""
 [languages.queries]
 nvim-like = false
 injections = false
@@ -201,7 +201,7 @@ external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_rust"
 rust-func = "language"
 package = "tree-sitter-rust"
-crates-io = true
+crates-io = "0.20.3"
 [languages.queries]
 nvim-like = true
 injections = true
@@ -218,7 +218,7 @@ ffi-func = "tree_sitter_tsx"
 # unsupported because of incompatible old tree-sitter dependency
 # rust-func = "language_tsx"
 package = "tree-sitter-typescript"
-crates-io = false
+crates-io = "0.20.2"
 [languages.queries]
 nvim-like = true
 injections = true
@@ -235,7 +235,7 @@ ffi-func = "tree_sitter_typescript"
 # unsupported because of incompatible old tree-sitter dependency
 # rust-func = "language_typescript"
 package = "tree-sitter-typescript"
-crates-io = false
+crates-io = "0.20.2"
 [languages.queries]
 nvim-like = true
 injections = true
