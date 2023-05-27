@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use once_cell::sync::Lazy;
-use syntastica::providers::LanguageProvider;
+use syntastica::provider::LanguageProvider;
 use tree_sitter::Language;
 
 mod _shared;

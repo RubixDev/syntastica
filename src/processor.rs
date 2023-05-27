@@ -1,7 +1,8 @@
 use std::borrow::Cow;
 
 use syntastica_core::{
-    providers::{ConfiguredLanguages, LanguageProvider},
+    provider::{ConfiguredLanguages, LanguageProvider},
+    theme::THEME_KEYS,
     Error, Result,
 };
 use syntastica_highlight::{Highlight, HighlightEvent, Highlighter};
@@ -59,7 +60,7 @@ use crate::Highlights;
 ///
 /// // get an instance of `ConfiguredLanguages` somewhere
 /// // let languages = ...;
-/// # use syntastica::providers::{LanguageProvider, ConfiguredLanguages};
+/// # use syntastica::provider::{LanguageProvider, ConfiguredLanguages};
 /// # let languages = ConfiguredLanguages::new(syntastica_parsers::LanguageProviderImpl::with_languages(&["rust", "python"]).get_languages().unwrap());
 ///
 /// // create a `Processor`
@@ -86,7 +87,7 @@ use crate::Highlights;
 ///
 /// // get an instance of `ConfiguredLanguages` somewhere
 /// // let languages = ...;
-/// # use syntastica::providers::{LanguageProvider, ConfiguredLanguages};
+/// # use syntastica::provider::{LanguageProvider, ConfiguredLanguages};
 /// # let languages = ConfiguredLanguages::new(syntastica_parsers::LanguageProviderImpl::with_languages(&["rust", "python"]).get_languages().unwrap());
 ///
 /// // create a `Processor` with an injection callback
@@ -302,7 +303,7 @@ impl<'callback> Processor<'callback> {
                     let mut lines = code[start..end].lines().peekable();
                     while let Some(line) = lines.next() {
                         let style = style_stack.last().and_then(|idx| {
-                            let key = crate::THEME_KEYS[*idx];
+                            let key = THEME_KEYS[*idx];
                             match key {
                                 "none" => None,
                                 _ => Some(key),

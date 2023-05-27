@@ -1,3 +1,5 @@
+//! Defines items related to theming the output.
+
 use std::{borrow::Borrow, collections::BTreeMap, ops::Index};
 
 use crate::{
@@ -5,29 +7,183 @@ use crate::{
     Error, Result,
 };
 
-#[derive(Clone, Hash, Debug)]
+/// All theme keys that are recognized by syntastica.
+///
+/// A [`Theme`] or [`ResolvedTheme`] should define styles for any subset of these. View the source
+/// to see the full, commented list.
+///
+/// The list is based on the list from
+/// [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter/blob/master/CONTRIBUTING.md).
+#[rustfmt::skip] // rustfmt messes up the comment alignment
+pub const THEME_KEYS: &[&str] = &[
+    "comment",               // line and block comments
+    "comment.documentation", // comments documenting code
+    "error",                 // syntax/parser errors
+    "none",                  // completely disable the highlight
+    "preproc",               // various preprocessor directives & shebangs
+    "define",                // preprocessor definition directives
+    "operator",              // symbolic operators (e.g. `+` / `*`)
+
+    // punctuation
+    "punctuation.delimiter", // delimiters (e.g. `;` / `.` / `,`)
+    "punctuation.bracket",   // brackets (e.g. `()` / `{}` / `[]`)
+    "punctuation.special",   // special symbols (e.g. `{}` in string interpolation)
+
+    // literals
+    "string",                // string literals
+    "string.documentation",  // string documenting code (e.g. Python docstrings)
+    "string.regex",          // regular expressions
+    "string.escape",         // escape sequences
+    "string.special",        // other special strings (e.g. dates)
+    "character",             // character literals
+    "character.special",     // special characters (e.g. wildcards)
+    "boolean",               // boolean literals
+    "number",                // numeric literals
+    "float",                 // floating-point number literals
+
+    // functions
+    "function",              // function definitions
+    "function.builtin",      // built-in functions
+    "function.call",         // function calls
+    "function.macro",        // preprocessor macros
+    "method",                // method definitions
+    "method.call",           // method calls
+    "constructor",           // constructor calls and definitions
+    "parameter",             // parameters of a function
+
+    // keywords
+    "keyword",               // various keywords
+    "keyword.coroutine",     // keywords related to coroutines (e.g. `go` in Go, `async/await` in Python)
+    "keyword.function",      // keywords that define a function (e.g. `func` in Go, `def` in Python)
+    "keyword.operator",      // operators that are English words (e.g. `and` / `or`)
+    "keyword.return",        // keywords like `return` and `yield`
+    "conditional",           // keywords related to conditionals (e.g. `if` / `else`)
+    "conditional.ternary",   // ternary operator (e.g. `?` / `:`)
+    "repeat",                // keywords related to loops (e.g. `for` / `while`)
+    "debug",                 // keywords related to debugging
+    "label",                 // GOTO and other labels (e.g. `label:` in C)
+    "include",               // keywords for including modules (e.g. `import` / `from` in Python)
+    "exception",             // keywords related to exceptions (e.g. `throw` / `catch`)
+
+    // types
+    "type",                  // type or class definitions and annotations
+    "type.builtin",          // built-in types
+    "type.definition",       // type definitions (e.g. `typedef` in C)
+    "type.qualifier",        // type qualifiers (e.g. `const`)
+    "storageclass",          // modifiers that affect storage in memory or life-time
+    "attribute",             // attribute annotations (e.g. Python decorators)
+    "field",                 // object and struct fields
+    "property",              // similar to `@field`
+
+    // identifiers
+    "variable",              // various variable names
+    "variable.builtin",      // built-in variable names (e.g. `this`)
+    "constant",              // constant identifiers
+    "constant.builtin",      // built-in constant values
+    "constant.macro",        // constants defined by the preprocessor
+    "namespace",             // modules or namespaces
+    "symbol",                // symbols or atoms
+
+    // text
+    "text",                  // non-structured text
+    "text.strong",           // bold text
+    "text.emphasis",         // text with emphasis
+    "text.underline",        // underlined text
+    "text.strike",           // strikethrough text
+    "text.title",            // text that is part of a title
+    "text.literal",          // literal or verbatim text (e.g., inline code)
+    "text.quote",            // text quotations
+    "text.uri",              // URIs (e.g. hyperlinks)
+    "text.math",             // math environments (e.g. `$ ... $` in LaTeX)
+    "text.environment",      // text environments of markup languages
+    "text.environment.name", // text indicating the type of an environment
+    "text.reference",        // text references, footnotes, citations, etc.
+    "text.todo",             // todo notes
+    "text.note",             // info notes
+    "text.warning",          // warning notes
+    "text.danger",           // danger/error notes
+    "text.diff.add",         // added text (for diff files)
+    "text.diff.delete",      // deleted text (for diff files)
+
+    // tags
+    "tag",                   // XML tag names
+    "tag.attribute",         // XML tag attributes
+    "tag.delimiter",         // XML tag delimiters
+];
+
+/// A raw theme which may contain links to other items inside.
+///
+/// Internally, this type stores a map from [`String`]s to [`ThemeValue`]s. This map can be
+/// retrieved using [`Theme::into_inner`]. The map keys do _not_ all have to be in [`THEME_KEYS`];
+/// other custom keys can be used, for example to define a set of colors and reuse them with links
+/// everywhere else.
+///
+/// When using the <span class="stab portability"><code>serde</code></span> feature, this type
+/// implements serde's `Serialize` and `Deserialize` traits.
+///
+/// # Instantiation
+///
+/// The easiest way to create a [`Theme`] is with the [`theme!`](crate::theme!) macro.
+/// Alternatively, a [`Theme`] may be created from a [`BTreeMap<String, ThemeValue>`] using
+/// [`Theme::new`].
+#[derive(Clone, Hash, Debug, PartialEq, Eq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(feature = "serde", serde(transparent))]
 pub struct Theme(BTreeMap<String, ThemeValue>);
 
-#[derive(Clone, Hash, Debug)]
+/// A [`Theme`] where all internal links have been resolved.
+///
+/// Instead of [`ThemeValue`]s, a [`ResolvedTheme`] has [`Style`]s as values. These cannot link to
+/// other entries of the theme but completely define a style on their own.
+///
+/// A [`ResolvedTheme`] can be created from a [`Theme`] with [`Theme::resolve_links`] or the
+/// [`TryFrom<Theme>`](#impl-TryFrom<Theme>-for-ResolvedTheme) implementation.
+#[derive(Clone, Hash, Debug, PartialEq, Eq)]
 pub struct ResolvedTheme(BTreeMap<String, Style>);
 
-#[derive(Clone, Hash, Debug)]
+/// A value of a [`Theme`] containing style information and/or a link to another key in the
+/// [`Theme`].
+///
+/// When using the <span class="stab portability"><code>serde</code></span> feature, this type
+/// implements serde's `Serialize` and `Deserialize` traits using the untagged enum representation.
+#[derive(Clone, Hash, Debug, PartialEq, Eq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(feature = "serde", serde(untagged))]
 pub enum ThemeValue {
+    /// May either be a hexadecimal color literal, or a `$` followed by the name of another
+    /// theme key.
+    ///
+    /// In the latter case, this value links to the [`ThemeValue`] which the [`Theme`] specifies
+    /// for the provided theme key.
     Simple(String),
+    /// A color or link with additional style information.
     Extended {
+        /// The color to use for this style.
+        ///
+        /// Either this or [`link`](ThemeValue::Extended::link) has to be set, or calls to
+        /// [`Theme::resolve_links`] will fail.
         color: Option<String>,
+
+        /// Whether the text should be underlined. (default is `false`)
         #[cfg_attr(feature = "serde", serde(default))]
         underline: bool,
+
+        /// Whether the text should be strikethrough. (default is `false`)
         #[cfg_attr(feature = "serde", serde(default))]
         strikethrough: bool,
+
+        /// Whether the text should be italic. (default is `false`)
         #[cfg_attr(feature = "serde", serde(default))]
         italic: bool,
+
+        /// Whether the text should be bold. (default is `false`)
         #[cfg_attr(feature = "serde", serde(default))]
         bold: bool,
+
+        /// A link to the theme entry with the given key.
+        ///
+        /// Either this or [`color`](ThemeValue::Extended::color) has to be set, or calls to
+        /// [`Theme::resolve_links`] will fail.
         link: Option<String>,
     },
 }

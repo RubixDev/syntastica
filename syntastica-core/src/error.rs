@@ -26,6 +26,9 @@ pub enum Error {
 
     #[error(transparent)]
     Highlight(#[from] syntastica_highlight::Error),
+
+    #[error("{0}")]
+    Custom(String),
 }
 
 impl From<Infallible> for Error {

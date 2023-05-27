@@ -14,7 +14,7 @@ pub use processor::Processor;
 pub use renderer::render;
 pub use syntastica_core::*;
 
-use providers::LanguageProvider;
+use provider::LanguageProvider;
 use renderer::Renderer;
 use theme::ResolvedTheme;
 
@@ -23,8 +23,8 @@ use theme::ResolvedTheme;
 /// The type is a vector of lines of the source code, and each line is a vector of 2-tuples.
 /// The first element of each 2-tuple is a slice of the source text, and the second
 /// element is an optional theme key for that region of text. The theme key is guaranteed to be
-/// present in [`THEME_KEYS`]. The [`render`] function takes this type, a [`Renderer`], and a
-/// [`ResolvedTheme`] as arguments in order to render the text for end users.
+/// present in [`THEME_KEYS`](theme::THEME_KEYS). The [`render`] function takes this type,
+/// a [`Renderer`], and a [`ResolvedTheme`] as arguments in order to render the text for end users.
 pub type Highlights<'src> = Vec<Vec<(&'src str, Option<&'static str>)>>;
 
 /// Convenience function for [processing](Processor) and directly [rendering](render) code once.

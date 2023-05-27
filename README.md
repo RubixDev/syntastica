@@ -4,8 +4,10 @@ Modern and easy syntax highlighting using tree-sitter
 
 > Note: If viewing this file on [GitHub](https://github.com/RubixDev/syntastica)
 > or [crates.io](https://crates.io/crates/syntastica), some links might not be
-> working. Go to the [docs.rs page](https://docs.rs/syntastica/) instead, which
-> additionally includes the [Features](#features) section.
+> working. Go to the
+> [custom docs page](https://rubixdev.github.io/syntastica/syntastica/) or the
+> [docs.rs page](https://docs.rs/syntastica/) instead, which additionally
+> include the [Features](#features) section.
 
 ## Overview
 
@@ -88,8 +90,8 @@ at the respective crate documentation for more information.
 
 To [render highlighted code](render) to end users, a
 [theme](theme::ResolvedTheme) is needed, which specifies the colors to use for
-which [theme key](THEME_KEYS). The `syntastica` project comes with a separate
-crate containing a few default themes:
+which [theme key](theme::THEME_KEYS). The `syntastica` project comes with a
+separate crate containing a few default themes:
 [`syntastica-themes`](https://crates.io/crates/syntastica-themes).
 
 If you wish to create your own theme, have a look at the
@@ -126,7 +128,7 @@ meant for outside use, but are instead used internally. These are listed below.
   marked as "for internal use", because all three
   [parser collections](#parser-collections) depend on this crate and expose the
   queries through their implementation of
-  [`LanguageProvider`](providers::LanguageProvider). Unlike the previous crates
+  [`LanguageProvider`](provider::LanguageProvider). Unlike the previous crates
   in this list however, you may actually want to depend on this crate yourself,
   if you _only_ need the queries.
 
@@ -302,7 +304,7 @@ how to detect the language to use based on a file extension. See that first
 example for explanations of the rest of the code.
 
 ```rust
-use syntastica::{renderer::TerminalRenderer, providers::LanguageProvider};
+use syntastica::{renderer::TerminalRenderer, provider::LanguageProvider};
 use syntastica_parsers::LanguageProviderImpl;
 
 let language_provider = LanguageProviderImpl::with_languages(&["rust"]);
