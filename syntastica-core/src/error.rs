@@ -15,9 +15,6 @@ pub enum Error {
     #[error("unsuppoerted language with name '{0}'")]
     UnsupportedLanguage(String),
 
-    #[error("unsuppoerted file extension '{0}'")]
-    UnsupportedFileExt(String),
-
     #[error("missing queries for language '{0}'")]
     MissingQueries(String),
 

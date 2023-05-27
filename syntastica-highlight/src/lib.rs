@@ -15,12 +15,13 @@ pub struct Highlight(pub usize);
 /// Represents the reason why syntax highlighting failed.
 #[derive(Debug, Error, PartialEq, Eq)]
 pub enum Error {
-    #[error("Cancelled")]
+    /// Highlighting was manually cancelled by flipping the cancellation flag.
+    #[error("cancelled")]
     Cancelled,
-    #[error("Invalid language")]
+
+    /// The provided language uses an incompatible version of tree-sitter.
+    #[error("invalid language: incompatible tree-sitter version")]
     InvalidLanguage,
-    #[error("Unknown error")]
-    Unknown,
 }
 
 /// Represents a single step in rendering a syntax-highlighted document.

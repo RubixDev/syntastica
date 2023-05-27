@@ -63,7 +63,7 @@ pub trait Renderer {
 /// Render the given [`Highlights`] with a [`Renderer`] and [`ResolvedTheme`].
 ///
 /// See the linked items for more information, and look at [`TerminalRenderer`] or
-/// [`HtmlRenderer`] for examples.
+/// [`HtmlRenderer`] for usage examples.
 pub fn render(
     highlights: &Highlights<'_>,
     renderer: &mut impl Renderer,

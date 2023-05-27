@@ -36,12 +36,18 @@ description = "Modern and easy syntax highlighting using tree-sitter"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [features]
+#! ## Features
 default = []
 
+## Provide implementations of serde's `Serialize` and `Deserialize` traits for [`Theme`](theme::Theme)
 serde = ["syntastica-core/serde"]
+
+## Enable this when building the docs
+docs = ["dep:document-features", "dep:rustc_version"]
 
 [dependencies]
 aho-corasick = "1.0.1"
+document-features = { version = "0.2.7", optional = true }
 thiserror = "1.0.40"
 tree-sitter = "0.20.10"
 
@@ -60,7 +66,7 @@ syntastica-queries = { version = "0.3.0", path = "./syntastica-queries" }
 syntastica-themes = { version = "0.3.0", path = "./syntastica-themes" }
 
 [build-dependencies]
-rustc_version = "0.4.0"
+rustc_version = { version = "0.4.0", optional = true }
 
 [package.metadata.docs.rs]
 all-features = true

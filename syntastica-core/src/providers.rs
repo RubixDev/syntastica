@@ -11,16 +11,11 @@ pub type Languages = HashMap<String, HighlightConfiguration>;
 pub struct ConfiguredLanguages(Languages);
 
 impl ConfiguredLanguages {
-    pub fn configure(mut unconfigured: Languages) -> Self {
+    pub fn new(mut unconfigured: Languages) -> Self {
         for lang in unconfigured.values_mut() {
             lang.configure(crate::THEME_KEYS);
         }
-
         Self(unconfigured)
-    }
-
-    pub fn try_configure(provider: &impl LanguageProvider) -> crate::Result<Self> {
-        Ok(Self::configure(provider.get_languages()?))
     }
 }
 

@@ -5,7 +5,7 @@ use syntastica_parsers_git::LanguageProviderImpl;
 
 fn main() {
     let language_provider = LanguageProviderImpl::all();
-    let mut processor = Processor::try_new(&language_provider).unwrap();
+    let mut processor = Processor::try_from_provider(&language_provider).unwrap();
 
     let examples: BTreeMap<String, String> =
         toml::from_str(include_str!("./example_programs.toml")).unwrap();
