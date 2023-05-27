@@ -36,6 +36,7 @@ Usage: Run with `cargo xtask <task>`, eg. `cargo xtask codegen`.
         codegen queries:        Generate the `lib.rs` file for syntastica-queries
         codegen parsers-dep:    Generate parts of the `Cargo.toml` for syntastica-parsers
         codegen parsers-gitdep: Generate parts of the `Cargo.toml` for syntastica-parsers-gitdep
+        codegen parser-lists:   Generate the parser lists in all three syntastica-parsers READMEs
         codegen themes:         Generate the themes for syntastica-themes
         set-version <version>:  Set the version of all syntastica crates
             "###

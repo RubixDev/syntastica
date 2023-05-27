@@ -1,4 +1,5 @@
 #![doc = include_str!("../README.md")]
+//!
 #![cfg_attr(
     feature = "docs",
     cfg_attr(doc, doc = ::document_features::document_features!(feature_label = r#"<span class="stab portability"><code>{feature}</code></span>"#))

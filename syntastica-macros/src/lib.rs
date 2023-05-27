@@ -475,3 +475,85 @@ pub fn queries_test_crates_io(_: TokenStream) -> TokenStream {
         .collect::<proc_macro2::TokenStream>()
         .into()
 }
+
+#[proc_macro]
+pub fn parser_list_git(_: TokenStream) -> TokenStream {
+    parser_list(|_| true, git_url)
+}
+
+#[proc_macro]
+pub fn parser_list_gitdep(_: TokenStream) -> TokenStream {
+    parser_list(|lang| lang.parser.rust_func.is_some(), git_url)
+}
+
+#[proc_macro]
+pub fn parser_list_dep(_: TokenStream) -> TokenStream {
+    parser_list(
+        |lang| lang.parser.rust_func.is_some() && lang.parser.crates_io.is_some(),
+        crates_io_url,
+    )
+}
+
+fn git_url(lang: &Language) -> String {
+    format!("{}/tree/{}", lang.parser.git.url, lang.parser.git.rev)
+}
+
+fn crates_io_url(lang: &Language) -> String {
+    match &lang.parser.crates_io {
+        Some(version) => format!("https://docs.rs/{}/{version}/", lang.parser.package),
+        None => lang.parser.git.url.clone(),
+    }
+}
+
+fn parser_list(
+    filter: impl Fn(&Language) -> bool,
+    url: impl Fn(&Language) -> String,
+) -> TokenStream {
+    let mut some_list = String::new();
+    let mut most_list = String::new();
+    let mut all_list = String::new();
+    for lang in &LANGUAGE_CONFIG.languages {
+        let str = format!(
+            "- [{}]({}){}\n",
+            lang.name,
+            url(lang),
+            if filter(lang) {
+                ""
+            } else {
+                " (not supported by this collection)"
+            }
+        );
+        match lang.group {
+            Group::Some => some_list += &str,
+            Group::Most => most_list += &str,
+            Group::All => all_list += &str,
+        }
+    }
+
+    let parser_list = format!(
+        r##"
+<!-- dprint-ignore-start -->
+
+<details>
+<summary>List of parsers included in the <span class="stab portability"><code>some</code></span> feature</summary>
+
+{some_list}
+</details>
+
+<details>
+<summary>List of parsers additionally included in the <span class="stab portability"><code>most</code></span> feature</summary>
+
+{most_list}
+</details>
+
+<details>
+<summary>List of parsers additionally included in the <span class="stab portability"><code>all</code></span> feature</summary>
+
+{all_list}
+</details>
+
+<!-- dprint-ignore-end -->
+"##
+    );
+    quote! { readme += #parser_list; }.into()
+}

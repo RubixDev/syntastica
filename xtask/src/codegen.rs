@@ -6,6 +6,7 @@ use std::{
 use anyhow::Result;
 use syntastica_core::theme::ThemeValue;
 
+mod parser_lists;
 mod parsers_dep;
 mod parsers_gitdep;
 mod queries;
@@ -119,6 +120,10 @@ pub const {lang}_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/{na
 
     if is_arg("parsers-gitdep") {
         parsers_gitdep::write()?;
+    }
+
+    if is_arg("parser-lists") {
+        parser_lists::write()?;
     }
 
     if is_arg("themes") {
