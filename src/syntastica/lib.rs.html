@@ -66,7 +66,7 @@
 <span class="kw">pub use </span>renderer::render;
 <span class="kw">pub use </span>syntastica_core::<span class="kw-2">*</span>;
 
-<span class="kw">use </span>providers::LanguageProvider;
+<span class="kw">use </span>provider::LanguageProvider;
 <span class="kw">use </span>renderer::Renderer;
 <span class="kw">use </span>theme::ResolvedTheme;
 
@@ -75,8 +75,8 @@
 /// The type is a vector of lines of the source code, and each line is a vector of 2-tuples.
 /// The first element of each 2-tuple is a slice of the source text, and the second
 /// element is an optional theme key for that region of text. The theme key is guaranteed to be
-/// present in [`THEME_KEYS`]. The [`render`] function takes this type, a [`Renderer`], and a
-/// [`ResolvedTheme`] as arguments in order to render the text for end users.
+/// present in [`THEME_KEYS`](theme::THEME_KEYS). The [`render`] function takes this type,
+/// a [`Renderer`], and a [`ResolvedTheme`] as arguments in order to render the text for end users.
 </span><span class="kw">pub type </span>Highlights&lt;<span class="lifetime">&#39;src</span>&gt; = Vec&lt;Vec&lt;(<span class="kw-2">&amp;</span><span class="lifetime">&#39;src </span>str, <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str&gt;)&gt;&gt;;
 
 <span class="doccomment">/// Convenience function for [processing](Processor) and directly [rendering](render) code once.

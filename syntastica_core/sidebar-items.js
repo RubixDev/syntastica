@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["THEME_KEYS"],"enum":["Error"],"macro":["theme"],"mod":["providers","style","theme"],"type":["Result"]};
+window.SIDEBAR_ITEMS = {"enum":["Error"],"macro":["theme"],"mod":["provider","style","theme"],"type":["Result"]};

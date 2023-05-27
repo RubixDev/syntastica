@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["ThemeValue"],"struct":["ResolvedTheme","Theme"]};
+window.SIDEBAR_ITEMS = {"constant":["THEME_KEYS"],"enum":["ThemeValue"],"struct":["ResolvedTheme","Theme"]};

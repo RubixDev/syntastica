@@ -600,7 +600,7 @@
         <span class="kw">let </span>ffi_func = <span class="macro">format_ident!</span>(<span class="string">&quot;{}&quot;</span>, lang.parser.ffi_func);
         <span class="macro">quote! </span>{
             <span class="attr">#[cfg(feature = #feat)]
-            </span><span class="kw">fn </span>#ffi_func() -&gt; ::syntastica_core::providers::Language;
+            </span><span class="kw">fn </span>#ffi_func() -&gt; ::syntastica_core::provider::Language;
         }
     });
     <span class="kw">let </span>functions = LANGUAGE_CONFIG.languages.iter().map(|lang| {
@@ -614,7 +614,7 @@
         <span class="macro">quote! </span>{
             <span class="attr">#[cfg(feature = #feat)]
             #[doc = #doc]
-            </span><span class="kw">pub fn </span>#name() -&gt; ::syntastica_core::providers::Language {
+            </span><span class="kw">pub fn </span>#name() -&gt; ::syntastica_core::provider::Language {
                 <span class="attr">#[cfg(not(feature = <span class="string">&quot;docs&quot;</span>))]
                 </span><span class="kw">unsafe </span>{ #ffi_func() }
                 <span class="attr">#[cfg(feature = <span class="string">&quot;docs&quot;</span>)]
@@ -670,7 +670,7 @@
         <span class="macro">quote! </span>{
             <span class="attr">#[cfg(feature = #feat)]
             #[doc = #doc]
-            </span><span class="kw">pub fn </span>#name() -&gt; ::syntastica_core::providers::Language {
+            </span><span class="kw">pub fn </span>#name() -&gt; ::syntastica_core::provider::Language {
                 #body
             }
         }
@@ -757,20 +757,20 @@
         #(#functions)*
 
         <span class="comment">// TODO: maybe create enum with all supported languages
-        </span><span class="doccomment">/// An implementation of [`LanguageProvider`](::syntastica_core::providers::LanguageProvider),
+        </span><span class="doccomment">/// An implementation of [`LanguageProvider`](::syntastica_core::provider::LanguageProvider),
         /// providing all parsers in the enabled feature set (see [`all`](LanguageProviderImpl::all))
         /// or a subset of them (see [`with_languages`](LanguageProviderImpl::with_languages)).
         </span><span class="kw">pub struct </span>LanguageProviderImpl&lt;<span class="lifetime">&#39;a</span>&gt;(::std::option::Option&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str]&gt;);
 
-        <span class="kw">impl </span>::syntastica_core::providers::LanguageProvider <span class="kw">for </span>LanguageProviderImpl&lt;<span class="lifetime">&#39;_</span>&gt; {
-            <span class="kw">fn </span>get_parsers(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ::std::result::Result&lt;::syntastica_core::providers::Parsers, ::syntastica_core::Error&gt; {
-                <span class="kw">let </span><span class="kw-2">mut </span>_map: ::syntastica_core::providers::Parsers = ::std::collections::HashMap::with_capacity(#lang_count_parsers);
+        <span class="kw">impl </span>::syntastica_core::provider::LanguageProvider <span class="kw">for </span>LanguageProviderImpl&lt;<span class="lifetime">&#39;_</span>&gt; {
+            <span class="kw">fn </span>get_parsers(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ::std::result::Result&lt;::syntastica_core::provider::Parsers, ::syntastica_core::Error&gt; {
+                <span class="kw">let </span><span class="kw-2">mut </span>_map: ::syntastica_core::provider::Parsers = ::std::collections::HashMap::with_capacity(#lang_count_parsers);
                 #(#get_parsers)*
                 ::std::result::Result::Ok(_map)
             }
 
-            <span class="kw">fn </span>get_queries(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ::std::result::Result&lt;::syntastica_core::providers::Queries, ::syntastica_core::Error&gt; {
-                <span class="kw">let </span><span class="kw-2">mut </span>_map: ::syntastica_core::providers::Queries = ::std::collections::HashMap::with_capacity(#lang_count_all);
+            <span class="kw">fn </span>get_queries(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ::std::result::Result&lt;::syntastica_core::provider::Queries, ::syntastica_core::Error&gt; {
+                <span class="kw">let </span><span class="kw-2">mut </span>_map: ::syntastica_core::provider::Queries = ::std::collections::HashMap::with_capacity(#lang_count_all);
                 #(#get_queries)*
                 ::std::result::Result::Ok(_map)
             }

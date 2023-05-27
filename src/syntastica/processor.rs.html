@@ -325,10 +325,12 @@
 <a href="#325" id="325">325</a>
 <a href="#326" id="326">326</a>
 <a href="#327" id="327">327</a>
+<a href="#328" id="328">328</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::borrow::Cow;
 
 <span class="kw">use </span>syntastica_core::{
-    providers::{ConfiguredLanguages, LanguageProvider},
+    provider::{ConfiguredLanguages, LanguageProvider},
+    theme::THEME_KEYS,
     Error, <span class="prelude-ty">Result</span>,
 };
 <span class="kw">use </span>syntastica_highlight::{Highlight, HighlightEvent, Highlighter};
@@ -386,7 +388,7 @@
 ///
 /// // get an instance of `ConfiguredLanguages` somewhere
 /// // let languages = ...;
-/// # use syntastica::providers::{LanguageProvider, ConfiguredLanguages};
+/// # use syntastica::provider::{LanguageProvider, ConfiguredLanguages};
 /// # let languages = ConfiguredLanguages::new(syntastica_parsers::LanguageProviderImpl::with_languages(&amp;[&quot;rust&quot;, &quot;python&quot;]).get_languages().unwrap());
 ///
 /// // create a `Processor`
@@ -413,7 +415,7 @@
 ///
 /// // get an instance of `ConfiguredLanguages` somewhere
 /// // let languages = ...;
-/// # use syntastica::providers::{LanguageProvider, ConfiguredLanguages};
+/// # use syntastica::provider::{LanguageProvider, ConfiguredLanguages};
 /// # let languages = ConfiguredLanguages::new(syntastica_parsers::LanguageProviderImpl::with_languages(&amp;[&quot;rust&quot;, &quot;python&quot;]).get_languages().unwrap());
 ///
 /// // create a `Processor` with an injection callback
@@ -629,7 +631,7 @@
                     <span class="kw">let </span><span class="kw-2">mut </span>lines = code[start..end].lines().peekable();
                     <span class="kw">while let </span><span class="prelude-val">Some</span>(line) = lines.next() {
                         <span class="kw">let </span>style = style_stack.last().and_then(|idx| {
-                            <span class="kw">let </span>key = <span class="kw">crate</span>::THEME_KEYS[<span class="kw-2">*</span>idx];
+                            <span class="kw">let </span>key = THEME_KEYS[<span class="kw-2">*</span>idx];
                             <span class="kw">match </span>key {
                                 <span class="string">&quot;none&quot; </span>=&gt; <span class="prelude-val">None</span>,
                                 <span class="kw">_ </span>=&gt; <span class="prelude-val">Some</span>(key),

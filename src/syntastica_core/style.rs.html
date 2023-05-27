@@ -118,11 +118,90 @@
 <a href="#118" id="118">118</a>
 <a href="#119" id="119">119</a>
 <a href="#120" id="120">120</a>
-</pre></div><pre class="rust"><code><span class="kw">use </span>std::{num::ParseIntError, result};
+<a href="#121" id="121">121</a>
+<a href="#122" id="122">122</a>
+<a href="#123" id="123">123</a>
+<a href="#124" id="124">124</a>
+<a href="#125" id="125">125</a>
+<a href="#126" id="126">126</a>
+<a href="#127" id="127">127</a>
+<a href="#128" id="128">128</a>
+<a href="#129" id="129">129</a>
+<a href="#130" id="130">130</a>
+<a href="#131" id="131">131</a>
+<a href="#132" id="132">132</a>
+<a href="#133" id="133">133</a>
+<a href="#134" id="134">134</a>
+<a href="#135" id="135">135</a>
+<a href="#136" id="136">136</a>
+<a href="#137" id="137">137</a>
+<a href="#138" id="138">138</a>
+<a href="#139" id="139">139</a>
+<a href="#140" id="140">140</a>
+<a href="#141" id="141">141</a>
+<a href="#142" id="142">142</a>
+<a href="#143" id="143">143</a>
+<a href="#144" id="144">144</a>
+<a href="#145" id="145">145</a>
+<a href="#146" id="146">146</a>
+<a href="#147" id="147">147</a>
+<a href="#148" id="148">148</a>
+<a href="#149" id="149">149</a>
+<a href="#150" id="150">150</a>
+<a href="#151" id="151">151</a>
+<a href="#152" id="152">152</a>
+<a href="#153" id="153">153</a>
+<a href="#154" id="154">154</a>
+<a href="#155" id="155">155</a>
+<a href="#156" id="156">156</a>
+<a href="#157" id="157">157</a>
+<a href="#158" id="158">158</a>
+<a href="#159" id="159">159</a>
+<a href="#160" id="160">160</a>
+<a href="#161" id="161">161</a>
+<a href="#162" id="162">162</a>
+<a href="#163" id="163">163</a>
+<a href="#164" id="164">164</a>
+<a href="#165" id="165">165</a>
+<a href="#166" id="166">166</a>
+<a href="#167" id="167">167</a>
+<a href="#168" id="168">168</a>
+<a href="#169" id="169">169</a>
+<a href="#170" id="170">170</a>
+<a href="#171" id="171">171</a>
+<a href="#172" id="172">172</a>
+<a href="#173" id="173">173</a>
+<a href="#174" id="174">174</a>
+<a href="#175" id="175">175</a>
+<a href="#176" id="176">176</a>
+<a href="#177" id="177">177</a>
+<a href="#178" id="178">178</a>
+</pre></div><pre class="rust"><code><span class="doccomment">//! Defines the [`Style`] and [`Color`] types used by
+//! [`ResolvedTheme`](crate::theme::ResolvedTheme)s.
+
+</span><span class="kw">use </span>std::{num::ParseIntError, result};
 
 <span class="kw">use </span>thiserror::Error;
 
-<span class="attr">#[derive(Clone, Copy, Hash, Debug, PartialEq, Eq)]
+<span class="doccomment">/// Defines how to style a region of text.
+///
+/// Besides a [`Color`], the four following booleans can be set:
+///
+/// - `underline`
+/// - `strikethrough`
+/// - `italic`
+/// - `bold`
+///
+/// # Instantiation
+///
+/// A [`Style`] can mainly be created in three ways:
+///
+/// - Using [`Style::new`] to specify the color and all four boolean flags explicitly.
+/// - Using [`Style::color_only`] to specify a color&#39;s red, green, and blue values and keep all
+///   booleans disabled.
+/// - Using the [`From&lt;Color&gt;`](#impl-From&lt;Color&gt;-for-Style) implementation to create a [`Style`]
+///   with the given [`Color`] and all booleans disabled.
+</span><span class="attr">#[derive(Clone, Copy, Hash, Debug, PartialEq, Eq)]
 </span><span class="kw">pub struct </span>Style {
     color: Color,
     underline: bool,
@@ -132,7 +211,8 @@
 }
 
 <span class="kw">impl </span>Style {
-    <span class="kw">pub fn </span>new(
+    <span class="doccomment">/// Create a new [`Style`].
+    </span><span class="kw">pub fn </span>new(
         color: Color,
         underline: bool,
         strikethrough: bool,
@@ -148,40 +228,74 @@
         }
     }
 
-    <span class="kw">pub fn </span>color_only(red: u8, green: u8, blue: u8) -&gt; <span class="self">Self </span>{
+    <span class="doccomment">/// Create a new [`Style`] with only color information attached.
+    ///
+    /// The function does not accept a [`Color`] instance, but instead takes the red, green, and
+    /// blue values separately to create a new color. To create a color-only [`Style`] from an
+    /// existing [`Color`] instance, use the [`From&lt;Color&gt;`](#impl-From&lt;Color&gt;-for-Style)
+    /// implementation.
+    </span><span class="kw">pub fn </span>color_only(red: u8, green: u8, blue: u8) -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>::new(Color::new(red, green, blue), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)
     }
 
-    <span class="kw">pub fn </span>color(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Color {
+    <span class="doccomment">/// Get this [`Style`]&#39;s [`Color`].
+    </span><span class="kw">pub fn </span>color(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Color {
         <span class="self">self</span>.color
     }
 
-    <span class="kw">pub fn </span>underline(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+    <span class="doccomment">/// Whether this [`Style`] is underlined.
+    </span><span class="kw">pub fn </span>underline(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="self">self</span>.underline
     }
 
-    <span class="kw">pub fn </span>strikethrough(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+    <span class="doccomment">/// Whether this [`Style`] is strikethrough.
+    </span><span class="kw">pub fn </span>strikethrough(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="self">self</span>.strikethrough
     }
 
-    <span class="kw">pub fn </span>italic(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+    <span class="doccomment">/// Whether this [`Style`] is italic.
+    </span><span class="kw">pub fn </span>italic(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="self">self</span>.italic
     }
 
-    <span class="kw">pub fn </span>bold(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+    <span class="doccomment">/// Whether this [`Style`] is bold.
+    </span><span class="kw">pub fn </span>bold(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="self">self</span>.bold
     }
 }
 
-<span class="attr">#[derive(Clone, Debug, Error, PartialEq, Eq)]
+<span class="kw">impl </span>From&lt;Color&gt; <span class="kw">for </span>Style {
+    <span class="kw">fn </span>from(color: Color) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::new(color, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)
+    }
+}
+
+<span class="doccomment">/// An error that can occur when parsing a [`Color`] from a hexadecimal string literal.
+</span><span class="attr">#[derive(Clone, Debug, Error, PartialEq, Eq)]
 </span><span class="kw">pub enum </span>ParseHexError {
-    <span class="attr">#[error(<span class="string">&quot;length of stripped hex color must be &#39;6&#39; but was &#39;{0}&#39;&quot;</span>)]
+    <span class="doccomment">/// The length of the input (excluding a possibly leading `#`) did not equal 6.
+    ///
+    /// Contains the length the input was found to have.
+    </span><span class="attr">#[error(<span class="string">&quot;length of stripped hex color must be &#39;6&#39; but was &#39;{0}&#39;&quot;</span>)]
     </span>InvalidLength(usize),
-    <span class="attr">#[error(<span class="string">&quot;encountered invalid hexadecimal digit: &#39;{0}&#39;&quot;</span>)]
+
+    <span class="doccomment">/// The input contained an invalid hexadecimal digit.
+    ///
+    /// Contains a [`ParseIntError`].
+    </span><span class="attr">#[error(<span class="string">&quot;encountered invalid hexadecimal digit: &#39;{0}&#39;&quot;</span>)]
     </span>InvalidDigit(<span class="attr">#[from] </span>ParseIntError),
 }
 
-<span class="attr">#[derive(Clone, Copy, Hash, Debug, PartialEq, Eq)]
+<span class="doccomment">/// A non-transparent color with red, green, and blue values between 0 and 255.
+///
+/// # Instantiation
+///
+/// A [`Color`] can be created in two different ways:
+///
+/// - Using [`Color::new`] to specify the red, green, and blue values explicitly.
+/// - Using [`Color::from_hex`] to parse a color from a hexadecimal string.
+</span><span class="comment">// TODO: look for existing color crate
+</span><span class="attr">#[derive(Clone, Copy, Hash, Debug, PartialEq, Eq)]
 </span><span class="kw">pub struct </span>Color {
     red: u8,
     green: u8,
@@ -195,6 +309,8 @@
     }
 
     <span class="doccomment">/// Tries to parse a string as a hexadecimal color value.
+    ///
+    /// The input string may include a leading `#`, and the length without the `#` must be 6.
     /// Valid values include `cdfa20` and `#282C34`.
     </span><span class="kw">pub fn </span>from_hex(hex: <span class="kw">impl </span>AsRef&lt;str&gt;) -&gt; result::Result&lt;<span class="self">Self</span>, ParseHexError&gt; {
         <span class="kw">let </span>hex = hex.as_ref().strip_prefix(<span class="string">&#39;#&#39;</span>).unwrap_or(hex.as_ref());
