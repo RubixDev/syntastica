@@ -18,7 +18,7 @@ use crate::Highlights;
 /// Additionally, the [`Processor::process_once`] function provides a quick way to process an input
 /// once without keeping the reusable resources.
 ///
-/// # Instatiation
+/// # Instantiation
 ///
 /// A [`Processor`] can be created in two ways.
 ///
