@@ -39,6 +39,127 @@ cases:
    multiple times): see [`Processor`], [`render`], and
    [this example](#example-highlight-multiple-different-inputs)
 
+## Subprojects
+
+Besides the main `syntastica` crate, many other crates for different purposes
+were developed and are included in the repository. This section aims to provide
+a good overview.
+
+### Parser collections
+
+The main `syntastica` crate provides no tree-sitter parsers and queries by
+itself. However, the project does provide three different parser collections
+with different advantages and drawbacks each. All three collections depend on
+[`syntastica-queries`](#syntastica-queries) for the tree-sitter queries. Choose
+one, and add it as a dependency next to `syntastica` itself.
+
+All three parser collections also provide the same public API and support three
+features, one of which has to be enabled: `some`, `most`, and `all`. Take a look
+at the respective crate documentation for more information.
+
+- [`syntastica-parsers`](https://crates.io/crates/syntastica-parsers) is
+  probably the easiest to start with. It uses parsers from
+  [crates.io](https://crates.io). This has the main benefit of being well
+  integrated in the cargo ecosystem. However, many tree-sitter parsers do not
+  get published to crates.io, and those that are, are usually very outdated.
+  Thus, this collection is relatively limited.
+- <a name="syntastica-parsers-git" href="https://crates.io/crates/syntastica-parsers-git"><code>syntastica-parsers-git</code></a>
+  is probably the best choice overall. It contains all supported languages, and
+  [when WebAssembly compilation will be supported](#todo), this will be the
+  collection to use. It pulls pinned revisions of parser git repositories in the
+  build script and links to the C and C++ parser sources. As such, it does not
+  depend on the upstream parsers to have up-to-date Rust bindings. However, this
+  way of fetching the parsers requires the `git` command to be accessible and
+  internet access during compilation, which may not be desirable. Additionally,
+  compilation can take very long, because there is no clean way to cache the
+  fetched repositories between builds.
+- [`syntastica-parsers-gitdep`](https://github.com/RubixDev/syntastica/tree/main/syntastica-parsers-gitdep)
+  is a mix of both of the above. It uses cargo git dependencies to fetch the
+  parser repositories and depends on a remote Rust binding (which is why not
+  _all_ parsers are included). The main disadvantages are that this collection
+  cannot be published to crates.io, because it depends on crates that are not on
+  crates.io (namely the parsers). This means, to use it you must also depend on
+  it using a git dependency, which in turn forbids your crate to be published on
+  crates.io. Unlike [`syntastica-parsers-git`](#syntastica-parsers-git) however,
+  the parsers only need to be fetched once by cargo, and following builds will
+  be much faster.
+
+### Theme collection
+
+To [render highlighted code](render) to end users, a
+[theme](theme::ResolvedTheme) is needed, which specifies the colors to use for
+which [theme key](THEME_KEYS). The `syntastica` project comes with a separate
+crate containing a few default themes:
+[`syntastica-themes`](https://crates.io/crates/syntastica-themes).
+
+If you wish to create your own theme, have a look at the
+[custom theme example](#example-custom-theme) and the documentation for the
+[`theme!`] macro.
+
+### Crates for internal use
+
+The `syntastica` repository/workspace also includes some crates which are not
+meant for outside use, but are instead used internally. These are listed below.
+
+> Note: **There are no guarantees about the public API of these crates!** If,
+> for any reason, you have to depend on one of them, then pin the _exact_
+> version using `<crate> = "=<version>"`.
+
+- [`syntastica-core`](https://crates.io/crates/syntastica-core) defines types,
+  traits, constants, etc. which are used in multiple of the other crates. The
+  main `syntastica` crate re-exports all those items transparently, so that
+  external projects only need a dependency on that. The items are defined in
+  `syntastica-core` however, to avoid cyclic (dev-)dependencies inside this
+  workspace.
+- [`syntastica-macros`](https://crates.io/crates/syntastica-macros) defines
+  procedural macros for use **exclusively** inside this workspace. This crate
+  allows the list of languages/parsers to be in _one_ combined `languages.toml`
+  file, and the different macros are used in the different places where this
+  list needs to be referenced.
+- [`syntastica-highlight`](https://crates.io/crates/syntastica-highlight) is a
+  fork of
+  [`tree-sitter-highlight`](https://crates.io/crates/tree-sitter-highlight),
+  which is adjusted and trimmed down for the use in `syntastica`. It contains
+  the main highlighting logic.
+- <a name="syntastica-queries" href="https://crates.io/crates/syntastica-queries"><code>syntastica-queries</code></a>
+  is a collection of tree-sitter queries for all supported languages. It is
+  marked as "for internal use", because all three
+  [parser collections](#parser-collections) depend on this crate and expose the
+  queries through their implementation of
+  [`LanguageProvider`](providers::LanguageProvider). Unlike the previous crates
+  in this list however, you may actually want to depend on this crate yourself,
+  if you _only_ need the queries.
+
+### General side-products
+
+This list includes crates which were developed for `syntastica` but have no
+direct association with the main project and can be used completely separately.
+
+- [`rsexpr`](https://crates.io/crates/rsexpr) is a generic S-expression parser
+  with added support for square-brackets, strings, and comments. Additionally,
+  the parsed S-expressions can be pretty-printed to provide a uniform
+  formatting. See
+  [`dprint-plugin-sexpr`](https://github.com/RubixDev/dprint-plugin-sexpr) for
+  more information on using this as a formatter. In `syntastica` this crate is
+  used for parsing (and formatting) the tree-sitter queries in the
+  [`queries`](https://github.com/RubixDev/syntastica/tree/main/queries)
+  directory. These are processed by `cargo xtask codegen queries` and result in
+  the queries inside the
+  [`generated_queries`](https://github.com/RubixDev/syntastica/tree/main/syntastica-queries/generated_queries)
+  directory, which are the ones that are bundled with
+  [`syntastica-queries`](#syntastica-queries).
+- [`lua-pattern`](https://crates.io/crates/lua-pattern) is a parser for Lua
+  patterns. These are similar to regular expressions, but generally more
+  limited. The crate also provides a best-effort conversion to regular
+  expression strings. In `syntastica` this is used, as many of the source
+  queries are forked from
+  [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) which
+  makes heavy use of `#lua-match?` predicates for matching with Lua patterns.
+  The official tree-sitter Rust bindings do not support Lua pattern matching
+  however (obviously), which is why during the processing of the queries (with
+  `cargo xtask codegen queries`), all Lua patterns are replaced with regular
+  expressions using this crate.
+
 ## Examples
 
 This section contains some basic usage examples. More specific examples can be
@@ -244,127 +365,6 @@ let output = syntastica::highlight(
 
 println!("{output}");
 ```
-
-## Subprojects
-
-Besides the main `syntastica` crate, many other crates for different purposes
-were developed and are included in the repository. This section aims to provide
-a good overview.
-
-### Parser collections
-
-The main `syntastica` crate provides no tree-sitter parsers and queries by
-itself. However, the project does provide three different parser collections
-with different advantages and drawbacks each. All three collections depend on
-[`syntastica-queries`](#syntastica-queries) for the tree-sitter queries. Choose
-one, and add it as a dependency next to `syntastica` itself.
-
-All three parser collections also provide the same public API and support three
-features, one of which has to be enabled: `some`, `most`, and `all`. Take a look
-at the respective crate documentation for more information.
-
-- [`syntastica-parsers`](https://crates.io/crates/syntastica-parsers) is
-  probably the easiest to start with. It uses parsers from
-  [crates.io](https://crates.io). This has the main benefit of being well
-  integrated in the cargo ecosystem. However, many tree-sitter parsers do not
-  get published to crates.io, and those that are, are usually very outdated.
-  Thus, this collection is relatively limited.
-- <a name="syntastica-parsers-git" href="https://crates.io/crates/syntastica-parsers-git"><code>syntastica-parsers-git</code></a>
-  is probably the best choice overall. It contains all supported languages, and
-  [when WebAssembly compilation will be supported](#todo), this will be the
-  collection to use. It pulls pinned revisions of parser git repositories in the
-  build script and links to the C and C++ parser sources. As such, it does not
-  depend on the upstream parsers to have up-to-date Rust bindings. However, this
-  way of fetching the parsers requires the `git` command to be accessible and
-  internet access during compilation, which may not be desirable. Additionally,
-  compilation can take very long, because there is no clean way to cache the
-  fetched repositories between builds.
-- [`syntastica-parsers-gitdep`](https://github.com/RubixDev/syntastica/tree/main/syntastica-parsers-gitdep)
-  is a mix of both of the above. It uses cargo git dependencies to fetch the
-  parser repositories and depends on a remote Rust binding (which is why not
-  _all_ parsers are included). The main disadvantages are that this collection
-  cannot be published to crates.io, because it depends on crates that are not on
-  crates.io (namely the parsers). This means, to use it you must also depend on
-  it using a git dependency, which in turn forbids your crate to be published on
-  crates.io. Unlike [`syntastica-parsers-git`](#syntastica-parsers-git) however,
-  the parsers only need to be fetched once by cargo, and following builds will
-  be much faster.
-
-### Theme collection
-
-To [render highlighted code](render) to end users, a
-[theme](theme::ResolvedTheme) is needed, which specifies the colors to use for
-which [theme key](THEME_KEYS). The `syntastica` project comes with a separate
-crate containing a few default themes:
-[`syntastica-themes`](https://crates.io/crates/syntastica-themes).
-
-If you wish to create your own theme, have a look at the
-[custom theme example](#example-custom-theme) and the documentation for the
-[`theme!`] macro.
-
-### Crates for internal use
-
-The `syntastica` repository/workspace also includes some crates which are not
-meant for outside use, but are instead used internally. These are listed below.
-
-> Note: **There are no guarantees about the public API of these crates!** If,
-> for any reason, you have to depend on one of them, then pin the _exact_
-> version using `<crate> = "=<version>"`.
-
-- [`syntastica-core`](https://crates.io/crates/syntastica-core) defines types,
-  traits, constants, etc. which are used in multiple of the other crates. The
-  main `syntastica` crate re-exports all those items transparently, so that
-  external projects only need a dependency on that. The items are defined in
-  `syntastica-core` however, to avoid cyclic (dev-)dependencies inside this
-  workspace.
-- [`syntastica-macros`](https://crates.io/crates/syntastica-macros) defines
-  procedural macros for use **exclusively** inside this workspace. This crate
-  allows the list of languages/parsers to be in _one_ combined `languages.toml`
-  file, and the different macros are used in the different places where this
-  list needs to be referenced.
-- [`syntastica-highlight`](https://crates.io/crates/syntastica-highlight) is a
-  fork of
-  [`tree-sitter-highlight`](https://crates.io/crates/tree-sitter-highlight),
-  which is adjusted and trimmed down for the use in `syntastica`. It contains
-  the main highlighting logic.
-- <a name="syntastica-queries" href="https://crates.io/crates/syntastica-queries"><code>syntastica-queries</code></a>
-  is a collection of tree-sitter queries for all supported languages. It is
-  marked as "for internal use", because all three
-  [parser collections](#parser-collections) depend on this crate and expose the
-  queries through their implementation of
-  [`LanguageProvider`](providers::LanguageProvider). Unlike the previous crates
-  in this list however, you may actually want to depend on this crate yourself,
-  if you _only_ need the queries.
-
-### General side-products
-
-This list includes crates which were developed for `syntastica` but have no
-direct association with the main project and can be used completely separately.
-
-- [`rsexpr`](https://crates.io/crates/rsexpr) is a generic S-expression parser
-  with added support for square-brackets, strings, and comments. Additionally,
-  the parsed S-expressions can be pretty-printed to provide a uniform
-  formatting. See
-  [`dprint-plugin-sexpr`](https://github.com/RubixDev/dprint-plugin-sexpr) for
-  more information on using this as a formatter. In `syntastica` this crate is
-  used for parsing (and formatting) the tree-sitter queries in the
-  [`queries`](https://github.com/RubixDev/syntastica/tree/main/queries)
-  directory. These are processed by `cargo xtask codegen queries` and result in
-  the queries inside the
-  [`generated_queries`](https://github.com/RubixDev/syntastica/tree/main/syntastica-queries/generated_queries)
-  directory, which are the ones that are bundled with
-  [`syntastica-queries`](#syntastica-queries).
-- [`lua-pattern`](https://crates.io/crates/lua-pattern) is a parser for Lua
-  patterns. These are similar to regular expressions, but generally more
-  limited. The crate also provides a best-effort conversion to regular
-  expression strings. In `syntastica` this is used, as many of the source
-  queries are forked from
-  [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) which
-  makes heavy use of `#lua-match?` predicates for matching with Lua patterns.
-  The official tree-sitter Rust bindings do not support Lua pattern matching
-  however (obviously), which is why during the processing of the queries (with
-  `cargo xtask codegen queries`), all Lua patterns are replaced with regular
-  expressions using this crate.
 
 ## Versioning
 
