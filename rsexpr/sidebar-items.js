@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["Error","OwnedSexpr","ParenKind","Sexpr"],"fn":["from_slice","from_slice_multi"],"struct":["OwnedSexprs","Sexprs"],"type":["Result"]};

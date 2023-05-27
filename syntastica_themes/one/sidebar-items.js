@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["cool","dark","darker","deep","light","warm","warmer"]};

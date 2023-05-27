@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["Error","HighlightEvent"],"struct":["Highlight","HighlightConfiguration","Highlighter"]};

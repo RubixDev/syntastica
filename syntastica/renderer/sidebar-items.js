@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["render"],"struct":["HtmlRenderer","TerminalRenderer"],"trait":["Renderer"]};

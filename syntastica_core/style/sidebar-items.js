@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["ParseHexError"],"struct":["Color","Style"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["Class","Error","PatternObject","Quantifier","SetPatternObject","ToRegexError","Token"],"fn":["parse","try_to_regex"],"type":["Pattern","Result"]};

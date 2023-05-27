@@ -1,0 +1,362 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="`syntastica`"><title>syntastica - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../static.files/rustdoc-f3501f0f5ae15dfb.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="syntastica" data-themes="" data-resource-suffix="" data-rustdoc-version="1.71.0-nightly (1a5f8bce7 2023-05-26)" data-search-js="search-4926e5fc22a5646a.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ></div><script src="../static.files/storage-62ce34ea385b278a.js"></script><script defer src="../crates.js"></script><script defer src="../static.files/main-f0540c1d82cde29b.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc mod crate"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="logo-container" href="../syntastica/index.html"><img class="rust-logo" src="../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><h2></h2></nav><nav class="sidebar"><a class="logo-container" href="../syntastica/index.html"><img class="rust-logo" src="../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><h2 class="location"><a href="#">Crate syntastica</a></h2><div class="sidebar-elems"><ul class="block"><li class="version">Version 0.3.0</li><li><a id="all-types" href="all.html">All Items</a></li></ul><section><ul class="block"><li><a href="#reexports">Re-exports</a></li><li><a href="#modules">Modules</a></li><li><a href="#macros">Macros</a></li><li><a href="#structs">Structs</a></li><li><a href="#enums">Enums</a></li><li><a href="#constants">Constants</a></li><li><a href="#functions">Functions</a></li><li><a href="#types">Type Definitions</a></li></ul></section></div></nav><main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1>Crate <a class="mod" href="#">syntastica</a><button id="copy-path" title="Copy item path to clipboard"><img src="../static.files/clipboard-7571035ce49a181d.svg" width="19" height="18" alt="Copy item path"></button></h1><span class="out-of-band"><a class="srclink" href="../src/syntastica/lib.rs.html#1-52">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><h2 id="syntastica"><a href="#syntastica"><code>syntastica</code></a></h2>
+<p>Modern and easy syntax highlighting using tree-sitter</p>
+<blockquote>
+<p>Note: If viewing this file on <a href="https://github.com/RubixDev/syntastica">GitHub</a>
+or <a href="https://crates.io/crates/syntastica">crates.io</a>, some links might not be
+working. Go to the <a href="https://docs.rs/syntastica/">docs.rs page</a> instead, which
+additionally includes the <a href="#features">Features</a> section.</p>
+</blockquote>
+<h3 id="overview"><a href="#overview">Overview</a></h3>
+<p>To use <code>syntastica</code>, you probably want to depend on three crates:</p>
+<ol>
+<li>The main <code>syntastica</code> crate for all the logic.</li>
+<li>A parser collection to provide language support (see
+<a href="#parser-collections">parser collections</a>)</li>
+<li>The theme collection for some default themes (see
+<a href="#theme-collection">theme collection</a>)</li>
+</ol>
+<p>So for example:</p>
+<div class="example-wrap"><pre class="language-toml"><code>syntastica = &quot;&lt;version&gt;&quot;
+syntastica-parsers = { version = &quot;&lt;version&gt;&quot;, features = [&quot;some&quot;] }
+syntastica-themes = &quot;&lt;version&gt;&quot;
+</code></pre></div><h4 id="use-cases"><a href="#use-cases">Use cases</a></h4>
+<p><code>syntastica</code> has three main ways of highlighting code, for three different use
+cases:</p>
+<ol>
+<li>Highlight <em>one</em> input <em>exactly once</em>: see <a href="fn.highlight.html" title="fn syntastica::highlight"><code>highlight</code></a> and
+<a href="#example-highlight-once">this example</a></li>
+<li>Highlight <em>one</em> input <em>multiple times</em> (e.g. with different themes or
+renderers): see <a href="struct.Processor.html#method.process_once" title="associated function syntastica::Processor::process_once"><code>Processor::process_once</code></a>, <a href="renderer/fn.render.html" title="fn syntastica::renderer::render"><code>render</code></a>, and
+<a href="#example-highlight-the-same-input-multiple-times">this example</a></li>
+<li>Highlight <em>multiple</em> different inputs (and optionally render each input
+multiple times): see <a href="struct.Processor.html" title="struct syntastica::Processor"><code>Processor</code></a>, <a href="renderer/fn.render.html" title="fn syntastica::renderer::render"><code>render</code></a>, and
+<a href="#example-highlight-multiple-different-inputs">this example</a></li>
+</ol>
+<h3 id="examples"><a href="#examples">Examples</a></h3>
+<p>This section contains some basic usage examples. More specific examples can be
+found in the documentation of some items such as the <a href="struct.Processor.html" title="struct syntastica::Processor"><code>Processor</code></a> type or the
+<a href="renderer/fn.render.html" title="fn syntastica::renderer::render"><code>render</code></a> function. Additionally, the
+<a href="https://github.com/RubixDev/syntastica/tree/main/examples"><code>examples</code></a>
+directory contains a few complete examples.</p>
+<p>This is the list of examples found here:</p>
+<ul>
+<li><a href="#example-highlight-once">Highlight once</a></li>
+<li><a href="#example-highlight-the-same-input-multiple-times">Highlight the same input multiple times</a></li>
+<li><a href="#example-highlight-multiple-different-inputs">Highlight multiple different inputs</a></li>
+<li><a href="#example-detect-language-from-file-extension">Detect the language based on a file extension</a></li>
+<li><a href="#example-custom-theme">Specify a custom theme</a></li>
+</ul>
+<h4 id="example-highlight-once"><a href="#example-highlight-once">Example: highlight once</a></h4>
+<p>This example shows the easiest and quickest way to use <code>syntastica</code>. See the
+section about <a href="#use-cases">use cases</a> for when it is appropriate to use
+<code>syntastica</code> this way.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>syntastica::renderer::TerminalRenderer;
+<span class="kw">use </span>syntastica_parsers::LanguageProviderImpl;
+
+<span class="kw">let </span>output = syntastica::highlight(
+    <span class="comment">// the code to highlight
+    </span><span class="string">r#&quot;fn main() { println!(&quot;42&quot;); }&quot;#</span>,
+    <span class="comment">// the name of the input&#39;s language
+    </span><span class="string">&quot;rust&quot;</span>,
+    <span class="comment">// use `syntastica-parsers` language provider with support for just Rust
+    </span><span class="kw-2">&amp;</span>LanguageProviderImpl::with_languages(<span class="kw-2">&amp;</span>[<span class="string">&quot;rust&quot;</span>]),
+    <span class="comment">// use the TerminalRenderer with no background color
+    </span><span class="kw-2">&amp;mut </span>TerminalRenderer::new(<span class="prelude-val">None</span>),
+    <span class="comment">// use the gruvbox dark theme from `syntastica-themes`
+    </span>syntastica_themes::gruvbox::dark(),
+)
+.unwrap_or_else(|err| <span class="macro">panic!</span>(<span class="string">&quot;highlighting failed: {err}&quot;</span>));
+
+<span class="macro">println!</span>(<span class="string">&quot;{output}&quot;</span>);</code></pre></div>
+<h4 id="example-highlight-the-same-input-multiple-times"><a href="#example-highlight-the-same-input-multiple-times">Example: highlight the same input multiple times</a></h4>
+<p>This example shows how to render the same input with two different themes using
+two different renderers.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>syntastica::{Processor, style::Color, renderer::<span class="kw-2">*</span>};
+<span class="kw">use </span>syntastica_parsers::LanguageProviderImpl;
+
+<span class="comment">// process the input once, but store the raw highlight information
+</span><span class="kw">let </span>highlights = Processor::process_once(
+    <span class="comment">// the code to highlight
+    </span><span class="string">r#&quot;fn main() { println!(&quot;42&quot;); }&quot;#</span>,
+    <span class="comment">// the name of the input&#39;s language
+    </span><span class="string">&quot;rust&quot;</span>,
+    <span class="comment">// use `syntastica-parsers` language provider with support for just Rust
+    </span><span class="kw-2">&amp;</span>LanguageProviderImpl::with_languages(<span class="kw-2">&amp;</span>[<span class="string">&quot;rust&quot;</span>]),
+)
+.unwrap_or_else(|err| <span class="macro">panic!</span>(<span class="string">&quot;highlighting failed: {err}&quot;</span>));
+
+<span class="comment">// render the highlights to the terminal using the
+// gruvbox dark theme on a dark gray background
+</span><span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, syntastica::render(
+    <span class="kw-2">&amp;</span>highlights,
+    <span class="kw-2">&amp;mut </span>TerminalRenderer::new(<span class="prelude-val">Some</span>(Color::new(<span class="number">40</span>, <span class="number">40</span>, <span class="number">40</span>))),
+    syntastica_themes::gruvbox::dark().resolve_links().unwrap(),
+));
+
+<span class="comment">// render the same input to HTML using the onelight theme
+</span><span class="kw">let </span>html = syntastica::render(
+    <span class="kw-2">&amp;</span>highlights,
+    <span class="kw-2">&amp;mut </span>HtmlRenderer::new(),
+    syntastica_themes::one::light().resolve_links().unwrap(),
+);
+<span class="comment">// you could for example write that to a file called `index.html`:
+// std::fs::write(&quot;index.html&quot;, html).unwrap();</span></code></pre></div>
+<h4 id="example-highlight-multiple-different-inputs"><a href="#example-highlight-multiple-different-inputs">Example: highlight multiple different inputs</a></h4>
+<p>This example shows how a <a href="struct.Processor.html" title="struct syntastica::Processor"><code>Processor</code></a> can be reused if multiple different
+inputs should be highlighted.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>syntastica::{Processor, style::Color, renderer::<span class="kw-2">*</span>};
+<span class="kw">use </span>syntastica_parsers::LanguageProviderImpl;
+
+<span class="comment">// create a language provider and a `Processor`
+</span><span class="kw">let </span>language_provider = LanguageProviderImpl::with_languages(<span class="kw-2">&amp;</span>[<span class="string">&quot;rust&quot;</span>, <span class="string">&quot;javascript&quot;</span>]);
+<span class="kw">let </span><span class="kw-2">mut </span>processor = Processor::try_from_provider(<span class="kw-2">&amp;</span>language_provider).unwrap();
+<span class="comment">// Note: `language_provider` has to be in a variable, because the processor
+// is bound to the lifetime of the reference passed to `try_from_provider`
+
+// process some input
+</span><span class="kw">let </span>highlights_rust = processor.process(
+    <span class="comment">// the code to highlight
+    </span><span class="string">r#&quot;fn main() { println!(&quot;42&quot;); }&quot;#</span>,
+    <span class="comment">// the name of the input&#39;s language
+    </span><span class="string">&quot;rust&quot;</span>,
+)
+.unwrap_or_else(|err| <span class="macro">panic!</span>(<span class="string">&quot;highlighting failed: {err}&quot;</span>));
+
+<span class="comment">// process some other input in another language
+</span><span class="kw">let </span>highlights_js = processor.process(<span class="string">r&quot;console.log(&#39;42&#39;)&quot;</span>, <span class="string">&quot;javascript&quot;</span>)
+    .unwrap_or_else(|err| <span class="macro">panic!</span>(<span class="string">&quot;highlighting failed: {err}&quot;</span>));
+
+<span class="comment">// render the rust code to the terminal using the
+// gruvbox dark theme on a dark gray background
+</span><span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, syntastica::render(
+    <span class="kw-2">&amp;</span>highlights_rust,
+    <span class="kw-2">&amp;mut </span>TerminalRenderer::new(<span class="prelude-val">Some</span>(Color::new(<span class="number">40</span>, <span class="number">40</span>, <span class="number">40</span>))),
+    syntastica_themes::gruvbox::dark().resolve_links().unwrap(),
+));
+
+<span class="comment">// render the same rust code to HTML using the onelight theme
+</span><span class="kw">let </span>html = syntastica::render(
+    <span class="kw-2">&amp;</span>highlights_rust,
+    <span class="kw-2">&amp;mut </span>HtmlRenderer::new(),
+    syntastica_themes::one::light().resolve_links().unwrap(),
+);
+<span class="comment">// you could for example write that to a file called `index.html`:
+// std::fs::write(&quot;index.html&quot;, html).unwrap();
+
+// now render the javascript code to the terminal using the
+// onedark theme and no background color
+</span><span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, syntastica::render(
+    <span class="kw-2">&amp;</span>highlights_js,
+    <span class="kw-2">&amp;mut </span>TerminalRenderer::new(<span class="prelude-val">None</span>),
+    syntastica_themes::one::dark().resolve_links().unwrap(),
+));</code></pre></div>
+<h4 id="example-detect-language-from-file-extension"><a href="#example-detect-language-from-file-extension">Example: detect language from file extension</a></h4>
+<p>This is an alteration of the <a href="#example-highlight-once">first example</a> showing
+how to detect the language to use based on a file extension. See that first
+example for explanations of the rest of the code.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>syntastica::{renderer::TerminalRenderer, providers::LanguageProvider};
+<span class="kw">use </span>syntastica_parsers::LanguageProviderImpl;
+
+<span class="kw">let </span>language_provider = LanguageProviderImpl::with_languages(<span class="kw-2">&amp;</span>[<span class="string">&quot;rust&quot;</span>]);
+<span class="kw">let </span>output = syntastica::highlight(
+    <span class="string">r#&quot;fn main() { println!(&quot;42&quot;); }&quot;#</span>,
+    <span class="comment">// the `LanguageProvider` trait also provides a `for_extension` function
+    // which returns an `Option&lt;Cow&lt;&#39;static, str&gt;&gt;`
+    // make sure to have the trait in scope
+    </span>language_provider.for_extension(<span class="string">&quot;rs&quot;</span>).unwrap().as_ref(),
+    <span class="kw-2">&amp;</span>language_provider,
+    <span class="kw-2">&amp;mut </span>TerminalRenderer::new(<span class="prelude-val">None</span>),
+    syntastica_themes::gruvbox::dark(),
+)
+.unwrap_or_else(|err| <span class="macro">panic!</span>(<span class="string">&quot;highlighting failed: {err}&quot;</span>));
+
+<span class="macro">println!</span>(<span class="string">&quot;{output}&quot;</span>);</code></pre></div>
+<h4 id="example-custom-theme"><a href="#example-custom-theme">Example: custom theme</a></h4>
+<p>This is an alteration of the <a href="#example-highlight-once">first example</a> showing
+how to create a simple custom theme. See that first example for explanations of
+the rest of the code, and see the documentation of the <a href="macro.theme.html" title="macro syntastica::theme"><code>theme!</code></a> macro for more
+information.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>syntastica::{renderer::TerminalRenderer, theme};
+<span class="kw">use </span>syntastica_parsers::LanguageProviderImpl;
+
+<span class="kw">let </span>theme = <span class="macro">theme! </span>{
+    <span class="comment">// specify colors using hex literals
+    </span><span class="string">&quot;purple&quot;</span>: <span class="string">&quot;#c678dd&quot;</span>,
+    <span class="string">&quot;blue&quot;</span>: <span class="string">&quot;#61afef&quot;</span>,
+    <span class="string">&quot;green&quot;</span>: <span class="string">&quot;#98c379&quot;</span>,
+
+    <span class="comment">// link to other keys using a `$` sign
+    </span><span class="string">&quot;keyword&quot;</span>: <span class="string">&quot;$purple&quot;</span>,
+    <span class="string">&quot;function&quot;</span>: <span class="string">&quot;$blue&quot;</span>,
+
+    <span class="comment">// specify more styling options in curly braces
+    // (note that currently this order required by the macro)
+    </span><span class="string">&quot;string&quot;</span>: {
+        color: <span class="prelude-val">None</span>,
+        underline: <span class="bool-val">false</span>,
+        strikethrough: <span class="bool-val">false</span>,
+        italic: <span class="bool-val">true</span>,
+        bold: <span class="bool-val">false</span>,
+        link: <span class="string">&quot;green&quot;</span>,
+    },
+};
+
+<span class="kw">let </span>output = syntastica::highlight(
+    <span class="string">r#&quot;fn main() { println!(&quot;42&quot;); }&quot;#</span>,
+    <span class="string">&quot;rust&quot;</span>,
+    <span class="kw-2">&amp;</span>LanguageProviderImpl::with_languages(<span class="kw-2">&amp;</span>[<span class="string">&quot;rust&quot;</span>]),
+    <span class="kw-2">&amp;mut </span>TerminalRenderer::new(<span class="prelude-val">None</span>),
+    theme,
+)
+.unwrap_or_else(|err| <span class="macro">panic!</span>(<span class="string">&quot;highlighting failed: {err}&quot;</span>));
+
+<span class="macro">println!</span>(<span class="string">&quot;{output}&quot;</span>);</code></pre></div>
+<h3 id="subprojects"><a href="#subprojects">Subprojects</a></h3>
+<p>Besides the main <code>syntastica</code> crate, many other crates for different purposes
+were developed and are included in the repository. This section aims to provide
+a good overview.</p>
+<h4 id="parser-collections"><a href="#parser-collections">Parser collections</a></h4>
+<p>The main <code>syntastica</code> crate provides no tree-sitter parsers and queries by
+itself. However, the project does provide three different parser collections
+with different advantages and drawbacks each. All three collections depend on
+<a href="#syntastica-queries"><code>syntastica-queries</code></a> for the tree-sitter queries. Choose
+one, and add it as a dependency next to <code>syntastica</code> itself.</p>
+<p>All three parser collections also provide the same public API and support three
+features, one of which has to be enabled: <code>some</code>, <code>most</code>, and <code>all</code>. Take a look
+at the respective crate documentation for more information.</p>
+<ul>
+<li><a href="https://crates.io/crates/syntastica-parsers"><code>syntastica-parsers</code></a> is
+probably the easiest to start with. It uses parsers from
+<a href="https://crates.io">crates.io</a>. This has the main benefit of being well
+integrated in the cargo ecosystem. However, many tree-sitter parsers do not
+get published to crates.io, and those that are, are usually very outdated.
+Thus, this collection is relatively limited.</li>
+<li><a name="syntastica-parsers-git" href="https://crates.io/crates/syntastica-parsers-git"><code>syntastica-parsers-git</code></a>
+is probably the best choice overall. It contains all supported languages, and
+<a href="#todo">when WebAssembly compilation will be supported</a>, this will be the
+collection to use. It pulls pinned revisions of parser git repositories in the
+build script and links to the C and C++ parser sources. As such, it does not
+depend on the upstream parsers to have up-to-date Rust bindings. However, this
+way of fetching the parsers requires the <code>git</code> command to be accessible and
+internet access during compilation, which may not be desirable. Additionally,
+compilation can take very long, because there is no clean way to cache the
+fetched repositories between builds.</li>
+<li><a href="https://github.com/RubixDev/syntastica/tree/main/syntastica-parsers-gitdep"><code>syntastica-parsers-gitdep</code></a>
+is a mix of both of the above. It uses cargo git dependencies to fetch the
+parser repositories and depends on a remote Rust binding (which is why not
+<em>all</em> parsers are included). The main disadvantages are that this collection
+cannot be published to crates.io, because it depends on crates that are not on
+crates.io (namely the parsers). This means, to use it you must also depend on
+it using a git dependency, which in turn forbids your crate to be published on
+crates.io. Unlike <a href="#syntastica-parsers-git"><code>syntastica-parsers-git</code></a> however,
+the parsers only need to be fetched once by cargo, and following builds will
+be much faster.</li>
+</ul>
+<h4 id="theme-collection"><a href="#theme-collection">Theme collection</a></h4>
+<p>To <a href="renderer/fn.render.html" title="fn syntastica::renderer::render">render highlighted code</a> to end users, a
+<a href="theme/struct.ResolvedTheme.html" title="struct syntastica::theme::ResolvedTheme">theme</a> is needed, which specifies the colors to use for
+which <a href="constant.THEME_KEYS.html" title="constant syntastica::THEME_KEYS">theme key</a>. The <code>syntastica</code> project comes with a separate
+crate containing a few default themes:
+<a href="https://crates.io/crates/syntastica-themes"><code>syntastica-themes</code></a>.</p>
+<p>If you wish to create your own theme, have a look at the
+<a href="#example-custom-theme">custom theme example</a> and the documentation for the
+<a href="macro.theme.html" title="macro syntastica::theme"><code>theme!</code></a> macro.</p>
+<h4 id="crates-for-internal-use"><a href="#crates-for-internal-use">Crates for internal use</a></h4>
+<p>The <code>syntastica</code> repository/workspace also includes some crates which are not
+meant for outside use, but are instead used internally. These are listed below.</p>
+<blockquote>
+<p>Note: <strong>There are no guarantees about the public API of these crates!</strong> If,
+for any reason, you have to depend on one of them, then pin the <em>exact</em>
+version using <code>&lt;crate&gt; = &quot;=&lt;version&gt;&quot;</code>.</p>
+</blockquote>
+<ul>
+<li><a href="https://crates.io/crates/syntastica-core"><code>syntastica-core</code></a> defines types,
+traits, constants, etc. which are used in multiple of the other crates. The
+main <code>syntastica</code> crate re-exports all those items transparently, so that
+external projects only need a dependency on that. The items are defined in
+<code>syntastica-core</code> however, to avoid cyclic (dev-)dependencies inside this
+workspace.</li>
+<li><a href="https://crates.io/crates/syntastica-macros"><code>syntastica-macros</code></a> defines
+procedural macros for use <strong>exclusively</strong> inside this workspace. This crate
+allows the list of languages/parsers to be in <em>one</em> combined <code>languages.toml</code>
+file, and the different macros are used in the different places where this
+list needs to be referenced.</li>
+<li><a href="https://crates.io/crates/syntastica-highlight"><code>syntastica-highlight</code></a> is a
+fork of
+<a href="https://crates.io/crates/tree-sitter-highlight"><code>tree-sitter-highlight</code></a>,
+which is adjusted and trimmed down for the use in <code>syntastica</code>. It contains
+the main highlighting logic.</li>
+<li><a name="syntastica-queries" href="https://crates.io/crates/syntastica-queries"><code>syntastica-queries</code></a>
+is a collection of tree-sitter queries for all supported languages. It is
+marked as “for internal use”, because all three
+<a href="#parser-collections">parser collections</a> depend on this crate and expose the
+queries through their implementation of
+<a href="providers/trait.LanguageProvider.html" title="trait syntastica::providers::LanguageProvider"><code>LanguageProvider</code></a>. Unlike the previous crates
+in this list however, you may actually want to depend on this crate yourself,
+if you <em>only</em> need the queries.</li>
+</ul>
+<h4 id="general-side-products"><a href="#general-side-products">General side-products</a></h4>
+<p>This list includes crates which were developed for <code>syntastica</code> but have no
+direct association with the main project and can be used completely separately.</p>
+<ul>
+<li><a href="https://crates.io/crates/rsexpr"><code>rsexpr</code></a> is a generic S-expression parser
+with added support for square-brackets, strings, and comments. Additionally,
+the parsed S-expressions can be pretty-printed to provide a uniform
+formatting. See
+<a href="https://github.com/RubixDev/dprint-plugin-sexpr"><code>dprint-plugin-sexpr</code></a> for
+more information on using this as a formatter. In <code>syntastica</code> this crate is
+used for parsing (and formatting) the tree-sitter queries in the
+<a href="https://github.com/RubixDev/syntastica/tree/main/queries"><code>queries</code></a>
+directory. These are processed by <code>cargo xtask codegen queries</code> and result in
+the queries inside the
+<a href="https://github.com/RubixDev/syntastica/tree/main/syntastica-queries/generated_queries"><code>generated_queries</code></a>
+directory, which are the ones that are bundled with
+<a href="#syntastica-queries"><code>syntastica-queries</code></a>.</li>
+<li><a href="https://crates.io/crates/lua-pattern"><code>lua-pattern</code></a> is a parser for Lua
+patterns. These are similar to regular expressions, but generally more
+limited. The crate also provides a best-effort conversion to regular
+expression strings. In <code>syntastica</code> this is used, as many of the source
+queries are forked from
+<a href="https://github.com/nvim-treesitter/nvim-treesitter">nvim-treesitter</a> which
+makes heavy use of <code>#lua-match?</code> predicates for matching with Lua patterns.
+The official tree-sitter Rust bindings do not support Lua pattern matching
+however (obviously), which is why during the processing of the queries (with
+<code>cargo xtask codegen queries</code>), all Lua patterns are replaced with regular
+expressions using this crate.</li>
+</ul>
+<h3 id="versioning"><a href="#versioning">Versioning</a></h3>
+<p>All crates in this workspace whose names start with <code>syntastica</code> share the same
+version. The typical semantic versioning rules are used across the public APIs
+of <em>all</em> of these, except for
+<a href="#crates-for-internal-use">the ones listed as internal</a>. The
+<a href="#general-side-products">other crates in this workspace</a> have their own separate
+versions.</p>
+<p>Versions are specified as <code>MAJOR.MINOR.PATCH</code>. As long as the <code>MAJOR</code> version
+specifier is still at <code>0</code>, changes to the <code>MINOR</code> version may also be breaking
+changes. The <code>PATCH</code> part is only incremented if the public API stays exactly
+the same.</p>
+<h3 id="inspiration"><a href="#inspiration">Inspiration</a></h3>
+<p>TODO: shortly explain origins (lirstings)</p>
+<h3 id="todo"><a href="#todo">TODO</a></h3>
+<ul>
+<li><input disabled="" type="checkbox"/>
+easy compilation to WebAssembly using <code>tree-sitter-c2rust</code></li>
+</ul>
+<h3 id="features"><a href="#features">Features</a></h3>
+<ul>
+<li>
+<p><span class="stab portability"><code>serde</code></span> —  Provide implementations of serde’s <code>Serialize</code> and <code>Deserialize</code> traits for <a href="theme/struct.Theme.html" title="struct syntastica::theme::Theme"><code>Theme</code></a></p>
+</li>
+<li>
+<p><span class="stab portability"><code>docs</code></span> —  Enable this when building the docs</p>
+</li>
+</ul>
+</div></details><h2 id="reexports" class="small-section-header"><a href="#reexports">Re-exports</a></h2><ul class="item-table"><li><div class="item-name" id="reexport.render"><code>pub use renderer::<a class="fn" href="renderer/fn.render.html" title="fn syntastica::renderer::render">render</a>;</code></div></li></ul><h2 id="modules" class="small-section-header"><a href="#modules">Modules</a></h2><ul class="item-table"><li><div class="item-name"><a class="mod" href="providers/index.html" title="mod syntastica::providers">providers</a></div></li><li><div class="item-name"><a class="mod" href="renderer/index.html" title="mod syntastica::renderer">renderer</a></div><div class="desc docblock-short">This module contains the <a href="renderer/trait.Renderer.html" title="trait syntastica::renderer::Renderer"><code>Renderer</code></a> trait and two implementors: <a href="renderer/struct.TerminalRenderer.html" title="struct syntastica::renderer::TerminalRenderer"><code>TerminalRenderer</code></a> and
+<a href="renderer/struct.HtmlRenderer.html" title="struct syntastica::renderer::HtmlRenderer"><code>HtmlRenderer</code></a>, as well as the <a href="renderer/fn.render.html" title="fn syntastica::renderer::render"><code>render</code></a> function, which is re-exported at the crate root.
+See the individual documentation of these items for more information and examples.</div></li><li><div class="item-name"><a class="mod" href="style/index.html" title="mod syntastica::style">style</a></div></li><li><div class="item-name"><a class="mod" href="theme/index.html" title="mod syntastica::theme">theme</a></div></li></ul><h2 id="macros" class="small-section-header"><a href="#macros">Macros</a></h2><ul class="item-table"><li><div class="item-name"><a class="macro" href="macro.theme.html" title="macro syntastica::theme">theme</a></div></li></ul><h2 id="structs" class="small-section-header"><a href="#structs">Structs</a></h2><ul class="item-table"><li><div class="item-name"><a class="struct" href="struct.Processor.html" title="struct syntastica::Processor">Processor</a></div><div class="desc docblock-short">A type for easy reuse of resources when highlighting multiple inputs.</div></li></ul><h2 id="enums" class="small-section-header"><a href="#enums">Enums</a></h2><ul class="item-table"><li><div class="item-name"><a class="enum" href="enum.Error.html" title="enum syntastica::Error">Error</a></div></li></ul><h2 id="constants" class="small-section-header"><a href="#constants">Constants</a></h2><ul class="item-table"><li><div class="item-name"><a class="constant" href="constant.THEME_KEYS.html" title="constant syntastica::THEME_KEYS">THEME_KEYS</a></div><div class="desc docblock-short">All theme keys that are recognized by syntastica. Based on the list from
+<a href="https://github.com/nvim-treesitter/nvim-treesitter/blob/master/CONTRIBUTING.md">nvim-treesitter</a>.</div></li></ul><h2 id="functions" class="small-section-header"><a href="#functions">Functions</a></h2><ul class="item-table"><li><div class="item-name"><a class="fn" href="fn.highlight.html" title="fn syntastica::highlight">highlight</a></div><div class="desc docblock-short">Convenience function for <a href="struct.Processor.html" title="struct syntastica::Processor">processing</a> and directly <a href="renderer/fn.render.html" title="fn syntastica::renderer::render">rendering</a> code once.</div></li></ul><h2 id="types" class="small-section-header"><a href="#types">Type Definitions</a></h2><ul class="item-table"><li><div class="item-name"><a class="type" href="type.Highlights.html" title="type syntastica::Highlights">Highlights</a></div><div class="desc docblock-short">Source code with style information attached, as returned by the <a href="struct.Processor.html" title="struct syntastica::Processor"><code>Processor</code></a>.</div></li><li><div class="item-name"><a class="type" href="type.Result.html" title="type syntastica::Result">Result</a></div></li></ul></section></div></main></body></html>

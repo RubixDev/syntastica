@@ -1,0 +1,1 @@
+window.ALL_CRATES = ["lua_pattern","rsexpr","syntastica","syntastica_core","syntastica_highlight","syntastica_macros","syntastica_parsers","syntastica_parsers_git","syntastica_parsers_gitdep","syntastica_queries","syntastica_themes","xtask"];
