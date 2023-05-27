@@ -3,6 +3,9 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
+permissions:
+  contents: write
 
 env:
   CARGO_INCREMENTAL: 0
@@ -27,11 +30,20 @@ jobs:
           toolchain: nightly
           override: true
 
+      - name: Restore Cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          cache-targets: false
+
       - name: Build Documentation
         uses: actions-rs/cargo@v1
         with:
           command: doc
           args: --workspace --all-features --no-deps
+
+      - name: Prepare GitHub Pages Deployment
+        run: |
+          echo '<meta http-equiv="Refresh" content="0; url=syntastica" />' >> target/doc/index.html
 
       - name: Deploy Docs
         uses: JamesIves/github-pages-deploy-action@v4
