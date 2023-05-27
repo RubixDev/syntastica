@@ -48,7 +48,8 @@
     "**/node_modules",
     "**/*-lock.json",
     "syntastica-queries/src/lib.rs",
-    "syntastica-queries/generated_queries"
+    "syntastica-queries/generated_queries",
+    "syntastica-core/src/theme_keys.rs"
   ],
   "plugins": [
     "https://plugins.dprint.dev/json-0.17.2.wasm",
