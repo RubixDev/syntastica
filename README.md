@@ -269,7 +269,7 @@ at the respective crate documentation for more information.
   integrated in the cargo ecosystem. However, many tree-sitter parsers do not
   get published to crates.io, and those that are, are usually very outdated.
   Thus, this collection is relatively limited.
-- [<a name="syntastica-parsers-git"> `syntastica-parsers-git`</a>](https://crates.io/crates/syntastica-parsers-git)
+- <a name="syntastica-parsers-git" href="https://crates.io/crates/syntastica-parsers-git"><code>syntastica-parsers-git</code></a>
   is probably the best choice overall. It contains all supported languages, and
   [when WebAssembly compilation will be supported](#todo), this will be the
   collection to use. It pulls pinned revisions of parser git repositories in the
@@ -327,7 +327,7 @@ meant for outside use, but are instead used internally. These are listed below.
   [`tree-sitter-highlight`](https://crates.io/crates/tree-sitter-highlight),
   which is adjusted and trimmed down for the use in `syntastica`. It contains
   the main highlighting logic.
-- [<a name="syntastica-queries"> `syntastica-queries`</a>](https://crates.io/crates/syntastica-queries)
+- <a name="syntastica-queries" href="https://crates.io/crates/syntastica-queries"><code>syntastica-queries</code></a>
   is a collection of tree-sitter queries for all supported languages. It is
   marked as "for internal use", because all three
   [parser collections](#parser-collections) depend on this crate and expose the
