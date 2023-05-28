@@ -421,7 +421,7 @@
 <a href="#421" id="421">421</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Defines items related to theming the output.
 
-</span><span class="kw">use </span>std::{borrow::Borrow, collections::BTreeMap, ops::Index};
+</span><span class="kw">use </span>std::{borrow::Borrow, collections::BTreeMap, ops::Index, str::FromStr};
 
 <span class="kw">use crate</span>::{
     style::{Color, Style},
@@ -492,7 +492,7 @@
     </span>Simple(String),
     <span class="doccomment">/// A color or link with additional style information.
     </span>Extended {
-        <span class="doccomment">/// The color to use for this style.
+        <span class="doccomment">/// The color to use for this style, specified as a hexadecimal string.
         ///
         /// Either this or [`link`](ThemeValue::Extended::link) has to be set, or calls to
         /// [`Theme::resolve_links`] will fail.
@@ -553,7 +553,7 @@
                         key,
                         <span class="kw">match </span>value {
                             ThemeValue::Simple(color) =&gt; {
-                                Style::new(Color::from_hex(color)<span class="question-mark">?</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)
+                                Style::new(Color::from_str(<span class="kw-2">&amp;</span>color)<span class="question-mark">?</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)
                             }
                             ThemeValue::Extended {
                                 color,
@@ -564,7 +564,7 @@
                                 link: <span class="kw">_</span>,
                             } =&gt; Style::new(
                                 <span class="comment">// TODO: maybe rework to not rely on unwrapping
-                                </span>Color::from_hex(color.expect(<span class="string">&quot;links have been resolved&quot;</span>))<span class="question-mark">?</span>,
+                                </span>Color::from_str(<span class="kw-2">&amp;</span>color.expect(<span class="string">&quot;links have been resolved&quot;</span>))<span class="question-mark">?</span>,
                                 underline,
                                 strikethrough,
                                 italic,

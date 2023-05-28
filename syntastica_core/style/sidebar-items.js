@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["ParseHexError"],"struct":["Color","Style"]};
+window.SIDEBAR_ITEMS = {"struct":["Style"],"type":["Color"]};

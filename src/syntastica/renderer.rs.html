@@ -487,7 +487,7 @@
     }
 
     <span class="kw">fn </span>styled(<span class="kw-2">&amp;mut </span><span class="self">self</span>, text: <span class="kw-2">&amp;</span>str, style: Style) -&gt; Cow&lt;<span class="lifetime">&#39;static</span>, str&gt; {
-        <span class="kw">let </span>(r, g, b) = style.color().rgb();
+        <span class="kw">let </span>(r, g, b) = style.color().into_components();
         <span class="kw">let </span><span class="kw-2">mut </span>css = <span class="macro">format!</span>(<span class="string">&quot;color: rgb({r}, {g}, {b});&quot;</span>);
         <span class="kw">if </span>style.underline() &amp;&amp; style.strikethrough() {
             css += <span class="string">&quot;text-decoration: underline line-through;&quot;
@@ -543,7 +543,7 @@
     <span class="kw">fn </span>head(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; Cow&lt;<span class="lifetime">&#39;static</span>, str&gt; {
         <span class="kw">match </span><span class="self">self</span>.background_color {
             <span class="prelude-val">Some</span>(color) =&gt; {
-                <span class="kw">let </span>(r, g, b) = color.rgb();
+                <span class="kw">let </span>(r, g, b) = color.into_components();
                 <span class="macro">format!</span>(<span class="string">&quot;\x1b[48;2;{r};{g};{b}m&quot;</span>).into()
             }
             <span class="prelude-val">None </span>=&gt; <span class="string">&quot;&quot;</span>.into(),
@@ -560,7 +560,7 @@
     <span class="kw">fn </span>newline(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; Cow&lt;<span class="lifetime">&#39;static</span>, str&gt; {
         <span class="kw">match </span><span class="self">self</span>.background_color {
             <span class="prelude-val">Some</span>(color) =&gt; {
-                <span class="kw">let </span>(r, g, b) = color.rgb();
+                <span class="kw">let </span>(r, g, b) = color.into_components();
                 <span class="macro">format!</span>(<span class="string">&quot;\x1b[0m\n\x1b[48;2;{r};{g};{b}m&quot;</span>).into()
             }
             <span class="prelude-val">None </span>=&gt; <span class="string">&quot;\n&quot;</span>.into(),
@@ -568,7 +568,7 @@
     }
 
     <span class="kw">fn </span>styled(<span class="kw-2">&amp;mut </span><span class="self">self</span>, text: <span class="kw-2">&amp;</span>str, style: Style) -&gt; Cow&lt;<span class="lifetime">&#39;static</span>, str&gt; {
-        <span class="kw">let </span>(r, g, b) = style.color().rgb();
+        <span class="kw">let </span>(r, g, b) = style.color().into_components();
         <span class="kw">let </span><span class="kw-2">mut </span>params = <span class="macro">format!</span>(<span class="string">&quot;38;2;{r};{g};{b};&quot;</span>);
         <span class="kw">if </span>style.underline() {
             params += <span class="string">&quot;4;&quot;

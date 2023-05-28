@@ -63,13 +63,11 @@
 <a href="#63" id="63">63</a>
 <a href="#64" id="64">64</a>
 <a href="#65" id="65">65</a>
-<a href="#66" id="66">66</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::convert::Infallible;
 
+<span class="kw">use </span>palette::rgb::FromHexError;
 <span class="kw">use </span>thiserror::Error;
 <span class="kw">use </span>tree_sitter::QueryError;
-
-<span class="kw">use </span><span class="kw">crate</span>::style::ParseHexError;
 
 <span class="doccomment">/// The main result type.
 ///
@@ -102,9 +100,9 @@
 
     <span class="doccomment">/// A [`Theme`](crate::theme::Theme) contains a color with an invalid hex literal.
     ///
-    /// Contains a [`ParseHexError`].
+    /// Contains a [`palette::rgb::FromHexError`].
     </span><span class="attr">#[error(transparent)]
-    </span>InvalidHex(<span class="attr">#[from] </span>ParseHexError),
+    </span>InvalidHex(<span class="attr">#[from] </span>FromHexError),
 
     <span class="doccomment">/// The provided queries were malformed or not applicable to the parser.
     ///
