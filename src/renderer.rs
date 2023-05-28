@@ -168,7 +168,7 @@ impl Renderer for HtmlRenderer {
     }
 
     fn styled(&mut self, text: &str, style: Style) -> Cow<'static, str> {
-        let (r, g, b) = style.color().rgb();
+        let (r, g, b) = style.color().into_components();
         let mut css = format!("color: rgb({r}, {g}, {b});");
         if style.underline() && style.strikethrough() {
             css += "text-decoration: underline line-through;"
@@ -224,7 +224,7 @@ impl Renderer for TerminalRenderer {
     fn head(&mut self) -> Cow<'static, str> {
         match self.background_color {
             Some(color) => {
-                let (r, g, b) = color.rgb();
+                let (r, g, b) = color.into_components();
                 format!("\x1b[48;2;{r};{g};{b}m").into()
             }
             None => "".into(),
@@ -241,7 +241,7 @@ impl Renderer for TerminalRenderer {
     fn newline(&mut self) -> Cow<'static, str> {
         match self.background_color {
             Some(color) => {
-                let (r, g, b) = color.rgb();
+                let (r, g, b) = color.into_components();
                 format!("\x1b[0m\n\x1b[48;2;{r};{g};{b}m").into()
             }
             None => "\n".into(),
@@ -249,7 +249,7 @@ impl Renderer for TerminalRenderer {
     }
 
     fn styled(&mut self, text: &str, style: Style) -> Cow<'static, str> {
-        let (r, g, b) = style.color().rgb();
+        let (r, g, b) = style.color().into_components();
         let mut params = format!("38;2;{r};{g};{b};");
         if style.underline() {
             params += "4;"

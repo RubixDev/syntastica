@@ -1,6 +1,6 @@
 //! Defines items related to theming the output.
 
-use std::{borrow::Borrow, collections::BTreeMap, ops::Index};
+use std::{borrow::Borrow, collections::BTreeMap, ops::Index, str::FromStr};
 
 use crate::{
     style::{Color, Style},
@@ -71,7 +71,7 @@ pub enum ThemeValue {
     Simple(String),
     /// A color or link with additional style information.
     Extended {
-        /// The color to use for this style.
+        /// The color to use for this style, specified as a hexadecimal string.
         ///
         /// Either this or [`link`](ThemeValue::Extended::link) has to be set, or calls to
         /// [`Theme::resolve_links`] will fail.
@@ -132,7 +132,7 @@ impl Theme {
                         key,
                         match value {
                             ThemeValue::Simple(color) => {
-                                Style::new(Color::from_hex(color)?, false, false, false, false)
+                                Style::new(Color::from_str(&color)?, false, false, false, false)
                             }
                             ThemeValue::Extended {
                                 color,
@@ -143,7 +143,7 @@ impl Theme {
                                 link: _,
                             } => Style::new(
                                 // TODO: maybe rework to not rely on unwrapping
-                                Color::from_hex(color.expect("links have been resolved"))?,
+                                Color::from_str(&color.expect("links have been resolved"))?,
                                 underline,
                                 strikethrough,
                                 italic,

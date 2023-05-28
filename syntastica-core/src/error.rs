@@ -1,9 +1,8 @@
 use std::convert::Infallible;
 
+use palette::rgb::FromHexError;
 use thiserror::Error;
 use tree_sitter::QueryError;
-
-use crate::style::ParseHexError;
 
 /// The main result type.
 ///
@@ -36,9 +35,9 @@ pub enum Error {
 
     /// A [`Theme`](crate::theme::Theme) contains a color with an invalid hex literal.
     ///
-    /// Contains a [`ParseHexError`].
+    /// Contains a [`palette::rgb::FromHexError`].
     #[error(transparent)]
-    InvalidHex(#[from] ParseHexError),
+    InvalidHex(#[from] FromHexError),
 
     /// The provided queries were malformed or not applicable to the parser.
     ///
