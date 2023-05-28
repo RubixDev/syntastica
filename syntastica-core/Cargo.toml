@@ -9,9 +9,22 @@ description = "Shared types and traits used by other syntastica crates"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[features]
+#! ## Features
+default = []
+
+## Enable this when building the docs
+docs = ["dep:document-features", "dep:rustc_version"]
+
 [dependencies]
+document-features = { version = "0.2.7", optional = true }
 palette = { version = "0.7.2", default-features = false, features = ["std"] }
-serde = { version = "1.0.160", features = ["derive"], optional = true }
 syntastica-highlight = { version = "0.3.0", path = "../syntastica-highlight" }
 thiserror = "1.0.40"
 tree-sitter = "0.20.10"
+
+## Provide implementations of serde's `Serialize` and `Deserialize` traits for [`Theme`](theme::Theme)
+serde = { version = "1.0.160", features = ["derive"], optional = true }
+
+[build-dependencies]
+rustc_version = { version = "0.4.0", optional = true }
