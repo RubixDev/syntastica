@@ -37,8 +37,8 @@ cases:
 2. Highlight _one_ input _multiple times_ (e.g. with different themes or
    renderers): see [`Processor::process_once`], [`render`], and
    [this example](#example-highlight-the-same-input-multiple-times)
-3. Highlight _multiple_ different inputs (and optionally render each input
-   multiple times): see [`Processor`], [`render`], and
+3. Highlight _multiple_ different inputs _any_ number of times: see
+   [`Processor`], [`render`], and
    [this example](#example-highlight-multiple-different-inputs)
 
 ## Subprojects

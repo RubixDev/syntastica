@@ -102,14 +102,26 @@ pub enum ThemeValue {
 }
 
 impl Theme {
+    /// Create a new [`Theme`] from a map of [theme keys](THEME_KEYS) to [`ThemeValue`]s.
     pub fn new(highlights: BTreeMap<String, ThemeValue>) -> Self {
         Self(highlights)
     }
 
+    /// Consume `self` and return the contained theme map.
+    ///
+    /// May be used to merge multiple [`Theme`]s together.
     pub fn into_inner(self) -> BTreeMap<String, ThemeValue> {
         self.0
     }
 
+    /// Try to resolve all links in this [`Theme`] and return a [`ResolvedTheme`].
+    ///
+    /// # Errors
+    ///
+    /// The function may return the following errors:
+    ///
+    /// - [`Error::InvalidHex`] if a color string was an invalid hexadecimal literal.
+    /// - [`Error::InvalidLink`] if a link points to a non-existent key.
     pub fn resolve_links(mut self) -> Result<ResolvedTheme> {
         self.resolve_links_impl()?;
         Ok(ResolvedTheme::new(
@@ -184,14 +196,19 @@ impl From<BTreeMap<String, ThemeValue>> for Theme {
 }
 
 impl ResolvedTheme {
+    /// Create a new [`ResolvedTheme`] from a map of [theme keys](THEME_KEYS) to [`Style`]s.
     pub fn new(highlights: BTreeMap<String, Style>) -> Self {
         Self(highlights)
     }
 
+    /// Consume `self` and return the contained theme map.
+    ///
+    /// May be used to merge multiple [`ResolvedTheme`]s together.
     pub fn into_inner(self) -> BTreeMap<String, Style> {
         self.0
     }
 
+    /// Returns a reference to the style corresponding to the key.
     pub fn get<Q>(&self, key: &Q) -> Option<&Style>
     where
         String: Borrow<Q>,
@@ -222,6 +239,7 @@ impl From<BTreeMap<String, Style>> for ResolvedTheme {
 impl TryFrom<Theme> for ResolvedTheme {
     type Error = Error;
 
+    /// Try to create a [`ResolvedTheme`] from a [`Theme`] by calling [`Theme::resolve_links`].
     fn try_from(value: Theme) -> Result<Self> {
         value.resolve_links()
     }
@@ -307,6 +325,59 @@ impl ThemeValue {
     }
 }
 
+/// Convenience macro for constructing new [`Theme`]s.
+///
+/// Currently, the macro is very strict about the input's structure. See the [example](#example)
+/// below to learn more. Also note that for [extended values](ThemeValue::Extended), either
+/// [`color`](ThemeValue::Extended::color) or [`link`](ThemeValue::Extended::link) must be set, or
+/// any call to [`resolve_links`](Theme::resolve_links) will fail.
+///
+/// See the documentation for [`Theme`] and [`ResolvedTheme`] for more information on themes.
+///
+/// # Example
+///
+/// ```
+/// use syntastica_core::{theme, theme::{Theme, ThemeValue}};
+/// use std::collections::BTreeMap;
+///
+/// let theme = theme! {
+///     // specify colors using hex literals
+///     "purple": "#c678dd",
+///     "blue": "#61afef",
+///     "green": "#98c379",
+///
+///     // link to other keys using a `$` sign
+///     "keyword": "$purple",
+///     "function": "$blue",
+///
+///     // specify more styling options in curly braces
+///     // (note that currently this order required by the macro)
+///     "string": {
+///         color: None, // either `None` or `"#<color>"`
+///         underline: false,
+///         strikethrough: false,
+///         italic: true,
+///         bold: false,
+///         link: "green", // either `None` or `"<key>"`
+///     },
+/// };
+///
+/// assert_eq!(theme, Theme::new(BTreeMap::from([
+///     ("purple".to_owned(), ThemeValue::Simple("#c678dd".to_owned())),
+///     ("blue".to_owned(), ThemeValue::Simple("#61afef".to_owned())),
+///     ("green".to_owned(), ThemeValue::Simple("#98c379".to_owned())),
+///     ("keyword".to_owned(), ThemeValue::Simple("$purple".to_owned())),
+///     ("function".to_owned(), ThemeValue::Simple("$blue".to_owned())),
+///     ("string".to_owned(), ThemeValue::Extended {
+///         color: None,
+///         underline: false,
+///         strikethrough: false,
+///         italic: true,
+///         bold: false,
+///         link: Some("green".to_owned()),
+///     }),
+/// ])));
+/// ```
 #[macro_export(local_inner_macros)]
 macro_rules! theme {
     ($($tt:tt)*) => {

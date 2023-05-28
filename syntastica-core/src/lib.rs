@@ -5,7 +5,7 @@
 )]
 #![cfg_attr(all(doc, CHANNEL_NIGHTLY), feature(doc_auto_cfg))]
 #![warn(rust_2018_idioms, unreachable_pub)]
-// #![deny(missing_docs)]
+#![deny(missing_docs)]
 
 mod error;
 pub mod provider;

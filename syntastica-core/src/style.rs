@@ -134,6 +134,10 @@ impl Color {
     ///
     /// The input string may include a leading `#`, and the length without the `#` must be 6.
     /// Valid values include `cdfa20` and `#282C34`.
+    ///
+    /// # Errors
+    ///
+    /// If the input is invalid, a [`ParseHexError`] is returned.
     pub fn from_hex(hex: impl AsRef<str>) -> result::Result<Self, ParseHexError> {
         let hex = hex.as_ref().strip_prefix('#').unwrap_or(hex.as_ref());
         if hex.len() != 6 {

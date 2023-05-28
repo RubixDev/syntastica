@@ -207,6 +207,7 @@ impl<'callback> Processor<'callback> {
     /// [`new_with_callback`](Processor::new_with_callback) for more information.
     ///
     /// # Errors
+    ///
     /// A call to this function will result in an [`Error`] if the call to
     /// [`LanguageProvider::get_languages`] fails.
     pub fn try_from_provider(language_provider: &'callback impl LanguageProvider) -> Result<Self> {
@@ -236,8 +237,8 @@ impl<'callback> Processor<'callback> {
     /// **Only use this function if you do not plan to process multiple inputs!**
     ///
     /// See the documentation for [`process`](Processor::process) and
-    /// [`try_from_provider`](Processor::try_from_provider) for more information on the parameters
-    /// and return type.
+    /// [`try_from_provider`](Processor::try_from_provider) for more information on the parameters,
+    /// return type, and possible errors.
     pub fn process_once<'src>(
         code: &'src str,
         language_name: &str,
@@ -249,15 +250,18 @@ impl<'callback> Processor<'callback> {
     /// Process the given `code` using the language specified by `language_name`.
     ///
     /// # Returns
+    ///
     /// On success, the function returns [`Highlights`] which can be used by
     /// [`render`](crate::render) for rendering to end users.
     ///
     /// # Errors
-    /// The function may return an [`Error::UnsupportedLanguage`] or [`Error::Highlight`]. The
-    /// former is returned when the given `language_name` is not supported by the
-    /// [`ConfiguredLanguages`] which were passed during instantiation of this [`Processor`]. The
-    /// latter contains a [`syntastica_highlight::Error`], and is returned when highlighting fails
-    /// (mainly because of tree-sitter version mismatches).
+    ///
+    /// The function may result in the following errors:
+    ///
+    /// - [`Error::UnsupportedLanguage`] if the given `language_name` is not supported by the
+    ///   [`ConfiguredLanguages`] which were passed during instantiation of this [`Processor`].
+    /// - [`Error::Highlight`] if highlighting fails (mainly because of tree-sitter version
+    ///   mismatches).
     pub fn process<'src>(
         &mut self,
         code: &'src str,

@@ -33,6 +33,14 @@ pub type Highlights<'src> = Vec<Vec<(&'src str, Option<&'static str>)>>;
 /// When planning to render the same input multiple times, use [`Processor::process_once`] instead.
 /// When planning to process multiple different inputs with the same [`LanguageProvider`], use a
 /// [`Processor`] and call [`Processor::process`] for each input.
+///
+/// # Errors
+///
+/// The function may error in the following situations:
+///
+/// - [`Processor::process_once`] returns an error.
+/// - The `TryInto<ResolvedTheme>` implementation on `T` errors. If `T` is [`Theme`](theme::Theme),
+///   look at [`Theme::resolve_links`](theme::Theme::resolve_links) for when this might happen.
 pub fn highlight<T, E>(
     code: impl AsRef<str>,
     language_name: &str,

@@ -59,8 +59,8 @@ impl Deref for ConfiguredLanguages {
 ///
 /// All three syntastica parser collections provide a type called `LanguageProviderImpl` which
 /// implements this trait. See
-/// [the main page](https://rubixdev.github.io/syntastica/syntastica/#parser-collections) for more
-/// information on that.
+/// [the project overview](https://rubixdev.github.io/syntastica/syntastica/#parser-collections)
+/// for more information on that.
 ///
 /// A [`LanguageProvider`] has two different uses:
 ///
