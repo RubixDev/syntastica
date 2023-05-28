@@ -1,4 +1,4 @@
-# lua-pattern
+# `lua-pattern`
 
 Parser for Lua patterns and conversion to regular expressions.
 

@@ -1,7 +1,8 @@
-# syntastica-parsers-gitdep
+# `syntastica-parsers-gitdep`
 
 Collection of tree-sitter parsers for
-[syntastica](https://crates.io/crates/syntastica), using cargo git dependencies.
+[`syntastica`](https://crates.io/crates/syntastica), using cargo git
+dependencies.
 
 See
 [the project overview](https://rubixdev.github.io/syntastica/syntastica/#parser-collections)
