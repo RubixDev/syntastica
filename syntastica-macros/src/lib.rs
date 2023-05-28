@@ -48,17 +48,14 @@ pub fn parsers_ffi(_: TokenStream) -> TokenStream {
         let feat = lang.group.to_string();
         let name = format_ident!("{}", lang.name);
         let ffi_func = format_ident!("{}", lang.parser.ffi_func);
-        let doc = format!(
-            "Get the parser for [{}]({}/tree/{}).",
-            lang.name, lang.parser.git.url, lang.parser.git.rev,
-        );
+        let doc = format!("Get the parser for [{}]({}).", lang.name, git_url(lang));
         quote! {
             #[cfg(feature = #feat)]
             #[doc = #doc]
             pub fn #name() -> ::syntastica_core::provider::Language {
-                #[cfg(not(feature = "docs"))]
+                #[cfg(not(all(feature = "docs", doc)))]
                 unsafe { #ffi_func() }
-                #[cfg(feature = "docs")]
+                #[cfg(all(feature = "docs", doc))]
                 ::std::unimplemented!()
             }
         }
@@ -67,7 +64,7 @@ pub fn parsers_ffi(_: TokenStream) -> TokenStream {
         functions,
         |_| true,
         Some(quote! {
-            #[cfg(not(feature = "docs"))]
+            #[cfg(not(all(feature = "docs", doc)))]
             extern "C" {
                 #(#extern_c)*
             }
@@ -139,7 +136,7 @@ fn parsers(
             let name = format_ident!("{}", lang.name);
             let name_str = &lang.name;
             quote! {
-                #[cfg(all(feature = #feat, not(feature = "docs")))]
+                #[cfg(all(feature = #feat, not(all(feature = "docs", doc))))]
                 if self.0.map_or(true, |langs| langs.contains(&#name_str)) {
                     _map.insert(#name_str.to_owned(), #name());
                 }

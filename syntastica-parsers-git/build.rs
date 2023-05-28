@@ -6,12 +6,12 @@ use std::{
 };
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    if cfg!(not(feature = "docs")) {
+    if cfg!(not(all(feature = "docs", doc))) {
         syntastica_macros::parsers_git!();
     }
 
     // for documenting features when using nightly
-    #[cfg(feature = "docs")]
+    #[cfg(all(feature = "docs", doc))]
     {
         let channel = match rustc_version::version_meta().unwrap().channel {
             rustc_version::Channel::Dev => "CHANNEL_DEV",
