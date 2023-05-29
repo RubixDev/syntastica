@@ -11,7 +11,7 @@ description = "Collection of tree-sitter parsers for syntastica, fetching with g
 
 [features]
 #! ## Features
-default = []
+default = ["runtime-c"]
 
 #! At least one of
 #! <span class="stab portability"><code>some</code></span>,
@@ -28,12 +28,21 @@ most = ["some"]
 ## Include parsers for all supported languages.
 all = ["most"]
 
+## Use the standard tree-sitter C runtime. See `syntastica`'s
+## [WebAssembly support](https://rubixdev.github.io/syntastica/syntastica/#webassembly-support)
+## for more information.
+runtime-c = ["syntastica-core/runtime-c"]
+## Use the pure Rust tree-sitter runtime. See `syntastica`'s
+## [WebAssembly support](https://rubixdev.github.io/syntastica/syntastica/#webassembly-support)
+## for more information.
+runtime-c2rust = ["syntastica-core/runtime-c2rust"]
+
 ## Meant to be enabled when building docs
 docs = ["dep:document-features", "dep:rustc_version"]
 
 [dependencies]
 document-features = { version = "0.2.7", optional = true }
-syntastica-core = { version = "0.3.0", path = "../syntastica-core" }
+syntastica-core = { version = "0.3.0", path = "../syntastica-core", default-features = false }
 syntastica-macros = { version = "0.3.0", path = "../syntastica-macros" }
 syntastica-queries = { version = "0.3.0", path = "../syntastica-queries" }
 
@@ -41,6 +50,7 @@ syntastica-queries = { version = "0.3.0", path = "../syntastica-queries" }
 cc = "1.0.79"
 syntastica-macros = { version = "0.3.0", path = "../syntastica-macros" }
 rustc_version = { version = "0.4.0", optional = true }
+tree-sitter-wasm-build-tool = { version = "0.2.0", path = "../tree-sitter-wasm-build-tool" }
 
 [package.metadata.docs.rs]
 all-features = true

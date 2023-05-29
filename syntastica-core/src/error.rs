@@ -1,8 +1,8 @@
 use std::convert::Infallible;
 
+use crate::ts_runtime::QueryError;
 use palette::rgb::FromHexError;
 use thiserror::Error;
-use tree_sitter::QueryError;
 
 /// The main result type.
 ///

@@ -1,0 +1,19 @@
+[package]
+name = "tree-sitter-wasm-build-tool"
+version = "0.2.0"
+authors.workspace = true
+categories = ["development-tools::build-utils"]
+edition = "2021"
+keywords = ["tree-sitter", "wasm", "build"]
+license.workspace = true
+repository.workspace = true
+description = "A crate to easily allow tree-sitter parsers to compile to Rust's `wasm32-unknown-unknown` target"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+cc = "1.0.79"
+
+[package.metadata.release]
+shared-version = false
+release = false

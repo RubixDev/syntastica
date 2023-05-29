@@ -1,7 +1,17 @@
+#[cfg(all(not(feature = "runtime-c"), not(feature = "runtime-c2rust")))]
+compile_error!("Either `runtime-c` or `runtime-c2rust` must be enabled!");
+#[cfg(feature = "runtime-c")]
+use tree_sitter as ts_runtime;
+#[cfg(all(
+    feature = "runtime-c2rust",
+    not(feature = "runtime-c"), // if both features are enabled, use the c runtime
+))]
+use tree_sitter_c2rust as ts_runtime;
+
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::{iter, mem, ops, str, usize};
 use thiserror::Error;
-use tree_sitter::{
+use ts_runtime::{
     Language, Node, Parser, Point, Query, QueryCaptures, QueryCursor, QueryError, QueryMatch,
     Range, Tree,
 };

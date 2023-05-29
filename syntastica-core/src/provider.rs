@@ -6,7 +6,7 @@ use std::{borrow::Cow, collections::HashMap, ops::Deref};
 
 pub use syntastica_highlight::HighlightConfiguration;
 
-pub use tree_sitter::Language;
+pub use crate::ts_runtime::Language;
 
 use crate::theme::THEME_KEYS;
 

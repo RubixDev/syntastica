@@ -44,6 +44,11 @@ fn compile_parser(
     external_cpp: bool,
     path: Option<&str>,
 ) -> Result<(), Box<dyn std::error::Error>> {
+    // external cpp scanners are not supported on the `wasm32-unknown-unknown` target
+    if env::var("TARGET")? == "wasm32-unknown-unknown" && external_cpp {
+        return Ok(());
+    }
+
     // clone repo into `parsers/{name}`, if it does not already exists
     let repo_dir = PathBuf::from(format!("{}/{name}", env::var("OUT_DIR")?));
     if !repo_dir.exists() {
@@ -69,9 +74,9 @@ fn compile_parser(
     let mut c_config = cc::Build::new();
     c_config.include(&src_dir);
     c_config
-        .flag_if_supported("-Wno-unused-parameter")
-        .flag_if_supported("-Wno-unused-but-set-variable")
-        .flag_if_supported("-Wno-trigraphs")
+        .flag("-Wno-unused-parameter")
+        .flag("-Wno-unused-but-set-variable")
+        .flag("-Wno-trigraphs")
         .flag_if_supported("-w");
     let parser_path = src_dir.join("parser.c");
     c_config.file(&parser_path);
@@ -81,6 +86,9 @@ fn compile_parser(
         c_config.file(&scanner_path);
         println!("cargo:rerun-if-changed={}", scanner_path.to_str().unwrap());
     }
+
+    #[cfg(feature = "runtime-c2rust")]
+    tree_sitter_wasm_build_tool::add_wasm_headers(&mut c_config).unwrap();
 
     println!("cargo:rerun-if-changed={}", parser_path.to_str().unwrap());
     c_config.compile(&format!("parser_{name}{}", path.unwrap_or("")).replace('/', "_"));

@@ -11,7 +11,16 @@ description = "Shared types and traits used by other syntastica crates"
 
 [features]
 #! ## Features
-default = []
+default = ["runtime-c"]
+
+## Use the standard tree-sitter C runtime. See `syntastica`'s
+## [WebAssembly support](https://rubixdev.github.io/syntastica/syntastica/#webassembly-support)
+## for more information.
+runtime-c = ["dep:tree-sitter", "syntastica-highlight/runtime-c"]
+## Use the pure Rust tree-sitter runtime. See `syntastica`'s
+## [WebAssembly support](https://rubixdev.github.io/syntastica/syntastica/#webassembly-support)
+## for more information.
+runtime-c2rust = ["dep:tree-sitter-c2rust", "syntastica-highlight/runtime-c2rust"]
 
 ## Enable this when building the docs
 docs = ["dep:document-features", "dep:rustc_version"]
@@ -19,9 +28,11 @@ docs = ["dep:document-features", "dep:rustc_version"]
 [dependencies]
 document-features = { version = "0.2.7", optional = true }
 palette = { version = "0.7.2", default-features = false, features = ["std"] }
-syntastica-highlight = { version = "0.3.0", path = "../syntastica-highlight" }
+syntastica-highlight = { version = "0.3.0", path = "../syntastica-highlight", default-features = false }
 thiserror = "1.0.40"
-tree-sitter = "0.20.10"
+
+tree-sitter = { version = "0.20.10", optional = true }
+tree-sitter-c2rust = { version = "0.20.10", optional = true }
 
 ## Provide implementations of serde's `Serialize` and `Deserialize` traits for [`Theme`](theme::Theme)
 serde = { version = "1.0.160", features = ["derive"], optional = true }

@@ -162,6 +162,10 @@ direct association with the main project and can be used completely separately.
   `cargo xtask codegen queries`), all Lua patterns are replaced with regular
   expressions using this crate.
 
+## WebAssembly support
+
+TODO: WebAssembly support
+
 ## Examples
 
 This section contains some basic usage examples. More specific examples can be

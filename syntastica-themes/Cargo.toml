@@ -9,5 +9,25 @@ description = "A collection of themes for syntastica"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[features]
+#! ## Features
+default = ["runtime-c"]
+
+## Use the standard tree-sitter C runtime. See `syntastica`'s
+## [WebAssembly support](https://rubixdev.github.io/syntastica/syntastica/#webassembly-support)
+## for more information.
+runtime-c = ["syntastica-core/runtime-c"]
+## Use the pure Rust tree-sitter runtime. See `syntastica`'s
+## [WebAssembly support](https://rubixdev.github.io/syntastica/syntastica/#webassembly-support)
+## for more information.
+runtime-c2rust = ["syntastica-core/runtime-c2rust"]
+
+## Enable this when building the docs
+docs = ["dep:document-features", "dep:rustc_version"]
+
 [dependencies]
-syntastica-core = { version = "0.3.0", path = "../syntastica-core" }
+document-features = { version = "0.2.7", optional = true }
+syntastica-core = { version = "0.3.0", path = "../syntastica-core", default-features = false }
+
+[build-dependencies]
+rustc_version = { version = "0.4.0", optional = true }
