@@ -1,0 +1,15 @@
+[package]
+name = "syntastica-js"
+version = "0.3.0"
+authors.workspace = true
+edition = "2021"
+license.workspace = true
+repository.workspace = true
+description = "Use syntastica from JavaScript"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+syntastica = { version = "0.3.0", path = ".." }
+syntastica-parsers-git = { version = "0.3.0", path = "../syntastica-parsers-git", features = ["all"] }
+syntastica-themes = { version = "0.3.0", path = "../syntastica-themes" }

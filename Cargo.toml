@@ -12,6 +12,7 @@ members = [
     "./syntastica-macros",
     "./syntastica-themes",
     "./syntastica-highlight",
+    "./syntastica-js",
 ]
 
 package.authors = ["RubixDev <silas.groh@t-online.de>"]
