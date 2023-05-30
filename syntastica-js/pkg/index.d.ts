@@ -15,6 +15,8 @@ export declare function init(languages?: string[]): Promise<void>;
 /**
  * Highlight code and render to HTML.
  *
+ * If you plan to highlight the same input multiple times, use {@link process} and {@link render} instead.
+ *
  * @param code - The code to highlight.
  *
  * @param language - The name of the code's language.
