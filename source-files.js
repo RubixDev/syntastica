@@ -4,6 +4,7 @@ var sourcesIndex = JSON.parse('{\
 "syntastica":["",[],["lib.rs","processor.rs","renderer.rs"]],\
 "syntastica_core":["",[],["error.rs","lib.rs","provider.rs","style.rs","theme.rs"]],\
 "syntastica_highlight":["",[],["lib.rs"]],\
+"syntastica_js":["",[],["lib.rs"]],\
 "syntastica_macros":["",[],["lib.rs","schema.rs"]],\
 "syntastica_parsers":["",[],["lib.rs"]],\
 "syntastica_parsers_git":["",[],["lib.rs"]],\
