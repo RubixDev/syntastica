@@ -23,9 +23,9 @@
   "scripts": {
     "prebuild": "rm -rf pkg && mkdir -p pkg",
     "build:wasm": "cargo build --release --target wasm32-unknown-emscripten",
+    "postbuild:wasm": "cp ${CARGO_TARGET_DIR:-target}/wasm32-unknown-emscripten/release/syntastica*js.{wasm,js} pkg",
     "build:js": "tsc",
     "build": "npm-run-all build:*",
-    "postbuild": "cp ${CARGO_TARGET_DIR:-target}/wasm32-unknown-emscripten/release/syntastica*js.{wasm,js} pkg",
     "doc": "typedoc"
   },
   "devDependencies": {

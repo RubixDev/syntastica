@@ -24,26 +24,39 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Install Toolchain
+      - name: Install Rust Toolchain
         uses: actions-rs/toolchain@v1
         with:
           toolchain: nightly
           override: true
 
+      - name: Setup NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
       - name: Restore Cache
         uses: Swatinem/rust-cache@v2
         with:
           cache-targets: false
+          cache-on-failure: true
 
-      - name: Build Documentation
+      - name: Build Rust Documentation
         uses: actions-rs/cargo@v1
         with:
           command: doc
           args: --workspace --all-features --no-deps
 
+      - name: Build TypeScript Documentation
+        run: |
+          cd syntastica-js
+          npm ci
+          npm run doc
+
       - name: Prepare GitHub Pages Deployment
         run: |
           echo '<meta http-equiv="Refresh" content="0; url=syntastica" />' >> target/doc/index.html
+          cp -r syntastica-js/docs target/doc/js
 
       - name: Deploy Docs
         uses: JamesIves/github-pages-deploy-action@v4
