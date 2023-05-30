@@ -16,7 +16,7 @@ let Module = null;
  * This function _must_ be called before any of the others. It accepts a list of languages to load. The function can
  * be called multiple times to re-initialize with a different set of languages, but this is generally not recommended.
  *
- * @param languages - An optional list of languages to load. If `undefined`, all languages will be loaded.
+ * @param languages - An optional list of languages to load. By default, all languages will be loaded.
  * See [here](https://rubixdev.github.io/syntastica/syntastica_parsers_git/) for a list of supported languages.
  */
 export function init(languages) {
@@ -59,6 +59,11 @@ export function init(languages) {
  * All themes from {@link https://rubixdev.github.io/syntastica/syntastica_themes/ | the default collection}
  * are supported. The theme name is equivalent to its Rust path specifier, so for example the gruvbox dark theme
  * is named `gruvbox::dark`.
+ *
+ * @returns The highlighted code as HTML code.
+ *
+ * See {@link https://rubixdev.github.io/syntastica-ci-test/syntastica/renderer/struct.HtmlRenderer.html | here} for
+ * more information on the output.
  */
 export function highlight(code, language, theme) {
     const code_ptr = Module.stringToNewUTF8(code);
@@ -68,6 +73,51 @@ export function highlight(code, language, theme) {
     const result = Module.UTF8ToString(result_ptr);
     Module._free(code_ptr);
     Module._free(language_ptr);
+    Module._free(theme_ptr);
+    Module._free(result_ptr);
+    return result;
+}
+/**
+ * Prepare code for rendering multiple times.
+ *
+ * @param code - The code to highlight.
+ *
+ * @param language - The name of the code's language.
+ *
+ * The language must have been loaded previously by calling {@link init}.
+ */
+export function process(code, language) {
+    const code_ptr = Module.stringToNewUTF8(code);
+    const language_ptr = Module.stringToNewUTF8(language);
+    Module._process(code_ptr, language_ptr);
+    Module._free(code_ptr);
+    Module._free(language_ptr);
+}
+/**
+ * Render code that was previously processed by calling {@link process}.
+ *
+ * @param theme - The name of the theme to use.
+ *
+ * All themes from {@link https://rubixdev.github.io/syntastica/syntastica_themes/ | the default collection}
+ * are supported. The theme name is equivalent to its Rust path specifier, so for example the gruvbox dark theme
+ * is named `gruvbox::dark`.
+ *
+ * @param renderer - The renderer to use.
+ *
+ * The renderer name is either `HTML` or `Terminal` in any casing. To specify a background color
+ * for the terminal renderer, append a hex color literal like `terminal#282828` or `Terminal#fff`.
+ *
+ * By default, the `HTML` renderer will be used.
+ *
+ * @returns The highlighted code in the requested format.
+ */
+export function render(theme, renderer = 'HTML') {
+    const theme_ptr = Module.stringToNewUTF8(theme);
+    const renderer_ptr = Module.stringToNewUTF8(renderer);
+    const result_ptr = Module._render(theme_ptr, renderer_ptr);
+    const result = Module.UTF8ToString(result_ptr);
+    Module._free(theme_ptr);
+    Module._free(renderer_ptr);
     Module._free(result_ptr);
     return result;
 }

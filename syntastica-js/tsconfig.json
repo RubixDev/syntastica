@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig to read more about this file */
+    "strict": true,
     "target": "es2016", /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
     "module": "es6", /* Specify what module code is generated. */
     "declaration": true, /* Generate .d.ts files from TypeScript and JavaScript files in your project. */
