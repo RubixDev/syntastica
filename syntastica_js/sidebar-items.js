@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["highlight","init"]};
+window.SIDEBAR_ITEMS = {"fn":["highlight","init","process","render"]};
