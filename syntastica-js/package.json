@@ -24,14 +24,15 @@
   "scripts": {
     "prebuild": "rm -rf pkg && mkdir -p pkg",
     "build:wasm": "cargo build --profile release-wasm --target wasm32-unknown-emscripten",
-    "postbuild:wasm": "cp ${CARGO_TARGET_DIR:-target}/wasm32-unknown-emscripten/release-wasm/syntastica*js.{js,wasm} pkg",
-    "prebuild:js": "cp src/syntastica-js.d.ts pkg/",
+    "postbuild:wasm": "cpy \"${CARGO_TARGET_DIR:-../target}/wasm32-unknown-emscripten/release-wasm/syntastica*js.{js,wasm}\" pkg",
+    "prebuild:js": "cpy src/syntastica-js.d.ts pkg --flat",
     "build:js": "tsc",
     "build": "npm-run-all build:*",
     "doc": "typedoc"
   },
   "devDependencies": {
     "@types/emscripten": "^1.39.6",
+    "cpy-cli": "^4.2.0",
     "npm-run-all": "^4.1.5",
     "typedoc": "^0.24.7",
     "typescript": "^5.0.4"

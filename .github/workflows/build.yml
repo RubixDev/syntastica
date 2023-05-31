@@ -1,0 +1,54 @@
+name: Build
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+permissions:
+  contents: write
+
+env:
+  CARGO_INCREMENTAL: 0
+  CARGO_TERM_COLOR: always
+  CARGO_REGISTRIES_CRATES_IO_PROTOCOL: sparse
+
+jobs:
+  build-js:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: wasm32-unknown-emscripten
+
+      - name: Setup NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Setup Emscripten
+        uses: mymindstorm/setup-emsdk@v11
+        with:
+          actions-cache-folder: 'emsdk-cache'
+
+      - name: Restore Cache
+        uses: Swatinem/rust-cache@v2
+
+      - name: Build
+        run: |
+          cd syntastica-js
+          npm ci
+          npm run build
+
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: syntastica-js/pkg
+          author_name: github-actions[bot]
+          default_author: github_actions
+          message: 'chore: update syntastica-js build'
