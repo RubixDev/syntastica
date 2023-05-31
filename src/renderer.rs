@@ -159,9 +159,9 @@ impl Renderer for HtmlRenderer {
                     "&amp;",
                     "&lt;",
                     "&gt;",
-                    "&nbsp;<wbr>",
+                    "&nbsp;",
                     "<br>",
-                    "&nbsp;&nbsp;&nbsp;&nbsp;<wbr>",
+                    "&nbsp;&nbsp;&nbsp;&nbsp;",
                 ],
             )
             .into()
