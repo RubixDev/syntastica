@@ -9,6 +9,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import initModule from '../pkg/syntastica-js.js';
 const PTR_SIZE = Float32Array.BYTES_PER_ELEMENT;
+/**
+ * A list of all valid themes.
+ */
+export const THEMES = [
+    'one::dark',
+    'one::darker',
+    'one::cool',
+    'one::deep',
+    'one::warm',
+    'one::warmer',
+    'one::light',
+    'gruvbox::dark',
+    'gruvbox::light',
+];
 let Module = null;
 /**
  * Load the requested languages.

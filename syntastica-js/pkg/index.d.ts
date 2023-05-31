@@ -1,7 +1,11 @@
 /**
+ * A list of all valid themes.
+ */
+export declare const THEMES: readonly ["one::dark", "one::darker", "one::cool", "one::deep", "one::warm", "one::warmer", "one::light", "gruvbox::dark", "gruvbox::light"];
+/**
  * A theme to pass to {@link highlight} or {@link render}.
  */
-export type Theme = 'one::dark' | 'one::darker' | 'one::cool' | 'one::deep' | 'one::warm' | 'one::warmer' | 'one::light' | 'gruvbox::dark' | 'gruvbox::light';
+export type Theme = typeof THEMES[number];
 /**
  * Load the requested languages.
  *
