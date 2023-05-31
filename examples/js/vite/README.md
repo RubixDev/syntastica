@@ -3,6 +3,9 @@
 This folder contains an example project showcasing use of `syntastica` in
 websites using Vite, Svelte, and TypeScript.
 
+The demo can be found online
+[here](https://rubixdev.github.io/syntastica/demos/vite/).
+
 You can run a development server locally by executing these commands:
 
 ```bash
