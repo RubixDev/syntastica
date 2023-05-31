@@ -51,6 +51,15 @@
 <a href="#51" id="51">51</a>
 <a href="#52" id="52">52</a>
 <a href="#53" id="53">53</a>
+<a href="#54" id="54">54</a>
+<a href="#55" id="55">55</a>
+<a href="#56" id="56">56</a>
+<a href="#57" id="57">57</a>
+<a href="#58" id="58">58</a>
+<a href="#59" id="59">59</a>
+<a href="#60" id="60">60</a>
+<a href="#61" id="61">61</a>
+<a href="#62" id="62">62</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::{
     env,
     path::{Path, PathBuf},
@@ -63,11 +72,19 @@
 <span class="kw">mod </span>codegen;
 <span class="kw">mod </span>set_version;
 
+<span class="kw">mod </span>schema {
+    <span class="macro">include!</span>(<span class="string">&quot;../../syntastica-macros/src/schema.rs&quot;</span>);
+}
+
 <span class="kw">pub static </span>WORKSPACE_DIR: Lazy&lt;PathBuf&gt; = Lazy::new(|| {
     Path::new(<span class="macro">env!</span>(<span class="string">&quot;CARGO_MANIFEST_DIR&quot;</span>))
         .parent()
         .unwrap()
         .to_path_buf()
+});
+<span class="kw">pub static </span>LANGUAGE_CONFIG: Lazy&lt;schema::LanguageConfig&gt; = Lazy::new(|| {
+    toml::from_str(<span class="macro">include_str!</span>(<span class="string">&quot;../../syntastica-macros/languages.toml&quot;</span>))
+        .expect(<span class="string">&quot;invalid `languages.toml`&quot;</span>)
 });
 
 <span class="kw">fn </span>main() {
@@ -90,6 +107,7 @@ Usage: Run with `cargo xtask &lt;task&gt;`, eg. `cargo xtask codegen`.
         codegen parsers-dep:    Generate parts of the `Cargo.toml` for syntastica-parsers
         codegen parsers-gitdep: Generate parts of the `Cargo.toml` for syntastica-parsers-gitdep
         codegen parser-lists:   Generate the parser lists in all three syntastica-parsers READMEs
+        codegen js-lang-list:   Generate the language list in the JavaScript bindings
         codegen themes:         Generate the themes for syntastica-themes
         set-version &lt;version&gt;:  Set the version of all syntastica crates
             &quot;###

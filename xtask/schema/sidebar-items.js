@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["Group"],"struct":["Language","LanguageConfig","Parser","ParserExternal","ParserGit","Queries"]};

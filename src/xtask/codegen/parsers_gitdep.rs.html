@@ -26,9 +26,13 @@
 <a href="#26" id="26">26</a>
 <a href="#27" id="27">27</a>
 <a href="#28" id="28">28</a>
+<a href="#29" id="29">29</a>
+<a href="#30" id="30">30</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::fs;
 
 <span class="kw">use </span>anyhow::Result;
+
+<span class="kw">use </span><span class="kw">crate</span>::schema::Group;
 
 <span class="kw">pub fn </span>write() -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
     <span class="kw">let </span>toml_path = <span class="kw">crate</span>::WORKSPACE_DIR.join(<span class="string">&quot;syntastica-parsers-gitdep/Cargo.toml&quot;</span>);
@@ -40,15 +44,15 @@
     toml += <span class="kw">super</span>::TOML_AUTOGEN_HEADER;
 
     toml += <span class="kw">super</span>::TOML_FEATURES_HEAD;
-    <span class="macro">syntastica_macros::parsers_gitdep_toml_feature_some!</span>();
+    toml += <span class="kw-2">&amp;</span><span class="kw">super</span>::parsers_toml_feature(Group::Some, <span class="bool-val">false</span>);
     toml += <span class="kw">super</span>::TOML_FEATURES_MOST;
-    <span class="macro">syntastica_macros::parsers_gitdep_toml_feature_most!</span>();
+    toml += <span class="kw-2">&amp;</span><span class="kw">super</span>::parsers_toml_feature(Group::Most, <span class="bool-val">false</span>);
     toml += <span class="kw">super</span>::TOML_FEATURES_ALL;
-    <span class="macro">syntastica_macros::parsers_gitdep_toml_feature_all!</span>();
+    toml += <span class="kw-2">&amp;</span><span class="kw">super</span>::parsers_toml_feature(Group::All, <span class="bool-val">false</span>);
 
     toml += <span class="kw">super</span>::TOML_FEATURES_DOCS;
 
-    <span class="macro">syntastica_macros::parsers_gitdep_toml_deps!</span>();
+    <span class="kw">super</span>::parsers_toml_deps(<span class="kw-2">&amp;mut </span>toml, <span class="bool-val">true</span>);
 
     fs::write(<span class="kw-2">&amp;</span>toml_path, toml)<span class="question-mark">?</span>;
 

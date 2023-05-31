@@ -79,6 +79,7 @@
 <a href="#79" id="79">79</a>
 <a href="#80" id="80">80</a>
 <a href="#81" id="81">81</a>
+<a href="#82" id="82">82</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::fmt::{<span class="self">self</span>, Display, Formatter};
 
 <span class="kw">use </span>serde::Deserialize;
@@ -108,7 +109,8 @@
 }
 
 <span class="kw">impl </span>Group {
-    <span class="kw">pub fn </span>next_smaller(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
+    <span class="attr">#[allow(dead_code)] </span><span class="comment">// is used in `xtask/src/codegen.rs`
+    </span><span class="kw">pub fn </span>next_smaller(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
         <span class="kw">match </span><span class="self">self </span>{
             Group::Some =&gt; <span class="prelude-val">None</span>,
             Group::Most =&gt; <span class="prelude-val">Some</span>(Group::Some),
