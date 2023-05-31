@@ -8,6 +8,7 @@ use syntastica_core::theme::ThemeValue;
 
 use crate::schema::Group;
 
+mod js_lang_list;
 mod parser_lists;
 mod parsers_dep;
 mod parsers_gitdep;
@@ -126,6 +127,10 @@ pub const {lang}_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/{na
 
     if is_arg("parser-lists") {
         parser_lists::write()?;
+    }
+
+    if is_arg("js-lang-list") {
+        js_lang_list::write()?;
     }
 
     if is_arg("themes") {

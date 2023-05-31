@@ -2,7 +2,6 @@
   "$schema": "https://typedoc.org/schema.json",
   "name": "syntastica",
   "entryPoints": ["./src"],
-  "sort": ["source-order"],
   "categorizeByGroup": false,
   "navigationLinks": {
     "Rust Docs": "https://rubixdev.github.io/syntastica/syntastica/",
