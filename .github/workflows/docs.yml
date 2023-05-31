@@ -53,10 +53,24 @@ jobs:
           npm ci
           npm run doc
 
+      - name: Build Vite Demo
+        run: |
+          cd examples/js/vite
+          # set base directory to `/syntastica/demos/vite/`
+          sed -i 's#server: {#base:"/syntastica/demos/vite/",\0#g' vite.config.ts
+          npm ci
+          npm run build
+
       - name: Prepare GitHub Pages Deployment
         run: |
+          # redirect to `syntastica` Rust docs from main page
           echo '<meta http-equiv="Refresh" content="0; url=syntastica" />' >> target/doc/index.html
+          # copy over the TypeScript docs
           cp -r syntastica-js/docs target/doc/js
+          # create the `demos` folder
+          mkdir -p target/doc/demos
+          # copy over the vite demo
+          cp -r examples/js/vite/dist target/doc/demos/vite
 
       - name: Deploy Docs
         uses: JamesIves/github-pages-deploy-action@v4
