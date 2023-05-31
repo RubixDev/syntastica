@@ -11,6 +11,8 @@ import initModule from '../pkg/syntastica-js.js';
 const PTR_SIZE = Float32Array.BYTES_PER_ELEMENT;
 /**
  * A list of all valid themes.
+ *
+ * @see The {@link Theme} type.
  */
 export const THEMES = [
     'one::dark',
@@ -138,3 +140,27 @@ export function render(theme, renderer = 'HTML') {
     return result;
 }
 export default { init, highlight, process, render };
+// DISCLAIMER: All code below this line is generated with `cargo xtask codegen js-lang-list`
+// in the syntastica workspace. Do not edit this code manually!
+/**
+ * A list of all supported languages.
+ *
+ * @see The {@link Language} type.
+ */
+export const LANGUAGES = [
+    'asm',
+    'bash',
+    'c',
+    'cpp',
+    'css',
+    'go',
+    'html',
+    'java',
+    'javascript',
+    'json',
+    'python',
+    'regex',
+    'rust',
+    'tsx',
+    'typescript',
+];

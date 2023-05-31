@@ -1,11 +1,17 @@
 /**
  * A list of all valid themes.
+ *
+ * @see The {@link Theme} type.
  */
 export declare const THEMES: readonly ["one::dark", "one::darker", "one::cool", "one::deep", "one::warm", "one::warmer", "one::light", "gruvbox::dark", "gruvbox::light"];
 /**
- * A theme to pass to {@link highlight} or {@link render}.
+ * A theme name to pass to {@link highlight} or {@link render}.
  */
 export type Theme = typeof THEMES[number];
+/**
+ * A language name to pass to {@link init}, {@link highlight}, or {@link process}.
+ */
+export type Language = typeof LANGUAGES[number];
 /**
  * Load the requested languages.
  *
@@ -15,7 +21,7 @@ export type Theme = typeof THEMES[number];
  * @param languages - An optional list of languages to load. By default, all languages will be loaded.
  * See [here](https://rubixdev.github.io/syntastica/syntastica_parsers_git/) for a list of supported languages.
  */
-export declare function init(languages?: string[]): Promise<void>;
+export declare function init(languages?: Language[]): Promise<void>;
 /**
  * Highlight code and render to HTML.
  *
@@ -38,7 +44,7 @@ export declare function init(languages?: string[]): Promise<void>;
  * See {@link https://rubixdev.github.io/syntastica-ci-test/syntastica/renderer/struct.HtmlRenderer.html | here} for
  * more information on the output.
  */
-export declare function highlight(code: string, language: string, theme: Theme): string;
+export declare function highlight(code: string, language: Language, theme: Theme): string;
 /**
  * Prepare code for rendering multiple times.
  *
@@ -48,7 +54,7 @@ export declare function highlight(code: string, language: string, theme: Theme):
  *
  * The language must have been loaded previously by calling {@link init}.
  */
-export declare function process(code: string, language: string): void;
+export declare function process(code: string, language: Language): void;
 /**
  * Render code that was previously processed by calling {@link process}.
  *
@@ -75,3 +81,9 @@ declare const _default: {
     render: typeof render;
 };
 export default _default;
+/**
+ * A list of all supported languages.
+ *
+ * @see The {@link Language} type.
+ */
+export declare const LANGUAGES: readonly ["asm", "bash", "c", "cpp", "css", "go", "html", "java", "javascript", "json", "python", "regex", "rust", "tsx", "typescript"];
