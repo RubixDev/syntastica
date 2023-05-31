@@ -1,7 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/package.json",
   "name": "syntastica",
-  "version": "0.3.1",
+  "version": "0.3.4",
   "description": "Modern and easy syntax highlighting using tree-sitter",
   "keywords": ["tree-sitter", "highlight", "parsing", "syntax"],
   "homepage": "https://github.com/RubixDev/syntastica/tree/main/syntastica-js#readme",
@@ -12,8 +12,9 @@
     "url": "https://ko-fi.com/rubixdev",
     "type": "ko-fi"
   },
-  "files": ["pkg/**"],
+  "files": ["pkg"],
   "module": "pkg/index.js",
+  "exports": "./pkg/index.js",
   "type": "module",
   "repository": {
     "type": "git",
@@ -22,8 +23,8 @@
   },
   "scripts": {
     "prebuild": "rm -rf pkg && mkdir -p pkg",
-    "build:wasm": "cargo build --release --target wasm32-unknown-emscripten",
-    "postbuild:wasm": "cp ${CARGO_TARGET_DIR:-target}/wasm32-unknown-emscripten/release/syntastica*js.{wasm,js} pkg",
+    "build:wasm": "cargo build --profile release-wasm --target wasm32-unknown-emscripten",
+    "postbuild:wasm": "cp ${CARGO_TARGET_DIR:-target}/wasm32-unknown-emscripten/release-wasm/syntastica*js.{js,wasm} pkg",
     "prebuild:js": "cp src/syntastica-js.d.ts pkg/",
     "build:js": "tsc",
     "build": "npm-run-all build:*",

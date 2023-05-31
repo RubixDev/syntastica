@@ -9,7 +9,7 @@ The full JavaScript/TypeScript API docs can be found
 ## Basic Usage
 
 ```ts
-import * as syntastica from 'syntastica'
+import syntastica from 'syntastica'
 
 // load some languages
 await syntastica.init(['rust', 'javascript'])

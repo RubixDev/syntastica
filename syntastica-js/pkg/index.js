@@ -123,3 +123,4 @@ export function render(theme, renderer = 'HTML') {
     Module._free(result_ptr);
     return result;
 }
+export default { init, highlight, process, render };

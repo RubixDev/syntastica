@@ -25,6 +25,12 @@ sign-commit = true
 sign-tag = true
 shared-version = true
 
+# optimize wasm for small code size
+[profile.release-wasm]
+inherits = "release"
+opt-level = "s"
+strip = true
+
 [package]
 name = "syntastica"
 version = "0.3.0"

@@ -64,3 +64,10 @@ export declare function process(code: string, language: string): void;
  * @returns The highlighted code in the requested format.
  */
 export declare function render(theme: Theme, renderer?: string): string;
+declare const _default: {
+    init: typeof init;
+    highlight: typeof highlight;
+    process: typeof process;
+    render: typeof render;
+};
+export default _default;

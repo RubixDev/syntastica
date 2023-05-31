@@ -1,20 +1,26 @@
-import initModule, { SyntasticaModule } from '../pkg/syntastica-js.js'
+import initModule, { type SyntasticaModule } from '../pkg/syntastica-js.js'
 
 const PTR_SIZE = Float32Array.BYTES_PER_ELEMENT
 
 /**
+ * A list of all valid themes.
+ */
+export const THEMES = [
+    'one::dark',
+    'one::darker',
+    'one::cool',
+    'one::deep',
+    'one::warm',
+    'one::warmer',
+    'one::light',
+    'gruvbox::dark',
+    'gruvbox::light',
+] as const
+
+/**
  * A theme to pass to {@link highlight} or {@link render}.
  */
-export type Theme =
-    | 'one::dark'
-    | 'one::darker'
-    | 'one::cool'
-    | 'one::deep'
-    | 'one::warm'
-    | 'one::warmer'
-    | 'one::light'
-    | 'gruvbox::dark'
-    | 'gruvbox::light'
+export type Theme = typeof THEMES[number]
 
 let Module: SyntasticaModule = null as unknown as SyntasticaModule
 
@@ -143,3 +149,5 @@ export function render(theme: Theme, renderer: string = 'HTML'): string {
 
     return result
 }
+
+export default { init, highlight, process, render }
