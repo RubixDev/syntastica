@@ -6,6 +6,8 @@ use std::{
 use anyhow::Result;
 use syntastica_core::theme::ThemeValue;
 
+use crate::schema::Group;
+
 mod parser_lists;
 mod parsers_dep;
 mod parsers_gitdep;
@@ -76,7 +78,7 @@ pub fn run() -> Result<()> {
         )?;
 
         for (
-            name,
+            ref name,
             [highlights, injections, locals, highlights_crates_io, injections_crates_io, locals_crates_io],
         ) in queries::make_queries()?
         {
@@ -252,4 +254,68 @@ fn theme() -> BTreeMap<String, ThemeValue> {{
     );
 
     out
+}
+
+fn parsers_toml_feature(group: Group, crates_io: bool) -> String {
+    let mut added_packages = vec![];
+    let mut feature_str = format!("{group} = [\n");
+    if let Some(group) = group.next_smaller() {
+        feature_str += &format!("    \"{group}\",\n");
+    }
+    for lang in crate::LANGUAGE_CONFIG.languages.iter().filter(|lang| {
+        lang.parser.rust_func.is_some()
+            && lang.group == group
+            && (!crates_io || lang.parser.crates_io.is_some())
+    }) {
+        let package = &lang.parser.package;
+        if added_packages.contains(&package) {
+            continue;
+        }
+        added_packages.push(package);
+        feature_str += &format!("    \"dep:{package}\",\n");
+    }
+    feature_str + "]\n"
+}
+
+fn parsers_toml_deps(toml: &mut String, git: bool) {
+    let mut added_packages = vec![];
+    for lang in crate::LANGUAGE_CONFIG
+        .languages
+        .iter()
+        .filter(|lang| lang.parser.rust_func.is_some() && (git || lang.parser.crates_io.is_some()))
+    {
+        let package = &lang.parser.package;
+        let url = &lang.parser.git.url;
+        let rev = &lang.parser.git.rev;
+
+        if added_packages.contains(&package) {
+            continue;
+        }
+        added_packages.push(package);
+
+        let dep_str = if git {
+            format!(
+                r##"
+[dependencies.{package}]
+optional = true
+git = "{url}"
+rev = "{rev}"
+"##
+            )
+        } else {
+            format!(
+                r##"
+[dependencies.{package}]
+optional = true
+version = "{version}"
+"##,
+                version = lang
+                    .parser
+                    .crates_io
+                    .as_ref()
+                    .expect("`None` is filtered above if `git` is `false`")
+            )
+        };
+        *toml += &dep_str;
+    }
 }

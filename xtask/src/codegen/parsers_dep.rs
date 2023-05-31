@@ -2,6 +2,8 @@ use std::fs;
 
 use anyhow::Result;
 
+use crate::schema::Group;
+
 pub fn write() -> Result<()> {
     let toml_path = crate::WORKSPACE_DIR.join("syntastica-parsers/Cargo.toml");
     let mut toml = fs::read_to_string(&toml_path)?;
@@ -12,15 +14,15 @@ pub fn write() -> Result<()> {
     toml += super::TOML_AUTOGEN_HEADER;
 
     toml += super::TOML_FEATURES_HEAD;
-    syntastica_macros::parsers_dep_toml_feature_some!();
+    toml += &super::parsers_toml_feature(Group::Some, true);
     toml += super::TOML_FEATURES_MOST;
-    syntastica_macros::parsers_dep_toml_feature_most!();
+    toml += &super::parsers_toml_feature(Group::Most, true);
     toml += super::TOML_FEATURES_ALL;
-    syntastica_macros::parsers_dep_toml_feature_all!();
+    toml += &super::parsers_toml_feature(Group::All, true);
 
     toml += super::TOML_FEATURES_DOCS;
 
-    syntastica_macros::parsers_dep_toml_deps!();
+    super::parsers_toml_deps(&mut toml, false);
 
     fs::write(&toml_path, toml)?;
 

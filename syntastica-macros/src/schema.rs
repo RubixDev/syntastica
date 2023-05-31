@@ -27,6 +27,7 @@ pub enum Group {
 }
 
 impl Group {
+    #[allow(dead_code)] // is used in `xtask/src/codegen.rs`
     pub fn next_smaller(&self) -> Option<Self> {
         match self {
             Group::Some => None,

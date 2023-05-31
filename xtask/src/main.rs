@@ -10,11 +10,19 @@ use once_cell::sync::Lazy;
 mod codegen;
 mod set_version;
 
+mod schema {
+    include!("../../syntastica-macros/src/schema.rs");
+}
+
 pub static WORKSPACE_DIR: Lazy<PathBuf> = Lazy::new(|| {
     Path::new(env!("CARGO_MANIFEST_DIR"))
         .parent()
         .unwrap()
         .to_path_buf()
+});
+pub static LANGUAGE_CONFIG: Lazy<schema::LanguageConfig> = Lazy::new(|| {
+    toml::from_str(include_str!("../../syntastica-macros/languages.toml"))
+        .expect("invalid `languages.toml`")
 });
 
 fn main() {

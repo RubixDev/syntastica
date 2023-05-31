@@ -5,6 +5,7 @@ use fancy_regex::Regex;
 use once_cell::sync::Lazy;
 use rsexpr::{OwnedSexpr, OwnedSexprs};
 use syntastica_core::provider::LanguageProvider;
+use syntastica_parsers_git::LanguageProviderImpl;
 use tree_sitter::{Language, Query};
 
 static QUERIES_DIR: Lazy<String> =
@@ -12,8 +13,55 @@ static QUERIES_DIR: Lazy<String> =
 static INHERITS_REGEX: Lazy<Regex> =
     Lazy::new(|| Regex::new(r";+\s*inherits\s*:?\s*([a-z_,()-]+)\s*").unwrap());
 
-pub fn make_queries() -> Result<BTreeMap<&'static str, [String; 6]>> {
-    syntastica_macros::queries!()
+pub fn make_queries() -> Result<BTreeMap<String, [String; 6]>> {
+    let mut parsers = LanguageProviderImpl::all().get_parsers()?;
+    let mut map = BTreeMap::new();
+
+    for lang in &crate::LANGUAGE_CONFIG.languages {
+        let ts_lang = parsers.remove(&lang.name).unwrap();
+
+        let query_file =
+            |enabled: bool, filename: &str, func: fn(&mut OwnedSexprs), crates_io: bool| match (
+                lang.queries.nvim_like,
+                enabled,
+            ) {
+                (true, true) => validate(ts_lang, &lang.name, filename, Some(func), crates_io),
+                (false, true) => validate(ts_lang, &lang.name, filename, None, crates_io),
+                (_, false) => String::new(),
+            };
+
+        let highlights = query_file(true, "highlights.scm", process_highlights, false);
+        let injections = query_file(
+            lang.queries.injections,
+            "injections.scm",
+            process_injections,
+            false,
+        );
+        let locals = query_file(lang.queries.locals, "locals.scm", process_locals, false);
+
+        let highlights_crates_io = query_file(true, "highlights.scm", process_highlights, true);
+        let injections_crates_io = query_file(
+            lang.queries.injections,
+            "injections.scm",
+            process_injections,
+            true,
+        );
+        let locals_crates_io = query_file(lang.queries.locals, "locals.scm", process_locals, true);
+
+        map.insert(
+            lang.name.clone(),
+            [
+                highlights,
+                injections,
+                locals,
+                highlights_crates_io,
+                injections_crates_io,
+                locals_crates_io,
+            ],
+        );
+    }
+
+    Ok(map)
 }
 
 fn validate(
