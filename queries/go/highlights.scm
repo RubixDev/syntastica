@@ -240,9 +240,3 @@
 
 ; Errors
 (ERROR) @error
-
-; Spell
-(
-  (interpreted_string_literal) @spell
-  (#not-has-parent? @spell import_spec)
-)

@@ -1,8 +1,3 @@
-(
-  (interpreted_string_literal) @spell
-  (#not-has-parent? @spell import_spec)
-)
-
 (ERROR) @error
 
 (source_file
