@@ -32,6 +32,8 @@
   (#match? @type "^--")
 )
 
+(plain_value) @constant.builtin
+
 (
   (property_name) @type.definition
   (#match? @type.definition "^--")

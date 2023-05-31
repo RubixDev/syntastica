@@ -72,6 +72,8 @@
   (#match? @type.definition "^--")
 )
 
+(plain_value) @constant.builtin
+
 (
   (plain_value) @type
   (#match? @type "^--")
