@@ -17,9 +17,9 @@
 <h1>Function highlight</h1></div>
 <section class="tsd-panel">
 <ul class="tsd-signatures">
-<li class="tsd-signature tsd-anchor-link" id="highlight"><span class="tsd-kind-call-signature">highlight</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">code</span>, <span class="tsd-kind-parameter">language</span>, <span class="tsd-kind-parameter">theme</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><a href="#highlight" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" id="icon-anchor-a"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" id="icon-anchor-b"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" id="icon-anchor-c"></path></svg></a></li>
+<li class="tsd-signature tsd-anchor-link" id="highlight"><span class="tsd-kind-call-signature">highlight</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">code</span>, <span class="tsd-kind-parameter">language</span>, <span class="tsd-kind-parameter">theme</span>, <span class="tsd-kind-parameter">renderer</span><span class="tsd-signature-symbol">?</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><a href="#highlight" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" id="icon-anchor-a"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" id="icon-anchor-b"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" id="icon-anchor-c"></path></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Highlight code and render to HTML.</p>
+<div class="tsd-comment tsd-typography"><p>Highlight code and render to the requested format.</p>
 <p>If you plan to highlight the same input multiple times, use <a href="process.html" class="tsd-kind-function">process</a> and <a href="render.html" class="tsd-kind-function">render</a> instead.</p>
 </div>
 <div class="tsd-parameters">
@@ -40,13 +40,20 @@
 <p>All themes from <a href="https://rubixdev.github.io/syntastica/syntastica_themes/">the default collection</a>
 are supported. The theme name is equivalent to its Rust path specifier, so for example the gruvbox dark theme
 is named <code>gruvbox::dark</code>.</p>
+</div></li>
+<li>
+<h5><span class="tsd-kind-parameter">renderer</span>: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &#39;HTML&#39;</span></h5>
+<div class="tsd-comment tsd-typography"><p>The renderer to use.</p>
+<p>The renderer name is either <code>HTML</code> or <code>Terminal</code> in any casing. To specify a background color
+for the terminal renderer, append a hex color literal like <code>terminal#282828</code> or <code>Terminal#fff</code>.</p>
+<p>By default, the <code>HTML</code> renderer will be used.</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4><p>The highlighted code as HTML code.</p>
 <p>See <a href="https://rubixdev.github.io/syntastica-ci-test/syntastica/renderer/struct.HtmlRenderer.html">here</a> for
 more information on the output.</p>
 <aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/RubixDev/syntastica/blob/edd3d55/syntastica-js/src/index.ts#L93">index.ts:93</a></li></ul></aside></li></ul></section></div>
+<li>Defined in <a href="https://github.com/RubixDev/syntastica/blob/a82de2f/syntastica-js/src/index.ts#L100">index.ts:100</a></li></ul></aside></li></ul></section></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
