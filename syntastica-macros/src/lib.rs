@@ -130,6 +130,14 @@ fn parsers(
     extra: Option<proc_macro2::TokenStream>,
     query_suffix: &str,
 ) -> TokenStream {
+    let list = LANGUAGE_CONFIG
+        .languages
+        .iter()
+        .filter(&filter)
+        .map(|lang| {
+            let name_str = &lang.name;
+            quote! { #name_str, }
+        });
     let get_parsers = LANGUAGE_CONFIG
         .languages
         .iter()
@@ -194,6 +202,9 @@ fn parsers(
     };
     quote! {
         #extra
+
+        /// A list of all language names that are supported by this parser collection.
+        pub const LANGUAGES: &[&str] = &[#(#list)*];
 
         #(#functions)*
 
