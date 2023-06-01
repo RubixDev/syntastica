@@ -317,6 +317,9 @@
 <a href="#317" id="317">317</a>
 <a href="#318" id="318">318</a>
 <a href="#319" id="319">319</a>
+<a href="#320" id="320">320</a>
+<a href="#321" id="321">321</a>
+<a href="#322" id="322">322</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! This module contains the [`Renderer`] trait and two implementors: [`TerminalRenderer`] and
 //! [`HtmlRenderer`], as well as the [`render`] function, which is re-exported at the crate root.
 //! See the individual documentation of these items for more information and examples.
@@ -388,8 +391,9 @@
     renderer: <span class="kw-2">&amp;mut </span><span class="kw">impl </span>Renderer,
     theme: ResolvedTheme,
 ) -&gt; String {
+    <span class="kw">let </span>last_line = highlights.len().saturating_sub(<span class="number">1</span>);
     <span class="kw">let </span><span class="kw-2">mut </span>out = renderer.head().into_owned();
-    <span class="kw">for </span>line <span class="kw">in </span>highlights {
+    <span class="kw">for </span>(index, line) <span class="kw">in </span>highlights.iter().enumerate() {
         <span class="kw">for </span>(text, style) <span class="kw">in </span>line {
             <span class="kw">let </span>unstyled = renderer.unstyled(text);
             <span class="kw">match </span>style.and_then(|key| find_style(key, <span class="kw-2">&amp;</span>theme)) {
@@ -397,7 +401,9 @@
                 <span class="prelude-val">None </span>=&gt; out += <span class="kw-2">&amp;</span>unstyled,
             }
         }
-        out += <span class="kw-2">&amp;</span>renderer.newline();
+        <span class="kw">if </span>index != last_line {
+            out += <span class="kw-2">&amp;</span>renderer.newline();
+        }
     }
     out + <span class="kw-2">&amp;</span>renderer.tail()
 }
@@ -445,7 +451,7 @@
 /// // render to HTML
 /// let output = syntastica::render(&amp;highlights, &amp;mut HtmlRenderer, theme);
 ///
-/// assert_eq!(output, r#&quot;&lt;span style=&quot;color: rgb(255, 0, 0);&quot;&gt;&amp;lt;fn&amp;gt;&lt;/span&gt;none&lt;br&gt;&quot;#);
+/// assert_eq!(output, r#&quot;&lt;span style=&quot;color: rgb(255, 0, 0);&quot;&gt;&amp;lt;fn&amp;gt;&lt;/span&gt;none&quot;#);
 /// ```
 </span><span class="kw">pub struct </span>HtmlRenderer;
 
@@ -526,7 +532,7 @@
 /// // render to a string without a background color
 /// let output = syntastica::render(&amp;highlights, &amp;mut TerminalRenderer::new(None), theme);
 ///
-/// assert_eq!(output, &quot;\x1b[38;2;255;0;0mfn\x1b[0m none\n&quot;);
+/// assert_eq!(output, &quot;\x1b[38;2;255;0;0mfn\x1b[0m none&quot;);
 /// ```
 </span><span class="kw">pub struct </span>TerminalRenderer {
     background_color: <span class="prelude-ty">Option</span>&lt;Color&gt;,
