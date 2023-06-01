@@ -13,7 +13,39 @@ env:
   CARGO_REGISTRIES_CRATES_IO_PROTOCOL: sparse
 
 jobs:
+  codegen:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+
+      - name: Restore Cache
+        uses: Swatinem/rust-cache@v2
+
+      - name: Generate Code
+        uses: actions-rs/cargo@v1
+        with:
+          command: xtask
+          args: codegen
+
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          add:
+            syntastica-queries/generated_queries syntastica-queries/src/lib.rs
+            syntastica-parsers/Cargo.toml syntastica-parsers-gitdep/Cargo.toml
+            syntastica-parsers*/README.md syntastica-js/src/index.ts syntastica-themes/src
+          author_name: github-actions[bot]
+          default_author: github_actions
+          message: 'chore: run codegen'
   build-js:
+    needs: codegen
     runs-on: ubuntu-latest
 
     steps:

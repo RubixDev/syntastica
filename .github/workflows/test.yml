@@ -1,8 +1,10 @@
 name: Run Tests
 on:
-  push:
-    branches:
-      - main
+  # only run after codegen was run
+  workflow_run:
+    workflows: ['Build']
+    types:
+      - completed
   workflow_dispatch:
 permissions:
   contents: write
