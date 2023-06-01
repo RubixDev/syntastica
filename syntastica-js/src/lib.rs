@@ -10,6 +10,7 @@ use std::{
 use syntastica::{
     renderer::{HtmlRenderer, TerminalRenderer},
     style::Color,
+    theme::ResolvedTheme,
     Highlights, Processor,
 };
 use syntastica_parsers_git::LanguageProviderImpl;
@@ -83,6 +84,7 @@ pub unsafe fn highlight(
     code: *const c_char,
     language: *const c_char,
     theme: *const c_char,
+    renderer: *const c_char,
 ) -> *const c_char {
     // SAFETY: This application is single-threaded, so it is safe to use mutable statics
     if unsafe { LANGUAGES.is_none() } {
@@ -93,6 +95,7 @@ pub unsafe fn highlight(
     let code = unsafe { string_from_ptr(code) };
     let language = unsafe { string_from_ptr(language) };
     let theme = unsafe { string_from_ptr(theme) };
+    let renderer = unsafe { string_from_ptr(renderer) };
 
     let Some(theme) = syntastica_themes::from_str(&theme) else {
         eprintln!("invalid theme '{theme}'");
@@ -111,9 +114,8 @@ pub unsafe fn highlight(
             return std::ptr::null();
         }
     };
-    let out = syntastica::render(&highlights, &mut HtmlRenderer, theme);
 
-    string_to_ptr(out)
+    _render(&highlights, &renderer, theme)
 }
 
 /// Process a piece of code in the given language, and save the [`Highlights`] for a following call
@@ -184,6 +186,10 @@ pub unsafe fn render(theme: *const c_char, renderer: *const c_char) -> *const c_
     };
     let theme = theme.resolve_links().unwrap();
 
+    _render(highlights, &renderer, theme)
+}
+
+fn _render(highlights: &Highlights<'_>, renderer: &str, theme: ResolvedTheme) -> *const c_char {
     let out = match renderer.to_lowercase().as_str() {
         "terminal" => syntastica::render(highlights, &mut TerminalRenderer::new(None), theme),
         "html" => syntastica::render(highlights, &mut HtmlRenderer, theme),

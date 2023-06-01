@@ -1,6 +1,6 @@
 export interface SyntasticaModule extends EmscriptenModule {
     _init(ptr: number, len: number): void
-    _highlight(code_ptr: number, lang_ptr: number, theme_ptr: number): number
+    _highlight(code_ptr: number, lang_ptr: number, theme_ptr: number, renderer_ptr: number): number
     _process(code_ptr: number, lang_ptr: number): void
     _render(theme_ptr: number, renderer_ptr: number): number
 

@@ -23,7 +23,7 @@ export type Language = typeof LANGUAGES[number];
  */
 export declare function init(languages?: Language[]): Promise<void>;
 /**
- * Highlight code and render to HTML.
+ * Highlight code and render to the requested format.
  *
  * If you plan to highlight the same input multiple times, use {@link process} and {@link render} instead.
  *
@@ -39,12 +39,19 @@ export declare function init(languages?: Language[]): Promise<void>;
  * are supported. The theme name is equivalent to its Rust path specifier, so for example the gruvbox dark theme
  * is named `gruvbox::dark`.
  *
+ * @param renderer - The renderer to use.
+ *
+ * The renderer name is either `HTML` or `Terminal` in any casing. To specify a background color
+ * for the terminal renderer, append a hex color literal like `terminal#282828` or `Terminal#fff`.
+ *
+ * By default, the `HTML` renderer will be used.
+ *
  * @returns The highlighted code as HTML code.
  *
  * See {@link https://rubixdev.github.io/syntastica-ci-test/syntastica/renderer/struct.HtmlRenderer.html | here} for
  * more information on the output.
  */
-export declare function highlight(code: string, language: Language, theme: Theme): string;
+export declare function highlight(code: string, language: Language, theme: Theme, renderer?: string): string;
 /**
  * Prepare code for rendering multiple times.
  *

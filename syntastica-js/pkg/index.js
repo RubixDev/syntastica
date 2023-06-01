@@ -62,7 +62,7 @@ export function init(languages) {
     });
 }
 /**
- * Highlight code and render to HTML.
+ * Highlight code and render to the requested format.
  *
  * If you plan to highlight the same input multiple times, use {@link process} and {@link render} instead.
  *
@@ -78,20 +78,29 @@ export function init(languages) {
  * are supported. The theme name is equivalent to its Rust path specifier, so for example the gruvbox dark theme
  * is named `gruvbox::dark`.
  *
+ * @param renderer - The renderer to use.
+ *
+ * The renderer name is either `HTML` or `Terminal` in any casing. To specify a background color
+ * for the terminal renderer, append a hex color literal like `terminal#282828` or `Terminal#fff`.
+ *
+ * By default, the `HTML` renderer will be used.
+ *
  * @returns The highlighted code as HTML code.
  *
  * See {@link https://rubixdev.github.io/syntastica-ci-test/syntastica/renderer/struct.HtmlRenderer.html | here} for
  * more information on the output.
  */
-export function highlight(code, language, theme) {
+export function highlight(code, language, theme, renderer = 'HTML') {
     const code_ptr = Module.stringToNewUTF8(code);
     const language_ptr = Module.stringToNewUTF8(language);
     const theme_ptr = Module.stringToNewUTF8(theme);
-    const result_ptr = Module._highlight(code_ptr, language_ptr, theme_ptr);
+    const renderer_ptr = Module.stringToNewUTF8(renderer);
+    const result_ptr = Module._highlight(code_ptr, language_ptr, theme_ptr, renderer_ptr);
     const result = Module.UTF8ToString(result_ptr);
     Module._free(code_ptr);
     Module._free(language_ptr);
     Module._free(theme_ptr);
+    Module._free(renderer_ptr);
     Module._free(result_ptr);
     return result;
 }
