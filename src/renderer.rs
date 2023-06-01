@@ -69,8 +69,9 @@ pub fn render(
     renderer: &mut impl Renderer,
     theme: ResolvedTheme,
 ) -> String {
+    let last_line = highlights.len().saturating_sub(1);
     let mut out = renderer.head().into_owned();
-    for line in highlights {
+    for (index, line) in highlights.iter().enumerate() {
         for (text, style) in line {
             let unstyled = renderer.unstyled(text);
             match style.and_then(|key| find_style(key, &theme)) {
@@ -78,7 +79,9 @@ pub fn render(
                 None => out += &unstyled,
             }
         }
-        out += &renderer.newline();
+        if index != last_line {
+            out += &renderer.newline();
+        }
     }
     out + &renderer.tail()
 }
@@ -126,7 +129,7 @@ fn find_style(mut key: &'static str, theme: &ResolvedTheme) -> Option<Style> {
 /// // render to HTML
 /// let output = syntastica::render(&highlights, &mut HtmlRenderer, theme);
 ///
-/// assert_eq!(output, r#"<span style="color: rgb(255, 0, 0);">&lt;fn&gt;</span>none<br>"#);
+/// assert_eq!(output, r#"<span style="color: rgb(255, 0, 0);">&lt;fn&gt;</span>none"#);
 /// ```
 pub struct HtmlRenderer;
 
@@ -207,7 +210,7 @@ impl Renderer for HtmlRenderer {
 /// // render to a string without a background color
 /// let output = syntastica::render(&highlights, &mut TerminalRenderer::new(None), theme);
 ///
-/// assert_eq!(output, "\x1b[38;2;255;0;0mfn\x1b[0m none\n");
+/// assert_eq!(output, "\x1b[38;2;255;0;0mfn\x1b[0m none");
 /// ```
 pub struct TerminalRenderer {
     background_color: Option<Color>,
