@@ -1,10 +1,8 @@
 name: Run Tests
 on:
-  # only run after codegen was run
-  workflow_run:
-    workflows: ['Build']
-    types:
-      - completed
+  push:
+    branches:
+      - main
   workflow_dispatch:
 permissions:
   contents: write
@@ -30,6 +28,12 @@ jobs:
 
       - name: Restore Cache
         uses: Swatinem/rust-cache@v2
+
+      - name: Run Codegen
+        uses: actions-rs/cargo@v1
+        with:
+          command: xtask
+          args: codegen
 
       - name: Run Tests
         uses: actions-rs/cargo@v1
