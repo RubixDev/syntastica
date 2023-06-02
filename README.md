@@ -234,14 +234,14 @@ let highlights = Processor::process_once(
 println!("{}", syntastica::render(
     &highlights,
     &mut TerminalRenderer::new(Some(Color::new(40, 40, 40))),
-    syntastica_themes::gruvbox::dark().resolve_links().unwrap(),
+    syntastica_themes::gruvbox::dark(),
 ));
 
 // render the same input to HTML using the onelight theme
 let html = syntastica::render(
     &highlights,
     &mut HtmlRenderer::new(),
-    syntastica_themes::one::light().resolve_links().unwrap(),
+    syntastica_themes::one::light(),
 );
 // you could for example write that to a file called `index.html`:
 // std::fs::write("index.html", html).unwrap();
@@ -280,14 +280,14 @@ let highlights_js = processor.process(r"console.log('42')", "javascript")
 println!("{}", syntastica::render(
     &highlights_rust,
     &mut TerminalRenderer::new(Some(Color::new(40, 40, 40))),
-    syntastica_themes::gruvbox::dark().resolve_links().unwrap(),
+    syntastica_themes::gruvbox::dark(),
 ));
 
 // render the same rust code to HTML using the onelight theme
 let html = syntastica::render(
     &highlights_rust,
     &mut HtmlRenderer::new(),
-    syntastica_themes::one::light().resolve_links().unwrap(),
+    syntastica_themes::one::light(),
 );
 // you could for example write that to a file called `index.html`:
 // std::fs::write("index.html", html).unwrap();
@@ -297,7 +297,7 @@ let html = syntastica::render(
 println!("{}", syntastica::render(
     &highlights_js,
     &mut TerminalRenderer::new(None),
-    syntastica_themes::one::dark().resolve_links().unwrap(),
+    syntastica_themes::one::dark(),
 ));
 ```
 
