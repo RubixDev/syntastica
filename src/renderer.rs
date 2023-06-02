@@ -129,7 +129,7 @@ fn find_style(mut key: &'static str, theme: &ResolvedTheme) -> Option<Style> {
 /// // render to HTML
 /// let output = syntastica::render(&highlights, &mut HtmlRenderer, theme);
 ///
-/// assert_eq!(output, r#"<span style="color: rgb(255, 0, 0);">&lt;fn&gt;</span>none"#);
+/// assert_eq!(output, r#"<span style="color:rgb(255,0,0);">&lt;fn&gt;</span>none"#);
 /// ```
 pub struct HtmlRenderer;
 
@@ -172,7 +172,7 @@ impl Renderer for HtmlRenderer {
 
     fn styled(&mut self, text: &str, style: Style) -> Cow<'static, str> {
         let (r, g, b) = style.color().into_components();
-        let mut css = format!("color: rgb({r}, {g}, {b});");
+        let mut css = format!("color:rgb({r},{g},{b});");
         if style.underline() && style.strikethrough() {
             css += "text-decoration: underline line-through;"
         } else if style.underline() {
