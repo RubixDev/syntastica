@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 
-use syntastica::{renderer::TerminalRenderer, theme::Theme, Highlights, Processor};
+use syntastica::{renderer::TerminalRenderer, Highlights, Processor};
+use syntastica_core::theme::ResolvedTheme;
 use syntastica_parsers_git::LanguageProviderImpl;
 use syntastica_themes as themes;
 
@@ -30,8 +31,7 @@ fn run_examples(h: &Highlights) {
     example(h, themes::gruvbox::light(), "gruvbox::light");
 }
 
-fn example(highlights: &Highlights, theme: Theme, name: &str) {
-    let theme = theme.resolve_links().unwrap();
+fn example(highlights: &Highlights, theme: ResolvedTheme, name: &str) {
     let bg_color = theme.get("bg0").copied().map(|style| style.color());
     println!(
         "\n\x1b[1m{name}:\x1b[0m\n{0}\n{1}{0}",

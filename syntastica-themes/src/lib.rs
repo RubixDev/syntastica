@@ -7,7 +7,7 @@
 #![warn(rust_2018_idioms)]
 // #![deny(missing_docs)]
 
-use syntastica_core::theme::Theme;
+use syntastica_core::theme::ResolvedTheme;
 
 pub mod gruvbox;
 pub mod one;
@@ -22,19 +22,18 @@ pub mod one;
 ///     Some(syntastica_themes::one::dark()),
 /// );
 /// ```
-pub fn from_str(theme_name: impl AsRef<str>) -> Option<Theme> {
-    // TODO: all themes should return a `ResolvedTheme`
-    let raw = match theme_name.as_ref() {
-        "one::dark" => one::dark(),
-        "one::darker" => one::darker(),
-        "one::cool" => one::cool(),
-        "one::deep" => one::deep(),
-        "one::warm" => one::warm(),
-        "one::warmer" => one::warmer(),
-        "one::light" => one::light(),
-        "gruvbox::dark" => gruvbox::dark(),
-        "gruvbox::light" => gruvbox::light(),
-        _ => return None,
-    };
-    Some(raw)
+// TODO: is it somehow possible to auto generate this?
+pub fn from_str(theme_name: impl AsRef<str>) -> Option<ResolvedTheme> {
+    match theme_name.as_ref() {
+        "one::dark" => Some(one::dark()),
+        "one::darker" => Some(one::darker()),
+        "one::cool" => Some(one::cool()),
+        "one::deep" => Some(one::deep()),
+        "one::warm" => Some(one::warm()),
+        "one::warmer" => Some(one::warmer()),
+        "one::light" => Some(one::light()),
+        "gruvbox::dark" => Some(gruvbox::dark()),
+        "gruvbox::light" => Some(gruvbox::light()),
+        _ => None,
+    }
 }

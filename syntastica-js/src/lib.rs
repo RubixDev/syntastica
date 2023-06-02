@@ -101,7 +101,6 @@ pub unsafe fn highlight(
         eprintln!("invalid theme '{theme}'");
         return std::ptr::null();
     };
-    let theme = theme.resolve_links().unwrap();
 
     // SAFETY: This application is single-threaded, so it is safe to use mutable statics
     let highlights = match unsafe { PROCESSOR.as_mut() }
@@ -184,7 +183,6 @@ pub unsafe fn render(theme: *const c_char, renderer: *const c_char) -> *const c_
         eprintln!("invalid theme '{theme}'");
         return std::ptr::null();
     };
-    let theme = theme.resolve_links().unwrap();
 
     _render(highlights, &renderer, theme)
 }

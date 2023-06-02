@@ -230,18 +230,18 @@ use std::collections::BTreeMap;
 
 use syntastica_core::{
     theme,
-    theme::{Theme, ThemeValue},
+    theme::{ResolvedTheme, Theme, ThemeValue},
 };
 "###;
 
     for (variant, palette) in palettes {
         out += &format!(
             r###"
-pub fn {variant}() -> Theme {{
+pub fn {variant}() -> ResolvedTheme {{
     let mut palette = {theme}
     .into_inner();
     palette.append(&mut theme());
-    palette.into()
+    Theme::new(palette).resolve_links().unwrap()
 }}
 "###,
             theme = to_theme_macro_call(&palette),

@@ -7,10 +7,10 @@ use std::collections::BTreeMap;
 
 use syntastica_core::{
     theme,
-    theme::{Theme, ThemeValue},
+    theme::{ResolvedTheme, Theme, ThemeValue},
 };
 
-pub fn dark() -> Theme {
+pub fn dark() -> ResolvedTheme {
     let mut palette = theme! {
         "aqua": "#8ec07c",
         "bg0": "#282828",
@@ -39,10 +39,10 @@ pub fn dark() -> Theme {
     }
     .into_inner();
     palette.append(&mut theme());
-    palette.into()
+    Theme::new(palette).resolve_links().unwrap()
 }
 
-pub fn light() -> Theme {
+pub fn light() -> ResolvedTheme {
     let mut palette = theme! {
         "aqua": "#427b58",
         "bg0": "#fbf1c7",
@@ -71,7 +71,7 @@ pub fn light() -> Theme {
     }
     .into_inner();
     palette.append(&mut theme());
-    palette.into()
+    Theme::new(palette).resolve_links().unwrap()
 }
 
 fn theme() -> BTreeMap<String, ThemeValue> {

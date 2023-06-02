@@ -7,10 +7,10 @@ use std::collections::BTreeMap;
 
 use syntastica_core::{
     theme,
-    theme::{Theme, ThemeValue},
+    theme::{ResolvedTheme, Theme, ThemeValue},
 };
 
-pub fn cool() -> Theme {
+pub fn cool() -> ResolvedTheme {
     let mut palette = theme! {
         "bg0": "#242b38",
         "bg1": "#2d3343",
@@ -41,10 +41,10 @@ pub fn cool() -> Theme {
     }
     .into_inner();
     palette.append(&mut theme());
-    palette.into()
+    Theme::new(palette).resolve_links().unwrap()
 }
 
-pub fn dark() -> Theme {
+pub fn dark() -> ResolvedTheme {
     let mut palette = theme! {
         "bg0": "#282c34",
         "bg1": "#31353f",
@@ -75,10 +75,10 @@ pub fn dark() -> Theme {
     }
     .into_inner();
     palette.append(&mut theme());
-    palette.into()
+    Theme::new(palette).resolve_links().unwrap()
 }
 
-pub fn darker() -> Theme {
+pub fn darker() -> ResolvedTheme {
     let mut palette = theme! {
         "bg0": "#1f2329",
         "bg1": "#282c34",
@@ -109,10 +109,10 @@ pub fn darker() -> Theme {
     }
     .into_inner();
     palette.append(&mut theme());
-    palette.into()
+    Theme::new(palette).resolve_links().unwrap()
 }
 
-pub fn deep() -> Theme {
+pub fn deep() -> ResolvedTheme {
     let mut palette = theme! {
         "bg0": "#1a212e",
         "bg1": "#21283b",
@@ -143,10 +143,10 @@ pub fn deep() -> Theme {
     }
     .into_inner();
     palette.append(&mut theme());
-    palette.into()
+    Theme::new(palette).resolve_links().unwrap()
 }
 
-pub fn light() -> Theme {
+pub fn light() -> ResolvedTheme {
     let mut palette = theme! {
         "bg0": "#fafafa",
         "bg1": "#f0f0f0",
@@ -177,10 +177,10 @@ pub fn light() -> Theme {
     }
     .into_inner();
     palette.append(&mut theme());
-    palette.into()
+    Theme::new(palette).resolve_links().unwrap()
 }
 
-pub fn warm() -> Theme {
+pub fn warm() -> ResolvedTheme {
     let mut palette = theme! {
         "bg0": "#2c2d30",
         "bg1": "#35373b",
@@ -211,10 +211,10 @@ pub fn warm() -> Theme {
     }
     .into_inner();
     palette.append(&mut theme());
-    palette.into()
+    Theme::new(palette).resolve_links().unwrap()
 }
 
-pub fn warmer() -> Theme {
+pub fn warmer() -> ResolvedTheme {
     let mut palette = theme! {
         "bg0": "#232326",
         "bg1": "#2c2d31",
@@ -245,7 +245,7 @@ pub fn warmer() -> Theme {
     }
     .into_inner();
     palette.append(&mut theme());
-    palette.into()
+    Theme::new(palette).resolve_links().unwrap()
 }
 
 fn theme() -> BTreeMap<String, ThemeValue> {

@@ -25,7 +25,7 @@ fn example(processor: &mut Processor, code: &str, lang_name: &str) -> syntastica
         syntastica::render(
             &processor.process(code.trim(), lang_name)?,
             &mut TerminalRenderer::new(None),
-            syntastica_themes::one::dark().resolve_links()?,
+            syntastica_themes::one::dark(),
         )
     );
     Ok(())
