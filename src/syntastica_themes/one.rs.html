@@ -388,10 +388,10 @@
 
 <span class="kw">use </span>syntastica_core::{
     theme,
-    theme::{Theme, ThemeValue},
+    theme::{ResolvedTheme, Theme, ThemeValue},
 };
 
-<span class="kw">pub fn </span>cool() -&gt; Theme {
+<span class="kw">pub fn </span>cool() -&gt; ResolvedTheme {
     <span class="kw">let </span><span class="kw-2">mut </span>palette = <span class="macro">theme! </span>{
         <span class="string">&quot;bg0&quot;</span>: <span class="string">&quot;#242b38&quot;</span>,
         <span class="string">&quot;bg1&quot;</span>: <span class="string">&quot;#2d3343&quot;</span>,
@@ -422,10 +422,10 @@
     }
     .into_inner();
     palette.append(<span class="kw-2">&amp;mut </span>theme());
-    palette.into()
+    Theme::new(palette).resolve_links().unwrap()
 }
 
-<span class="kw">pub fn </span>dark() -&gt; Theme {
+<span class="kw">pub fn </span>dark() -&gt; ResolvedTheme {
     <span class="kw">let </span><span class="kw-2">mut </span>palette = <span class="macro">theme! </span>{
         <span class="string">&quot;bg0&quot;</span>: <span class="string">&quot;#282c34&quot;</span>,
         <span class="string">&quot;bg1&quot;</span>: <span class="string">&quot;#31353f&quot;</span>,
@@ -456,10 +456,10 @@
     }
     .into_inner();
     palette.append(<span class="kw-2">&amp;mut </span>theme());
-    palette.into()
+    Theme::new(palette).resolve_links().unwrap()
 }
 
-<span class="kw">pub fn </span>darker() -&gt; Theme {
+<span class="kw">pub fn </span>darker() -&gt; ResolvedTheme {
     <span class="kw">let </span><span class="kw-2">mut </span>palette = <span class="macro">theme! </span>{
         <span class="string">&quot;bg0&quot;</span>: <span class="string">&quot;#1f2329&quot;</span>,
         <span class="string">&quot;bg1&quot;</span>: <span class="string">&quot;#282c34&quot;</span>,
@@ -490,10 +490,10 @@
     }
     .into_inner();
     palette.append(<span class="kw-2">&amp;mut </span>theme());
-    palette.into()
+    Theme::new(palette).resolve_links().unwrap()
 }
 
-<span class="kw">pub fn </span>deep() -&gt; Theme {
+<span class="kw">pub fn </span>deep() -&gt; ResolvedTheme {
     <span class="kw">let </span><span class="kw-2">mut </span>palette = <span class="macro">theme! </span>{
         <span class="string">&quot;bg0&quot;</span>: <span class="string">&quot;#1a212e&quot;</span>,
         <span class="string">&quot;bg1&quot;</span>: <span class="string">&quot;#21283b&quot;</span>,
@@ -524,10 +524,10 @@
     }
     .into_inner();
     palette.append(<span class="kw-2">&amp;mut </span>theme());
-    palette.into()
+    Theme::new(palette).resolve_links().unwrap()
 }
 
-<span class="kw">pub fn </span>light() -&gt; Theme {
+<span class="kw">pub fn </span>light() -&gt; ResolvedTheme {
     <span class="kw">let </span><span class="kw-2">mut </span>palette = <span class="macro">theme! </span>{
         <span class="string">&quot;bg0&quot;</span>: <span class="string">&quot;#fafafa&quot;</span>,
         <span class="string">&quot;bg1&quot;</span>: <span class="string">&quot;#f0f0f0&quot;</span>,
@@ -558,10 +558,10 @@
     }
     .into_inner();
     palette.append(<span class="kw-2">&amp;mut </span>theme());
-    palette.into()
+    Theme::new(palette).resolve_links().unwrap()
 }
 
-<span class="kw">pub fn </span>warm() -&gt; Theme {
+<span class="kw">pub fn </span>warm() -&gt; ResolvedTheme {
     <span class="kw">let </span><span class="kw-2">mut </span>palette = <span class="macro">theme! </span>{
         <span class="string">&quot;bg0&quot;</span>: <span class="string">&quot;#2c2d30&quot;</span>,
         <span class="string">&quot;bg1&quot;</span>: <span class="string">&quot;#35373b&quot;</span>,
@@ -592,10 +592,10 @@
     }
     .into_inner();
     palette.append(<span class="kw-2">&amp;mut </span>theme());
-    palette.into()
+    Theme::new(palette).resolve_links().unwrap()
 }
 
-<span class="kw">pub fn </span>warmer() -&gt; Theme {
+<span class="kw">pub fn </span>warmer() -&gt; ResolvedTheme {
     <span class="kw">let </span><span class="kw-2">mut </span>palette = <span class="macro">theme! </span>{
         <span class="string">&quot;bg0&quot;</span>: <span class="string">&quot;#232326&quot;</span>,
         <span class="string">&quot;bg1&quot;</span>: <span class="string">&quot;#2c2d31&quot;</span>,
@@ -626,7 +626,7 @@
     }
     .into_inner();
     palette.append(<span class="kw-2">&amp;mut </span>theme());
-    palette.into()
+    Theme::new(palette).resolve_links().unwrap()
 }
 
 <span class="kw">fn </span>theme() -&gt; BTreeMap&lt;String, ThemeValue&gt; {

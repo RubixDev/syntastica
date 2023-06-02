@@ -210,8 +210,6 @@
 <a href="#210" id="210">210</a>
 <a href="#211" id="211">211</a>
 <a href="#212" id="212">212</a>
-<a href="#213" id="213">213</a>
-<a href="#214" id="214">214</a>
 </pre></div><pre class="rust"><code><span class="attr">#![doc = <span class="macro">include_str!</span>(<span class="string">&quot;../README.md&quot;</span>)]
 #![warn(rust_2018_idioms, missing_docs)]
 
@@ -315,7 +313,6 @@
         <span class="macro">eprintln!</span>(<span class="string">&quot;invalid theme &#39;{theme}&#39;&quot;</span>);
         <span class="kw">return </span>std::ptr::null();
     };
-    <span class="kw">let </span>theme = theme.resolve_links().unwrap();
 
     <span class="comment">// SAFETY: This application is single-threaded, so it is safe to use mutable statics
     </span><span class="kw">let </span>highlights = <span class="kw">match unsafe </span>{ PROCESSOR.as_mut() }
@@ -398,7 +395,6 @@
         <span class="macro">eprintln!</span>(<span class="string">&quot;invalid theme &#39;{theme}&#39;&quot;</span>);
         <span class="kw">return </span>std::ptr::null();
     };
-    <span class="kw">let </span>theme = theme.resolve_links().unwrap();
 
     _render(highlights, <span class="kw-2">&amp;</span>renderer, theme)
 }
