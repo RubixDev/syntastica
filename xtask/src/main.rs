@@ -45,8 +45,9 @@ Usage: Run with `cargo xtask <task>`, eg. `cargo xtask codegen`.
         codegen parsers-dep:    Generate parts of the `Cargo.toml` for syntastica-parsers
         codegen parsers-gitdep: Generate parts of the `Cargo.toml` for syntastica-parsers-gitdep
         codegen parser-lists:   Generate the parser lists in all three syntastica-parsers READMEs
-        codegen js-lang-list:   Generate the language list in the JavaScript bindings
-        codegen themes:         Generate the themes for syntastica-themes
+        codegen js-lists:       Generate the language and theme lists in the JavaScript bindings
+        codegen themes:         Generate some themes for syntastica-themes
+        codegen theme-list:     Generate the `THEMES` list and `from_str` function for syntastica-themes
         set-version <version>:  Set the version of all syntastica crates
             "###
             .trim(),

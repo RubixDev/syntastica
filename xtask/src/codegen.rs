@@ -8,12 +8,13 @@ use syntastica_core::theme::ThemeValue;
 
 use crate::schema::Group;
 
-mod js_lang_list;
+mod js_lists;
 mod parser_lists;
 mod parsers_dep;
 mod parsers_gitdep;
 mod queries;
 mod theme_gruvbox;
+mod theme_list;
 mod theme_one;
 
 const TOML_AUTOGEN_HEADER: &str = "
@@ -129,8 +130,8 @@ pub const {lang}_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/{na
         parser_lists::write()?;
     }
 
-    if is_arg("js-lang-list") {
-        js_lang_list::write()?;
+    if is_arg("js-lists") {
+        js_lists::write()?;
     }
 
     if is_arg("themes") {
@@ -142,6 +143,10 @@ pub const {lang}_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/{na
             crate::WORKSPACE_DIR.join("syntastica-themes/src/one.rs"),
             theme_one::make_theme()?,
         )?;
+    }
+
+    if is_arg("theme-list") {
+        theme_list::write()?;
     }
 
     Ok(())
