@@ -209,14 +209,14 @@ two different renderers.</p>
 </span><span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, syntastica::render(
     <span class="kw-2">&amp;</span>highlights,
     <span class="kw-2">&amp;mut </span>TerminalRenderer::new(<span class="prelude-val">Some</span>(Color::new(<span class="number">40</span>, <span class="number">40</span>, <span class="number">40</span>))),
-    syntastica_themes::gruvbox::dark().resolve_links().unwrap(),
+    syntastica_themes::gruvbox::dark(),
 ));
 
 <span class="comment">// render the same input to HTML using the onelight theme
 </span><span class="kw">let </span>html = syntastica::render(
     <span class="kw-2">&amp;</span>highlights,
     <span class="kw-2">&amp;mut </span>HtmlRenderer::new(),
-    syntastica_themes::one::light().resolve_links().unwrap(),
+    syntastica_themes::one::light(),
 );
 <span class="comment">// you could for example write that to a file called `index.html`:
 // std::fs::write(&quot;index.html&quot;, html).unwrap();</span></code></pre></div>
@@ -251,14 +251,14 @@ inputs should be highlighted.</p>
 </span><span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, syntastica::render(
     <span class="kw-2">&amp;</span>highlights_rust,
     <span class="kw-2">&amp;mut </span>TerminalRenderer::new(<span class="prelude-val">Some</span>(Color::new(<span class="number">40</span>, <span class="number">40</span>, <span class="number">40</span>))),
-    syntastica_themes::gruvbox::dark().resolve_links().unwrap(),
+    syntastica_themes::gruvbox::dark(),
 ));
 
 <span class="comment">// render the same rust code to HTML using the onelight theme
 </span><span class="kw">let </span>html = syntastica::render(
     <span class="kw-2">&amp;</span>highlights_rust,
     <span class="kw-2">&amp;mut </span>HtmlRenderer::new(),
-    syntastica_themes::one::light().resolve_links().unwrap(),
+    syntastica_themes::one::light(),
 );
 <span class="comment">// you could for example write that to a file called `index.html`:
 // std::fs::write(&quot;index.html&quot;, html).unwrap();
@@ -268,7 +268,7 @@ inputs should be highlighted.</p>
 </span><span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, syntastica::render(
     <span class="kw-2">&amp;</span>highlights_js,
     <span class="kw-2">&amp;mut </span>TerminalRenderer::new(<span class="prelude-val">None</span>),
-    syntastica_themes::one::dark().resolve_links().unwrap(),
+    syntastica_themes::one::dark(),
 ));</code></pre></div>
 <h4 id="example-detect-language-from-file-extension"><a href="#example-detect-language-from-file-extension">Example: detect language from file extension</a></h4>
 <p>This is an alteration of the <a href="#example-highlight-once">first example</a> showing
