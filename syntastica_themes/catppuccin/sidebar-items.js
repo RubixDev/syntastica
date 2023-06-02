@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["frappe","latte","macchiato","mocha"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["THEMES"],"fn":["from_str"],"mod":["gruvbox","one"]};
+window.SIDEBAR_ITEMS = {"constant":["THEMES"],"fn":["from_str"],"mod":["catppuccin","github","gruvbox","nord","one","tokyo","vscode"]};
