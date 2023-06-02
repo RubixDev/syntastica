@@ -39,8 +39,14 @@ pub fn parsers_ffi(_: TokenStream) -> TokenStream {
     let extern_c = LANGUAGE_CONFIG.languages.iter().map(|lang| {
         let feat = lang.group.to_string();
         let ffi_func = format_ident!("{}", lang.parser.ffi_func);
+        // disable cpp scanners on wasm32-unknown-unknown
+        let wasm_cfg = if lang.parser.external_scanner.cpp {
+            quote! { , not(all(target_arch = "wasm32", target_vendor = "unknown", target_os = "unknown", target_env = "")) }
+        } else {
+            quote! {}
+        };
         quote! {
-            #[cfg(feature = #feat)]
+            #[cfg(all(feature = #feat #wasm_cfg))]
             fn #ffi_func() -> ::syntastica_core::provider::Language;
         }
     });
@@ -49,16 +55,30 @@ pub fn parsers_ffi(_: TokenStream) -> TokenStream {
         let name = format_ident!("{}", lang.name);
         let ffi_func = format_ident!("{}", lang.parser.ffi_func);
         let doc = format!(
-            "Get the parser for [{}]({}/tree/{}).",
-            lang.name, lang.parser.git.url, lang.parser.git.rev
+            "Get the parser for [{}]({}/tree/{}). {}",
+            lang.name, lang.parser.git.url, lang.parser.git.rev,
+            match lang.parser.external_scanner.cpp {
+                true => "(not supported on the `wasm32-unknown-unknown` target)",
+                false => "",
+            },
         );
+        // disable cpp scanners on wasm32-unknown-unknown
+        let raw_wasm_cfg = quote! { all(target_arch = "wasm32", target_vendor = "unknown", target_os = "unknown", target_env = "") };
+        let wasm_cfg = match lang.parser.external_scanner.cpp {
+            true => quote! { , #raw_wasm_cfg },
+            false => quote! {},
+        };
+        let not_wasm_cfg = match lang.parser.external_scanner.cpp {
+            true => quote! { , not(#raw_wasm_cfg) },
+            false => quote! {},
+        };
         quote! {
             #[cfg(feature = #feat)]
             #[doc = #doc]
             pub fn #name() -> ::syntastica_core::provider::Language {
-                #[cfg(not(all(feature = "docs", doc)))]
+                #[cfg(all(not(all(feature = "docs", doc)) #not_wasm_cfg))]
                 unsafe { #ffi_func() }
-                #[cfg(all(feature = "docs", doc))]
+                #[cfg(any(all(feature = "docs", doc) #wasm_cfg))]
                 ::std::unimplemented!()
             }
         }
