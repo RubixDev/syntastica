@@ -60,6 +60,7 @@
 <a href="#60" id="60">60</a>
 <a href="#61" id="61">61</a>
 <a href="#62" id="62">62</a>
+<a href="#63" id="63">63</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::{
     env,
     path::{Path, PathBuf},
@@ -107,8 +108,9 @@ Usage: Run with `cargo xtask &lt;task&gt;`, eg. `cargo xtask codegen`.
         codegen parsers-dep:    Generate parts of the `Cargo.toml` for syntastica-parsers
         codegen parsers-gitdep: Generate parts of the `Cargo.toml` for syntastica-parsers-gitdep
         codegen parser-lists:   Generate the parser lists in all three syntastica-parsers READMEs
-        codegen js-lang-list:   Generate the language list in the JavaScript bindings
-        codegen themes:         Generate the themes for syntastica-themes
+        codegen js-lists:       Generate the language and theme lists in the JavaScript bindings
+        codegen themes:         Generate some themes for syntastica-themes
+        codegen theme-list:     Generate the `THEMES` list and `from_str` function for syntastica-themes
         set-version &lt;version&gt;:  Set the version of all syntastica crates
             &quot;###
             </span>.trim(),

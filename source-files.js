@@ -12,6 +12,6 @@ var sourcesIndex = JSON.parse('{\
 "syntastica_queries":["",[],["lib.rs"]],\
 "syntastica_themes":["",[],["gruvbox.rs","lib.rs","one.rs"]],\
 "tree_sitter_wasm_build_tool":["",[],["lib.rs"]],\
-"xtask":["",[["codegen",[],["js_lang_list.rs","parser_lists.rs","parsers_dep.rs","parsers_gitdep.rs","queries.rs","theme_gruvbox.rs","theme_one.rs"]],["syntastica-macros",[["src",[],["schema.rs"]]]]],["codegen.rs","main.rs","set_version.rs"]]\
+"xtask":["",[["codegen",[],["js_lists.rs","parser_lists.rs","parsers_dep.rs","parsers_gitdep.rs","queries.rs","theme_gruvbox.rs","theme_list.rs","theme_one.rs"]],["syntastica-macros",[["src",[],["schema.rs"]]]]],["codegen.rs","main.rs","set_version.rs"]]\
 }');
 createSourceSidebar();

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["HEADER"],"fn":["find_all_themes","write"],"static":["FUNC_REGEX"]};
