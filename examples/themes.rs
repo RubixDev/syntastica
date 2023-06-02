@@ -3,7 +3,6 @@ use std::collections::HashMap;
 use syntastica::{renderer::TerminalRenderer, Highlights, Processor};
 use syntastica_core::theme::ResolvedTheme;
 use syntastica_parsers_git::LanguageProviderImpl;
-use syntastica_themes as themes;
 
 fn main() {
     let examples: HashMap<String, String> =
@@ -16,19 +15,13 @@ fn main() {
     )
     .unwrap();
 
-    run_examples(&highlights);
-}
-
-fn run_examples(h: &Highlights) {
-    example(h, themes::one::dark(), "one::dark");
-    example(h, themes::one::darker(), "one::darker");
-    example(h, themes::one::cool(), "one::cool");
-    example(h, themes::one::deep(), "one::deep");
-    example(h, themes::one::warm(), "one::warm");
-    example(h, themes::one::warmer(), "one::warmer");
-    example(h, themes::one::light(), "one::light");
-    example(h, themes::gruvbox::dark(), "gruvbox::dark");
-    example(h, themes::gruvbox::light(), "gruvbox::light");
+    for theme in syntastica_themes::THEMES {
+        example(
+            &highlights,
+            syntastica_themes::from_str(theme).unwrap(),
+            theme,
+        );
+    }
 }
 
 fn example(highlights: &Highlights, theme: ResolvedTheme, name: &str) {
