@@ -9,22 +9,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import initModule from '../pkg/syntastica-js.js';
 const PTR_SIZE = Float32Array.BYTES_PER_ELEMENT;
-/**
- * A list of all valid themes.
- *
- * @see The {@link Theme} type.
- */
-export const THEMES = [
-    'one::dark',
-    'one::darker',
-    'one::cool',
-    'one::deep',
-    'one::warm',
-    'one::warmer',
-    'one::light',
-    'gruvbox::dark',
-    'gruvbox::light',
-];
 let Module = null;
 /**
  * Load the requested languages.
@@ -149,7 +133,7 @@ export function render(theme, renderer = 'HTML') {
     return result;
 }
 export default { init, highlight, process, render };
-// DISCLAIMER: All code below this line is generated with `cargo xtask codegen js-lang-list`
+// DISCLAIMER: All code below this line is generated with `cargo xtask codegen js-list`
 // in the syntastica workspace. Do not edit this code manually!
 /**
  * A list of all supported languages.
@@ -172,4 +156,20 @@ export const LANGUAGES = [
     'rust',
     'tsx',
     'typescript',
+];
+/**
+ * A list of all valid themes.
+ *
+ * @see The {@link Theme} type.
+ */
+export const THEMES = [
+    'gruvbox::dark',
+    'gruvbox::light',
+    'one::cool',
+    'one::dark',
+    'one::darker',
+    'one::deep',
+    'one::light',
+    'one::warm',
+    'one::warmer',
 ];

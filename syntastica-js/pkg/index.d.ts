@@ -1,10 +1,4 @@
 /**
- * A list of all valid themes.
- *
- * @see The {@link Theme} type.
- */
-export declare const THEMES: readonly ["one::dark", "one::darker", "one::cool", "one::deep", "one::warm", "one::warmer", "one::light", "gruvbox::dark", "gruvbox::light"];
-/**
  * A theme name to pass to {@link highlight} or {@link render}.
  */
 export type Theme = typeof THEMES[number];
@@ -94,3 +88,9 @@ export default _default;
  * @see The {@link Language} type.
  */
 export declare const LANGUAGES: readonly ["asm", "bash", "c", "cpp", "css", "go", "html", "java", "javascript", "json", "python", "regex", "rust", "tsx", "typescript"];
+/**
+ * A list of all valid themes.
+ *
+ * @see The {@link Theme} type.
+ */
+export declare const THEMES: readonly ["gruvbox::dark", "gruvbox::light", "one::cool", "one::dark", "one::darker", "one::deep", "one::light", "one::warm", "one::warmer"];
