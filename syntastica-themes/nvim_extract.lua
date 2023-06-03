@@ -9,6 +9,24 @@ local function parse_color(col)
     return red, green, blue
 end
 
+local function sorted_pairs(tbl)
+    -- collect the keys
+    local keys = {}
+    for k in pairs(tbl) do keys[#keys+1] = k end
+
+    -- sort the keys
+    table.sort(keys)
+
+    -- return an iterator function
+    local i = 0
+    return function()
+        i = i + 1
+        if keys[i] then
+            return keys[i], tbl[keys[i]]
+        end
+    end
+end
+
 local all_highlights = vim.api.nvim_get_hl(0, {})
 
 print('    ResolvedTheme::new(BTreeMap::from([')
@@ -22,7 +40,7 @@ if normal.bg ~= nil then
     print(line)
 end
 
-for key, _ in pairs(all_highlights) do
+for key, _ in sorted_pairs(all_highlights) do
     -- skip all highlights not starting with `@` or starting with `@lsp`
     if key:sub(1, 1) ~= '@' or key:find('@lsp', 1, true) == 1 then
         goto continue
