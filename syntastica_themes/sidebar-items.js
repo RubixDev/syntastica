@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["THEMES"],"fn":["from_str"],"mod":["catppuccin","github","gruvbox","nord","one","tokyo","vscode"]};
+window.SIDEBAR_ITEMS = {"constant":["THEMES"],"fn":["from_str"],"mod":["abscs","aurora","blue_moon","boo","catppuccin","darcula","dracula","everblush","everforest","falcon","github","gruvbox","material","melange","minimal","monochrome","monokai","moonfly","moonlight","neon","nightfly","nord","oceanicnext","omni","one","oxocarbon","solarized","tokyo","vscode","zephyr"]};
