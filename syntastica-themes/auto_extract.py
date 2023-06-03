@@ -499,13 +499,6 @@ if __name__ == "__main__":
                 ),
             ]
         ),
-        Theme("starry", "https://github.com/ray-x/starrt", [
-            SubTheme(
-                "starry",
-                "colorscheme starry"
-                ),
-            ]
-        ),
         Theme("moonlight", "https://github.com/shaunsingh/moonlight.nvim", [
             SubTheme(
                 "moonlight",

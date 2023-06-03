@@ -15,7 +15,6 @@ pub mod blue_moon;
 pub mod boo;
 pub mod catppuccin;
 pub mod dracula;
-pub mod dracula;
 pub mod everblush;
 pub mod everforest;
 pub mod falcon;
@@ -36,7 +35,6 @@ pub mod omni;
 pub mod one;
 pub mod oxocarbon;
 pub mod solarized;
-pub mod starry;
 pub mod tokyo;
 pub mod vscode;
 pub mod zephyr;
@@ -69,7 +67,6 @@ pub fn from_str(theme_name: impl AsRef<str>) -> Option<ResolvedTheme> {
         "catppuccin::latte" => Some(catppuccin::latte()),
         "catppuccin::macchiato" => Some(catppuccin::macchiato()),
         "catppuccin::mocha" => Some(catppuccin::mocha()),
-        "dracula::dracula" => Some(dracula::dracula()),
         "dracula::dracula" => Some(dracula::dracula()),
         "everblush::everblush" => Some(everblush::everblush()),
         "everforest::dark" => Some(everforest::dark()),
@@ -123,7 +120,6 @@ pub fn from_str(theme_name: impl AsRef<str>) -> Option<ResolvedTheme> {
         "oxocarbon::light" => Some(oxocarbon::light()),
         "solarized::dark" => Some(solarized::dark()),
         "solarized::light" => Some(solarized::light()),
-        "starry::starry" => Some(starry::starry()),
         "tokyo::day" => Some(tokyo::day()),
         "tokyo::moon" => Some(tokyo::moon()),
         "tokyo::night" => Some(tokyo::night()),
@@ -145,7 +141,6 @@ pub const THEMES: &[&str] = &[
     "catppuccin::latte",
     "catppuccin::macchiato",
     "catppuccin::mocha",
-    "dracula::dracula",
     "dracula::dracula",
     "everblush::everblush",
     "everforest::dark",
@@ -199,7 +194,6 @@ pub const THEMES: &[&str] = &[
     "oxocarbon::light",
     "solarized::dark",
     "solarized::light",
-    "starry::starry",
     "tokyo::day",
     "tokyo::moon",
     "tokyo::night",
