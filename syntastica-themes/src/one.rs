@@ -295,6 +295,7 @@ fn theme() -> BTreeMap<String, ThemeValue> {
         "operator": "$fg",
         "parameter": "$red",
         "parameter.reference": "$fg",
+        "preproc": "$purple",
         "property": "$cyan",
         "punctuation.bracket": "$light_grey",
         "punctuation.delimiter": "$light_grey",
