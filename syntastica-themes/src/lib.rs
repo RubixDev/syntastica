@@ -14,6 +14,7 @@ pub mod aurora;
 pub mod blue_moon;
 pub mod boo;
 pub mod catppuccin;
+pub mod darcula;
 pub mod dracula;
 pub mod everblush;
 pub mod everforest;
@@ -67,6 +68,7 @@ pub fn from_str(theme_name: impl AsRef<str>) -> Option<ResolvedTheme> {
         "catppuccin::latte" => Some(catppuccin::latte()),
         "catppuccin::macchiato" => Some(catppuccin::macchiato()),
         "catppuccin::mocha" => Some(catppuccin::mocha()),
+        "darcula::darcula" => Some(darcula::darcula()),
         "dracula::dracula" => Some(dracula::dracula()),
         "everblush::everblush" => Some(everblush::everblush()),
         "everforest::dark" => Some(everforest::dark()),
@@ -141,6 +143,7 @@ pub const THEMES: &[&str] = &[
     "catppuccin::latte",
     "catppuccin::macchiato",
     "catppuccin::mocha",
+    "darcula::darcula",
     "dracula::dracula",
     "everblush::everblush",
     "everforest::dark",

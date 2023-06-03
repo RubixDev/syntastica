@@ -372,10 +372,10 @@ if __name__ == "__main__":
                 ),
             ]
         ),
-        Theme("dracula", "https://github.com/doums/darcula", [
+        Theme("darcula", "https://github.com/doums/darcula", [
             SubTheme(
-                "dracula",
-                "colorscheme dracula"
+                "darcula",
+                "colorscheme darcula"
                 ),
             ]
         ),

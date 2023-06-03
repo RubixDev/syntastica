@@ -1,4 +1,4 @@
-//! The dracula theme collection in this module was extracted from <https://github.com/doums/darcula> using `auto_extract.py`.
+//! The dracula theme collection in this module was extracted from <https://github.com/dracula/vim> using `auto_extract.py`.
 
 use std::collections::BTreeMap;
 
