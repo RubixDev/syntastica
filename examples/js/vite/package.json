@@ -20,6 +20,6 @@
     "vite": "^4.3.9"
   },
   "dependencies": {
-    "syntastica": "^0.3.4"
+    "syntastica": "^0.3.6"
   }
 }
