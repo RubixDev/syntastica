@@ -44,6 +44,7 @@ jobs:
           author_name: github-actions[bot]
           default_author: github_actions
           message: 'chore: run codegen'
+          pull: '--rebase --autostash'
   build-js:
     needs: codegen
     runs-on: ubuntu-latest
@@ -84,3 +85,4 @@ jobs:
           author_name: github-actions[bot]
           default_author: github_actions
           message: 'chore: update syntastica-js build'
+          pull: '--rebase --autostash'
