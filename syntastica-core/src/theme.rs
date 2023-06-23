@@ -51,6 +51,11 @@ pub struct Theme(BTreeMap<String, ThemeValue>);
 ///
 /// A [`ResolvedTheme`] can be created from a [`Theme`] with [`Theme::resolve_links`] or the
 /// [`TryFrom<Theme>`](#impl-TryFrom<Theme>-for-ResolvedTheme) implementation.
+///
+/// To get the style for a key in this theme, the preferred method is using
+/// [`ResolvedTheme::find_style`], which will return the best match it finds. See the method's docs
+/// for more information. Alternatively, [`ResolvedTheme::get`] can be used to only look for an
+/// exact match.
 #[derive(Clone, Hash, Debug, PartialEq, Eq)]
 pub struct ResolvedTheme(BTreeMap<String, Style>);
 
@@ -215,6 +220,32 @@ impl ResolvedTheme {
         Q: Ord + ?Sized,
     {
         self.0.get(key)
+    }
+
+    /// Try to find the best possible style supported by the them given a theme key.
+    ///
+    /// For example, if `key` is `keyword.operator` but this theme only has a style defined for
+    /// `keyword`, then the style for `keyword` is returned. Additionally, if no style is found,
+    /// the method tries to use the keys `text` and `text.literal` as fallbacks.
+    pub fn find_style(&self, mut key: &str) -> Option<Style> {
+        // if the theme contains the entire key, use that
+        if let Some(style) = self.get(key) {
+            return Some(*style);
+        }
+
+        // otherwise continue to strip the right-most part of the key
+        while let Some((rest, _)) = key.rsplit_once('.') {
+            // until the theme contains the key
+            if let Some(style) = self.get(rest) {
+                return Some(*style);
+            }
+            key = rest;
+        }
+
+        // or when the theme doesn't have any matching style, try to use the `text` style as a fallback
+        self.get("text")
+            .or_else(|| self.get("text.literal"))
+            .copied()
     }
 }
 

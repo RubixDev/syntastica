@@ -74,7 +74,7 @@ pub fn render(
     for (index, line) in highlights.iter().enumerate() {
         for (text, style) in line {
             let unstyled = renderer.unstyled(text);
-            match style.and_then(|key| find_style(key, &theme)) {
+            match style.and_then(|key| theme.find_style(key)) {
                 Some(style) => out += &renderer.styled(&unstyled, style),
                 None => out += &unstyled,
             }
@@ -84,29 +84,6 @@ pub fn render(
         }
     }
     out + &renderer.tail()
-}
-
-// TODO: make this a public method on `ResolvedTheme`
-/// Try to find the best possible style supported by the them given a theme key. For example, if
-/// `key` is `keyword.operator` but `theme` only has a style defined for `keyword`, then the style
-/// for `keyword` is used.
-fn find_style(mut key: &'static str, theme: &ResolvedTheme) -> Option<Style> {
-    // if the theme contains the entire key, use that
-    if let Some(style) = theme.get(key) {
-        return Some(*style);
-    }
-
-    // otherwise continue to strip the right-most part of the key
-    while let Some((rest, _)) = key.rsplit_once('.') {
-        // until the theme contains the key
-        if let Some(style) = theme.get(rest) {
-            return Some(*style);
-        }
-        key = rest;
-    }
-
-    // or when the theme doesn't have any matching style, try to use the `text` style as a fallback
-    theme.get("text").copied()
 }
 
 ////////////////////////////////////////
