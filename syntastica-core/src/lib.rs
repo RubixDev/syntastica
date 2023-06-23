@@ -18,7 +18,7 @@ use tree_sitter as ts_runtime;
 use tree_sitter_c2rust as ts_runtime;
 
 mod error;
-pub mod provider;
+pub mod language_set;
 pub mod style;
 pub mod theme;
 

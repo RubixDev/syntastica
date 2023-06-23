@@ -128,9 +128,9 @@ meant for outside use, but are instead used internally. These are listed below.
   marked as "for internal use", because all three
   [parser collections](#parser-collections) depend on this crate and expose the
   queries through their implementation of
-  [`LanguageProvider`](provider::LanguageProvider). Unlike the previous crates
-  in this list however, you may actually want to depend on this crate yourself,
-  if you _only_ need the queries.
+  [`LanguageSet`](language_set::LanguageSet). Unlike the previous crates in this
+  list however, you may actually want to depend on this crate yourself, if you
+  _only_ need the queries.
 
 ### General side-products
 
@@ -190,15 +190,15 @@ section about [use cases](#use-cases) for when it is appropriate to use
 
 ```rust
 use syntastica::renderer::TerminalRenderer;
-use syntastica_parsers::LanguageProviderImpl;
+use syntastica_parsers::LanguageSetImpl;
 
 let output = syntastica::highlight(
     // the code to highlight
     r#"fn main() { println!("42"); }"#,
     // the name of the input's language
     "rust",
-    // use `syntastica-parsers` language provider with support for just Rust
-    &LanguageProviderImpl::with_languages(&["rust"]),
+    // use `syntastica-parsers` language set
+    &LanguageSetImpl::new(),
     // use the TerminalRenderer with no background color
     &mut TerminalRenderer::new(None),
     // use the gruvbox dark theme from `syntastica-themes`
@@ -216,7 +216,7 @@ two different renderers.
 
 ```rust
 use syntastica::{Processor, style::Color, renderer::*};
-use syntastica_parsers::LanguageProviderImpl;
+use syntastica_parsers::LanguageSetImpl;
 
 // process the input once, but store the raw highlight information
 let highlights = Processor::process_once(
@@ -224,8 +224,8 @@ let highlights = Processor::process_once(
     r#"fn main() { println!("42"); }"#,
     // the name of the input's language
     "rust",
-    // use `syntastica-parsers` language provider with support for just Rust
-    &LanguageProviderImpl::with_languages(&["rust"]),
+    // use `syntastica-parsers` language set
+    &LanguageSetImpl::new(),
 )
 .unwrap_or_else(|err| panic!("highlighting failed: {err}"));
 
@@ -254,13 +254,13 @@ inputs should be highlighted.
 
 ```rust
 use syntastica::{Processor, style::Color, renderer::*};
-use syntastica_parsers::LanguageProviderImpl;
+use syntastica_parsers::LanguageSetImpl;
 
-// create a language provider and a `Processor`
-let language_provider = LanguageProviderImpl::with_languages(&["rust", "javascript"]);
-let mut processor = Processor::try_from_provider(&language_provider).unwrap();
-// Note: `language_provider` has to be in a variable, because the processor
-// is bound to the lifetime of the reference passed to `try_from_provider`
+// create a language set and a `Processor`
+let language_set = LanguageSetImpl::new();
+let mut processor = Processor::new(&language_set);
+// Note: `language_set` has to be stored in a variable, because the processor
+// is bound to the lifetime of the reference passed to `new`
 
 // process some input
 let highlights_rust = processor.process(
@@ -308,17 +308,17 @@ how to detect the language to use based on a file extension. See that first
 example for explanations of the rest of the code.
 
 ```rust
-use syntastica::{renderer::TerminalRenderer, provider::LanguageProvider};
-use syntastica_parsers::LanguageProviderImpl;
+use syntastica::{renderer::TerminalRenderer, language_set::LanguageSet};
+use syntastica_parsers::LanguageSetImpl;
 
-let language_provider = LanguageProviderImpl::with_languages(&["rust"]);
+let language_set = LanguageSetImpl::new();
 let output = syntastica::highlight(
     r#"fn main() { println!("42"); }"#,
-    // the `LanguageProvider` trait also provides a `for_extension` function
+    // the `LanguageSet` trait also provides a `for_extension` function
     // which returns an `Option<Cow<'static, str>>`
     // make sure to have the trait in scope
-    language_provider.for_extension("rs").unwrap().as_ref(),
-    &language_provider,
+    language_set.for_extension("rs").unwrap().as_ref(),
+    &language_set,
     &mut TerminalRenderer::new(None),
     syntastica_themes::gruvbox::dark(),
 )
@@ -336,7 +336,7 @@ information.
 
 ```rust
 use syntastica::{renderer::TerminalRenderer, theme};
-use syntastica_parsers::LanguageProviderImpl;
+use syntastica_parsers::LanguageSetImpl;
 
 let theme = theme! {
     // specify colors using hex literals
@@ -363,7 +363,7 @@ let theme = theme! {
 let output = syntastica::highlight(
     r#"fn main() { println!("42"); }"#,
     "rust",
-    &LanguageProviderImpl::with_languages(&["rust"]),
+    &LanguageSetImpl::new(),
     &mut TerminalRenderer::new(None),
     theme,
 )

@@ -14,7 +14,7 @@ pub use processor::Processor;
 pub use renderer::render;
 pub use syntastica_core::*;
 
-use provider::LanguageProvider;
+use language_set::LanguageSet;
 use renderer::Renderer;
 use theme::ResolvedTheme;
 
@@ -31,7 +31,7 @@ pub type Highlights<'src> = Vec<Vec<(&'src str, Option<&'static str>)>>;
 ///
 /// **Only use this function if you do not plan to highlight multiple inputs!**
 /// When planning to render the same input multiple times, use [`Processor::process_once`] instead.
-/// When planning to process multiple different inputs with the same [`LanguageProvider`], use a
+/// When planning to process multiple different inputs with the same [`LanguageSet`], use a
 /// [`Processor`] and call [`Processor::process`] for each input.
 ///
 /// # Errors
@@ -44,7 +44,7 @@ pub type Highlights<'src> = Vec<Vec<(&'src str, Option<&'static str>)>>;
 pub fn highlight<T, E>(
     code: impl AsRef<str>,
     language_name: &str,
-    language_provider: &impl LanguageProvider,
+    language_set: &impl LanguageSet,
     renderer: &mut impl Renderer,
     theme: T,
 ) -> Result<String>
@@ -53,7 +53,7 @@ where
     crate::Error: From<E>,
 {
     Ok(render(
-        &Processor::process_once(code.as_ref(), language_name, language_provider)?,
+        &Processor::process_once(code.as_ref(), language_name, language_set)?,
         renderer,
         theme.try_into()?,
     ))

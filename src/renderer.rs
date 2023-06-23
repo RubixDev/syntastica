@@ -86,6 +86,7 @@ pub fn render(
     out + &renderer.tail()
 }
 
+// TODO: make this a public method on `ResolvedTheme`
 /// Try to find the best possible style supported by the them given a theme key. For example, if
 /// `key` is `keyword.operator` but `theme` only has a style defined for `keyword`, then the style
 /// for `keyword` is used.

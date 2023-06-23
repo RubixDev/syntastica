@@ -26,7 +26,7 @@ pub enum Error {
     #[error("unsupported language with name '{0}'")]
     UnsupportedLanguage(String),
 
-    /// A [`LanguageProvider`](crate::provider::LanguageProvider) did not provide queries for a
+    /// A [`LanguageSet`](crate::language_set::LanguageSet) did not provide queries for a
     /// provided parser.
     ///
     /// Contains the name of the language which is missing queries.

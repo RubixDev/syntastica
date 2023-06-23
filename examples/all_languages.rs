@@ -1,11 +1,11 @@
 use std::collections::BTreeMap;
 
 use syntastica::{renderer::TerminalRenderer, Processor};
-use syntastica_parsers_git::LanguageProviderImpl;
+use syntastica_parsers_git::LanguageSetImpl;
 
 fn main() {
-    let language_provider = LanguageProviderImpl::all();
-    let mut processor = Processor::try_from_provider(&language_provider).unwrap();
+    let language_set = LanguageSetImpl::new();
+    let mut processor = Processor::new(&language_set);
 
     let examples: BTreeMap<String, String> =
         toml::from_str(include_str!("./example_programs.toml")).unwrap();
@@ -19,7 +19,11 @@ fn main() {
     }
 }
 
-fn example(processor: &mut Processor, code: &str, lang_name: &str) -> syntastica::Result<()> {
+fn example(
+    processor: &mut Processor<LanguageSetImpl>,
+    code: &str,
+    lang_name: &str,
+) -> syntastica::Result<()> {
     println!(
         "{}",
         syntastica::render(

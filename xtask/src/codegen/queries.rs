@@ -4,8 +4,8 @@ use anyhow::Result;
 use fancy_regex::Regex;
 use once_cell::sync::Lazy;
 use rsexpr::{OwnedSexpr, OwnedSexprs};
-use syntastica_core::provider::LanguageProvider;
-use syntastica_parsers_git::LanguageProviderImpl;
+use syntastica_core::language_set::LanguageSet;
+use syntastica_parsers_git::LanguageSetImpl;
 use tree_sitter::{Language, Query};
 
 static QUERIES_DIR: Lazy<String> =
@@ -14,11 +14,11 @@ static INHERITS_REGEX: Lazy<Regex> =
     Lazy::new(|| Regex::new(r";+\s*inherits\s*:?\s*([a-z_,()-]+)\s*").unwrap());
 
 pub fn make_queries() -> Result<BTreeMap<String, [String; 6]>> {
-    let mut parsers = LanguageProviderImpl::all().get_parsers()?;
+    let set = LanguageSetImpl::new();
     let mut map = BTreeMap::new();
 
     for lang in &crate::LANGUAGE_CONFIG.languages {
-        let ts_lang = parsers.remove(&lang.name).unwrap();
+        let ts_lang = set.get_language(&lang.name)?.language;
 
         let query_file =
             |enabled: bool, filename: &str, func: fn(&mut OwnedSexprs), crates_io: bool| match (

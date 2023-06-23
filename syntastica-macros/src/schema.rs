@@ -18,7 +18,7 @@ pub struct Language {
     pub queries: Queries,
 }
 
-#[derive(Clone, Debug, Deserialize, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
 #[serde(rename_all = "kebab-case")]
 pub enum Group {
     Some,

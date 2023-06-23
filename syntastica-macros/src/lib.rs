@@ -47,7 +47,7 @@ pub fn parsers_ffi(_: TokenStream) -> TokenStream {
         };
         quote! {
             #[cfg(all(feature = #feat #wasm_cfg))]
-            fn #ffi_func() -> ::syntastica_core::provider::Language;
+            fn #ffi_func() -> ::syntastica_core::language_set::Language;
         }
     });
     let functions = LANGUAGE_CONFIG.languages.iter().map(|lang| {
@@ -75,7 +75,7 @@ pub fn parsers_ffi(_: TokenStream) -> TokenStream {
         quote! {
             #[cfg(feature = #feat)]
             #[doc = #doc]
-            pub fn #name() -> ::syntastica_core::provider::Language {
+            pub fn #name() -> ::syntastica_core::language_set::Language {
                 #[cfg(all(not(all(feature = "docs", doc)) #not_wasm_cfg))]
                 unsafe { #ffi_func() }
                 #[cfg(any(all(feature = "docs", doc) #wasm_cfg))]
@@ -131,7 +131,7 @@ fn parsers_rust(crates_io: bool, query_suffix: &str) -> TokenStream {
         quote! {
             #[cfg(feature = #feat)]
             #[doc = #doc]
-            pub fn #name() -> ::syntastica_core::provider::Language {
+            pub fn #name() -> ::syntastica_core::language_set::Language {
                 #body
             }
         }
@@ -155,111 +155,83 @@ fn parsers(
         .iter()
         .filter(&filter)
         .map(|lang| {
+            let feat = lang.group.to_string();
             let name_str = &lang.name;
-            quote! { #name_str, }
+            quote! { #[cfg(feature = #feat)] #name_str }
         });
-    let get_parsers = LANGUAGE_CONFIG
+    let extensions = LANGUAGE_CONFIG
         .languages
         .iter()
         .filter(&filter)
-        .map(|lang| {
+        .flat_map(|lang| {
             let feat = lang.group.to_string();
-            let name = format_ident!("{}", lang.name);
             let name_str = &lang.name;
-            quote! {
-                #[cfg(all(feature = #feat, not(all(feature = "docs", doc))))]
-                if self.0.map_or(true, |langs| langs.contains(&#name_str)) {
-                    _map.insert(#name_str.to_owned(), #name());
-                }
-            }
+            lang.file_extensions
+                .iter()
+                .map(move |ext| quote! { #[cfg(feature = #feat)] (#ext, #name_str) })
         });
-    let get_queries = LANGUAGE_CONFIG.languages.iter().map(|lang| {
-        let name_str = &lang.name;
+    let mut langs_sorted_by_group = LANGUAGE_CONFIG.languages.clone();
+    langs_sorted_by_group.sort_by_key(|lang| lang.group);
+    let func_map = langs_sorted_by_group
+        .iter()
+        .filter(&filter)
+        .enumerate()
+        .map(|(index, lang)| {
+            let feat = lang.group.to_string();
+            let name_str = &lang.name;
+            quote! { #[cfg(feature = #feat)] (#name_str, #index) }
+        });
+    let funcs = langs_sorted_by_group.iter().filter(&filter).map(|lang| {
+        let feat = lang.group.to_string();
+        let name = format_ident!("{}", lang.name);
+        quote! { #[cfg(feature = #feat)] &#name }
+    });
+    let queries = langs_sorted_by_group.iter().filter(&filter).map(|lang| {
+        let feat = lang.group.to_string();
         let highlights = format_ident!("{}_HIGHLIGHTS{query_suffix}", lang.name.to_uppercase());
         let injections = format_ident!("{}_INJECTIONS{query_suffix}", lang.name.to_uppercase());
         let locals = format_ident!("{}_LOCALS{query_suffix}", lang.name.to_uppercase());
 
-        quote! {
-            _map.insert(#name_str.to_owned(), [
-                ::syntastica_queries::#highlights.into(),
-                ::syntastica_queries::#injections.into(),
-                ::syntastica_queries::#locals.into(),
-            ]);
-        }
+        quote! { #[cfg(feature = #feat)] [
+            ::syntastica_queries::#highlights,
+            ::syntastica_queries::#injections,
+            ::syntastica_queries::#locals,
+        ] }
     });
-    let by_extension = LANGUAGE_CONFIG
-        .languages
-        .iter()
-        .filter(&filter)
-        .map(|lang| {
-            let feat = lang.group.to_string();
-            let extensions = &lang.file_extensions;
-            let name_str = &lang.name;
-            quote! {
-                #[cfg(feature = #feat)]
-                if [#(#extensions),*].contains(&file_extension) {
-                    return ::std::option::Option::Some(#name_str.into());
-                }
-            }
-        });
-    let lang_count_some = LANGUAGE_CONFIG
-        .languages
-        .iter()
-        .filter(|lang| lang.group == Group::Some)
-        .count();
-    let lang_count_all = LANGUAGE_CONFIG.languages.len();
-    let lang_count_most = lang_count_all - lang_count_some;
-    let lang_count_parsers = quote! {
-        if cfg!(feature = "all") {
-            #lang_count_all
-        } else if cfg!(feature = "most") {
-            #lang_count_most
-        } else if cfg!(feature = "some") {
-            #lang_count_some
-        } else {
-            0
-        }
-    };
+
     quote! {
         #extra
 
         /// A list of all language names that are supported by this parser collection.
-        pub const LANGUAGES: &[&str] = &[#(#list)*];
+        pub const LANGUAGES: &[&str] = &[#(#list),*];
+        const LANG_COUNT: usize = LANGUAGES.len();
 
         #(#functions)*
 
-        // TODO: maybe create enum with all supported languages
-        /// An implementation of [`LanguageProvider`](::syntastica_core::provider::LanguageProvider),
-        /// providing all parsers in the enabled feature set (see [`all`](LanguageProviderImpl::all))
-        /// or a subset of them (see [`with_languages`](LanguageProviderImpl::with_languages)).
-        pub struct LanguageProviderImpl<'a>(::std::option::Option<&'a [&'a str]>);
+        // TODO: use "perfect" hashmap with compile-time known keys
+        static EXTENSION_MAP: ::once_cell::sync::Lazy<::std::collections::HashMap<&'static str, &'static str>>
+            = ::once_cell::sync::Lazy::new(|| ::std::collections::HashMap::from([#(#extensions),*]));
 
-        impl ::syntastica_core::provider::LanguageProvider for LanguageProviderImpl<'_> {
-            fn get_parsers(&self) -> ::std::result::Result<::syntastica_core::provider::Parsers, ::syntastica_core::Error> {
-                let mut _map: ::syntastica_core::provider::Parsers = ::std::collections::HashMap::with_capacity(#lang_count_parsers);
-                #(#get_parsers)*
-                ::std::result::Result::Ok(_map)
-            }
+        // TODO: use "perfect" hashmap with compile-time known keys
+        static IDX_MAP: ::once_cell::sync::Lazy<::std::collections::HashMap<&'static str, usize>>
+            = ::once_cell::sync::Lazy::new(|| ::std::collections::HashMap::from([#(#func_map),*]));
 
-            fn get_queries(&self) -> ::std::result::Result<::syntastica_core::provider::Queries, ::syntastica_core::Error> {
-                let mut _map: ::syntastica_core::provider::Queries = ::std::collections::HashMap::with_capacity(#lang_count_all);
-                #(#get_queries)*
-                ::std::result::Result::Ok(_map)
-            }
+        const QUERIES: &[[&str; 3]] = &[#(#queries),*];
 
-            fn for_extension<'a>(
-                &self,
-                file_extension: &'a str,
-            ) -> ::std::option::Option<::std::borrow::Cow<'a, str>> {
-                #(#by_extension)*
-                ::std::option::Option::None
-            }
-
-            // TODO: injection regex
-            // fn for_injection<'a>(&self, name: &'a str) -> ::std::option::Option<::std::borrow::Cow<'a, str>> {
-            //     ::std::option::Option::None
-            // }
+        fn __get_language(idx: usize) -> ::syntastica_core::Result<::syntastica_core::language_set::HighlightConfiguration> {
+            let funcs: [&dyn Fn() -> ::syntastica_core::language_set::Language; LANG_COUNT] = [#(#funcs),*];
+            let lang = funcs[idx]();
+            let mut conf = ::syntastica_core::language_set::HighlightConfiguration::new(
+                lang,
+                QUERIES[idx][0],
+                QUERIES[idx][1],
+                QUERIES[idx][2],
+            )?;
+            conf.configure(::syntastica_core::theme::THEME_KEYS);
+            Ok(conf)
         }
+
+        // TODO: maybe create enum with all supported languages
     }
     .into()
 }
@@ -271,14 +243,13 @@ pub fn queries_test(_: TokenStream) -> TokenStream {
         .iter()
         .map(|lang| {
             let name = format_ident!("{}", lang.name);
-            let name_str = &lang.name;
             let highlights = format_ident!("{}_HIGHLIGHTS", lang.name.to_uppercase());
             let injections = format_ident!("{}_INJECTIONS", lang.name.to_uppercase());
             let locals = format_ident!("{}_LOCALS", lang.name.to_uppercase());
             quote! {
                 #[test]
                 fn #name() {
-                    let lang = PARSERS.get(#name_str).unwrap().clone();
+                    let lang = ::syntastica_parsers_git::#name();
                     validate_query(lang, ::syntastica_queries::#highlights, "highlights");
                     validate_query(lang, ::syntastica_queries::#injections, "injections");
                     validate_query(lang, ::syntastica_queries::#locals, "locals");
@@ -297,14 +268,13 @@ pub fn queries_test_crates_io(_: TokenStream) -> TokenStream {
         .filter(|lang| lang.parser.rust_func.is_some() && lang.parser.crates_io.is_some())
         .map(|lang| {
             let name = format_ident!("{}", lang.name);
-            let name_str = &lang.name;
             let highlights = format_ident!("{}_HIGHLIGHTS_CRATES_IO", lang.name.to_uppercase());
             let injections = format_ident!("{}_INJECTIONS_CRATES_IO", lang.name.to_uppercase());
             let locals = format_ident!("{}_LOCALS_CRATES_IO", lang.name.to_uppercase());
             quote! {
                 #[test]
                 fn #name() {
-                    let lang = PARSERS.get(#name_str).unwrap().clone();
+                    let lang = ::syntastica_parsers::#name();
                     validate_query(lang, ::syntastica_queries::#highlights, "highlights");
                     validate_query(lang, ::syntastica_queries::#injections, "injections");
                     validate_query(lang, ::syntastica_queries::#locals, "locals");

@@ -13,12 +13,12 @@ use syntastica::{
     theme::ResolvedTheme,
     Highlights, Processor,
 };
-use syntastica_parsers_git::LanguageProviderImpl;
+use syntastica_parsers_git::LanguageSetImpl;
 
 static mut LANGS_LIST: Vec<String> = vec![];
 static mut LANGS_LIST_REF: Vec<&'static str> = vec![];
-static mut LANGUAGES: Option<LanguageProviderImpl<'static>> = None;
-static mut PROCESSOR: Option<Processor<'static>> = None;
+static mut LANGUAGES: Option<LanguageSetImpl> = None;
+static mut PROCESSOR: Option<Processor<'static, LanguageSetImpl>> = None;
 
 static mut CODE: String = String::new();
 static mut HIGHLIGHTS: Option<Highlights<'static>> = None;
@@ -31,7 +31,7 @@ fn string_to_ptr(string: String) -> *const c_char {
     CString::new(string).unwrap().into_raw()
 }
 
-/// Initialize the global [`LanguageProvider`](syntastica::provider::LanguageProvider)
+/// Initialize the global [`LanguageSet`](syntastica::language_set::LanguageSet)
 /// and [`Processor`].
 ///
 /// This function _must_ be called before any of the others. It accepts a list of languages to
@@ -63,11 +63,15 @@ pub unsafe extern "C" fn init(langs: *const *const c_char, langs_len: usize) {
             Some(langs) => {
                 LANGS_LIST = langs;
                 LANGS_LIST_REF = LANGS_LIST.iter().map(|str| str.as_str()).collect();
-                LanguageProviderImpl::with_languages(&LANGS_LIST_REF)
+                let mut set = LanguageSetImpl::new();
+                if let Err(err) = set.preload(&LANGS_LIST_REF) {
+                    eprintln!("initialization failed: {err}")
+                }
+                set
             }
-            None => LanguageProviderImpl::all(),
+            None => LanguageSetImpl::new(),
         });
-        PROCESSOR = Some(Processor::try_from_provider(LANGUAGES.as_ref().unwrap()).unwrap());
+        PROCESSOR = Some(Processor::new(LANGUAGES.as_ref().unwrap()));
     }
 }
 
