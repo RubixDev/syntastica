@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["Error"],"fn":["highlight"],"macro":["theme"],"mod":["language_set","renderer","style","theme"],"struct":["Processor"],"type":["Highlights","Result"]};
+window.SIDEBAR_ITEMS = {"enum":["Error"],"fn":["highlight"],"macro":["theme"],"mod":["language_set","renderer","style","theme"],"struct":["Processor"],"type":["Highlights","Result","ThemedHighlights"]};
