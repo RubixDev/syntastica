@@ -9,7 +9,7 @@ use syntastica_core::theme::ResolvedTheme;
 
 use crate::{
     style::{Color, Style},
-    Highlights,
+    Highlights, ThemedHighlights,
 };
 
 /// A [`Renderer`] defines how to render [`Highlights`] to end users. The methods are invoked by
@@ -84,6 +84,27 @@ pub fn render(
         }
     }
     out + &renderer.tail()
+}
+
+/// Convert [`Highlights`] to [`ThemedHighlights`] by applying styles from the given
+/// [`ResolvedTheme`].
+///
+/// This may be useful if you do not want to render to a [`String`] and thus cannot use the
+/// [`Renderer`] trait for renerering, but still wish to only look up the theme styles once and
+/// then store the styled highlights.
+pub fn resolve_styles<'src>(
+    highlights: &Highlights<'src>,
+    theme: ResolvedTheme,
+) -> ThemedHighlights<'src> {
+    let mut new_highlights = Vec::with_capacity(highlights.len());
+    for line in highlights.iter() {
+        let mut new_line = Vec::with_capacity(line.len());
+        for (text, key) in line {
+            new_line.push((*text, key.and_then(|key| theme.find_style(key))));
+        }
+        new_highlights.push(new_line);
+    }
+    new_highlights
 }
 
 ////////////////////////////////////////

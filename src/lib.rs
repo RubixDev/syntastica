@@ -16,9 +16,10 @@ pub use syntastica_core::*;
 
 use language_set::LanguageSet;
 use renderer::Renderer;
+use syntastica_core::style::Style;
 use theme::ResolvedTheme;
 
-/// Source code with style information attached, as returned by the [`Processor`].
+/// Source code with theme-independent style information attached, as returned by the [`Processor`].
 ///
 /// The type is a vector of lines of the source code, and each line is a vector of 2-tuples.
 /// The first element of each 2-tuple is a slice of the source text, and the second
@@ -26,6 +27,13 @@ use theme::ResolvedTheme;
 /// present in [`THEME_KEYS`](theme::THEME_KEYS). The [`render`] function takes this type,
 /// a [`Renderer`], and a [`ResolvedTheme`] as arguments in order to render the text for end users.
 pub type Highlights<'src> = Vec<Vec<(&'src str, Option<&'static str>)>>;
+
+/// Source code with theme-specific style information attached.
+///
+/// The type is a vector of lines of the source code, and each line is a vector of 2-tuples.
+/// The first element of each 2-tuple is a slice of the source text, and the second
+/// element is an optional style for that region of text.
+pub type ThemedHighlights<'src> = Vec<Vec<(&'src str, Option<Style>)>>;
 
 /// Convenience function for [processing](Processor) and directly [rendering](render) code once.
 ///
