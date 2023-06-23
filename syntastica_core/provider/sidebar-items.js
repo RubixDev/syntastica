@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"struct":["ConfiguredLanguages","HighlightConfiguration","Language"],"trait":["LanguageProvider"],"type":["Languages","Parsers","Queries"]};

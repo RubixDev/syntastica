@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["HighlightConfiguration","Language"],"trait":["LanguageSet"]};

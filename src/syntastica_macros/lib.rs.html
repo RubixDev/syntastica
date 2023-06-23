@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `syntastica-macros/src/lib.rs`."><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-2fcac8296ac587d8.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="syntastica_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.72.0-nightly (dd5d7c729 2023-06-02)" data-search-js="search-4926e5fc22a5646a.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ></div><script src="../../static.files/storage-62ce34ea385b278a.js"></script><script defer src="../../static.files/source-script-11255107d0a65077.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-48600a9606eff342.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../syntastica_macros/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `syntastica-macros/src/lib.rs`."><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-f40c346f39d9abc1.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="syntastica_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.72.0-nightly (04075b320 2023-06-22)" data-search-js="search-95c92dd01058facf.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ></div><script src="../../static.files/storage-62ce34ea385b278a.js"></script><script defer src="../../static.files/source-script-11255107d0a65077.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-190c35055d2a8300.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../syntastica_macros/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -284,36 +284,6 @@
 <a href="#284" id="284">284</a>
 <a href="#285" id="285">285</a>
 <a href="#286" id="286">286</a>
-<a href="#287" id="287">287</a>
-<a href="#288" id="288">288</a>
-<a href="#289" id="289">289</a>
-<a href="#290" id="290">290</a>
-<a href="#291" id="291">291</a>
-<a href="#292" id="292">292</a>
-<a href="#293" id="293">293</a>
-<a href="#294" id="294">294</a>
-<a href="#295" id="295">295</a>
-<a href="#296" id="296">296</a>
-<a href="#297" id="297">297</a>
-<a href="#298" id="298">298</a>
-<a href="#299" id="299">299</a>
-<a href="#300" id="300">300</a>
-<a href="#301" id="301">301</a>
-<a href="#302" id="302">302</a>
-<a href="#303" id="303">303</a>
-<a href="#304" id="304">304</a>
-<a href="#305" id="305">305</a>
-<a href="#306" id="306">306</a>
-<a href="#307" id="307">307</a>
-<a href="#308" id="308">308</a>
-<a href="#309" id="309">309</a>
-<a href="#310" id="310">310</a>
-<a href="#311" id="311">311</a>
-<a href="#312" id="312">312</a>
-<a href="#313" id="313">313</a>
-<a href="#314" id="314">314</a>
-<a href="#315" id="315">315</a>
-<a href="#316" id="316">316</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>once_cell::sync::Lazy;
 <span class="kw">use </span>proc_macro::TokenStream;
 <span class="kw">use </span>quote::{format_ident, quote};
@@ -363,7 +333,7 @@
         };
         <span class="macro">quote! </span>{
             <span class="attr">#[cfg(all(feature = #feat #wasm_cfg))]
-            </span><span class="kw">fn </span>#ffi_func() -&gt; ::syntastica_core::provider::Language;
+            </span><span class="kw">fn </span>#ffi_func() -&gt; ::syntastica_core::language_set::Language;
         }
     });
     <span class="kw">let </span>functions = LANGUAGE_CONFIG.languages.iter().map(|lang| {
@@ -391,7 +361,7 @@
         <span class="macro">quote! </span>{
             <span class="attr">#[cfg(feature = #feat)]
             #[doc = #doc]
-            </span><span class="kw">pub fn </span>#name() -&gt; ::syntastica_core::provider::Language {
+            </span><span class="kw">pub fn </span>#name() -&gt; ::syntastica_core::language_set::Language {
                 <span class="attr">#[cfg(all(not(all(feature = <span class="string">&quot;docs&quot;</span>, doc)) #not_wasm_cfg))]
                 </span><span class="kw">unsafe </span>{ #ffi_func() }
                 <span class="attr">#[cfg(any(all(feature = <span class="string">&quot;docs&quot;</span>, doc) #wasm_cfg))]
@@ -447,7 +417,7 @@
         <span class="macro">quote! </span>{
             <span class="attr">#[cfg(feature = #feat)]
             #[doc = #doc]
-            </span><span class="kw">pub fn </span>#name() -&gt; ::syntastica_core::provider::Language {
+            </span><span class="kw">pub fn </span>#name() -&gt; ::syntastica_core::language_set::Language {
                 #body
             }
         }
@@ -471,112 +441,84 @@
         .iter()
         .filter(<span class="kw-2">&amp;</span>filter)
         .map(|lang| {
+            <span class="kw">let </span>feat = lang.group.to_string();
             <span class="kw">let </span>name_str = <span class="kw-2">&amp;</span>lang.name;
-            <span class="macro">quote! </span>{ #name_str, }
+            <span class="macro">quote! </span>{ <span class="attr">#[cfg(feature = #feat)] </span>#name_str }
         });
-    <span class="kw">let </span>get_parsers = LANGUAGE_CONFIG
+    <span class="kw">let </span>extensions = LANGUAGE_CONFIG
         .languages
         .iter()
         .filter(<span class="kw-2">&amp;</span>filter)
-        .map(|lang| {
+        .flat_map(|lang| {
             <span class="kw">let </span>feat = lang.group.to_string();
-            <span class="kw">let </span>name = <span class="macro">format_ident!</span>(<span class="string">&quot;{}&quot;</span>, lang.name);
             <span class="kw">let </span>name_str = <span class="kw-2">&amp;</span>lang.name;
-            <span class="macro">quote! </span>{
-                <span class="attr">#[cfg(all(feature = #feat, not(all(feature = <span class="string">&quot;docs&quot;</span>, doc))))]
-                </span><span class="kw">if </span><span class="self">self</span>.<span class="number">0</span>.map_or(<span class="bool-val">true</span>, |langs| langs.contains(<span class="kw-2">&amp;</span>#name_str)) {
-                    _map.insert(#name_str.to_owned(), #name());
-                }
-            }
+            lang.file_extensions
+                .iter()
+                .map(<span class="kw">move </span>|ext| <span class="macro">quote! </span>{ <span class="attr">#[cfg(feature = #feat)] </span>(#ext, #name_str) })
         });
-    <span class="kw">let </span>get_queries = LANGUAGE_CONFIG.languages.iter().map(|lang| {
-        <span class="kw">let </span>name_str = <span class="kw-2">&amp;</span>lang.name;
+    <span class="kw">let </span><span class="kw-2">mut </span>langs_sorted_by_group = LANGUAGE_CONFIG.languages.clone();
+    langs_sorted_by_group.sort_by_key(|lang| lang.group);
+    <span class="kw">let </span>func_map = langs_sorted_by_group
+        .iter()
+        .filter(<span class="kw-2">&amp;</span>filter)
+        .enumerate()
+        .map(|(index, lang)| {
+            <span class="kw">let </span>feat = lang.group.to_string();
+            <span class="kw">let </span>name_str = <span class="kw-2">&amp;</span>lang.name;
+            <span class="macro">quote! </span>{ <span class="attr">#[cfg(feature = #feat)] </span>(#name_str, #index) }
+        });
+    <span class="kw">let </span>funcs = langs_sorted_by_group.iter().filter(<span class="kw-2">&amp;</span>filter).map(|lang| {
+        <span class="kw">let </span>feat = lang.group.to_string();
+        <span class="kw">let </span>name = <span class="macro">format_ident!</span>(<span class="string">&quot;{}&quot;</span>, lang.name);
+        <span class="macro">quote! </span>{ <span class="attr">#[cfg(feature = #feat)] </span><span class="kw-2">&amp;</span>#name }
+    });
+    <span class="kw">let </span>queries = langs_sorted_by_group.iter().filter(<span class="kw-2">&amp;</span>filter).map(|lang| {
+        <span class="kw">let </span>feat = lang.group.to_string();
         <span class="kw">let </span>highlights = <span class="macro">format_ident!</span>(<span class="string">&quot;{}_HIGHLIGHTS{query_suffix}&quot;</span>, lang.name.to_uppercase());
         <span class="kw">let </span>injections = <span class="macro">format_ident!</span>(<span class="string">&quot;{}_INJECTIONS{query_suffix}&quot;</span>, lang.name.to_uppercase());
         <span class="kw">let </span>locals = <span class="macro">format_ident!</span>(<span class="string">&quot;{}_LOCALS{query_suffix}&quot;</span>, lang.name.to_uppercase());
 
-        <span class="macro">quote! </span>{
-            _map.insert(#name_str.to_owned(), [
-                ::syntastica_queries::#highlights.into(),
-                ::syntastica_queries::#injections.into(),
-                ::syntastica_queries::#locals.into(),
-            ]);
-        }
+        <span class="macro">quote! </span>{ <span class="attr">#[cfg(feature = #feat)] </span>[
+            ::syntastica_queries::#highlights,
+            ::syntastica_queries::#injections,
+            ::syntastica_queries::#locals,
+        ] }
     });
-    <span class="kw">let </span>by_extension = LANGUAGE_CONFIG
-        .languages
-        .iter()
-        .filter(<span class="kw-2">&amp;</span>filter)
-        .map(|lang| {
-            <span class="kw">let </span>feat = lang.group.to_string();
-            <span class="kw">let </span>extensions = <span class="kw-2">&amp;</span>lang.file_extensions;
-            <span class="kw">let </span>name_str = <span class="kw-2">&amp;</span>lang.name;
-            <span class="macro">quote! </span>{
-                <span class="attr">#[cfg(feature = #feat)]
-                </span><span class="kw">if </span>[#(#extensions),<span class="kw-2">*</span>].contains(<span class="kw-2">&amp;</span>file_extension) {
-                    <span class="kw">return </span>::std::option::Option::Some(#name_str.into());
-                }
-            }
-        });
-    <span class="kw">let </span>lang_count_some = LANGUAGE_CONFIG
-        .languages
-        .iter()
-        .filter(|lang| lang.group == Group::Some)
-        .count();
-    <span class="kw">let </span>lang_count_all = LANGUAGE_CONFIG.languages.len();
-    <span class="kw">let </span>lang_count_most = lang_count_all - lang_count_some;
-    <span class="kw">let </span>lang_count_parsers = <span class="macro">quote! </span>{
-        <span class="kw">if </span><span class="macro">cfg!</span>(feature = <span class="string">&quot;all&quot;</span>) {
-            #lang_count_all
-        } <span class="kw">else if </span><span class="macro">cfg!</span>(feature = <span class="string">&quot;most&quot;</span>) {
-            #lang_count_most
-        } <span class="kw">else if </span><span class="macro">cfg!</span>(feature = <span class="string">&quot;some&quot;</span>) {
-            #lang_count_some
-        } <span class="kw">else </span>{
-            <span class="number">0
-        </span>}
-    };
+
     <span class="macro">quote! </span>{
         #extra
 
         <span class="doccomment">/// A list of all language names that are supported by this parser collection.
-        </span><span class="kw">pub const </span>LANGUAGES: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span>str] = <span class="kw-2">&amp;</span>[#(#list)<span class="kw-2">*</span>];
+        </span><span class="kw">pub const </span>LANGUAGES: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span>str] = <span class="kw-2">&amp;</span>[#(#list),<span class="kw-2">*</span>];
+        <span class="kw">const </span>LANG_COUNT: usize = LANGUAGES.len();
 
         #(#functions)*
 
+        <span class="comment">// TODO: use &quot;perfect&quot; hashmap with compile-time known keys
+        </span><span class="kw">static </span>EXTENSION_MAP: ::once_cell::sync::Lazy&lt;::std::collections::HashMap&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str&gt;&gt;
+            = ::once_cell::sync::Lazy::new(|| ::std::collections::HashMap::from([#(#extensions),<span class="kw-2">*</span>]));
+
+        <span class="comment">// TODO: use &quot;perfect&quot; hashmap with compile-time known keys
+        </span><span class="kw">static </span>IDX_MAP: ::once_cell::sync::Lazy&lt;::std::collections::HashMap&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str, usize&gt;&gt;
+            = ::once_cell::sync::Lazy::new(|| ::std::collections::HashMap::from([#(#func_map),<span class="kw-2">*</span>]));
+
+        <span class="kw">const </span>QUERIES: <span class="kw-2">&amp;</span>[[<span class="kw-2">&amp;</span>str; <span class="number">3</span>]] = <span class="kw-2">&amp;</span>[#(#queries),<span class="kw-2">*</span>];
+
+        <span class="kw">fn </span>__get_language(idx: usize) -&gt; ::syntastica_core::Result&lt;::syntastica_core::language_set::HighlightConfiguration&gt; {
+            <span class="kw">let </span>funcs: [<span class="kw-2">&amp;</span><span class="kw">dyn </span>Fn() -&gt; ::syntastica_core::language_set::Language; LANG_COUNT] = [#(#funcs),<span class="kw-2">*</span>];
+            <span class="kw">let </span>lang = funcs[idx]();
+            <span class="kw">let </span><span class="kw-2">mut </span>conf = ::syntastica_core::language_set::HighlightConfiguration::new(
+                lang,
+                QUERIES[idx][<span class="number">0</span>],
+                QUERIES[idx][<span class="number">1</span>],
+                QUERIES[idx][<span class="number">2</span>],
+            )<span class="question-mark">?</span>;
+            conf.configure(::syntastica_core::theme::THEME_KEYS);
+            <span class="prelude-val">Ok</span>(conf)
+        }
+
         <span class="comment">// TODO: maybe create enum with all supported languages
-        </span><span class="doccomment">/// An implementation of [`LanguageProvider`](::syntastica_core::provider::LanguageProvider),
-        /// providing all parsers in the enabled feature set (see [`all`](LanguageProviderImpl::all))
-        /// or a subset of them (see [`with_languages`](LanguageProviderImpl::with_languages)).
-        </span><span class="kw">pub struct </span>LanguageProviderImpl&lt;<span class="lifetime">&#39;a</span>&gt;(::std::option::Option&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str]&gt;);
-
-        <span class="kw">impl </span>::syntastica_core::provider::LanguageProvider <span class="kw">for </span>LanguageProviderImpl&lt;<span class="lifetime">&#39;_</span>&gt; {
-            <span class="kw">fn </span>get_parsers(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ::std::result::Result&lt;::syntastica_core::provider::Parsers, ::syntastica_core::Error&gt; {
-                <span class="kw">let </span><span class="kw-2">mut </span>_map: ::syntastica_core::provider::Parsers = ::std::collections::HashMap::with_capacity(#lang_count_parsers);
-                #(#get_parsers)*
-                ::std::result::Result::Ok(_map)
-            }
-
-            <span class="kw">fn </span>get_queries(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ::std::result::Result&lt;::syntastica_core::provider::Queries, ::syntastica_core::Error&gt; {
-                <span class="kw">let </span><span class="kw-2">mut </span>_map: ::syntastica_core::provider::Queries = ::std::collections::HashMap::with_capacity(#lang_count_all);
-                #(#get_queries)*
-                ::std::result::Result::Ok(_map)
-            }
-
-            <span class="kw">fn </span>for_extension&lt;<span class="lifetime">&#39;a</span>&gt;(
-                <span class="kw-2">&amp;</span><span class="self">self</span>,
-                file_extension: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str,
-            ) -&gt; ::std::option::Option&lt;::std::borrow::Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;&gt; {
-                #(#by_extension)*
-                ::std::option::Option::None
-            }
-
-            <span class="comment">// TODO: injection regex
-            // fn for_injection&lt;&#39;a&gt;(&amp;self, name: &amp;&#39;a str) -&gt; ::std::option::Option&lt;::std::borrow::Cow&lt;&#39;a, str&gt;&gt; {
-            //     ::std::option::Option::None
-            // }
-        </span>}
-    }
+    </span>}
     .into()
 }
 
@@ -587,14 +529,13 @@
         .iter()
         .map(|lang| {
             <span class="kw">let </span>name = <span class="macro">format_ident!</span>(<span class="string">&quot;{}&quot;</span>, lang.name);
-            <span class="kw">let </span>name_str = <span class="kw-2">&amp;</span>lang.name;
             <span class="kw">let </span>highlights = <span class="macro">format_ident!</span>(<span class="string">&quot;{}_HIGHLIGHTS&quot;</span>, lang.name.to_uppercase());
             <span class="kw">let </span>injections = <span class="macro">format_ident!</span>(<span class="string">&quot;{}_INJECTIONS&quot;</span>, lang.name.to_uppercase());
             <span class="kw">let </span>locals = <span class="macro">format_ident!</span>(<span class="string">&quot;{}_LOCALS&quot;</span>, lang.name.to_uppercase());
             <span class="macro">quote! </span>{
                 <span class="attr">#[test]
                 </span><span class="kw">fn </span>#name() {
-                    <span class="kw">let </span>lang = PARSERS.get(#name_str).unwrap().clone();
+                    <span class="kw">let </span>lang = ::syntastica_parsers_git::#name();
                     validate_query(lang, ::syntastica_queries::#highlights, <span class="string">&quot;highlights&quot;</span>);
                     validate_query(lang, ::syntastica_queries::#injections, <span class="string">&quot;injections&quot;</span>);
                     validate_query(lang, ::syntastica_queries::#locals, <span class="string">&quot;locals&quot;</span>);
@@ -613,14 +554,13 @@
         .filter(|lang| lang.parser.rust_func.is_some() &amp;&amp; lang.parser.crates_io.is_some())
         .map(|lang| {
             <span class="kw">let </span>name = <span class="macro">format_ident!</span>(<span class="string">&quot;{}&quot;</span>, lang.name);
-            <span class="kw">let </span>name_str = <span class="kw-2">&amp;</span>lang.name;
             <span class="kw">let </span>highlights = <span class="macro">format_ident!</span>(<span class="string">&quot;{}_HIGHLIGHTS_CRATES_IO&quot;</span>, lang.name.to_uppercase());
             <span class="kw">let </span>injections = <span class="macro">format_ident!</span>(<span class="string">&quot;{}_INJECTIONS_CRATES_IO&quot;</span>, lang.name.to_uppercase());
             <span class="kw">let </span>locals = <span class="macro">format_ident!</span>(<span class="string">&quot;{}_LOCALS_CRATES_IO&quot;</span>, lang.name.to_uppercase());
             <span class="macro">quote! </span>{
                 <span class="attr">#[test]
                 </span><span class="kw">fn </span>#name() {
-                    <span class="kw">let </span>lang = PARSERS.get(#name_str).unwrap().clone();
+                    <span class="kw">let </span>lang = ::syntastica_parsers::#name();
                     validate_query(lang, ::syntastica_queries::#highlights, <span class="string">&quot;highlights&quot;</span>);
                     validate_query(lang, ::syntastica_queries::#injections, <span class="string">&quot;injections&quot;</span>);
                     validate_query(lang, ::syntastica_queries::#locals, <span class="string">&quot;locals&quot;</span>);
