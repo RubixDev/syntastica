@@ -450,3 +450,43 @@ macro_rules! theme_impl {
     (@option None) => { None };
     (@option $str:literal) => { Some($str.to_owned()) };
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn style_finding() {
+        let theme = theme! {
+            "keyword": "#000000",
+            "keyword.return": "#ff0000",
+        }
+        .resolve_links()
+        .unwrap();
+
+        assert_eq!(
+            theme.find_style("keyword.return"),
+            Some(Style::color_only(255, 0, 0)),
+        );
+        assert_eq!(
+            theme.find_style("keyword.operator"),
+            Some(Style::color_only(0, 0, 0)),
+        );
+        assert_eq!(
+            theme.find_style("keyword"),
+            Some(Style::color_only(0, 0, 0)),
+        );
+        assert_eq!(theme.find_style("other"), None);
+    }
+
+    #[test]
+    fn style_fallback() {
+        let theme = theme! {
+            "text": "#000000",
+        }
+        .resolve_links()
+        .unwrap();
+
+        assert_eq!(theme.find_style("other"), Some(Style::color_only(0, 0, 0)));
+    }
+}
