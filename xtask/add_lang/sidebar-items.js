@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["forked_from","get_rev","run","try_get_crates_io_version","try_get_extensions","try_get_package"],"static":["URL_REGEX"]};
