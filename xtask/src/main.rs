@@ -7,6 +7,7 @@ use std::{
 use anyhow::Result;
 use once_cell::sync::Lazy;
 
+mod add_lang;
 mod codegen;
 mod set_version;
 
@@ -40,20 +41,22 @@ fn try_main() -> Result<()> {
 Usage: Run with `cargo xtask <task>`, eg. `cargo xtask codegen`.
 
     Tasks:
-        codegen:                Run all codegen subtasks
-        codegen queries:        Generate the `lib.rs` file for syntastica-queries
-        codegen parsers-dep:    Generate parts of the `Cargo.toml` for syntastica-parsers
-        codegen parsers-gitdep: Generate parts of the `Cargo.toml` for syntastica-parsers-gitdep
-        codegen parser-lists:   Generate the parser lists in all three syntastica-parsers READMEs
-        codegen js-lists:       Generate the language and theme lists in the JavaScript bindings
-        codegen themes:         Generate some themes for syntastica-themes
-        codegen theme-list:     Generate the `THEMES` list and `from_str` function for syntastica-themes
-        set-version <version>:  Set the version of all syntastica crates
+        codegen:                              Run all codegen subtasks
+        codegen queries:                      Generate the `lib.rs` file for syntastica-queries
+        codegen parsers-dep:                  Generate parts of the `Cargo.toml` for syntastica-parsers
+        codegen parsers-gitdep:               Generate parts of the `Cargo.toml` for syntastica-parsers-gitdep
+        codegen parser-lists:                 Generate the parser lists in all three syntastica-parsers READMEs
+        codegen js-lists:                     Generate the language and theme lists in the JavaScript bindings
+        codegen themes:                       Generate some themes for syntastica-themes
+        codegen theme-list:                   Generate the `THEMES` list and `from_str` function for syntastica-themes
+        set-version <version>:                Set the version of all syntastica crates
+        add-lang <group> <name> <url> [path]: Add boilerplate code for a new language called <name> with sources at <url>/[path] in the feature group <group>
             "###
             .trim(),
         ),
         "codegen" => codegen::run()?,
         "set-version" => set_version::run()?,
+        "add-lang" => add_lang::run()?,
         task => eprintln!(
             "unknown task '{task}', run `cargo xtask --help` to see a list of available tasks"
         ),
