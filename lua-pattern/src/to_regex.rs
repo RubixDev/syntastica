@@ -77,7 +77,7 @@ fn from_pattern_object(
         PatternObject::Frontier(_, _) if !allow_lookaround => Err(ToRegexError::FrontierUsed),
         PatternObject::CaptureRef(_) if !allow_capture_refs => Err(ToRegexError::CaptureRefUsed),
 
-        PatternObject::Any => Ok(".".into()),
+        PatternObject::Any => Ok("[\\s\\S]".into()),
         PatternObject::Start => Ok("^".into()),
         PatternObject::End => Ok("$".into()),
 
@@ -255,6 +255,6 @@ mod tests {
             PatternObject::End,
         ];
 
-        assert_eq!(try_to_regex(&input, true, true), Ok(r##"^\^charsq+w*?e*r?.\.([a-zA-Z][\0-\31][0-9][\33-\126][a-z][!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~][ \t\n\v\f\r][A-Z][a-zA-Z0-9][0-9a-fA-F]\0[^a-zA-Z])[asd][^not](?<=[not])(?![not])\1[\]a-z]\$$"##.to_owned()));
+        assert_eq!(try_to_regex(&input, true, true), Ok(r##"^\^charsq+w*?e*r?[\s\S]\.([a-zA-Z][\0-\31][0-9][\33-\126][a-z][!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~][ \t\n\v\f\r][A-Z][a-zA-Z0-9][0-9a-fA-F]\0[^a-zA-Z])[asd][^not](?<=[not])(?![not])\1[\]a-z]\$$"##.to_owned()));
     }
 }
