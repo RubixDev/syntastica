@@ -337,7 +337,7 @@
         PatternObject::Frontier(<span class="kw">_</span>, <span class="kw">_</span>) <span class="kw">if </span>!allow_lookaround =&gt; <span class="prelude-val">Err</span>(ToRegexError::FrontierUsed),
         PatternObject::CaptureRef(<span class="kw">_</span>) <span class="kw">if </span>!allow_capture_refs =&gt; <span class="prelude-val">Err</span>(ToRegexError::CaptureRefUsed),
 
-        PatternObject::Any =&gt; <span class="prelude-val">Ok</span>(<span class="string">&quot;.&quot;</span>.into()),
+        PatternObject::Any =&gt; <span class="prelude-val">Ok</span>(<span class="string">&quot;[\\s\\S]&quot;</span>.into()),
         PatternObject::Start =&gt; <span class="prelude-val">Ok</span>(<span class="string">&quot;^&quot;</span>.into()),
         PatternObject::End =&gt; <span class="prelude-val">Ok</span>(<span class="string">&quot;$&quot;</span>.into()),
 
@@ -515,7 +515,7 @@
             PatternObject::End,
         ];
 
-        <span class="macro">assert_eq!</span>(try_to_regex(<span class="kw-2">&amp;</span>input, <span class="bool-val">true</span>, <span class="bool-val">true</span>), <span class="prelude-val">Ok</span>(<span class="string">r##&quot;^\^charsq+w*?e*r?.\.([a-zA-Z][\0-\31][0-9][\33-\126][a-z][!&quot;#$%&amp;&#39;()*+,\-./:;&lt;=&gt;?@[\\\]^_`{|}~][ \t\n\v\f\r][A-Z][a-zA-Z0-9][0-9a-fA-F]\0[^a-zA-Z])[asd][^not](?&lt;=[not])(?![not])\1[\]a-z]\$$&quot;##</span>.to_owned()));
+        <span class="macro">assert_eq!</span>(try_to_regex(<span class="kw-2">&amp;</span>input, <span class="bool-val">true</span>, <span class="bool-val">true</span>), <span class="prelude-val">Ok</span>(<span class="string">r##&quot;^\^charsq+w*?e*r?[\s\S]\.([a-zA-Z][\0-\31][0-9][\33-\126][a-z][!&quot;#$%&amp;&#39;()*+,\-./:;&lt;=&gt;?@[\\\]^_`{|}~][ \t\n\v\f\r][A-Z][a-zA-Z0-9][0-9a-fA-F]\0[^a-zA-Z])[asd][^not](?&lt;=[not])(?![not])\1[\]a-z]\$$&quot;##</span>.to_owned()));
     }
 }
 </code></pre></div></section></main></body></html>
