@@ -17,9 +17,7 @@ rsexpr = { version = "0.2.3", path = "../rsexpr", features = ["comments"] }
 serde = { version = "1.0.163", features = ["derive"] }
 serde_json = { version = "1.0.100" }
 syntastica-core = { version = "0.3.0", path = "../syntastica-core" }
-syntastica-parsers-git = { version = "0.3.0", path = "../syntastica-parsers-git", features = ["all"] }
 toml = "0.7.4"
-tree-sitter = "0.20.10"
 
 [package.metadata.release]
 shared-version = false

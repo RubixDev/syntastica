@@ -4,9 +4,6 @@ use anyhow::Result;
 use fancy_regex::Regex;
 use once_cell::sync::Lazy;
 use rsexpr::{OwnedSexpr, OwnedSexprs};
-use syntastica_core::language_set::LanguageSet;
-use syntastica_parsers_git::LanguageSetImpl;
-use tree_sitter::{Language, Query};
 
 static QUERIES_DIR: Lazy<String> =
     Lazy::new(|| format!("{}/queries", crate::WORKSPACE_DIR.display()));
@@ -14,19 +11,15 @@ static INHERITS_REGEX: Lazy<Regex> =
     Lazy::new(|| Regex::new(r";+\s*inherits\s*:?\s*([a-z_,()-]+)\s*").unwrap());
 
 pub fn make_queries() -> Result<BTreeMap<String, [String; 6]>> {
-    let set = LanguageSetImpl::new();
     let mut map = BTreeMap::new();
-
     for lang in &crate::LANGUAGE_CONFIG.languages {
-        let ts_lang = set.get_language(&lang.name)?.language;
-
         let query_file =
             |enabled: bool, filename: &str, func: fn(&mut OwnedSexprs), crates_io: bool| match (
                 lang.queries.nvim_like,
                 enabled,
             ) {
-                (true, true) => validate(ts_lang, &lang.name, filename, Some(func), crates_io),
-                (false, true) => validate(ts_lang, &lang.name, filename, None, crates_io),
+                (true, true) => process(&lang.name, filename, Some(func), crates_io),
+                (false, true) => process(&lang.name, filename, None, crates_io),
                 (_, false) => String::new(),
             };
 
@@ -64,8 +57,7 @@ pub fn make_queries() -> Result<BTreeMap<String, [String; 6]>> {
     Ok(map)
 }
 
-fn validate(
-    lang: Language,
+fn process(
     lang_name: &str,
     filename: &str,
     processor: Option<fn(&mut OwnedSexprs)>,
@@ -74,11 +66,6 @@ fn validate(
     // read input
     let path = format!("{}/{lang_name}/{filename}", *QUERIES_DIR);
     let queries = read_queries(lang_name, filename);
-
-    // validate input
-    if let Err(err) = Query::new(lang, &queries) {
-        eprintln!("warning: invalid input queries in file '{path}': {err}");
-    }
 
     // run processor
     let mut new_queries = rsexpr::from_slice_multi(&queries)
@@ -104,13 +91,6 @@ fn validate(
     }
     new_queries = ungroup_root_level_captures(new_queries);
     let new_queries = format!("{new_queries:#}");
-
-    // validate output
-    if let Err(err) = Query::new(lang, &new_queries) {
-        eprintln!(
-            "warning: processing queries in file '{path}' resulted in invalid queries: {err}"
-        );
-    }
 
     new_queries
 }
