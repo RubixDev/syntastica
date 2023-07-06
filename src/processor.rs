@@ -130,14 +130,15 @@ impl<'set, Set: LanguageSet> Processor<'set, Set> {
         for event in
             self.highlighter
                 .highlight(highlight_config, code.as_bytes(), None, |lang_name| {
+                    let lang_name = lang_name.to_ascii_lowercase();
                     // if `lang_name` matches a language/parser name in `languages`, use that language
                     self.set
-                        .get_language(lang_name)
+                        .get_language(&lang_name)
                         .ok()
                         // else if `injection_callback` returns a name, try getting a language for that name
                         .or_else(|| {
                             self.set
-                                .for_injection(lang_name)
+                                .for_injection(&lang_name)
                                 .and_then(|name| self.set.get_language(name.as_ref()).ok())
                         })
                         // else, `lang_name` might be a mimetype like `text/css`, so try both again with the
