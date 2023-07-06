@@ -57,6 +57,7 @@
     "**/target",
     "**/node_modules",
     "**/*-lock.json",
+    "ignored/**",
     "syntastica-queries/src/lib.rs",
     "syntastica-queries/generated_queries",
     "syntastica-core/src/theme_keys.rs",
