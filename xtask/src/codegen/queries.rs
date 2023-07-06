@@ -264,6 +264,15 @@ fn replace_injection_captures(
                 b"injection.content" | b"injection.language" => {}
                 b"content" => *atom = b"@injection.content".to_vec(),
                 b"language" => *atom = b"@injection.language".to_vec(),
+                b"combined" => {
+                    *tree = OwnedSexpr::List(
+                        vec![
+                            OwnedSexpr::Atom(b"#set!".to_vec()),
+                            OwnedSexpr::Atom(b"injection.combined".to_vec()),
+                        ]
+                        .into(),
+                    )
+                }
                 lang_name => {
                     if predicate_count == 0 {
                         additional_sexp = Some(OwnedSexpr::List(
