@@ -38,13 +38,29 @@ for more information on all parser collections.
 <summary>List of parsers additionally included in the <span class="stab portability"><code>most</code></span> feature</summary>
 
 - [asm](https://docs.rs/tree-sitter-asm/0.1.0/)
+- [c_sharp](https://docs.rs/tree-sitter-c-sharp/0.20.0/)
+- [haskell](https://github.com/tree-sitter/tree-sitter-haskell) (not supported by this collection)
+- [jsdoc](https://github.com/tree-sitter/tree-sitter-jsdoc) (not supported by this collection)
+- [php](https://github.com/tree-sitter/tree-sitter-php) (not supported by this collection)
 - [regex](https://github.com/tree-sitter/tree-sitter-regex) (not supported by this collection)
+- [ruby](https://docs.rs/tree-sitter-ruby/0.20.0/)
+- [scala](https://docs.rs/tree-sitter-scala/0.20.1/)
 
 </details>
 
 <details>
 <summary>List of parsers additionally included in the <span class="stab portability"><code>all</code></span> feature</summary>
 
+- [ejs](https://docs.rs/tree-sitter-embedded-template/0.20.0/)
+- [erb](https://docs.rs/tree-sitter-embedded-template/0.20.0/)
+- [hexdump](https://docs.rs/tree-sitter-hexdump/0.1.0/)
+- [julia](https://github.com/tree-sitter/tree-sitter-julia) (not supported by this collection)
+- [ocaml](https://docs.rs/tree-sitter-ocaml/0.20.3/)
+- [ocaml_interface](https://docs.rs/tree-sitter-ocaml/0.20.3/)
+- [ql](https://github.com/tree-sitter/tree-sitter-ql) (not supported by this collection)
+- [rush](https://docs.rs/tree-sitter-rush/0.1.0/)
+- [verilog](https://github.com/tree-sitter/tree-sitter-verilog) (not supported by this collection)
+- [wat](https://github.com/wasm-lsp/tree-sitter-wasm) (not supported by this collection)
 
 </details>
 

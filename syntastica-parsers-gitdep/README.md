@@ -38,13 +38,29 @@ for more information on all parser collections.
 <summary>List of parsers additionally included in the <span class="stab portability"><code>most</code></span> feature</summary>
 
 - [asm](https://github.com/rush-rs/tree-sitter-asm/tree/36dc26acc7818920de2e103e20a9f42358caf926)
+- [c_sharp](https://github.com/tree-sitter/tree-sitter-c-sharp/tree/1648e21b4f087963abf0101ee5221bb413107b07)
+- [haskell](https://github.com/tree-sitter/tree-sitter-haskell/tree/ba0bfb0e5d8e9e31c160d287878c6f26add3ec08)
+- [jsdoc](https://github.com/tree-sitter/tree-sitter-jsdoc/tree/189a6a4829beb9cdbe837260653b4a3dfb0cc3db) (not supported by this collection)
+- [php](https://github.com/tree-sitter/tree-sitter-php/tree/d38adb26304d9b9d38e9a3b4aae0ec4b29bf9462)
 - [regex](https://github.com/tree-sitter/tree-sitter-regex/tree/e1cfca3c79896ff79842f057ea13e529b66af636)
+- [ruby](https://github.com/tree-sitter/tree-sitter-ruby/tree/f257f3f57833d584050336921773738a3fd8ca22)
+- [scala](https://github.com/tree-sitter/tree-sitter-scala/tree/8062487fb3b7f3ce1bb7ce1fd1c84bed60c75203)
 
 </details>
 
 <details>
 <summary>List of parsers additionally included in the <span class="stab portability"><code>all</code></span> feature</summary>
 
+- [ejs](https://github.com/tree-sitter/tree-sitter-embedded-template/tree/203f7bd3c1bbfbd98fc19add4b8fcb213c059205)
+- [erb](https://github.com/tree-sitter/tree-sitter-embedded-template/tree/203f7bd3c1bbfbd98fc19add4b8fcb213c059205)
+- [hexdump](https://github.com/rush-rs/tree-sitter-hexdump/tree/09eaf4fcfed00be93928d7d3d82b490cd1343b80)
+- [julia](https://github.com/tree-sitter/tree-sitter-julia/tree/4d4dc7d8a4ad3856200a9ef151f9056fc14cec8b) (not supported by this collection)
+- [ocaml](https://github.com/tree-sitter/tree-sitter-ocaml/tree/82e103cee0ffb61ee59f9b654b8e1d4b8e9cab74)
+- [ocaml_interface](https://github.com/tree-sitter/tree-sitter-ocaml/tree/82e103cee0ffb61ee59f9b654b8e1d4b8e9cab74)
+- [ql](https://github.com/tree-sitter/tree-sitter-ql/tree/bd087020f0d8c183080ca615d38de0ec827aeeaf)
+- [rush](https://github.com/rush-rs/tree-sitter-rush/tree/6081a422d4f5dfb0426c09582e82e7070bb749d1)
+- [verilog](https://github.com/tree-sitter/tree-sitter-verilog/tree/4457145e795b363f072463e697dfe2f6973c9a52)
+- [wat](https://github.com/wasm-lsp/tree-sitter-wasm/tree/2ca28a9f9d709847bf7a3de0942a84e912f59088) (not supported by this collection)
 
 </details>
 

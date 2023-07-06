@@ -11,8 +11,10 @@ static LANGUAGE_CONFIG: Lazy<LanguageConfig> = Lazy::new(|| {
 
 #[proc_macro]
 pub fn parsers_git(_: TokenStream) -> TokenStream {
-    LANGUAGE_CONFIG
-        .languages
+    let mut dedup_ffi_funcs = LANGUAGE_CONFIG.languages.clone();
+    dedup_ffi_funcs.sort_unstable_by_key(|lang| lang.parser.ffi_func.clone());
+    dedup_ffi_funcs.dedup_by_key(|lang| lang.parser.ffi_func.clone());
+    dedup_ffi_funcs
         .iter()
         .map(|lang| {
             let feat = lang.group.to_string();
@@ -36,7 +38,10 @@ pub fn parsers_git(_: TokenStream) -> TokenStream {
 
 #[proc_macro]
 pub fn parsers_ffi(_: TokenStream) -> TokenStream {
-    let extern_c = LANGUAGE_CONFIG.languages.iter().map(|lang| {
+    let mut dedup_ffi_funcs = LANGUAGE_CONFIG.languages.clone();
+    dedup_ffi_funcs.sort_unstable_by_key(|lang| lang.parser.ffi_func.clone());
+    dedup_ffi_funcs.dedup_by_key(|lang| lang.parser.ffi_func.clone());
+    let extern_c = dedup_ffi_funcs.iter().map(|lang| {
         let feat = lang.group.to_string();
         let ffi_func = format_ident!("{}", lang.parser.ffi_func);
         // disable cpp scanners on wasm32-unknown-unknown

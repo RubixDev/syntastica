@@ -64,8 +64,8 @@ pub fn run() -> Result<()> {
     println!("info: using package name '{package}'");
 
     let crates_io = match try_get_crates_io_version(&package) {
-        Some(version) => format!("crates_io = \"{version}\""),
-        None => "# crates_io = \"\"".into(),
+        Some(version) => format!("crates-io = \"{version}\""),
+        None => "# crates-io = \"\"".into(),
     };
     println!("info: found crates.io version: '{crates_io}'");
 

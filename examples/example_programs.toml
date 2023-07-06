@@ -149,6 +149,14 @@ class Fibonacci {
 '''
 
 javascript = '''
+/**
+ * Calculate a number as of the Fibonacci sequence.
+ *
+ * @example
+ * var result = fib(10); // results in 55
+ *
+ * @param {number} n: index of number to calculate
+ */
 var fib = (function(cache){
     return cache = cache || {}, function(n){
         if (cache[n]) return cache[n];
@@ -267,4 +275,365 @@ fib()
     echo $(($a+$b))
   fi
 }
+'''
+
+c_sharp = '''
+public static ulong Fib(uint x) {
+    if (x == 0) return 0;
+
+    ulong prev = 0;
+    ulong next = 1;
+    for (int i = 1; i < x; i++)
+    {
+        ulong sum = prev + next;
+        prev = next;
+        next = sum;
+    }
+    return next;
+}
+'''
+
+haskell = '''
+import Data.CReal
+
+phi = (1 + sqrt 5) / 2
+
+fib :: (Integral b) => b -> CReal 0
+fib n = (phi^^n - (-phi)^^(-n))/sqrt 5
+'''
+
+php = '''
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table, th, td {
+    border: 1px solid black;
+}
+</style>
+</head>
+<body>
+
+<?php
+$servername = "localhost";
+$username = "username";
+$password = "password";
+$dbname = "myDB";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+$sql = "SELECT id, firstname, lastname FROM MyGuests";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    echo "<table><tr><th>ID</th><th>Name</th></tr>";
+    // output data of each row
+    while($row = $result->fetch_assoc()) {
+        echo "<tr><td>" . $row["id"]. "</td><td>" . $row["firstname"]. " " . $row["lastname"]. "</td></tr>";
+    }
+    echo "</table>";
+} else {
+    echo "0 results";
+}
+
+$conn->close();
+?>
+
+</body>
+</html>
+'''
+
+ruby = '''
+def fib(n)
+  if n < 2
+    n
+  else
+    prev, fib = 0, 1
+    (n-1).times do
+      prev, fib = fib, fib + prev
+    end
+    fib
+  end
+end
+
+p (0..10).map { |i| fib(i) }
+'''
+
+scala = '''
+import scala.annotation.tailrec
+@tailrec
+final def fib(x: Int, prev: BigInt = 0, next: BigInt = 1): BigInt = x match {
+  case 0 => prev
+  case _ => fib(x - 1, next, next + prev)
+}
+'''
+
+ejs = '''
+<span>
+  <% console.log('Hello, World!') -%>
+</span>
+'''
+
+erb = '''
+<div>
+  <% names.each do |name| _%>
+    <div>
+      <%= name -%>
+      <%== x %>
+      <%|= x %>
+      <%== x %>
+      <%| end %>
+    </div>
+    <span>
+      <% something() -%>
+    </span>
+  <%_ end %>
+</div>
+
+<%graphql
+  fragment HumanFragment on Human {
+    name
+    homePlanet
+  }
+%>
+
+<p><%= human.name %> lives on <%= human.home_planet %>.</p>
+'''
+
+hexdump = '''
+0000:   0061 736d 0100 0000  010d 0360 017f 0060   .asm.......`...`
+0010:   0000 6001 7e01 7e02  2401 1677 6173 695f   ..`.~.~.$..wasi_
+0020:   736e 6170 7368 6f74  5f70 7265 7669 6577   snapshot_preview
+0030:   3109 7072 6f63 5f65  7869 7400 0003 0302   1.proc_exit.....
+0040:   0102 0503 0100 0007  1302 065f 7374 6172   ..........._star
+0050:   7400 0106 6d65 6d6f  7279 0200 0801 010a   t...memory......
+0060:   2902 0a00 420a 1002  a710 0000 0b1c 0020   )...B..........
+0070:   0042 0253 047e 2000  0520 0042 027d 1002   .B.S.~ .. .B.}..
+0080:   2000 4201 7d10 027c  0b0b 002a 046e 616d    .B.}..|...*.nam
+0090:   6501 1903 000b 5f5f  7761 7369 5f65 7869   e.....__wasi_exi
+00a0:   7401 046d 6169 6e02  0366 6962 0208 0201   t..main..fib....
+00b0:   0002 0100 016e                             .....n
+'''
+
+julia = '''
+function fib(n)
+  x,y = (0,1)
+  for i = 1:n x,y = (y, x+y) end
+  x
+end
+'''
+
+ocaml = '''
+open Num
+
+let fib =
+  let rec fib_aux f0 f1 = function
+    | 0 -> f0
+    | 1 -> f1
+    | n -> fib_aux f1 (f1 +/ f0) (n - 1)
+  in
+  fib_aux (num_of_int 0) (num_of_int 1)
+
+(* support for negatives *)
+let fib n =
+      if n < 0 && n mod 2 = 0 then minus_num (fib (abs n))
+      else fib (abs n)
+;;
+(* It can be called from the command line with an argument *)
+(* Result is send to standard output *)
+let n = int_of_string Sys.argv.(1) in
+print_endline (string_of_num (fib n))
+'''
+
+ocaml_interface = '''
+external x : int = "x"
+external x : 'a . 'a = "x"
+
+type t
+type nonrec 'a t = t and ('a, 'b) t = t
+type t = private t
+type t = A | B of t | C of t * t | D of {x : t}
+type _ t =
+  | A : t -> t
+  | B : 'a . 'a -> 'a t
+type t = {
+  mutable x : t;
+}
+type t = t constraint 'a = t
+type t = |
+
+exception E
+exception E of t
+
+module M
+module M : T
+module M (M : T) : E
+module rec M : T and M : T
+
+module M = M
+module M := M
+module M : T = M
+module M (M : T) = M
+module rec M = N and N = M
+
+module _ (_ : T) = M
+
+module type T = T
+module type T := T
+
+open M
+open! M
+open ! M
+
+val x : t
+val x : 'a . 'a
+
+include M
+include t
+include M.M
+include M.t
+include M.M.M
+include M.M.t
+'''
+
+ql = '''
+/**
+ * @name Information disclosure through postMessage
+ * @description Tracks values from an 'authKey' property into a postMessage call with unrestricted origin,
+ *              indicating a leak of sensitive information.
+ * @kind path-problem
+ * @problem.severity warning
+ * @tags security
+ * @id js/examples/information-disclosure
+ */
+
+import javascript
+import DataFlow
+import DataFlow::PathGraph
+
+/**
+ * A dataflow configuration that tracks authentication tokens ("authKey")
+ * to a postMessage call with unrestricted target origin.
+ *
+ * For example:
+ * ```
+ * win.postMessage(JSON.stringify({
+ *  action: 'pause',
+ *  auth: {
+ *    key: window.state.authKey
+ *  }
+ * }), '*');
+ * ```
+ */
+class AuthKeyTracking extends DataFlow::Configuration {
+  AuthKeyTracking() { this = "AuthKeyTracking" }
+
+  override predicate isSource(Node node) { node.(PropRead).getPropertyName() = "authKey" }
+
+  override predicate isSink(Node node) {
+    exists(MethodCallNode call |
+      call.getMethodName() = "postMessage" and
+      call.getArgument(1).getStringValue() = "*" and // no restriction on target origin
+      call.getArgument(0) = node
+    )
+  }
+
+  override predicate isAdditionalFlowStep(Node pred, Node succ) {
+    // Step into objects: x -> { f: x }
+    succ.(SourceNode).getAPropertyWrite().getRhs() = pred
+    or
+    // Step through JSON serialization: x -> JSON.stringify(x)
+    // Note: TaintTracking::Configuration includes this step by default, but not DataFlow::Configuration
+    exists(CallNode call |
+      call = globalVarRef("JSON").getAMethodCall("stringify") and
+      pred = call.getArgument(0) and
+      succ = call
+    )
+  }
+}
+
+from AuthKeyTracking cfg, PathNode source, PathNode sink
+where cfg.hasFlowPath(source, sink)
+select sink.getNode(), source, sink, "Message leaks the authKey from $@.", source.getNode(), "here"
+'''
+
+verilog = '''
+module toplevel(clock,reset);
+  input clock;
+  input reset;
+
+  reg flop1;
+  reg flop2;
+
+  always @ (posedge reset or posedge clock)
+    if (reset)
+      begin
+        flop1 <= 0;
+        flop2 <= 1;
+      end
+    else
+      begin
+        flop1 <= flop2;
+        flop2 <= flop1;
+      end
+endmodule
+'''
+
+rush = '''
+// Calculates a number in the Fibonacci sequence.
+fn main() {
+    // fib(10) = 55
+    exit(fib(10));
+}
+
+fn fib(n: int) -> int {
+    if n < 2 {
+        n
+    } else {
+        fib(n - 2) + fib(n - 1)
+    }
+}
+'''
+
+wat = '''
+(module
+  (type (;0;) (func (param i32)))
+  (type (;1;) (func))
+  (type (;2;) (func (param i64) (result i64)))
+  (import "wasi_snapshot_preview1" "proc_exit" (func $__wasi_exit (;0;) (type 0)))
+  (func $main (;1;) (type 1)
+    i64.const 10
+    call $fib
+    i32.wrap_i64
+    call $__wasi_exit
+    unreachable
+  )
+  (func $fib (;2;) (type 2) (param $n i64) (result i64)
+    local.get $n
+    i64.const 2
+    i64.lt_s
+    if (result i64) ;; label = @1
+      local.get $n
+    else
+      local.get $n
+      i64.const 2
+      i64.sub
+      call $fib
+      local.get $n
+      i64.const 1
+      i64.sub
+      call $fib
+      i64.add
+    end
+  )
+  (memory (;0;) 0)
+  (export "_start" (func $main))
+  (export "memory" (memory 0))
+  (start $main)
+)
 '''

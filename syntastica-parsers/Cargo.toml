@@ -56,12 +56,19 @@ some = [
 most = [
     "some",
     "dep:tree-sitter-asm",
+    "dep:tree-sitter-c-sharp",
+    "dep:tree-sitter-ruby",
+    "dep:tree-sitter-scala",
 ]
 
 ## Implies <span class="stab portability"><code>most</code></span>.
 ## Include parsers for all supported languages.
 all = [
     "most",
+    "dep:tree-sitter-embedded-template",
+    "dep:tree-sitter-hexdump",
+    "dep:tree-sitter-ocaml",
+    "dep:tree-sitter-rush",
 ]
 
 ## Meant to be enabled when building docs
@@ -75,6 +82,10 @@ version = "0.1.0"
 optional = true
 version = "0.20.2"
 
+[dependencies.tree-sitter-c-sharp]
+optional = true
+version = "0.20.0"
+
 [dependencies.tree-sitter-cpp]
 optional = true
 version = "0.20.0"
@@ -83,9 +94,17 @@ version = "0.20.0"
 optional = true
 version = "0.19.0"
 
+[dependencies.tree-sitter-embedded-template]
+optional = true
+version = "0.20.0"
+
 [dependencies.tree-sitter-go]
 optional = true
 version = "0.19.1"
+
+[dependencies.tree-sitter-hexdump]
+optional = true
+version = "0.1.0"
 
 [dependencies.tree-sitter-java]
 optional = true
@@ -99,10 +118,26 @@ version = "0.20.0"
 optional = true
 version = "0.19.0"
 
+[dependencies.tree-sitter-ocaml]
+optional = true
+version = "0.20.3"
+
 [dependencies.tree-sitter-python]
 optional = true
 version = "0.20.2"
 
+[dependencies.tree-sitter-ruby]
+optional = true
+version = "0.20.0"
+
+[dependencies.tree-sitter-rush]
+optional = true
+version = "0.1.0"
+
 [dependencies.tree-sitter-rust]
 optional = true
 version = "0.20.3"
+
+[dependencies.tree-sitter-scala]
+optional = true
+version = "0.20.1"
