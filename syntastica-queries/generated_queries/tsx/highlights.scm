@@ -498,7 +498,7 @@
 
 (
   (comment) @comment.documentation
-  (#match? @comment.documentation "^\\/[\\*][\\*][^\\*].*[\\*]\\/$")
+  (#match? @comment.documentation "^\\/[\\*][\\*][^\\*][\\s\\S]*[\\*]\\/$")
 )
 
 (comment) @comment @spell

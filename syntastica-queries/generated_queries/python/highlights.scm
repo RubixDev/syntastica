@@ -456,7 +456,7 @@
 
 (
   (identifier) @type
-  (#match? @type "^[A-Z].*[a-z]")
+  (#match? @type "^[A-Z][\\s\\S]*[a-z]")
 )
 
 (interpolation) @none

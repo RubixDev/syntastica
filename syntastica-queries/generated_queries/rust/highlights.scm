@@ -246,7 +246,7 @@
 
 (
   (block_comment) @comment.documentation
-  (#match? @comment.documentation "^\\/[\\*][\\*][^\\*].*[\\*]\\/$")
+  (#match? @comment.documentation "^\\/[\\*][\\*][^\\*][\\s\\S]*[\\*]\\/$")
 )
 
 (
