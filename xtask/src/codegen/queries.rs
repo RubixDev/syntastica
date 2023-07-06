@@ -170,7 +170,7 @@ fn ungroup_root_level_captures(queries: OwnedSexprs) -> OwnedSexprs {
                     .map_or(false, |sexpr| !matches!(sexpr, OwnedSexpr::Atom(_)))
                     && list
                         .iter()
-                        .filter(|sexpr| matches!(sexpr, OwnedSexpr::List(_)))
+                        .filter(|sexpr| matches!(sexpr, OwnedSexpr::List(_) | OwnedSexpr::Group(_)))
                         .count()
                         <= 1 =>
             {
