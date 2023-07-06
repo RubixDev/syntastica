@@ -284,6 +284,11 @@
 <a href="#284" id="284">284</a>
 <a href="#285" id="285">285</a>
 <a href="#286" id="286">286</a>
+<a href="#287" id="287">287</a>
+<a href="#288" id="288">288</a>
+<a href="#289" id="289">289</a>
+<a href="#290" id="290">290</a>
+<a href="#291" id="291">291</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>once_cell::sync::Lazy;
 <span class="kw">use </span>proc_macro::TokenStream;
 <span class="kw">use </span>quote::{format_ident, quote};
@@ -297,8 +302,10 @@
 
 <span class="attr">#[proc_macro]
 </span><span class="kw">pub fn </span>parsers_git(<span class="kw">_</span>: TokenStream) -&gt; TokenStream {
-    LANGUAGE_CONFIG
-        .languages
+    <span class="kw">let </span><span class="kw-2">mut </span>dedup_ffi_funcs = LANGUAGE_CONFIG.languages.clone();
+    dedup_ffi_funcs.sort_unstable_by_key(|lang| lang.parser.ffi_func.clone());
+    dedup_ffi_funcs.dedup_by_key(|lang| lang.parser.ffi_func.clone());
+    dedup_ffi_funcs
         .iter()
         .map(|lang| {
             <span class="kw">let </span>feat = lang.group.to_string();
@@ -322,7 +329,10 @@
 
 <span class="attr">#[proc_macro]
 </span><span class="kw">pub fn </span>parsers_ffi(<span class="kw">_</span>: TokenStream) -&gt; TokenStream {
-    <span class="kw">let </span>extern_c = LANGUAGE_CONFIG.languages.iter().map(|lang| {
+    <span class="kw">let </span><span class="kw-2">mut </span>dedup_ffi_funcs = LANGUAGE_CONFIG.languages.clone();
+    dedup_ffi_funcs.sort_unstable_by_key(|lang| lang.parser.ffi_func.clone());
+    dedup_ffi_funcs.dedup_by_key(|lang| lang.parser.ffi_func.clone());
+    <span class="kw">let </span>extern_c = dedup_ffi_funcs.iter().map(|lang| {
         <span class="kw">let </span>feat = lang.group.to_string();
         <span class="kw">let </span>ffi_func = <span class="macro">format_ident!</span>(<span class="string">&quot;{}&quot;</span>, lang.parser.ffi_func);
         <span class="comment">// disable cpp scanners on wasm32-unknown-unknown

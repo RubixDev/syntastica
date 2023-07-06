@@ -303,8 +303,8 @@
     <span class="macro">println!</span>(<span class="string">&quot;info: using package name &#39;{package}&#39;&quot;</span>);
 
     <span class="kw">let </span>crates_io = <span class="kw">match </span>try_get_crates_io_version(<span class="kw-2">&amp;</span>package) {
-        <span class="prelude-val">Some</span>(version) =&gt; <span class="macro">format!</span>(<span class="string">&quot;crates_io = \&quot;{version}\&quot;&quot;</span>),
-        <span class="prelude-val">None </span>=&gt; <span class="string">&quot;# crates_io = \&quot;\&quot;&quot;</span>.into(),
+        <span class="prelude-val">Some</span>(version) =&gt; <span class="macro">format!</span>(<span class="string">&quot;crates-io = \&quot;{version}\&quot;&quot;</span>),
+        <span class="prelude-val">None </span>=&gt; <span class="string">&quot;# crates-io = \&quot;\&quot;&quot;</span>.into(),
     };
     <span class="macro">println!</span>(<span class="string">&quot;info: found crates.io version: &#39;{crates_io}&#39;&quot;</span>);
 
