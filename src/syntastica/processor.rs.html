@@ -186,6 +186,7 @@
 <a href="#186" id="186">186</a>
 <a href="#187" id="187">187</a>
 <a href="#188" id="188">188</a>
+<a href="#189" id="189">189</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>syntastica_core::{language_set::LanguageSet, theme::THEME_KEYS, <span class="prelude-ty">Result</span>};
 <span class="kw">use </span>syntastica_highlight::{Highlight, HighlightEvent, Highlighter};
 
@@ -318,14 +319,15 @@
         <span class="kw">for </span>event <span class="kw">in
             </span><span class="self">self</span>.highlighter
                 .highlight(highlight_config, code.as_bytes(), <span class="prelude-val">None</span>, |lang_name| {
+                    <span class="kw">let </span>lang_name = lang_name.to_ascii_lowercase();
                     <span class="comment">// if `lang_name` matches a language/parser name in `languages`, use that language
                     </span><span class="self">self</span>.set
-                        .get_language(lang_name)
+                        .get_language(<span class="kw-2">&amp;</span>lang_name)
                         .ok()
                         <span class="comment">// else if `injection_callback` returns a name, try getting a language for that name
                         </span>.or_else(|| {
                             <span class="self">self</span>.set
-                                .for_injection(lang_name)
+                                .for_injection(<span class="kw-2">&amp;</span>lang_name)
                                 .and_then(|name| <span class="self">self</span>.set.get_language(name.as_ref()).ok())
                         })
                         <span class="comment">// else, `lang_name` might be a mimetype like `text/css`, so try both again with the
