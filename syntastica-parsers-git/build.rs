@@ -6,6 +6,7 @@ use std::{
 };
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
+    println!("cargo:rerun-if-env-changed=SYNTASTICA_PARSERS_CLONE_DIR");
     if cfg!(not(all(feature = "docs", doc))) {
         syntastica_macros::parsers_git!();
     }
@@ -50,7 +51,8 @@ fn compile_parser(
     }
 
     // clone repo into `parsers/{name}`, if it does not already exists
-    let repo_dir = PathBuf::from(format!("{}/{name}", env::var("OUT_DIR")?));
+    let base_dir = env::var("SYNTASTICA_PARSERS_CLONE_DIR").or_else(|_| env::var("OUT_DIR"))?;
+    let repo_dir = PathBuf::from(format!("{}/{name}", base_dir));
     if !repo_dir.exists() {
         println!("cloning repository for {name}");
         fs::create_dir_all(&repo_dir)?;
