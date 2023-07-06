@@ -2,7 +2,7 @@
 //! [`HtmlRenderer`], as well as the [`render`] function, which is re-exported at the crate root.
 //! See the individual documentation of these items for more information and examples.
 
-use std::borrow::Cow;
+use std::borrow::{Borrow, Cow};
 
 use aho_corasick::AhoCorasick;
 use syntastica_core::theme::ResolvedTheme;
@@ -67,14 +67,14 @@ pub trait Renderer {
 pub fn render(
     highlights: &Highlights<'_>,
     renderer: &mut impl Renderer,
-    theme: ResolvedTheme,
+    theme: impl Borrow<ResolvedTheme>,
 ) -> String {
     let last_line = highlights.len().saturating_sub(1);
     let mut out = renderer.head().into_owned();
     for (index, line) in highlights.iter().enumerate() {
         for (text, style) in line {
             let unstyled = renderer.unstyled(text);
-            match style.and_then(|key| theme.find_style(key)) {
+            match style.and_then(|key| theme.borrow().find_style(key)) {
                 Some(style) => out += &renderer.styled(&unstyled, style),
                 None => out += &unstyled,
             }
@@ -94,13 +94,13 @@ pub fn render(
 /// then store the styled highlights.
 pub fn resolve_styles<'src>(
     highlights: &Highlights<'src>,
-    theme: ResolvedTheme,
+    theme: impl Borrow<ResolvedTheme>,
 ) -> ThemedHighlights<'src> {
     let mut new_highlights = Vec::with_capacity(highlights.len());
     for line in highlights.iter() {
         let mut new_line = Vec::with_capacity(line.len());
         for (text, key) in line {
-            new_line.push((*text, key.and_then(|key| theme.find_style(key))));
+            new_line.push((*text, key.and_then(|key| theme.borrow().find_style(key))));
         }
         new_highlights.push(new_line);
     }
