@@ -87,7 +87,7 @@ export default _default;
  *
  * @see The {@link Language} type.
  */
-export declare const LANGUAGES: readonly ["asm", "bash", "c", "cpp", "css", "go", "html", "java", "javascript", "json", "python", "regex", "rust", "tsx", "typescript"];
+export declare const LANGUAGES: readonly ["asm", "bash", "c", "c_sharp", "cpp", "css", "ejs", "erb", "go", "haskell", "hexdump", "html", "java", "javascript", "jsdoc", "json", "ocaml", "ocaml_interface", "php", "python", "ql", "regex", "ruby", "rush", "rust", "scala", "tsx", "typescript", "verilog", "wat"];
 /**
  * A list of all valid themes.
  *
