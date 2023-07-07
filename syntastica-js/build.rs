@@ -5,6 +5,7 @@ const EMSCRIPTEN_FLAGS: &[&str] = &[
     "-sEXPORT_ES6=1",
     "-sMODULARIZE=1",
     "-sEXPORTED_RUNTIME_METHODS=stringToNewUTF8,UTF8ToString,getValue,setValue",
+    "-sTOTAL_MEMORY=128mb",
 ];
 
 fn main() {
