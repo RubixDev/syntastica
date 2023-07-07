@@ -104,9 +104,8 @@ pub fn run() -> Result<()> {
     let langs_toml = fs::read_to_string(&langs_toml_path)?;
 
     let mut langs = langs_toml
-        .split("[[languages]]")
-        .skip(1)
-        .map(|lang| format!("[[languages]]\n{}", lang.trim()))
+        .split("\n\n")
+        .map(ToString::to_string)
         .collect::<Vec<_>>();
     langs.push(format!(
         r###"[[languages]]
@@ -138,7 +137,7 @@ locals = {queries_locals}"###,
             .0
             .to_owned()
     });
-    fs::write(&langs_toml_path, langs.join("\n\n") + "\n")?;
+    fs::write(&langs_toml_path, langs.join("\n\n"))?;
 
     let mut queries_lib = OpenOptions::new()
         .append(true)

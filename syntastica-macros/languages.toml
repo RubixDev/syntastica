@@ -256,22 +256,25 @@ nvim-like = true
 injections = false
 locals = false
 
-[[languages]]
-name = "julia"
-group = "all"
-file-extensions = ["jl"]
-[languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-julia", rev = "4d4dc7d8a4ad3856200a9ef151f9056fc14cec8b" }
-external-scanner = { c = true, cpp = false }
-ffi-func = "tree_sitter_julia"
-# unsupported because of incompatible old tree-sitter dependency
-# rust-func = "language"
-package = "tree-sitter-julia"
-# crates-io = ""
-[languages.queries]
-nvim-like = true
-injections = true
-locals = true
+# The Julia parser takes ages to compile, results in a huge binary,
+# and causes the GitHub CI to run out of memory when building for emscripten.
+# See https://github.com/tree-sitter/tree-sitter-julia/issues/97
+# [[languages]]
+# name = "julia"
+# group = "all"
+# file-extensions = ["jl"]
+# [languages.parser]
+# git = { url = "https://github.com/tree-sitter/tree-sitter-julia", rev = "4d4dc7d8a4ad3856200a9ef151f9056fc14cec8b" }
+# external-scanner = { c = true, cpp = false }
+# ffi-func = "tree_sitter_julia"
+# # unsupported because of incompatible old tree-sitter dependency
+# # rust-func = "language"
+# package = "tree-sitter-julia"
+# # crates-io = ""
+# [languages.queries]
+# nvim-like = true
+# injections = true
+# locals = true
 
 [[languages]]
 name = "ocaml"

@@ -54,7 +54,6 @@ for more information on all parser collections.
 - [ejs](https://docs.rs/tree-sitter-embedded-template/0.20.0/)
 - [erb](https://docs.rs/tree-sitter-embedded-template/0.20.0/)
 - [hexdump](https://docs.rs/tree-sitter-hexdump/0.1.0/)
-- [julia](https://github.com/tree-sitter/tree-sitter-julia) (not supported by this collection)
 - [ocaml](https://docs.rs/tree-sitter-ocaml/0.20.3/)
 - [ocaml_interface](https://docs.rs/tree-sitter-ocaml/0.20.3/)
 - [ql](https://github.com/tree-sitter/tree-sitter-ql) (not supported by this collection)

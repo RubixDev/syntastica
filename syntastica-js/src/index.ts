@@ -175,7 +175,6 @@ export const LANGUAGES = [
     'javascript',
     'jsdoc',
     'json',
-    'julia',
     'ocaml',
     'ocaml_interface',
     'php',

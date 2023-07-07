@@ -114,13 +114,6 @@ pub const JSON_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_queries/j
 pub const JSON_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/json/injections_crates_io.scm");
 pub const JSON_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/json/locals_crates_io.scm");
 
-pub const JULIA_HIGHLIGHTS: &str = include_str!("../generated_queries/julia/highlights.scm");
-pub const JULIA_INJECTIONS: &str = include_str!("../generated_queries/julia/injections.scm");
-pub const JULIA_LOCALS: &str = include_str!("../generated_queries/julia/locals.scm");
-pub const JULIA_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_queries/julia/highlights_crates_io.scm");
-pub const JULIA_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/julia/injections_crates_io.scm");
-pub const JULIA_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/julia/locals_crates_io.scm");
-
 pub const OCAML_HIGHLIGHTS: &str = include_str!("../generated_queries/ocaml/highlights.scm");
 pub const OCAML_INJECTIONS: &str = include_str!("../generated_queries/ocaml/injections.scm");
 pub const OCAML_LOCALS: &str = include_str!("../generated_queries/ocaml/locals.scm");
