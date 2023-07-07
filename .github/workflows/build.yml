@@ -20,6 +20,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Prepare CI
+        run: |
+          bash _prepare_ci.sh
+
       - name: Install Toolchain
         uses: actions-rs/toolchain@v1
         with:
@@ -52,6 +56,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      - name: Prepare CI
+        run: |
+          bash _prepare_ci.sh
 
       - name: Install Toolchain
         uses: actions-rs/toolchain@v1
