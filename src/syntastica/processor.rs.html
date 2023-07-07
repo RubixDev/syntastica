@@ -187,7 +187,123 @@
 <a href="#187" id="187">187</a>
 <a href="#188" id="188">188</a>
 <a href="#189" id="189">189</a>
-</pre></div><pre class="rust"><code><span class="kw">use </span>syntastica_core::{language_set::LanguageSet, theme::THEME_KEYS, <span class="prelude-ty">Result</span>};
+<a href="#190" id="190">190</a>
+<a href="#191" id="191">191</a>
+<a href="#192" id="192">192</a>
+<a href="#193" id="193">193</a>
+<a href="#194" id="194">194</a>
+<a href="#195" id="195">195</a>
+<a href="#196" id="196">196</a>
+<a href="#197" id="197">197</a>
+<a href="#198" id="198">198</a>
+<a href="#199" id="199">199</a>
+<a href="#200" id="200">200</a>
+<a href="#201" id="201">201</a>
+<a href="#202" id="202">202</a>
+<a href="#203" id="203">203</a>
+<a href="#204" id="204">204</a>
+<a href="#205" id="205">205</a>
+<a href="#206" id="206">206</a>
+<a href="#207" id="207">207</a>
+<a href="#208" id="208">208</a>
+<a href="#209" id="209">209</a>
+<a href="#210" id="210">210</a>
+<a href="#211" id="211">211</a>
+<a href="#212" id="212">212</a>
+<a href="#213" id="213">213</a>
+<a href="#214" id="214">214</a>
+<a href="#215" id="215">215</a>
+<a href="#216" id="216">216</a>
+<a href="#217" id="217">217</a>
+<a href="#218" id="218">218</a>
+<a href="#219" id="219">219</a>
+<a href="#220" id="220">220</a>
+<a href="#221" id="221">221</a>
+<a href="#222" id="222">222</a>
+<a href="#223" id="223">223</a>
+<a href="#224" id="224">224</a>
+<a href="#225" id="225">225</a>
+<a href="#226" id="226">226</a>
+<a href="#227" id="227">227</a>
+<a href="#228" id="228">228</a>
+<a href="#229" id="229">229</a>
+<a href="#230" id="230">230</a>
+<a href="#231" id="231">231</a>
+<a href="#232" id="232">232</a>
+<a href="#233" id="233">233</a>
+<a href="#234" id="234">234</a>
+<a href="#235" id="235">235</a>
+<a href="#236" id="236">236</a>
+<a href="#237" id="237">237</a>
+<a href="#238" id="238">238</a>
+<a href="#239" id="239">239</a>
+<a href="#240" id="240">240</a>
+<a href="#241" id="241">241</a>
+<a href="#242" id="242">242</a>
+<a href="#243" id="243">243</a>
+<a href="#244" id="244">244</a>
+<a href="#245" id="245">245</a>
+<a href="#246" id="246">246</a>
+<a href="#247" id="247">247</a>
+<a href="#248" id="248">248</a>
+<a href="#249" id="249">249</a>
+<a href="#250" id="250">250</a>
+<a href="#251" id="251">251</a>
+<a href="#252" id="252">252</a>
+<a href="#253" id="253">253</a>
+<a href="#254" id="254">254</a>
+<a href="#255" id="255">255</a>
+<a href="#256" id="256">256</a>
+<a href="#257" id="257">257</a>
+<a href="#258" id="258">258</a>
+<a href="#259" id="259">259</a>
+<a href="#260" id="260">260</a>
+<a href="#261" id="261">261</a>
+<a href="#262" id="262">262</a>
+<a href="#263" id="263">263</a>
+<a href="#264" id="264">264</a>
+<a href="#265" id="265">265</a>
+<a href="#266" id="266">266</a>
+<a href="#267" id="267">267</a>
+<a href="#268" id="268">268</a>
+<a href="#269" id="269">269</a>
+<a href="#270" id="270">270</a>
+<a href="#271" id="271">271</a>
+<a href="#272" id="272">272</a>
+<a href="#273" id="273">273</a>
+<a href="#274" id="274">274</a>
+<a href="#275" id="275">275</a>
+<a href="#276" id="276">276</a>
+<a href="#277" id="277">277</a>
+<a href="#278" id="278">278</a>
+<a href="#279" id="279">279</a>
+<a href="#280" id="280">280</a>
+<a href="#281" id="281">281</a>
+<a href="#282" id="282">282</a>
+<a href="#283" id="283">283</a>
+<a href="#284" id="284">284</a>
+<a href="#285" id="285">285</a>
+<a href="#286" id="286">286</a>
+<a href="#287" id="287">287</a>
+<a href="#288" id="288">288</a>
+<a href="#289" id="289">289</a>
+<a href="#290" id="290">290</a>
+<a href="#291" id="291">291</a>
+<a href="#292" id="292">292</a>
+<a href="#293" id="293">293</a>
+<a href="#294" id="294">294</a>
+<a href="#295" id="295">295</a>
+<a href="#296" id="296">296</a>
+<a href="#297" id="297">297</a>
+<a href="#298" id="298">298</a>
+<a href="#299" id="299">299</a>
+<a href="#300" id="300">300</a>
+<a href="#301" id="301">301</a>
+<a href="#302" id="302">302</a>
+<a href="#303" id="303">303</a>
+<a href="#304" id="304">304</a>
+</pre></div><pre class="rust"><code><span class="kw">use </span>syntastica_core::ts_runtime::Node;
+<span class="kw">use </span>syntastica_core::{language_set::LanguageSet, theme::THEME_KEYS, <span class="prelude-ty">Result</span>};
 <span class="kw">use </span>syntastica_highlight::{Highlight, HighlightEvent, Highlighter};
 
 <span class="kw">use </span><span class="kw">crate</span>::Highlights;
@@ -312,68 +428,182 @@
         code: <span class="kw-2">&amp;</span><span class="lifetime">&#39;src </span>str,
         language_name: <span class="kw-2">&amp;</span>str,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Highlights&lt;<span class="lifetime">&#39;src</span>&gt;&gt; {
+        <span class="self">self</span>.process_impl(code, language_name, <span class="prelude-val">None</span>)
+    }
+
+    <span class="doccomment">/// Process the given `code` using the language specified by `language_name` using an already
+    /// parsed tree.
+    ///
+    /// Unlike [`process`](Processor::process), this does not parse the input text, but instead
+    /// uses a parsed tree that is provided by the caller. This also means that **language
+    /// injections must be handled by the caller**.
+    ///
+    /// This allows for incremental parsing, useful for e.g. text editors. See the
+    /// [tree-sitter Rust documentation](https://github.com/tree-sitter/tree-sitter/tree/master/lib/binding_rust#editing)
+    /// for more information.
+    ///
+    /// # Example
+    /// ```
+    /// use tree_sitter::{Parser, InputEdit, Point};
+    /// use syntastica::{language_set::LanguageSet, Processor, renderer::TerminalRenderer};
+    ///
+    /// // create a LanguageSet, Processor, Renderer, and ResolvedTheme
+    /// let set = syntastica_parsers::LanguageSetImpl::new();
+    /// let mut processor = Processor::new(&amp;set);
+    /// let mut renderer = TerminalRenderer::new(None);
+    /// let theme = syntastica_themes::one::dark();
+    ///
+    /// // create a tree-sitter parser
+    /// let mut parser = Parser::new();
+    /// // and set the desired language
+    /// parser.set_language(set.get_language(&quot;rust&quot;)?.language)?;
+    ///
+    /// // parse, process, and render source code
+    /// let code = &quot;fn test() {}&quot;;
+    /// let mut tree = parser.parse(code, None).unwrap();
+    /// println!(&quot;{}&quot;, syntastica::render(
+    ///     &amp;processor.process_tree(code, &quot;rust&quot;, &amp;tree.root_node())?,
+    ///     &amp;mut renderer,
+    ///     &amp;theme,
+    /// ));
+    ///
+    /// // edit the code and tree
+    /// let new_code = &quot;fn test(a: u32) {}&quot;;
+    /// tree.edit(&amp;InputEdit {
+    ///   start_byte: 8,
+    ///   old_end_byte: 8,
+    ///   new_end_byte: 14,
+    ///   start_position: Point::new(0, 8),
+    ///   old_end_position: Point::new(0, 8),
+    ///   new_end_position: Point::new(0, 14),
+    /// });
+    ///
+    /// // re-parse, process, and render the code
+    /// let new_tree = parser.parse(new_code, Some(&amp;tree)).unwrap();
+    /// println!(&quot;{}&quot;, syntastica::render(
+    ///     &amp;processor.process_tree(new_code, &quot;rust&quot;, &amp;new_tree.root_node())?,
+    ///     &amp;mut renderer,
+    ///     &amp;theme,
+    /// ));
+    ///
+    /// # Ok::&lt;(), Box&lt;dyn std::error::Error&gt;&gt;(())
+    /// ```
+    ///
+    /// # Returns
+    ///
+    /// On success, the function returns [`Highlights`] which can be used by
+    /// [`render`](crate::render) for rendering to end users.
+    ///
+    /// # Errors
+    ///
+    /// The function may result in the following errors:
+    ///
+    /// - [`Error::UnsupportedLanguage`](crate::Error::UnsupportedLanguage) if the given
+    ///   `language_name` is not supported by the [`LanguageSet`] which was passed during
+    ///   instantiation of this [`Processor`].
+    /// - [`Error::Highlight`](crate::Error::Highlight) if highlighting fails (mainly because of
+    ///   tree-sitter version mismatches).
+    </span><span class="kw">pub fn </span>process_tree&lt;<span class="lifetime">&#39;src</span>&gt;(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        code: <span class="kw-2">&amp;</span><span class="lifetime">&#39;src </span>str,
+        language_name: <span class="kw-2">&amp;</span>str,
+        tree: <span class="kw-2">&amp;</span>Node&lt;<span class="lifetime">&#39;_</span>&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Highlights&lt;<span class="lifetime">&#39;src</span>&gt;&gt; {
+        <span class="self">self</span>.process_impl(code, language_name, <span class="prelude-val">Some</span>(tree))
+    }
+
+    <span class="kw">fn </span>process_impl&lt;<span class="lifetime">&#39;src</span>&gt;(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        code: <span class="kw-2">&amp;</span><span class="lifetime">&#39;src </span>str,
+        language_name: <span class="kw-2">&amp;</span>str,
+        tree: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Node&lt;<span class="lifetime">&#39;_</span>&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Highlights&lt;<span class="lifetime">&#39;src</span>&gt;&gt; {
         <span class="kw">let </span>highlight_config = <span class="self">self</span>.set.get_language(language_name)<span class="question-mark">?</span>;
 
-        <span class="kw">let </span><span class="kw-2">mut </span>out = <span class="macro">vec!</span>[<span class="macro">vec!</span>[]];
-        <span class="kw">let </span><span class="kw-2">mut </span>style_stack = <span class="macro">vec!</span>[];
-        <span class="kw">for </span>event <span class="kw">in
-            </span><span class="self">self</span>.highlighter
-                .highlight(highlight_config, code.as_bytes(), <span class="prelude-val">None</span>, |lang_name| {
-                    <span class="kw">let </span>lang_name = lang_name.to_ascii_lowercase();
-                    <span class="comment">// if `lang_name` matches a language/parser name in `languages`, use that language
-                    </span><span class="self">self</span>.set
-                        .get_language(<span class="kw-2">&amp;</span>lang_name)
-                        .ok()
-                        <span class="comment">// else if `injection_callback` returns a name, try getting a language for that name
-                        </span>.or_else(|| {
+        <span class="kw">let </span>injection_callback = |lang_name: <span class="kw-2">&amp;</span>str| {
+            <span class="kw">let </span>lang_name = lang_name.to_ascii_lowercase();
+            <span class="comment">// if `lang_name` matches a language/parser name in `languages`, use that language
+            </span><span class="self">self</span>.set
+                .get_language(<span class="kw-2">&amp;</span>lang_name)
+                .ok()
+                <span class="comment">// else if `injection_callback` returns a name, try getting a language for that name
+                </span>.or_else(|| {
+                    <span class="self">self</span>.set
+                        .for_injection(<span class="kw-2">&amp;</span>lang_name)
+                        .and_then(|name| <span class="self">self</span>.set.get_language(name.as_ref()).ok())
+                })
+                <span class="comment">// else, `lang_name` might be a mimetype like `text/css`, so try both again with the
+                // text after the last `/`
+                </span>.or_else(|| {
+                    lang_name.rsplit_once(<span class="string">&#39;/&#39;</span>).and_then(|(<span class="kw">_</span>, name)| {
+                        <span class="self">self</span>.set.get_language(name).ok().or_else(|| {
                             <span class="self">self</span>.set
-                                .for_injection(<span class="kw-2">&amp;</span>lang_name)
+                                .for_injection(name)
                                 .and_then(|name| <span class="self">self</span>.set.get_language(name.as_ref()).ok())
                         })
-                        <span class="comment">// else, `lang_name` might be a mimetype like `text/css`, so try both again with the
-                        // text after the last `/`
-                        </span>.or_else(|| {
-                            lang_name.rsplit_once(<span class="string">&#39;/&#39;</span>).and_then(|(<span class="kw">_</span>, name)| {
-                                <span class="self">self</span>.set.get_language(name).ok().or_else(|| {
-                                    <span class="self">self</span>.set
-                                        .for_injection(name)
-                                        .and_then(|name| <span class="self">self</span>.set.get_language(name.as_ref()).ok())
-                                })
-                            })
-                        })
-                })<span class="question-mark">?
-        </span>{
-            <span class="kw">match </span>event<span class="question-mark">? </span>{
-                HighlightEvent::HighlightStart(Highlight(highlight)) =&gt; style_stack.push(highlight),
-                HighlightEvent::HighlightEnd =&gt; {
-                    style_stack.pop();
-                }
-                HighlightEvent::Source { start, end } =&gt; {
-                    <span class="kw">let </span>ends_with_newline = code[start..end].ends_with(<span class="string">&#39;\n&#39;</span>);
-                    <span class="kw">let </span><span class="kw-2">mut </span>lines = code[start..end].lines().peekable();
-                    <span class="kw">while let </span><span class="prelude-val">Some</span>(line) = lines.next() {
-                        <span class="kw">let </span>style = style_stack.last().and_then(|idx| {
-                            <span class="kw">let </span>key = THEME_KEYS[<span class="kw-2">*</span>idx];
-                            <span class="kw">match </span>key {
-                                <span class="string">&quot;none&quot; </span>=&gt; <span class="prelude-val">None</span>,
-                                <span class="kw">_ </span>=&gt; <span class="prelude-val">Some</span>(key),
-                            }
-                        });
-                        out.last_mut()
-                            .expect(
-                                <span class="string">&quot;`out` is initialized with one element and never shrinks in size&quot;</span>,
-                            )
-                            .push((line, style));
+                    })
+                })
+        };
 
-                        <span class="kw">if </span>lines.peek().is_some() || ends_with_newline {
-                            out.push(<span class="macro">vec!</span>[]);
+        <span class="kw">match </span>tree {
+            <span class="prelude-val">Some</span>(tree) =&gt; process_highlight_iter(
+                <span class="self">self</span>.highlighter.highlight_existing_tree(
+                    highlight_config,
+                    code.as_bytes(),
+                    <span class="prelude-val">None</span>,
+                    tree,
+                )<span class="question-mark">?</span>,
+                code,
+            ),
+            <span class="prelude-val">None </span>=&gt; process_highlight_iter(
+                <span class="self">self</span>.highlighter.highlight(
+                    highlight_config,
+                    code.as_bytes(),
+                    <span class="prelude-val">None</span>,
+                    injection_callback,
+                )<span class="question-mark">?</span>,
+                code,
+            ),
+        }
+    }
+}
+
+<span class="kw">fn </span>process_highlight_iter(
+    iter: <span class="kw">impl </span>Iterator&lt;Item = std::result::Result&lt;HighlightEvent, syntastica_highlight::Error&gt;&gt;,
+    code: <span class="kw-2">&amp;</span>str,
+) -&gt; <span class="prelude-ty">Result</span>&lt;Highlights&lt;<span class="lifetime">&#39;_</span>&gt;&gt; {
+    <span class="kw">let </span><span class="kw-2">mut </span>out = <span class="macro">vec!</span>[<span class="macro">vec!</span>[]];
+    <span class="kw">let </span><span class="kw-2">mut </span>style_stack = <span class="macro">vec!</span>[];
+
+    <span class="kw">for </span>event <span class="kw">in </span>iter {
+        <span class="kw">match </span>event<span class="question-mark">? </span>{
+            HighlightEvent::HighlightStart(Highlight(highlight)) =&gt; style_stack.push(highlight),
+            HighlightEvent::HighlightEnd =&gt; {
+                style_stack.pop();
+            }
+            HighlightEvent::Source { start, end } =&gt; {
+                <span class="kw">let </span>ends_with_newline = code[start..end].ends_with(<span class="string">&#39;\n&#39;</span>);
+                <span class="kw">let </span><span class="kw-2">mut </span>lines = code[start..end].lines().peekable();
+                <span class="kw">while let </span><span class="prelude-val">Some</span>(line) = lines.next() {
+                    <span class="kw">let </span>style = style_stack.last().and_then(|idx| {
+                        <span class="kw">let </span>key = THEME_KEYS[<span class="kw-2">*</span>idx];
+                        <span class="kw">match </span>key {
+                            <span class="string">&quot;none&quot; </span>=&gt; <span class="prelude-val">None</span>,
+                            <span class="kw">_ </span>=&gt; <span class="prelude-val">Some</span>(key),
                         }
+                    });
+                    out.last_mut()
+                        .expect(<span class="string">&quot;`out` is initialized with one element and never shrinks in size&quot;</span>)
+                        .push((line, style));
+
+                    <span class="kw">if </span>lines.peek().is_some() || ends_with_newline {
+                        out.push(<span class="macro">vec!</span>[]);
                     }
                 }
             }
         }
-
-        <span class="prelude-val">Ok</span>(out)
     }
+
+    <span class="prelude-val">Ok</span>(out)
 }
 </code></pre></div></section></main></body></html>
