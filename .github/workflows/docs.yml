@@ -16,6 +16,7 @@ env:
   CARGO_REGISTRIES_CRATES_IO_PROTOCOL: sparse
   RUSTFLAGS: '--deny warnings'
   RUSTUP_MAX_RETRIES: 10
+  DOCS_RS: true
 
 jobs:
   rustdoc:

@@ -6,7 +6,7 @@ use std::{
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("cargo:rerun-if-env-changed=SYNTASTICA_PARSERS_CLONE_DIR");
-    if cfg!(not(feature = "docs")) {
+    if !(cfg!(feature = "docs") && env::var("DOCS_RS").is_ok()) {
         syntastica_macros::parsers_git!();
     }
 
