@@ -15,9 +15,6 @@ use syntastica_core::{
     Error, Result,
 };
 
-#[cfg(not(feature = "some"))]
-compile_error!("current feature set includes no parsers");
-
 syntastica_macros::parsers_ffi!();
 
 // TODO: share the following code between the parser collection crates

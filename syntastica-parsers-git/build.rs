@@ -1,4 +1,3 @@
-#[cfg(feature = "some")]
 use std::{
     env, fs,
     path::{Path, PathBuf},
@@ -7,12 +6,12 @@ use std::{
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("cargo:rerun-if-env-changed=SYNTASTICA_PARSERS_CLONE_DIR");
-    if cfg!(not(all(feature = "docs", doc))) {
+    if cfg!(not(feature = "docs")) {
         syntastica_macros::parsers_git!();
     }
 
     // for documenting features when using nightly
-    #[cfg(all(feature = "docs", doc))]
+    #[cfg(feature = "docs")]
     {
         let channel = match rustc_version::version_meta().unwrap().channel {
             rustc_version::Channel::Dev => "CHANNEL_DEV",
@@ -27,7 +26,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-#[cfg(feature = "some")]
+#[allow(unused)]
 fn git(repo_dir: &Path) -> Command {
     let mut cmd = Command::new("git");
     cmd.current_dir(repo_dir)
@@ -36,7 +35,7 @@ fn git(repo_dir: &Path) -> Command {
     cmd
 }
 
-#[cfg(feature = "some")]
+#[allow(unused)]
 fn compile_parser(
     name: &str,
     url: &str,

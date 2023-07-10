@@ -11,6 +11,7 @@ use crate::schema::Group;
 mod js_lists;
 mod parser_lists;
 mod parsers_dep;
+mod parsers_git;
 mod parsers_gitdep;
 mod queries;
 mod theme_gruvbox;
@@ -29,11 +30,12 @@ const TOML_FEATURES_HEAD: &str = r##"
 #! ### Features
 default = []
 
-#! At least one of
+#! Every supported language has a feature with the same name as the respective public function.
+#! Additionally the three feature groups
 #! <span class="stab portability"><code>some</code></span>,
 #! <span class="stab portability"><code>most</code></span>, and
 #! <span class="stab portability"><code>all</code></span>
-#! must be enabled.
+#! are available.
 
 ## Include parsers for the most widely known supported languages.
 "##;
@@ -48,6 +50,7 @@ const TOML_FEATURES_ALL: &str = r##"
 const TOML_FEATURES_DOCS: &str = r##"
 ## Meant to be enabled when building docs
 docs = ["dep:document-features", "dep:rustc_version"]
+
 "##;
 
 #[derive(Clone, Debug)]
@@ -124,6 +127,10 @@ pub const {lang}_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/{na
 
     if is_arg("parsers-gitdep") {
         parsers_gitdep::write()?;
+    }
+
+    if is_arg("parsers-git") {
+        parsers_git::write()?;
     }
 
     if is_arg("parser-lists") {
@@ -266,25 +273,55 @@ fn theme() -> BTreeMap<String, ThemeValue> {{
     out
 }
 
-fn parsers_toml_feature(group: Group, crates_io: bool) -> String {
-    let mut added_packages = vec![];
+#[derive(PartialEq, Eq)]
+enum ParserCollection {
+    Git,
+    GitDep,
+    Dep,
+}
+
+fn parsers_toml_feature(group: Group, collection: ParserCollection) -> String {
     let mut feature_str = format!("{group} = [\n");
     if let Some(group) = group.next_smaller() {
         feature_str += &format!("    \"{group}\",\n");
     }
     for lang in crate::LANGUAGE_CONFIG.languages.iter().filter(|lang| {
-        lang.parser.rust_func.is_some()
+        (collection == ParserCollection::Git || lang.parser.rust_func.is_some())
             && lang.group == group
-            && (!crates_io || lang.parser.crates_io.is_some())
+            && (collection != ParserCollection::Dep || lang.parser.crates_io.is_some())
     }) {
-        let package = &lang.parser.package;
-        if added_packages.contains(&package) {
-            continue;
-        }
-        added_packages.push(package);
-        feature_str += &format!("    \"dep:{package}\",\n");
+        feature_str += "    \"";
+        feature_str += &lang.name;
+        feature_str += "\",\n";
     }
     feature_str + "]\n"
+}
+
+fn parsers_toml_lang_features(collection: ParserCollection) -> String {
+    let mut out = String::new();
+    for lang in crate::LANGUAGE_CONFIG
+        .languages
+        .iter()
+        .filter(|lang| match collection {
+            ParserCollection::Git => true,
+            ParserCollection::GitDep => {
+                lang.parser.rust_func.is_some() && lang.parser.rust_func.is_some()
+            }
+            ParserCollection::Dep => {
+                lang.parser.rust_func.is_some() && lang.parser.crates_io.is_some()
+            }
+        })
+    {
+        out += &lang.name;
+        out += " = [";
+        if collection != ParserCollection::Git {
+            out += "\"dep:";
+            out += &lang.parser.package;
+            out += "\"";
+        }
+        out += "]\n";
+    }
+    out
 }
 
 fn parsers_toml_deps(toml: &mut String, git: bool) {

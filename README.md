@@ -55,9 +55,10 @@ with different advantages and drawbacks each. All three collections depend on
 [`syntastica-queries`](#syntastica-queries) for the tree-sitter queries. Choose
 one, and add it as a dependency next to `syntastica` itself.
 
-All three parser collections also provide the same public API and support three
-features, one of which has to be enabled: `some`, `most`, and `all`. Take a look
-at the respective crate documentation for more information.
+All three parser collections also provide the same public API and provide
+features for all supported languages, as well as the three feature groups
+`some`, `most`, and `all`. Take a look at the respective crate documentation for
+more information.
 
 - [`syntastica-parsers`](https://crates.io/crates/syntastica-parsers) is
   probably the easiest to start with. It uses parsers from

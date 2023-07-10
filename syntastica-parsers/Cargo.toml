@@ -32,47 +32,70 @@ all-features = true
 #! ### Features
 default = []
 
-#! At least one of
+#! Every supported language has a feature with the same name as the respective public function.
+#! Additionally the three feature groups
 #! <span class="stab portability"><code>some</code></span>,
 #! <span class="stab portability"><code>most</code></span>, and
 #! <span class="stab portability"><code>all</code></span>
-#! must be enabled.
+#! are available.
 
 ## Include parsers for the most widely known supported languages.
 some = [
-    "dep:tree-sitter-c",
-    "dep:tree-sitter-cpp",
-    "dep:tree-sitter-css",
-    "dep:tree-sitter-go",
-    "dep:tree-sitter-java",
-    "dep:tree-sitter-javascript",
-    "dep:tree-sitter-json",
-    "dep:tree-sitter-python",
-    "dep:tree-sitter-rust",
+    "c",
+    "cpp",
+    "css",
+    "go",
+    "java",
+    "javascript",
+    "json",
+    "python",
+    "rust",
 ]
 
 ## Implies <span class="stab portability"><code>some</code></span>.
 ## Include parsers for most common languages.
 most = [
     "some",
-    "dep:tree-sitter-asm",
-    "dep:tree-sitter-c-sharp",
-    "dep:tree-sitter-ruby",
-    "dep:tree-sitter-scala",
+    "asm",
+    "c_sharp",
+    "ruby",
+    "scala",
 ]
 
 ## Implies <span class="stab portability"><code>most</code></span>.
 ## Include parsers for all supported languages.
 all = [
     "most",
-    "dep:tree-sitter-embedded-template",
-    "dep:tree-sitter-hexdump",
-    "dep:tree-sitter-ocaml",
-    "dep:tree-sitter-rush",
+    "ejs",
+    "erb",
+    "hexdump",
+    "ocaml",
+    "ocaml_interface",
+    "rush",
 ]
 
 ## Meant to be enabled when building docs
 docs = ["dep:document-features", "dep:rustc_version"]
+
+asm = ["dep:tree-sitter-asm"]
+c = ["dep:tree-sitter-c"]
+c_sharp = ["dep:tree-sitter-c-sharp"]
+cpp = ["dep:tree-sitter-cpp"]
+css = ["dep:tree-sitter-css"]
+ejs = ["dep:tree-sitter-embedded-template"]
+erb = ["dep:tree-sitter-embedded-template"]
+go = ["dep:tree-sitter-go"]
+hexdump = ["dep:tree-sitter-hexdump"]
+java = ["dep:tree-sitter-java"]
+javascript = ["dep:tree-sitter-javascript"]
+json = ["dep:tree-sitter-json"]
+ocaml = ["dep:tree-sitter-ocaml"]
+ocaml_interface = ["dep:tree-sitter-ocaml"]
+python = ["dep:tree-sitter-python"]
+ruby = ["dep:tree-sitter-ruby"]
+rush = ["dep:tree-sitter-rush"]
+rust = ["dep:tree-sitter-rust"]
+scala = ["dep:tree-sitter-scala"]
 
 [dependencies.tree-sitter-asm]
 optional = true

@@ -17,7 +17,6 @@ pub fn parsers_git(_: TokenStream) -> TokenStream {
     dedup_ffi_funcs
         .iter()
         .map(|lang| {
-            let feat = lang.group.to_string();
             let name = &lang.name;
             let url = &lang.parser.git.url;
             let rev = &lang.parser.git.rev;
@@ -28,7 +27,7 @@ pub fn parsers_git(_: TokenStream) -> TokenStream {
                 None => quote! { None },
             };
             quote! {
-                #[cfg(feature = #feat)]
+                #[cfg(feature = #name)]
                 compile_parser(#name, #url, #rev, #external_c, #external_cpp, #path)?;
             }
         })
@@ -42,7 +41,7 @@ pub fn parsers_ffi(_: TokenStream) -> TokenStream {
     dedup_ffi_funcs.sort_unstable_by_key(|lang| lang.parser.ffi_func.clone());
     dedup_ffi_funcs.dedup_by_key(|lang| lang.parser.ffi_func.clone());
     let extern_c = dedup_ffi_funcs.iter().map(|lang| {
-        let feat = lang.group.to_string();
+        let name_str = &lang.name;
         let ffi_func = format_ident!("{}", lang.parser.ffi_func);
         // disable cpp scanners on wasm32-unknown-unknown
         let wasm_cfg = if lang.parser.external_scanner.cpp {
@@ -51,13 +50,14 @@ pub fn parsers_ffi(_: TokenStream) -> TokenStream {
             quote! {}
         };
         quote! {
-            #[cfg(all(feature = #feat #wasm_cfg))]
+            #[cfg(all(feature = #name_str #wasm_cfg))]
             fn #ffi_func() -> ::syntastica_core::language_set::Language;
         }
     });
     let functions = LANGUAGE_CONFIG.languages.iter().map(|lang| {
         let feat = lang.group.to_string();
         let name = format_ident!("{}", lang.name);
+        let name_str = &lang.name;
         let ffi_func = format_ident!("{}", lang.parser.ffi_func);
         let doc = format!(
             "Get the parser for [{}]({}/tree/{}). {}",
@@ -78,7 +78,7 @@ pub fn parsers_ffi(_: TokenStream) -> TokenStream {
             false => quote! {},
         };
         quote! {
-            #[cfg(feature = #feat)]
+            #[cfg(any(feature = #feat, feature = #name_str))]
             #[doc = #doc]
             pub fn #name() -> ::syntastica_core::language_set::Language {
                 #[cfg(all(not(all(feature = "docs", doc)) #not_wasm_cfg))]
@@ -115,6 +115,7 @@ fn parsers_rust(crates_io: bool, query_suffix: &str) -> TokenStream {
     let functions = LANGUAGE_CONFIG.languages.iter().map(|lang| {
         let feat = lang.group.to_string();
         let name = format_ident!("{}", lang.name);
+        let name_str = &lang.name;
         let (doc, body) = match &lang.parser.rust_func {
             Some(func) if (!crates_io || lang.parser.crates_io.is_some()) => {
                 let func = format_ident!("{func}");
@@ -134,7 +135,7 @@ fn parsers_rust(crates_io: bool, query_suffix: &str) -> TokenStream {
             ),
         };
         quote! {
-            #[cfg(feature = #feat)]
+            #[cfg(any(feature = #feat, feature = #name_str))]
             #[doc = #doc]
             pub fn #name() -> ::syntastica_core::language_set::Language {
                 #body
@@ -160,44 +161,43 @@ fn parsers(
         .iter()
         .filter(&filter)
         .map(|lang| {
-            let feat = lang.group.to_string();
             let name_str = &lang.name;
-            quote! { #[cfg(feature = #feat)] #name_str }
+            quote! { #[cfg(feature = #name_str)] #name_str }
         });
     let extensions = LANGUAGE_CONFIG
         .languages
         .iter()
         .filter(&filter)
         .flat_map(|lang| {
-            let feat = lang.group.to_string();
             let name_str = &lang.name;
             lang.file_extensions
                 .iter()
-                .map(move |ext| quote! { #[cfg(feature = #feat)] (#ext, #name_str) })
+                .map(move |ext| quote! { #[cfg(feature = #name_str)] (#ext, #name_str) })
         });
     let mut langs_sorted_by_group = LANGUAGE_CONFIG.languages.clone();
     langs_sorted_by_group.sort_by_key(|lang| lang.group);
-    let func_map = langs_sorted_by_group
-        .iter()
-        .filter(&filter)
-        .enumerate()
-        .map(|(index, lang)| {
-            let feat = lang.group.to_string();
-            let name_str = &lang.name;
-            quote! { #[cfg(feature = #feat)] (#name_str, #index) }
-        });
+    let func_map = langs_sorted_by_group.iter().filter(&filter).map(|lang| {
+        let name_str = &lang.name;
+        quote! {
+            #[cfg(feature = #name_str)]
+            {
+                _map.insert(#name_str, _idx);
+                _idx += 1;
+            }
+        }
+    });
     let funcs = langs_sorted_by_group.iter().filter(&filter).map(|lang| {
-        let feat = lang.group.to_string();
         let name = format_ident!("{}", lang.name);
-        quote! { #[cfg(feature = #feat)] &#name }
+        let name_str = &lang.name;
+        quote! { #[cfg(feature = #name_str)] &#name }
     });
     let queries = langs_sorted_by_group.iter().filter(&filter).map(|lang| {
-        let feat = lang.group.to_string();
+        let name_str = &lang.name;
         let highlights = format_ident!("{}_HIGHLIGHTS{query_suffix}", lang.name.to_uppercase());
         let injections = format_ident!("{}_INJECTIONS{query_suffix}", lang.name.to_uppercase());
         let locals = format_ident!("{}_LOCALS{query_suffix}", lang.name.to_uppercase());
 
-        quote! { #[cfg(feature = #feat)] [
+        quote! { #[cfg(feature = #name_str)] [
             ::syntastica_queries::#highlights,
             ::syntastica_queries::#injections,
             ::syntastica_queries::#locals,
@@ -219,12 +219,17 @@ fn parsers(
 
         // TODO: use "perfect" hashmap with compile-time known keys
         static IDX_MAP: ::once_cell::sync::Lazy<::std::collections::HashMap<&'static str, usize>>
-            = ::once_cell::sync::Lazy::new(|| ::std::collections::HashMap::from([#(#func_map),*]));
+            = ::once_cell::sync::Lazy::new(|| {
+            let mut _map = ::std::collections::HashMap::new();
+            let mut _idx = 0;
+            #(#func_map)*
+            _map
+        });
 
         const QUERIES: &[[&str; 3]] = &[#(#queries),*];
 
         fn __get_language(idx: usize) -> ::syntastica_core::Result<::syntastica_core::language_set::HighlightConfiguration> {
-            let funcs: [&dyn Fn() -> ::syntastica_core::language_set::Language; LANG_COUNT] = [#(#funcs),*];
+            let funcs: &[&dyn Fn() -> ::syntastica_core::language_set::Language] = &[#(#funcs),*];
             let lang = funcs[idx]();
             let mut conf = ::syntastica_core::language_set::HighlightConfiguration::new(
                 lang,
