@@ -134,6 +134,11 @@
   (heredoc_body)
 ] @string
 
+(
+  (identifier) @function
+  (#is-not? local)
+)
+
 (keyword_parameter
   (identifier) @parameter
 )

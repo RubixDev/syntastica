@@ -14,6 +14,15 @@
 
 (quasiquote
   (quoter) @_name
+  (#eq? @_name "coffee")
+  (
+    (quasiquote_body) @injection.content
+    (#set! injection.language "coffeescript")
+  )
+)
+
+(quasiquote
+  (quoter) @_name
   (#match? @_name "^(cassius|lucius)$")
   (
     (quasiquote_body) @injection.content

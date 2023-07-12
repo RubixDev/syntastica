@@ -191,9 +191,11 @@
   (identifier) @parameter
 )
 
-; TODO: Re-enable this once it is supported
-; ((identifier) @function
-;  (#is-not? local))
+(
+  (identifier) @function
+  (#is-not? local)
+)
+
 ; Literals
 [
   (string)
