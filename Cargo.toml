@@ -9,6 +9,7 @@ members = [
     "./syntastica-parsers",
     "./syntastica-parsers-git",
     "./syntastica-parsers-gitdep",
+    "./syntastica-parsers-dynamic",
     "./syntastica-macros",
     "./syntastica-themes",
     "./syntastica-highlight",
