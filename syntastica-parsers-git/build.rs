@@ -6,6 +6,8 @@ use std::{
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("cargo:rerun-if-env-changed=SYNTASTICA_PARSERS_CLONE_DIR");
+    println!("cargo:rerun-if-env-changed=SYNTASTICA_PARSERS_CACHE_WRITE_DIR");
+    println!("cargo:rerun-if-env-changed=SYNTASTICA_PARSERS_CACHE_READ_DIR");
     if !(cfg!(feature = "docs") && env::var("DOCS_RS").is_ok()) {
         syntastica_macros::parsers_git!();
     }
@@ -49,8 +51,36 @@ fn compile_parser(
         return Ok(());
     }
 
-    // clone repo into `parsers/{name}`, if it does not already exists
     let base_dir = env::var("SYNTASTICA_PARSERS_CLONE_DIR").or_else(|_| env::var("OUT_DIR"))?;
+    let c_lib_name = format!("parser_{name}{}", path.unwrap_or("")).replace('/', "_");
+    let cpp_lib_name = format!("scanner_{name}{}", path.unwrap_or("")).replace('/', "_");
+
+    if let Ok(dir) = env::var("SYNTASTICA_PARSERS_CACHE_READ_DIR") {
+        if fs::copy(
+            format!("{dir}/lib{c_lib_name}.a"),
+            format!("{base_dir}/lib{c_lib_name}.a"),
+        )
+        .is_ok()
+            && (!external_cpp
+                || fs::copy(
+                    format!("{dir}/lib{cpp_lib_name}.a"),
+                    format!("{base_dir}/lib{cpp_lib_name}.a"),
+                )
+                .is_ok())
+        {
+            println!("cargo:rustc-link-lib=static={c_lib_name}");
+            if external_cpp {
+                println!("cargo:rustc-link-lib=static={cpp_lib_name}");
+            }
+            println!(
+                "cargo:rustc-link-search=native={}",
+                PathBuf::from(dir).canonicalize()?.display()
+            );
+            return Ok(());
+        }
+    }
+
+    // clone repo into `parsers/{name}`, if it does not already exists
     let repo_dir = PathBuf::from(format!("{}/{name}", base_dir));
     if !repo_dir.exists() {
         println!("cloning repository for {name}");
@@ -92,8 +122,16 @@ fn compile_parser(
     tree_sitter_wasm_build_tool::add_wasm_headers(&mut c_config).unwrap();
 
     println!("cargo:rerun-if-changed={}", parser_path.to_str().unwrap());
-    c_config.compile(&format!("parser_{name}{}", path.unwrap_or("")).replace('/', "_"));
+    c_config.compile(&c_lib_name);
     println!("finished building parser for {name}");
+
+    if let Ok(dir) = env::var("SYNTASTICA_PARSERS_CACHE_WRITE_DIR") {
+        fs::create_dir_all(&base_dir)?;
+        fs::copy(
+            format!("{base_dir}/lib{c_lib_name}.a"),
+            format!("{dir}/lib{c_lib_name}.a"),
+        )?;
+    }
 
     if external_cpp {
         println!("building cpp scanner for {name}");
@@ -107,8 +145,15 @@ fn compile_parser(
         let scanner_path = src_dir.join("scanner.cc");
         cpp_config.file(&scanner_path);
         println!("cargo:rerun-if-changed={}", scanner_path.to_str().unwrap());
-        cpp_config.compile(&format!("scanner_{name}{}", path.unwrap_or("")).replace('/', "_"));
+        cpp_config.compile(&cpp_lib_name);
         println!("finished building cpp scanner for {name}");
+
+        if let Ok(dir) = env::var("SYNTASTICA_PARSERS_CACHE_WRITE_DIR") {
+            fs::copy(
+                format!("{base_dir}/lib{cpp_lib_name}.a"),
+                format!("{dir}/lib{cpp_lib_name}.a"),
+            )?;
+        }
     }
 
     Ok(())
