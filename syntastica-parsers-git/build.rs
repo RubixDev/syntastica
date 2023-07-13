@@ -71,6 +71,7 @@ fn compile_parser(
             println!("cargo:rustc-link-lib=static={c_lib_name}");
             if external_cpp {
                 println!("cargo:rustc-link-lib=static={cpp_lib_name}");
+                println!("cargo:rustc-link-lib=stdc++");
             }
             println!(
                 "cargo:rustc-link-search=native={}",
