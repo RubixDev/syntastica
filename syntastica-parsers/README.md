@@ -27,10 +27,13 @@ for more information on all parser collections.
 - [java](https://docs.rs/tree-sitter-java/0.20.0/)
 - [javascript](https://docs.rs/tree-sitter-javascript/0.20.0/)
 - [json](https://docs.rs/tree-sitter-json/0.19.0/)
+- [lua](https://docs.rs/tree-sitter-lua/0.0.18/)
 - [python](https://docs.rs/tree-sitter-python/0.20.2/)
 - [rust](https://docs.rs/tree-sitter-rust/0.20.3/)
+- [toml](https://docs.rs/tree-sitter-toml/0.20.0/)
 - [tsx](https://docs.rs/tree-sitter-typescript/0.20.2/) (not supported by this collection)
 - [typescript](https://docs.rs/tree-sitter-typescript/0.20.2/) (not supported by this collection)
+- [yaml](https://github.com/wingyplus/tree-sitter-yaml) (not supported by this collection)
 
 </details>
 
@@ -39,21 +42,32 @@ for more information on all parser collections.
 
 - [asm](https://docs.rs/tree-sitter-asm/0.1.0/)
 - [c_sharp](https://docs.rs/tree-sitter-c-sharp/0.20.0/)
+- [comment](https://docs.rs/tree-sitter-comment/0.1.0/)
+- [dart](https://docs.rs/tree-sitter-dart/0.0.3/) (not supported by this collection)
+- [diff](https://github.com/the-mikedavis/tree-sitter-diff) (not supported by this collection)
 - [haskell](https://github.com/tree-sitter/tree-sitter-haskell) (not supported by this collection)
 - [jsdoc](https://github.com/tree-sitter/tree-sitter-jsdoc) (not supported by this collection)
+- [json5](https://github.com/Joakker/tree-sitter-json5) (not supported by this collection)
+- [jsonc](https://gitlab.com/WhyNotHugo/tree-sitter-jsonc) (not supported by this collection)
+- [latex](https://github.com/latex-lsp/tree-sitter-latex) (not supported by this collection)
+- [markdown](https://docs.rs/tree-sitter-md/0.1.5/)
+- [markdown_inline](https://docs.rs/tree-sitter-md/0.1.5/)
 - [php](https://github.com/tree-sitter/tree-sitter-php) (not supported by this collection)
 - [regex](https://github.com/tree-sitter/tree-sitter-regex) (not supported by this collection)
 - [ruby](https://docs.rs/tree-sitter-ruby/0.20.0/)
 - [scala](https://docs.rs/tree-sitter-scala/0.20.1/)
+- [scss](https://github.com/serenadeai/tree-sitter-scss) (not supported by this collection)
 
 </details>
 
 <details>
 <summary>List of parsers additionally included in the <span class="stab portability"><code>all</code></span> feature</summary>
 
+- [ebnf](https://docs.rs/tree-sitter-ebnf/0.1.0/)
 - [ejs](https://docs.rs/tree-sitter-embedded-template/0.20.0/)
 - [erb](https://docs.rs/tree-sitter-embedded-template/0.20.0/)
 - [hexdump](https://docs.rs/tree-sitter-hexdump/0.1.0/)
+- [llvm](https://github.com/benwilliamgraham/tree-sitter-llvm) (not supported by this collection)
 - [ocaml](https://docs.rs/tree-sitter-ocaml/0.20.3/)
 - [ocaml_interface](https://docs.rs/tree-sitter-ocaml/0.20.3/)
 - [ql](https://github.com/tree-sitter/tree-sitter-ql) (not supported by this collection)

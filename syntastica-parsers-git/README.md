@@ -48,10 +48,13 @@ will reuse these binary files.
 - [java](https://github.com/tree-sitter/tree-sitter-java/tree/c194ee5e6ede5f26cf4799feead4a8f165dcf14d)
 - [javascript](https://github.com/tree-sitter/tree-sitter-javascript/tree/5720b249490b3c17245ba772f6be4a43edb4e3b7)
 - [json](https://github.com/tree-sitter/tree-sitter-json/tree/40a81c01a40ac48744e0c8ccabbaba1920441199)
+- [lua](https://github.com/muniftanjim/tree-sitter-lua/tree/7268c1cea5df56ac0c779cd37d6631d4e6f41d4f)
 - [python](https://github.com/tree-sitter/tree-sitter-python/tree/62827156d01c74dc1538266344e788da74536b8a)
 - [rust](https://github.com/tree-sitter/tree-sitter-rust/tree/0a70e15da977489d954c219af9b50b8a722630ee)
+- [toml](https://github.com/Mathspy/tree-sitter-toml/tree/ae4cdb5d27bf876a432b6c30b6a88f56c9b3e761)
 - [tsx](https://github.com/tree-sitter/tree-sitter-typescript/tree/286e90c32060032225f636a573d0e999f7766c97)
 - [typescript](https://github.com/tree-sitter/tree-sitter-typescript/tree/286e90c32060032225f636a573d0e999f7766c97)
+- [yaml](https://github.com/wingyplus/tree-sitter-yaml/tree/6f5ce9ba49fb20a1ed6f822213cae35a63de353b)
 
 </details>
 
@@ -60,21 +63,32 @@ will reuse these binary files.
 
 - [asm](https://github.com/rush-rs/tree-sitter-asm/tree/36dc26acc7818920de2e103e20a9f42358caf926)
 - [c_sharp](https://github.com/tree-sitter/tree-sitter-c-sharp/tree/1648e21b4f087963abf0101ee5221bb413107b07)
+- [comment](https://github.com/stsewd/tree-sitter-comment/tree/c9a7e2df7cac2dfb730f766a4f343308f84ff346)
+- [dart](https://github.com/UserNobody14/tree-sitter-dart/tree/e398400a0b785af3cf571f5a57eccab242f0cdf9)
+- [diff](https://github.com/the-mikedavis/tree-sitter-diff/tree/f69bde8e56f431863eba2fe4bab23e7d9692855f)
 - [haskell](https://github.com/tree-sitter/tree-sitter-haskell/tree/ba0bfb0e5d8e9e31c160d287878c6f26add3ec08)
 - [jsdoc](https://github.com/tree-sitter/tree-sitter-jsdoc/tree/189a6a4829beb9cdbe837260653b4a3dfb0cc3db)
+- [json5](https://github.com/Joakker/tree-sitter-json5/tree/5dd5cdc418d9659682556b6adca2dd9ace0ac6d2)
+- [jsonc](https://gitlab.com/WhyNotHugo/tree-sitter-jsonc/tree/02b01653c8a1c198ae7287d566efa86a135b30d5)
+- [latex](https://github.com/latex-lsp/tree-sitter-latex/tree/2ae2021d7b224fb6aa57b760e0d146059f943bb8)
+- [markdown](https://github.com/MDeiml/tree-sitter-markdown/tree/936cc84289f6de83c263ae8e659fb342867ceb16)
+- [markdown_inline](https://github.com/MDeiml/tree-sitter-markdown/tree/936cc84289f6de83c263ae8e659fb342867ceb16)
 - [php](https://github.com/tree-sitter/tree-sitter-php/tree/d38adb26304d9b9d38e9a3b4aae0ec4b29bf9462)
 - [regex](https://github.com/tree-sitter/tree-sitter-regex/tree/e1cfca3c79896ff79842f057ea13e529b66af636)
 - [ruby](https://github.com/tree-sitter/tree-sitter-ruby/tree/f257f3f57833d584050336921773738a3fd8ca22)
 - [scala](https://github.com/tree-sitter/tree-sitter-scala/tree/8062487fb3b7f3ce1bb7ce1fd1c84bed60c75203)
+- [scss](https://github.com/serenadeai/tree-sitter-scss/tree/c478c6868648eff49eb04a4df90d703dc45b312a)
 
 </details>
 
 <details>
 <summary>List of parsers additionally included in the <span class="stab portability"><code>all</code></span> feature</summary>
 
+- [ebnf](https://github.com/RubixDev/ebnf/tree/8e635b0b723c620774dfb8abf382a7f531894b40)
 - [ejs](https://github.com/tree-sitter/tree-sitter-embedded-template/tree/203f7bd3c1bbfbd98fc19add4b8fcb213c059205)
 - [erb](https://github.com/tree-sitter/tree-sitter-embedded-template/tree/203f7bd3c1bbfbd98fc19add4b8fcb213c059205)
 - [hexdump](https://github.com/rush-rs/tree-sitter-hexdump/tree/09eaf4fcfed00be93928d7d3d82b490cd1343b80)
+- [llvm](https://github.com/benwilliamgraham/tree-sitter-llvm/tree/d47c95d78ef0e7495a74d214dd6fcddf6e402dfc)
 - [ocaml](https://github.com/tree-sitter/tree-sitter-ocaml/tree/82e103cee0ffb61ee59f9b654b8e1d4b8e9cab74)
 - [ocaml_interface](https://github.com/tree-sitter/tree-sitter-ocaml/tree/82e103cee0ffb61ee59f9b654b8e1d4b8e9cab74)
 - [ql](https://github.com/tree-sitter/tree-sitter-ql/tree/bd087020f0d8c183080ca615d38de0ec827aeeaf)

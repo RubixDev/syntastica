@@ -637,3 +637,329 @@ wat = '''
   (start $main)
 )
 '''
+
+ebnf = '''
+Program = { Item } ;
+
+Item               = FunctionDefinition | LetStmt ;
+FunctionDefinition = 'fn' , ident , '(' , [ ParameterList ] , ')'
+                   , [ '->' , Type ] , Block ;
+ParameterList      = Parameter , { ',' , Parameter } , [ ',' ] ;
+Parameter          = [ 'mut' ] , ident , ':' , Type ;
+
+Block = '{' , { Statement } , [ Expression ] , '}' ;
+Type  = { '*' } , ( ident
+                  | '(' , ')' ) ;
+
+Statement    = LetStmt | ReturnStmt | LoopStmt | WhileStmt | ForStmt
+             | BreakStmt | ContinueStmt | ExprStmt ;
+LetStmt      = 'let' , [ 'mut' ] , ident , [ ':' , Type ] , '='
+             , Expression , ';' ;
+ReturnStmt   = 'return' , [ Expression ] , ';' ;
+LoopStmt     = 'loop' , Block , [ ';' ] ;
+WhileStmt    = 'while' , Expression , Block , [ ';' ] ;
+ForStmt      = 'for' , ident , '=' , Expression , ';' , Expression
+             , ';' , Expression , Block , [ ';' ] ;
+BreakStmt    = 'break' , ';' ;
+ContinueStmt = 'continue' , ';' ;
+ExprStmt     = ExprWithoutBlock , ';'
+             | ExprWithBlock , [ ';' ] ;
+
+Expression       = ExprWithoutBlock | ExprWithBlock ;
+ExprWithBlock    = Block | IfExpr ;
+IfExpr           = 'if' , Expression , Block , [ 'else' , ( IfExpr
+                                                          | Block ) ] ;
+ExprWithoutBlock = int
+                 | float
+                 | bool
+                 | char
+                 | ident
+                 | PrefixExpr
+                 | InfixExpr
+                 | AssignExpr
+                 | CallExpr
+                 | CastExpr
+                 | '(' , Expression , ')' ;
+PrefixExpr       = PREFIX_OPERATOR , Expression ;
+InfixExpr        = Expression , INFIX_OPERATOR , Expression ;
+(* The left hand side can only be an `ident` or a `PrefixExpr` with the `*` operator *)
+AssignExpr       = Expression , ASSIGN_OPERATOR , Expression ;
+CallExpr         = ident , '(' , [ ArgumentList ] , ')' ;
+ArgumentList     = Expression , { ',' , Expression } , [ ',' ] ;
+CastExpr         = Expression , 'as' , Type ;
+
+ident = LETTER , { LETTER | DIGIT } ;
+int   = DIGIT , { DIGIT | '_' }
+      | '0x' , HEX , { HEX | '_' } ;
+float = DIGIT , { DIGIT | '_' } , ( '.' , DIGIT , { DIGIT | '_' }
+                                  | 'f' ) ;
+char  = "'" , ( ASCII_CHAR - '\'
+              | '\' , ( ESCAPE_CHAR
+                      | "'"
+                      | 'x' , 2 * HEX ) ) , "'" ;
+bool  = 'true' | 'false' ;
+
+comment = '//' , { CHAR } , ? LF ?
+        | '/*' , { CHAR } , '*/' ;
+
+LETTER      = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I'
+            | 'J' | 'K' | 'L' | 'M' | 'N' | 'O' | 'P' | 'Q' | 'R'
+            | 'S' | 'T' | 'U' | 'V' | 'W' | 'X' | 'Y' | 'Z' | 'a'
+            | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h' | 'i' | 'j'
+            | 'k' | 'l' | 'm' | 'n' | 'o' | 'p' | 'q' | 'r' | 's'
+            | 't' | 'u' | 'v' | 'w' | 'x' | 'y' | 'z' | '_' ;
+DIGIT       = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8'
+            | '9' ;
+HEX         = DIGIT | 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'a'
+            | 'b' | 'c' | 'd' | 'e' | 'f' ;
+CHAR        = ? any UTF-8 character ? ;
+ASCII_CHAR  = ? any ASCII character ? ;
+ESCAPE_CHAR = '\' | 'b' | 'n' | 'r' | 't' ;
+
+PREFIX_OPERATOR     = '!' | '-' | '&' | '*' ;
+INFIX_OPERATOR      = ARITHMETIC_OPERATOR | RELATIONAL_OPERATOR
+                    | BITWISE_OPERATOR | LOGICAL_OPERATOR ;
+ARITHMETIC_OPERATOR = '+' | '-' | '*' | '/' | '%' | '**' ;
+RELATIONAL_OPERATOR = '==' | '!=' | '<' | '>' | '<=' | '>=' ;
+BITWISE_OPERATOR    = '<<' | '>>' | '|' | '&' | '^' ;
+LOGICAL_OPERATOR    = '&&' | '||' ;
+ASSIGN_OPERATOR     = '=' | '+=' | '-=' | '*=' | '/=' | '%='
+                    | '**=' | '<<=' | '>>=' | '|=' | '&=' | '^=' ;
+'''
+
+llvm = '''
+; ModuleID = 'main'
+source_filename = "main"
+target triple = "x86_64-pc-linux-gnu"
+
+define internal i1 @foo(i64 %0) {
+entry:
+  %i_sum = add i64 %0, 3
+  call void @exit(i64 %i_sum)
+  unreachable
+}
+
+declare void @exit(i64)
+
+define i32 @main() {
+entry:
+  %ret_foo = call i1 @foo(i64 2)
+  ret i32 0
+}
+'''
+
+dart = '''
+int fib(int n) {
+  if (n==0 || n==1) {
+    return n;
+  }
+  var prev=1;
+  var current=1;
+  for (var i=2; i<n; i++) {
+    var next = prev + current;
+    prev = current;
+    current = next;
+  }
+  return current;
+}
+
+int fibRec(int n) => n==0 || n==1 ? n : fibRec(n-1) + fibRec(n-2);
+
+main() {
+  print(fib(11));
+  print(fibRec(11));
+}
+'''
+
+diff = '''
+diff --git a/xtask/src/add_lang.rs b/xtask/src/add_lang.rs
+index 990eae60..f535802a 100644
+--- a/xtask/src/add_lang.rs
++++ b/xtask/src/add_lang.rs
+@@ -13,7 +13,7 @@ use once_cell::sync::Lazy;
+ use serde_json::{Map, Value};
+
+ static URL_REGEX: Lazy<Regex> =
+-    Lazy::new(|| Regex::new(r"https:\/\/github\.com\/([^\/]*)\/([^\/?#]*)").unwrap());
++    Lazy::new(|| Regex::new(r"https:\/\/(github|gitlab)\.com\/([^\/]*)\/([^\/?#]*)").unwrap());
+
+ pub fn run() -> Result<()> {
+     let group = env::args()
+@@ -30,10 +30,17 @@ pub fn run() -> Result<()> {
+     let rev = get_rev(&url).with_context(|| "unable to fetch latest revision of repository")?;
+
+     let content_url = match URL_REGEX.captures(&url) {
+-        Ok(Some(groups)) => Some(format!(
+-            "https://raw.githubusercontent.com/{}/{}/{rev}",
+-            &groups[1], &groups[2],
+-        )),
++        Ok(Some(groups)) => match &groups[1] {
++            "github" => Some(format!(
++                "https://raw.githubusercontent.com/{}/{}/{rev}",
++                &groups[2], &groups[3],
++            )),
++            "gitlab" => Some(format!(
++                "https://gitlab.com/{}/{}/-/raw/{rev}",
++                &groups[2], &groups[3],
++            )),
++            _ => unreachable!("the regex only allows above options"),
++        },
+         _ => None,
+     };
+     let path_in_url = match &path {
+'''
+
+json5 = '''
+{
+    key: "value",
+    good: false,
+    age: 42,
+    percentage: 0.3,
+    nothing: null,
+    list: [1, 2, 3],
+    // NOTE: line comment
+    object: {
+        "key": /* block comment */ "value",
+    },
+}
+'''
+
+jsonc = '''
+{
+    "key": "value",
+    "good": false,
+    "age": 42,
+    "percentage": 0.3,
+    "nothing": null,
+    "list": [1, 2, 3],
+    // line comment
+    "object": {
+        "key": /* block comment */ "value"
+    }
+}
+'''
+
+latex = '''
+\documentclass[english, 12pt, listof=totoc, listof=flat, tablecaptionabove, draft=false, twoside=true]{scrreprt}
+
+\usepackage[a4paper, left=2.5cm, right=2cm, top=1.5cm, bottom=2cm, footskip=.8cm]{geometry}
+
+\begin{document}
+\include{content/titlepage}
+\include{content/abstract}
+\tableofcontents
+
+\chapter{Introduction}\label{chap:introduction}
+\input{content/chapter_0/introduction}
+\end{document}
+'''
+
+lua = '''
+-- more pedantic version, returns 0 for non-integer n
+function pfibs(n)
+  if n ~= math.floor(n) then return 0
+  elseif n < 0 then return pfibs(n + 2) - pfibs(n + 1)
+  elseif n < 2 then return n
+  else return pfibs(n - 1) + pfibs(n - 2)
+  end
+end
+'''
+
+markdown = '''
+# Heading 1
+
+## Heading 2
+
+Content.
+
+- list item 1
+- list item 2
+
+---
+
+1. list item 1
+2. list item 2
+
+```rust
+fn main() {}
+```
+'''
+
+markdown_inline = '''
+**strong** _italic_ ~strikethrough~ [link](https://example.com)
+'''
+
+scss = '''
+@use "sass:math";
+
+$font-stack: Helvetica, sans-serif;
+$primary-color: #333;
+
+body {
+  font: 100% $font-stack;
+  color: $primary-color;
+}
+
+nav {
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li { display: inline-block; }
+
+  a {
+    display: block;
+    padding: 6px 12px;
+    text-decoration: none;
+  }
+}
+
+@mixin theme($theme: DarkGray) {
+  background: $theme;
+  box-shadow: 0 0 1px rgba($theme, .25);
+  color: #fff;
+}
+
+.info {
+  @include theme;
+}
+.alert {
+  @include theme($theme: DarkRed);
+}
+.success {
+  @include theme($theme: DarkGreen);
+}
+
+article[role="main"] {
+  width: math.div(600px, 960px) * 100%;
+}
+'''
+
+yaml = '''
+---
+key: value
+good: false
+age: 42
+percentage: 0.3
+nothing:
+list:
+- 1
+- 2
+- 3
+object:
+  key: 'value'
+'''
+
+toml = '''
+[package]
+name = "syntastica"
+version = "0.3.0"
+authors.workspace = true
+edition = "2021"
+keywords = ["tree-sitter", "syntect", "highlight", "parsing", "syntax"]
+license.workspace = true
+repository.workspace = true
+description = "Modern and easy syntax highlighting using tree-sitter"
+'''

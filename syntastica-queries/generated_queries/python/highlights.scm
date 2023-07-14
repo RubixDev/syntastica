@@ -116,7 +116,9 @@
   "as" @include
 )
 
-"import" @include
+("import"
+  @include
+)
 
 (import_from_statement
   "from" @include

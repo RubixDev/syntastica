@@ -58,11 +58,17 @@
   "if"
 ] @conditional
 
-"as" @keyword.operator
+("as"
+  @keyword.operator
+)
 
-"return" @keyword.return
+("return"
+  @keyword.return
+)
 
-"fn" @keyword.function
+("fn"
+  @keyword.function
+)
 
 [
   "let"

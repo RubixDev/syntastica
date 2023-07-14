@@ -118,7 +118,9 @@
   "else"
 ] @conditional
 
-"import" @include
+("import"
+  @include
+)
 
 [
   "avg"

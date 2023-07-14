@@ -88,7 +88,9 @@
   "?" @punctuation.special
 )
 
-"?." @punctuation.delimiter
+("?."
+  @punctuation.delimiter
+)
 
 (opting_type_annotation
   "?:" @punctuation.delimiter
@@ -361,13 +363,21 @@
   ":" @punctuation.delimiter
 )
 
-"," @punctuation.delimiter
+(","
+  @punctuation.delimiter
+)
 
-"." @punctuation.delimiter
+("."
+  @punctuation.delimiter
+)
 
-";" @punctuation.delimiter
+(";"
+  @punctuation.delimiter
+)
 
-"..." @punctuation.special
+("..."
+  @punctuation.special
+)
 
 (
   (identifier) @number

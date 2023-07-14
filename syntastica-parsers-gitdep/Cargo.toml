@@ -52,8 +52,11 @@ some = [
     "java",
     "javascript",
     "json",
+    "lua",
     "python",
     "rust",
+    "toml",
+    "yaml",
 ]
 
 ## Implies <span class="stab portability"><code>some</code></span>.
@@ -62,20 +65,29 @@ most = [
     "some",
     "asm",
     "c_sharp",
+    "comment",
+    "diff",
     "haskell",
+    "json5",
+    "latex",
+    "markdown",
+    "markdown_inline",
     "php",
     "regex",
     "ruby",
     "scala",
+    "scss",
 ]
 
 ## Implies <span class="stab portability"><code>most</code></span>.
 ## Include parsers for all supported languages.
 all = [
     "most",
+    "ebnf",
     "ejs",
     "erb",
     "hexdump",
+    "llvm",
     "ocaml",
     "ocaml_interface",
     "ql",
@@ -90,8 +102,11 @@ asm = ["dep:tree-sitter-asm"]
 bash = ["dep:tree-sitter-bash"]
 c = ["dep:tree-sitter-c"]
 c_sharp = ["dep:tree-sitter-c-sharp"]
+comment = ["dep:tree-sitter-comment"]
 cpp = ["dep:tree-sitter-cpp"]
 css = ["dep:tree-sitter-css"]
+diff = ["dep:tree-sitter-diff"]
+ebnf = ["dep:tree-sitter-ebnf"]
 ejs = ["dep:tree-sitter-embedded-template"]
 erb = ["dep:tree-sitter-embedded-template"]
 go = ["dep:tree-sitter-go"]
@@ -100,6 +115,12 @@ hexdump = ["dep:tree-sitter-hexdump"]
 java = ["dep:tree-sitter-java"]
 javascript = ["dep:tree-sitter-javascript"]
 json = ["dep:tree-sitter-json"]
+json5 = ["dep:tree-sitter-json5"]
+latex = ["dep:tree-sitter-latex"]
+llvm = ["dep:tree-sitter-llvm"]
+lua = ["dep:tree-sitter-lua"]
+markdown = ["dep:tree-sitter-md"]
+markdown_inline = ["dep:tree-sitter-md"]
 ocaml = ["dep:tree-sitter-ocaml"]
 ocaml_interface = ["dep:tree-sitter-ocaml"]
 php = ["dep:tree-sitter-php"]
@@ -110,7 +131,10 @@ ruby = ["dep:tree-sitter-ruby"]
 rush = ["dep:tree-sitter-rush"]
 rust = ["dep:tree-sitter-rust"]
 scala = ["dep:tree-sitter-scala"]
+scss = ["dep:tree-sitter-scss"]
+toml = ["dep:tree-sitter-toml"]
 verilog = ["dep:tree-sitter-verilog"]
+yaml = ["dep:tree-sitter-yaml"]
 
 [dependencies.tree-sitter-asm]
 optional = true
@@ -132,6 +156,11 @@ optional = true
 git = "https://github.com/tree-sitter/tree-sitter-c-sharp"
 rev = "1648e21b4f087963abf0101ee5221bb413107b07"
 
+[dependencies.tree-sitter-comment]
+optional = true
+git = "https://github.com/stsewd/tree-sitter-comment"
+rev = "c9a7e2df7cac2dfb730f766a4f343308f84ff346"
+
 [dependencies.tree-sitter-cpp]
 optional = true
 git = "https://github.com/tree-sitter/tree-sitter-cpp"
@@ -141,6 +170,16 @@ rev = "70aed2e9e83eb7320ab7c454d3084300bf587037"
 optional = true
 git = "https://github.com/tree-sitter/tree-sitter-css"
 rev = "769203d0f9abe1a9a691ac2b9fe4bb4397a73c51"
+
+[dependencies.tree-sitter-diff]
+optional = true
+git = "https://github.com/the-mikedavis/tree-sitter-diff"
+rev = "f69bde8e56f431863eba2fe4bab23e7d9692855f"
+
+[dependencies.tree-sitter-ebnf]
+optional = true
+git = "https://github.com/RubixDev/ebnf"
+rev = "8e635b0b723c620774dfb8abf382a7f531894b40"
 
 [dependencies.tree-sitter-embedded-template]
 optional = true
@@ -176,6 +215,31 @@ rev = "5720b249490b3c17245ba772f6be4a43edb4e3b7"
 optional = true
 git = "https://github.com/tree-sitter/tree-sitter-json"
 rev = "40a81c01a40ac48744e0c8ccabbaba1920441199"
+
+[dependencies.tree-sitter-json5]
+optional = true
+git = "https://github.com/Joakker/tree-sitter-json5"
+rev = "5dd5cdc418d9659682556b6adca2dd9ace0ac6d2"
+
+[dependencies.tree-sitter-latex]
+optional = true
+git = "https://github.com/latex-lsp/tree-sitter-latex"
+rev = "2ae2021d7b224fb6aa57b760e0d146059f943bb8"
+
+[dependencies.tree-sitter-llvm]
+optional = true
+git = "https://github.com/benwilliamgraham/tree-sitter-llvm"
+rev = "d47c95d78ef0e7495a74d214dd6fcddf6e402dfc"
+
+[dependencies.tree-sitter-lua]
+optional = true
+git = "https://github.com/muniftanjim/tree-sitter-lua"
+rev = "7268c1cea5df56ac0c779cd37d6631d4e6f41d4f"
+
+[dependencies.tree-sitter-md]
+optional = true
+git = "https://github.com/MDeiml/tree-sitter-markdown"
+rev = "936cc84289f6de83c263ae8e659fb342867ceb16"
 
 [dependencies.tree-sitter-ocaml]
 optional = true
@@ -222,7 +286,22 @@ optional = true
 git = "https://github.com/tree-sitter/tree-sitter-scala"
 rev = "8062487fb3b7f3ce1bb7ce1fd1c84bed60c75203"
 
+[dependencies.tree-sitter-scss]
+optional = true
+git = "https://github.com/serenadeai/tree-sitter-scss"
+rev = "c478c6868648eff49eb04a4df90d703dc45b312a"
+
+[dependencies.tree-sitter-toml]
+optional = true
+git = "https://github.com/Mathspy/tree-sitter-toml"
+rev = "ae4cdb5d27bf876a432b6c30b6a88f56c9b3e761"
+
 [dependencies.tree-sitter-verilog]
 optional = true
 git = "https://github.com/tree-sitter/tree-sitter-verilog"
 rev = "4457145e795b363f072463e697dfe2f6973c9a52"
+
+[dependencies.tree-sitter-yaml]
+optional = true
+git = "https://github.com/wingyplus/tree-sitter-yaml"
+rev = "6f5ce9ba49fb20a1ed6f822213cae35a63de353b"

@@ -48,8 +48,10 @@ some = [
     "java",
     "javascript",
     "json",
+    "lua",
     "python",
     "rust",
+    "toml",
 ]
 
 ## Implies <span class="stab portability"><code>some</code></span>.
@@ -58,6 +60,9 @@ most = [
     "some",
     "asm",
     "c_sharp",
+    "comment",
+    "markdown",
+    "markdown_inline",
     "ruby",
     "scala",
 ]
@@ -66,6 +71,7 @@ most = [
 ## Include parsers for all supported languages.
 all = [
     "most",
+    "ebnf",
     "ejs",
     "erb",
     "hexdump",
@@ -80,8 +86,10 @@ docs = ["dep:document-features", "dep:rustc_version"]
 asm = ["dep:tree-sitter-asm"]
 c = ["dep:tree-sitter-c"]
 c_sharp = ["dep:tree-sitter-c-sharp"]
+comment = ["dep:tree-sitter-comment"]
 cpp = ["dep:tree-sitter-cpp"]
 css = ["dep:tree-sitter-css"]
+ebnf = ["dep:tree-sitter-ebnf"]
 ejs = ["dep:tree-sitter-embedded-template"]
 erb = ["dep:tree-sitter-embedded-template"]
 go = ["dep:tree-sitter-go"]
@@ -89,6 +97,9 @@ hexdump = ["dep:tree-sitter-hexdump"]
 java = ["dep:tree-sitter-java"]
 javascript = ["dep:tree-sitter-javascript"]
 json = ["dep:tree-sitter-json"]
+lua = ["dep:tree-sitter-lua"]
+markdown = ["dep:tree-sitter-md"]
+markdown_inline = ["dep:tree-sitter-md"]
 ocaml = ["dep:tree-sitter-ocaml"]
 ocaml_interface = ["dep:tree-sitter-ocaml"]
 python = ["dep:tree-sitter-python"]
@@ -96,6 +107,7 @@ ruby = ["dep:tree-sitter-ruby"]
 rush = ["dep:tree-sitter-rush"]
 rust = ["dep:tree-sitter-rust"]
 scala = ["dep:tree-sitter-scala"]
+toml = ["dep:tree-sitter-toml"]
 
 [dependencies.tree-sitter-asm]
 optional = true
@@ -109,6 +121,10 @@ version = "0.20.2"
 optional = true
 version = "0.20.0"
 
+[dependencies.tree-sitter-comment]
+optional = true
+version = "0.1.0"
+
 [dependencies.tree-sitter-cpp]
 optional = true
 version = "0.20.0"
@@ -116,6 +132,10 @@ version = "0.20.0"
 [dependencies.tree-sitter-css]
 optional = true
 version = "0.19.0"
+
+[dependencies.tree-sitter-ebnf]
+optional = true
+version = "0.1.0"
 
 [dependencies.tree-sitter-embedded-template]
 optional = true
@@ -141,6 +161,14 @@ version = "0.20.0"
 optional = true
 version = "0.19.0"
 
+[dependencies.tree-sitter-lua]
+optional = true
+version = "0.0.18"
+
+[dependencies.tree-sitter-md]
+optional = true
+version = "0.1.5"
+
 [dependencies.tree-sitter-ocaml]
 optional = true
 version = "0.20.3"
@@ -164,3 +192,7 @@ version = "0.20.3"
 [dependencies.tree-sitter-scala]
 optional = true
 version = "0.20.1"
+
+[dependencies.tree-sitter-toml]
+optional = true
+version = "0.20.0"

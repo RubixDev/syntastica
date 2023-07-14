@@ -35,7 +35,9 @@
   (block_comment)
 ] @comment @spell
 
-"return" @keyword.return
+("return"
+  @keyword.return
+)
 
 [
   "try"
@@ -54,7 +56,9 @@
   "@"
 ] @operator
 
-"def" @keyword.function
+("def"
+  @keyword.function
+)
 
 [
   "do"
@@ -84,7 +88,9 @@
   "then"
 ] @conditional
 
-"new" @keyword.operator
+("new"
+  @keyword.operator
+)
 
 (annotation) @attribute
 

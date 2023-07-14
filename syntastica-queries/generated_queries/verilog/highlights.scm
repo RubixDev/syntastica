@@ -314,7 +314,9 @@
   "end"
 ] @label
 
-"return" @keyword.return
+("return"
+  @keyword.return
+)
 
 [
   "function"

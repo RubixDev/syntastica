@@ -90,7 +90,9 @@
 
 (special_variable_name) @constant
 
-"function" @keyword.function
+("function"
+  @keyword.function
+)
 
 [
   "declare"

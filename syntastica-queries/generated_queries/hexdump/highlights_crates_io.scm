@@ -1,4 +1,6 @@
-":" @punctuation.delimiter
+(":"
+  @punctuation.delimiter
+)
 
 (string) @string
 
