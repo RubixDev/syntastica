@@ -430,9 +430,7 @@
   (#eq? @punctuation.delimiter "&")
 )
 
-("\\item"
-  @punctuation.special
-)
+"\\item" @punctuation.special
 
 [
   (operator)

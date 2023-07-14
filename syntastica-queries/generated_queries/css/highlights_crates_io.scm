@@ -93,9 +93,7 @@
 
 (comment) @comment @spell
 
-("@import"
-  @include
-)
+"@import" @include
 
 [
   "@media"

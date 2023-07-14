@@ -10,9 +10,7 @@
 
 (string) @string
 
-("null"
-  @constant
-)
+"null" @constant
 
 [
   "true"

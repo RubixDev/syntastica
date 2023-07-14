@@ -7,9 +7,7 @@
   "}"
 ] @punctuation.bracket
 
-("="
-  @keyword.operator
-)
+"=" @keyword.operator
 
 [
   "|"

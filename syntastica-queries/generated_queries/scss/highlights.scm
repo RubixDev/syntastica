@@ -81,17 +81,11 @@
   "in"
 ] @repeat
 
-("@include"
-  @include
-)
+"@include" @include
 
-("@return"
-  @keyword.return
-)
+"@return" @keyword.return
 
-("@function"
-  @keyword.function
-)
+"@function" @keyword.function
 
 [
   "@at-root"
@@ -199,9 +193,7 @@
 
 (comment) @comment @spell
 
-("@import"
-  @include
-)
+"@import" @include
 
 [
   "@media"

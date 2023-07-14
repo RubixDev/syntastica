@@ -326,21 +326,13 @@
   ":" @punctuation.delimiter
 )
 
-(","
-  @punctuation.delimiter
-)
+"," @punctuation.delimiter
 
-("."
-  @punctuation.delimiter
-)
+"." @punctuation.delimiter
 
-(";"
-  @punctuation.delimiter
-)
+";" @punctuation.delimiter
 
-("..."
-  @punctuation.special
-)
+"..." @punctuation.special
 
 (
   (identifier) @number

@@ -245,9 +245,7 @@
   ] @function.call
 )
 
-("defined?"
-  @function
-)
+"defined?" @function
 
 (
   (identifier) @exception

@@ -7,9 +7,7 @@
   ] @punctuation.bracket
 )
 
-("::"
-  @punctuation.delimiter
-)
+"::" @punctuation.delimiter
 
 [
   "new"
@@ -202,13 +200,9 @@
   )
 )
 
-("static_assert"
-  @function.builtin
-)
+"static_assert" @function.builtin
 
-("operator"
-  @function
-)
+"operator" @function
 
 (operator_name) @function
 
@@ -532,9 +526,7 @@
   "}"
 ] @punctuation.bracket
 
-("..."
-  @punctuation.special
-)
+"..." @punctuation.special
 
 [
   ";"
@@ -542,13 +534,9 @@
   ","
 ] @punctuation.delimiter
 
-("#include"
-  @include
-)
+"#include" @include
 
-("#define"
-  @define
-)
+"#define" @define
 
 [
   "#if"
@@ -575,13 +563,9 @@
   "break"
 ] @repeat
 
-("return"
-  @keyword.return
-)
+"return" @keyword.return
 
-("sizeof"
-  @keyword.operator
-)
+"sizeof" @keyword.operator
 
 [
   "default"

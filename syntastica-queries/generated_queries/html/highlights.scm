@@ -1,12 +1,8 @@
-("<!"
-  @tag.delimiter
-)
+"<!" @tag.delimiter
 
 (doctype) @constant
 
-("="
-  @operator
-)
+"=" @operator
 
 [
   "<"

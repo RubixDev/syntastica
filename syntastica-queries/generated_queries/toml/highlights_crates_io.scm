@@ -1,40 +1,22 @@
 (ERROR) @error
 
-("}"
-  @punctuation.bracket
-)
+"}" @punctuation.bracket
 
-("{"
-  @punctuation.bracket
-)
+"{" @punctuation.bracket
 
-("]]"
-  @punctuation.bracket
-)
+"]]" @punctuation.bracket
 
-("[["
-  @punctuation.bracket
-)
+"[[" @punctuation.bracket
 
-("]"
-  @punctuation.bracket
-)
+"]" @punctuation.bracket
 
-("["
-  @punctuation.bracket
-)
+"[" @punctuation.bracket
 
-("="
-  @operator
-)
+"=" @operator
 
-(","
-  @punctuation.delimiter
-)
+"," @punctuation.delimiter
 
-("."
-  @punctuation.delimiter
-)
+"." @punctuation.delimiter
 
 (local_time) @string.special
 

@@ -99,17 +99,11 @@
   "package"
 ] @include
 
-("for"
-  @repeat
-)
+"for" @repeat
 
-("return"
-  @keyword.return
-)
+"return" @keyword.return
 
-("func"
-  @keyword.function
-)
+"func" @keyword.function
 
 [
   "break"

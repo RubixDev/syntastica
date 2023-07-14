@@ -200,9 +200,7 @@
   "}"
 ] @punctuation.bracket
 
-("..."
-  @punctuation.special
-)
+"..." @punctuation.special
 
 [
   ";"
@@ -210,13 +208,9 @@
   ","
 ] @punctuation.delimiter
 
-("#include"
-  @include
-)
+"#include" @include
 
-("#define"
-  @define
-)
+"#define" @define
 
 [
   "#if"
@@ -243,13 +237,9 @@
   "break"
 ] @repeat
 
-("return"
-  @keyword.return
-)
+"return" @keyword.return
 
-("sizeof"
-  @keyword.operator
-)
+"sizeof" @keyword.operator
 
 [
   "default"

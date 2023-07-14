@@ -87,9 +87,7 @@
   "[>"
 ] @punctuation.bracket
 
-("%"
-  @punctuation.special
-)
+"%" @punctuation.special
 
 (quoted_item_extension
   [

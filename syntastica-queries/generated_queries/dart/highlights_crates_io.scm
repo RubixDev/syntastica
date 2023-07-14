@@ -130,9 +130,7 @@
   (identifier) @property
 )
 
-("Function"
-  @type
-)
+"Function" @type
 
 (
   (identifier) @type

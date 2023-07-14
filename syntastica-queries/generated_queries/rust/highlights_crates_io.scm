@@ -121,9 +121,7 @@
   "for" @repeat
 )
 
-("for"
-  @keyword
-)
+"for" @keyword
 
 [
   "break"
@@ -175,9 +173,7 @@
   "yield"
 ] @keyword.return
 
-("fn"
-  @keyword.function
-)
+"fn" @keyword.function
 
 (lifetime
   [
@@ -303,9 +299,7 @@
 
 (metavariable) @function.macro
 
-("$"
-  @function.macro
-)
+"$" @function.macro
 
 (
   (identifier) @constant.builtin
