@@ -13,7 +13,7 @@ use once_cell::sync::Lazy;
 use serde_json::{Map, Value};
 
 static URL_REGEX: Lazy<Regex> =
-    Lazy::new(|| Regex::new(r"https:\/\/github\.com\/([^\/]*)\/([^\/?#]*)").unwrap());
+    Lazy::new(|| Regex::new(r"https:\/\/(github|gitlab)\.com\/([^\/]*)\/([^\/?#]*)").unwrap());
 
 pub fn run() -> Result<()> {
     let group = env::args()
@@ -30,10 +30,17 @@ pub fn run() -> Result<()> {
     let rev = get_rev(&url).with_context(|| "unable to fetch latest revision of repository")?;
 
     let content_url = match URL_REGEX.captures(&url) {
-        Ok(Some(groups)) => Some(format!(
-            "https://raw.githubusercontent.com/{}/{}/{rev}",
-            &groups[1], &groups[2],
-        )),
+        Ok(Some(groups)) => match &groups[1] {
+            "github" => Some(format!(
+                "https://raw.githubusercontent.com/{}/{}/{rev}",
+                &groups[2], &groups[3],
+            )),
+            "gitlab" => Some(format!(
+                "https://gitlab.com/{}/{}/-/raw/{rev}",
+                &groups[2], &groups[3],
+            )),
+            _ => unreachable!("the regex only allows above options"),
+        },
         _ => None,
     };
     let path_in_url = match &path {
