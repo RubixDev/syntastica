@@ -111,6 +111,13 @@ struct HighlightIterLayer<'a> {
     depth: usize,
 }
 
+#[derive(Clone, Copy)]
+enum IncludedChildren {
+    None,
+    All,
+    Unnamed,
+}
+
 impl Highlighter {
     pub fn new() -> Self {
         Highlighter {
@@ -387,12 +394,15 @@ impl<'a> HighlightIterLayer<'a> {
                 // Process combined injections.
                 if let Some(combined_injections_query) = &config.combined_injections_query {
                     let mut injections_by_pattern_index =
-                        vec![(None, Vec::new(), false); combined_injections_query.pattern_count()];
+                        vec![
+                            (None, Vec::new(), IncludedChildren::None);
+                            combined_injections_query.pattern_count()
+                        ];
                     let matches =
                         cursor.matches(combined_injections_query, tree.root_node(), source);
                     for mat in matches {
                         let entry = &mut injections_by_pattern_index[mat.pattern_index];
-                        let (language_name, content_node, include_children) =
+                        let (language_name, content_node, included_children) =
                             injection_for_match(config, combined_injections_query, &mat, source);
                         if language_name.is_some() {
                             entry.0 = language_name;
@@ -400,16 +410,16 @@ impl<'a> HighlightIterLayer<'a> {
                         if let Some(content_node) = content_node {
                             entry.1.push(content_node);
                         }
-                        entry.2 = include_children;
+                        entry.2 = included_children;
                     }
-                    for (lang_name, content_nodes, includes_children) in injections_by_pattern_index
+                    for (lang_name, content_nodes, included_children) in injections_by_pattern_index
                     {
                         if let (Some(lang_name), false) = (lang_name, content_nodes.is_empty()) {
                             if let Some(next_config) = (injection_callback)(lang_name) {
                                 let ranges = Self::intersect_ranges(
                                     &ranges,
                                     &content_nodes,
-                                    includes_children,
+                                    included_children,
                                 );
                                 if !ranges.is_empty() {
                                     queue.push((next_config, depth + 1, ranges));
@@ -491,14 +501,14 @@ impl<'a> HighlightIterLayer<'a> {
     // * `parent_ranges` - The ranges must all fall within the *current* layer's ranges.
     // * `nodes` - Every injection takes place within a set of nodes. The injection ranges
     //   are the ranges of those nodes.
-    // * `includes_children` - For some injections, the content nodes' children should be
+    // * `included_children` - For some injections, the content nodes' children should be
     //   excluded from the nested document, so that only the content nodes' *own* content
     //   is reparsed. For other injections, the content nodes' entire ranges should be
     //   reparsed, including the ranges of their children.
     fn intersect_ranges(
         parent_ranges: &[Range],
         nodes: &[Node],
-        includes_children: bool,
+        included_children: IncludedChildren,
     ) -> Vec<Range> {
         let mut cursor = nodes[0].walk();
         let mut result = Vec::new();
@@ -522,11 +532,15 @@ impl<'a> HighlightIterLayer<'a> {
 
             for excluded_range in node
                 .children(&mut cursor)
-                .filter_map(|child| {
-                    if includes_children {
-                        None
-                    } else {
-                        Some(child.range())
+                .filter_map(|child| match included_children {
+                    IncludedChildren::None => Some(child.range()),
+                    IncludedChildren::All => None,
+                    IncludedChildren::Unnamed => {
+                        if child.is_named() {
+                            Some(child.range())
+                        } else {
+                            None
+                        }
                     }
                 })
                 .chain([following_range].iter().cloned())
@@ -753,7 +767,7 @@ where
 
             // If this capture represents an injection, then process the injection.
             if match_.pattern_index < layer.config.locals_pattern_index {
-                let (language_name, content_node, include_children) =
+                let (language_name, content_node, included_children) =
                     injection_for_match(layer.config, &layer.config.query, &match_, self.source);
 
                 // Explicitly remove this match so that none of its other captures will remain
@@ -767,7 +781,7 @@ where
                         let ranges = HighlightIterLayer::intersect_ranges(
                             &self.layers[0].ranges,
                             &[content_node],
-                            include_children,
+                            included_children,
                         );
                         if !ranges.is_empty() {
                             match HighlightIterLayer::new(
@@ -953,7 +967,7 @@ fn injection_for_match<'a>(
     query: &'a Query,
     query_match: &QueryMatch<'a, 'a>,
     source: &'a [u8],
-) -> (Option<&'a str>, Option<Node<'a>>, bool) {
+) -> (Option<&'a str>, Option<Node<'a>>, IncludedChildren) {
     let content_capture_index = config.injection_content_capture_index;
     let language_capture_index = config.injection_language_capture_index;
 
@@ -968,7 +982,7 @@ fn injection_for_match<'a>(
         }
     }
 
-    let mut include_children = false;
+    let mut included_children = IncludedChildren::None;
     for prop in query.property_settings(query_match.pattern_index) {
         match prop.key.as_ref() {
             // In addition to specifying the language name via the text of a
@@ -984,10 +998,15 @@ fn injection_for_match<'a>(
             // `injection.content` node - only the ranges that belong to the
             // node itself. This can be changed using a `#set!` predicate that
             // sets the `injection.include-children` key.
-            "injection.include-children" => include_children = true,
+            "injection.include-children" => included_children = IncludedChildren::All,
+
+            // Some queries might only exclude named children but include unnamed
+            // children in their `injection.content` node. This can be enabled using
+            // a `#set!` predicate that sets the `injection.include-unnamed-children` key.
+            "injection.include-unnamed-children" => included_children = IncludedChildren::Unnamed,
             _ => {}
         }
     }
 
-    (language_name, content_node, include_children)
+    (language_name, content_node, included_children)
 }
