@@ -145,14 +145,13 @@ fn ungroup_root_level_captures(queries: OwnedSexprs) -> OwnedSexprs {
     for query in queries {
         match query {
             OwnedSexpr::List(list)
-                if list
-                    .first()
-                    .map_or(false, |sexpr| !matches!(sexpr, OwnedSexpr::Atom(_)))
-                    && list
-                        .iter()
-                        .filter(|sexpr| matches!(sexpr, OwnedSexpr::List(_) | OwnedSexpr::Group(_)))
-                        .count()
-                        <= 1 =>
+                if list.first().map_or(false, |sexpr| {
+                    !matches!(sexpr, OwnedSexpr::Atom(_) | OwnedSexpr::String(_))
+                }) && list
+                    .iter()
+                    .filter(|sexpr| matches!(sexpr, OwnedSexpr::List(_) | OwnedSexpr::Group(_)))
+                    .count()
+                    <= 1 =>
             {
                 new_queries.extend(list);
             }
