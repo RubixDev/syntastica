@@ -6,8 +6,7 @@ use std::{
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("cargo:rerun-if-env-changed=SYNTASTICA_PARSERS_CLONE_DIR");
-    println!("cargo:rerun-if-env-changed=SYNTASTICA_PARSERS_CACHE_WRITE_DIR");
-    println!("cargo:rerun-if-env-changed=SYNTASTICA_PARSERS_CACHE_READ_DIR");
+    println!("cargo:rerun-if-env-changed=SYNTASTICA_PARSERS_CACHE_DIR");
     if !(cfg!(feature = "docs") && env::var("DOCS_RS").is_ok()) {
         syntastica_macros::parsers_git!();
     }
@@ -46,25 +45,29 @@ fn compile_parser(
     external_cpp: bool,
     path: Option<&str>,
 ) -> Result<(), Box<dyn std::error::Error>> {
+    let target = env::var("TARGET")?;
+
     // external cpp scanners are not supported on the `wasm32-unknown-unknown` target
-    if env::var("TARGET")? == "wasm32-unknown-unknown" && external_cpp {
+    if target == "wasm32-unknown-unknown" && external_cpp {
         return Ok(());
     }
 
     let base_dir = env::var("SYNTASTICA_PARSERS_CLONE_DIR").or_else(|_| env::var("OUT_DIR"))?;
     let c_lib_name = format!("parser_{name}{}", path.unwrap_or("")).replace('/', "_");
+    let c_lib_filename = format!("lib{c_lib_name}.a");
     let cpp_lib_name = format!("scanner_{name}{}", path.unwrap_or("")).replace('/', "_");
+    let cpp_lib_filename = format!("lib{cpp_lib_name}.a");
 
-    if let Ok(dir) = env::var("SYNTASTICA_PARSERS_CACHE_READ_DIR") {
+    if let Ok(dir) = env::var("SYNTASTICA_PARSERS_CACHE_DIR") {
         if fs::copy(
-            format!("{dir}/lib{c_lib_name}.a"),
-            format!("{base_dir}/lib{c_lib_name}.a"),
+            Path::new(&dir).join(&target).join(&c_lib_filename),
+            Path::new(&base_dir).join(&c_lib_filename),
         )
         .is_ok()
             && (!external_cpp
                 || fs::copy(
-                    format!("{dir}/lib{cpp_lib_name}.a"),
-                    format!("{base_dir}/lib{cpp_lib_name}.a"),
+                    Path::new(&dir).join(&target).join(&cpp_lib_filename),
+                    Path::new(&base_dir).join(&cpp_lib_filename),
                 )
                 .is_ok())
         {
@@ -126,11 +129,12 @@ fn compile_parser(
     c_config.compile(&c_lib_name);
     println!("finished building parser for {name}");
 
-    if let Ok(dir) = env::var("SYNTASTICA_PARSERS_CACHE_WRITE_DIR") {
-        fs::create_dir_all(&base_dir)?;
+    if let Ok(dir) = env::var("SYNTASTICA_PARSERS_CACHE_DIR") {
+        let cache_dir = Path::new(&dir).join(&target);
+        fs::create_dir_all(&cache_dir)?;
         fs::copy(
-            format!("{base_dir}/lib{c_lib_name}.a"),
-            format!("{dir}/lib{c_lib_name}.a"),
+            Path::new(&base_dir).join(&c_lib_filename),
+            cache_dir.join(&c_lib_filename),
         )?;
     }
 
@@ -149,10 +153,10 @@ fn compile_parser(
         cpp_config.compile(&cpp_lib_name);
         println!("finished building cpp scanner for {name}");
 
-        if let Ok(dir) = env::var("SYNTASTICA_PARSERS_CACHE_WRITE_DIR") {
+        if let Ok(dir) = env::var("SYNTASTICA_PARSERS_CACHE_DIR") {
             fs::copy(
-                format!("{base_dir}/lib{cpp_lib_name}.a"),
-                format!("{dir}/lib{cpp_lib_name}.a"),
+                Path::new(&base_dir).join(&cpp_lib_filename),
+                Path::new(&dir).join(&target).join(&cpp_lib_filename),
             )?;
         }
     }
