@@ -1,9 +1,11 @@
-use std::collections::BTreeMap;
+use std::{collections::BTreeMap, env};
 
 use syntastica::{renderer::TerminalRenderer, Processor};
 use syntastica_parsers_git::LanguageSetImpl;
 
 fn main() {
+    let filter = env::args().nth(1).unwrap_or_default();
+
     let language_set = LanguageSetImpl::new();
     let mut processor = Processor::new(&language_set);
 
@@ -11,6 +13,10 @@ fn main() {
         toml::from_str(include_str!("./example_programs.toml")).unwrap();
 
     for (lang, code) in &examples {
+        if !lang.contains(&filter) {
+            continue;
+        }
+
         println!("\n\x1b[1m{lang}:\x1b[0m\n{}", "-".repeat(50));
         if let Err(err) = example(&mut processor, code, lang) {
             println!("ERROR: {err}");
