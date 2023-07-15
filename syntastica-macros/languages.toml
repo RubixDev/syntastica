@@ -580,7 +580,7 @@ crates-io = "0.1.0"
 [languages.queries]
 nvim-like = true
 injections = false
-locals = false
+locals = true
 
 [[languages]]
 name = "rust"
