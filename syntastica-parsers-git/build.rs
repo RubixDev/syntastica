@@ -49,7 +49,11 @@ fn compile_parser(
     let target = env::var("TARGET")?;
 
     // some parsers are not supported for wasm targets
-    if env::var("CARGO_CFG_TARGET_FAMILY")? == "wasm" && !wasm {
+    if env::var("CARGO_CFG_TARGET_FAMILY")?
+        .split(',')
+        .any(|family| family == "wasm")
+        && !wasm
+    {
         return Ok(());
     }
 
