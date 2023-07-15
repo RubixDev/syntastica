@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["Group"],"struct":["Language","LanguageConfig","Parser","ParserExternal","ParserGit","Queries"]};
+window.SIDEBAR_ITEMS = {"enum":["Group"],"fn":["default_true"],"struct":["Language","LanguageConfig","Parser","ParserExternal","ParserGit","Queries"]};
