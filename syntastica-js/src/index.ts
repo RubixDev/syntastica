@@ -181,6 +181,7 @@ export const LANGUAGES = [
     'json',
     'json5',
     'jsonc',
+    'julia',
     'latex',
     'llvm',
     'lua',

@@ -7,12 +7,18 @@ pub struct LanguageConfig {
     pub languages: Vec<Language>,
 }
 
+fn default_true() -> bool {
+    true
+}
+
 #[derive(Clone, Debug, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "kebab-case")]
 pub struct Language {
     pub name: String,
     pub group: Group,
     pub file_extensions: Vec<String>,
+    #[serde(default = "default_true")]
+    pub wasm: bool,
     // TODO: injection regex
     pub parser: Parser,
     pub queries: Queries,

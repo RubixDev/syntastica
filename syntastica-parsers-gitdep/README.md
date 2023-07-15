@@ -67,6 +67,7 @@ for more information on all parser collections.
 - [ejs](https://github.com/tree-sitter/tree-sitter-embedded-template/tree/203f7bd3c1bbfbd98fc19add4b8fcb213c059205)
 - [erb](https://github.com/tree-sitter/tree-sitter-embedded-template/tree/203f7bd3c1bbfbd98fc19add4b8fcb213c059205)
 - [hexdump](https://github.com/rush-rs/tree-sitter-hexdump/tree/09eaf4fcfed00be93928d7d3d82b490cd1343b80)
+- [julia](https://github.com/tree-sitter/tree-sitter-julia/tree/4d4dc7d8a4ad3856200a9ef151f9056fc14cec8b) (not supported by this collection)
 - [llvm](https://github.com/benwilliamgraham/tree-sitter-llvm/tree/d47c95d78ef0e7495a74d214dd6fcddf6e402dfc)
 - [ocaml](https://github.com/tree-sitter/tree-sitter-ocaml/tree/82e103cee0ffb61ee59f9b654b8e1d4b8e9cab74)
 - [ocaml_interface](https://github.com/tree-sitter/tree-sitter-ocaml/tree/82e103cee0ffb61ee59f9b654b8e1d4b8e9cab74)

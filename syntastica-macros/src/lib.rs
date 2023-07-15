@@ -24,12 +24,13 @@ pub fn parsers_git(_: TokenStream) -> TokenStream {
             let external_c = lang.parser.external_scanner.c;
             let external_cpp = lang.parser.external_scanner.cpp;
             let path = match &lang.parser.git.path {
-                Some(path) => quote! { Some(#path) },
-                None => quote! { None },
+                Some(path) => quote_use! { Some(#path) },
+                None => quote_use! { None },
             };
+            let wasm = lang.wasm;
             quote! {
                 #[cfg(feature = #name)]
-                compile_parser(#name, #url, #rev, #external_c, #external_cpp, #path)?;
+                compile_parser(#name, #url, #rev, #external_c, #external_cpp, #path, #wasm)?;
             }
         })
         .collect::<proc_macro2::TokenStream>()
@@ -44,8 +45,11 @@ pub fn parsers_ffi(_: TokenStream) -> TokenStream {
     let extern_c = dedup_ffi_funcs.iter().map(|lang| {
         let name_str = &lang.name;
         let ffi_func = format_ident!("{}", lang.parser.ffi_func);
-        // disable cpp scanners on wasm32-unknown-unknown
-        let wasm_cfg = if lang.parser.external_scanner.cpp {
+        let wasm_cfg = if !lang.wasm {
+            // disable some parsers on wasm targets
+            quote! { , not(target_family = "wasm") }
+        } else if lang.parser.external_scanner.cpp {
+            // disable cpp scanners on wasm32-unknown-unknown
             quote! { , not(all(target_arch = "wasm32", target_vendor = "unknown", target_os = "unknown", target_env = "")) }
         } else {
             quote! {}
@@ -63,20 +67,24 @@ pub fn parsers_ffi(_: TokenStream) -> TokenStream {
         let doc = format!(
             "Get the parser for [{}]({}/tree/{}). {}",
             lang.name, lang.parser.git.url, lang.parser.git.rev,
-            match lang.parser.external_scanner.cpp {
-                true => "(not supported on the `wasm32-unknown-unknown` target)",
-                false => "",
+            match (lang.wasm, lang.parser.external_scanner.cpp) {
+                (false, _) => "(not supported on WebAssembly targets)",
+                (_, true) => "(not supported on the `wasm32-unknown-unknown` target)",
+                _ => "",
             },
         );
         // disable cpp scanners on wasm32-unknown-unknown
-        let raw_wasm_cfg = quote! { all(target_arch = "wasm32", target_vendor = "unknown", target_os = "unknown", target_env = "") };
-        let wasm_cfg = match lang.parser.external_scanner.cpp {
-            true => quote! { , #raw_wasm_cfg },
-            false => quote! {},
+        let raw_wasm_cfg = quote! { target_family = "wasm" };
+        let raw_wasm_cfg_cpp = quote! { all(target_arch = "wasm32", target_vendor = "unknown", target_os = "unknown", target_env = "") };
+        let wasm_cfg = match (lang.wasm, lang.parser.external_scanner.cpp) {
+            (false, _) => quote! { , #raw_wasm_cfg },
+            (_, true) => quote! { , #raw_wasm_cfg_cpp },
+            _ => quote! {},
         };
-        let not_wasm_cfg = match lang.parser.external_scanner.cpp {
-            true => quote! { , not(#raw_wasm_cfg) },
-            false => quote! {},
+        let not_wasm_cfg = match (lang.wasm, lang.parser.external_scanner.cpp) {
+            (false, _) => quote! { , not(#raw_wasm_cfg) },
+            (_, true) => quote! { , not(#raw_wasm_cfg_cpp) },
+            _ => quote! {},
         };
         quote! {
             #[cfg(any(feature = #feat, feature = #name_str))]

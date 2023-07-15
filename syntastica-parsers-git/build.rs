@@ -44,8 +44,14 @@ fn compile_parser(
     external_c: bool,
     external_cpp: bool,
     path: Option<&str>,
+    wasm: bool,
 ) -> Result<(), Box<dyn std::error::Error>> {
     let target = env::var("TARGET")?;
+
+    // some parsers are not supported for wasm targets
+    if env::var("CARGO_CFG_TARGET_FAMILY")? == "wasm" && !wasm {
+        return Ok(());
+    }
 
     // external cpp scanners are not supported on the `wasm32-unknown-unknown` target
     if target == "wasm32-unknown-unknown" && external_cpp {
@@ -78,7 +84,7 @@ fn compile_parser(
             }
             println!(
                 "cargo:rustc-link-search=native={}",
-                PathBuf::from(dir).canonicalize()?.display()
+                Path::new(&dir).join(&target).canonicalize()?.display()
             );
             return Ok(());
         }

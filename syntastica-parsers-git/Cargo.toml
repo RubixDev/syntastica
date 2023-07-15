@@ -93,6 +93,7 @@ all = [
     "ejs",
     "erb",
     "hexdump",
+    "julia",
     "llvm",
     "ocaml",
     "ocaml_interface",
@@ -136,6 +137,7 @@ jsdoc = []
 json = []
 json5 = []
 jsonc = []
+julia = []
 latex = []
 llvm = []
 lua = []
