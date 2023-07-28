@@ -120,3 +120,20 @@
   )
   (#set! injection.language "sql")
 )
+
+(macro_invocation
+  macro: (
+    (identifier) @_regex_macro
+    (#match? @_regex_macro "^(lazy_)?regex|regex_(captures|find|is_match|replace(_all)?)$")
+  )
+  (token_tree
+    [
+      (line_comment)
+      (block_comment)
+    ]
+    *
+    .
+    (raw_string_literal) @injection.content
+  )
+  (#set! injection.language "regex")
+)

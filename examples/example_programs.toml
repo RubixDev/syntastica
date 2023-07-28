@@ -12,6 +12,10 @@ fn fib(n: usize) -> usize {
 
 fn main() {
     Regex::new(r"[a-fA-F0-9_]\s(.*)$");
+    let a = regex!(r"[a-fA-F0-9_]\s(.*)$");
+    if regex_is_match!(/* comment */ r"[a-fA-F0-9_]\s(.*)$"i, r"raw text \s[a-f]") {
+        return;
+    }
 }
 '''
 
