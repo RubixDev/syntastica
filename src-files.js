@@ -1,4 +1,4 @@
-var sourcesIndex = JSON.parse('{\
+var srcIndex = JSON.parse('{\
 "lua_pattern":["",[],["error.rs","lexer.rs","lib.rs","parser.rs","to_regex.rs"]],\
 "rsexpr":["",[],["display.rs","error.rs","lex.rs","lib.rs","parser.rs"]],\
 "syntastica":["",[],["lib.rs","processor.rs","renderer.rs"]],\
@@ -15,4 +15,4 @@ var sourcesIndex = JSON.parse('{\
 "tree_sitter_wasm_build_tool":["",[],["lib.rs"]],\
 "xtask":["",[["codegen",[],["js_lists.rs","parser_lists.rs","parsers_dep.rs","parsers_git.rs","parsers_gitdep.rs","queries.rs","theme_gruvbox.rs","theme_list.rs","theme_one.rs"]],["syntastica-macros",[["src",[],["schema.rs"]]]]],["add_lang.rs","codegen.rs","main.rs","set_version.rs"]]\
 }');
-createSourceSidebar();
+createSrcSidebar();
