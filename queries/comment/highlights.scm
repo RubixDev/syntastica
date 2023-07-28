@@ -9,8 +9,7 @@
       @punctuation.bracket
       (user) @constant
       ")" @punctuation.bracket
-    )
-    ?
+    )?
     ":" @punctuation.delimiter
   )
   (#any-of? @text.todo "TODO" "WIP")
@@ -28,8 +27,7 @@
       @punctuation.bracket
       (user) @constant
       ")" @punctuation.bracket
-    )
-    ?
+    )?
     ":" @punctuation.delimiter
   )
   (#any-of? @text.note "NOTE" "XXX" "INFO")
@@ -47,8 +45,7 @@
       @punctuation.bracket
       (user) @constant
       ")" @punctuation.bracket
-    )
-    ?
+    )?
     ":" @punctuation.delimiter
   )
   (#any-of? @text.warning "HACK" "WARNING" "WARN" "FIX")
@@ -66,8 +63,7 @@
       @punctuation.bracket
       (user) @constant
       ")" @punctuation.bracket
-    )
-    ?
+    )?
     ":" @punctuation.delimiter
   )
   (#any-of? @text.danger "FIXME" "BUG" "ERROR")
