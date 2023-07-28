@@ -197,6 +197,11 @@
 <a href="#197" id="197">197</a>
 <a href="#198" id="198">198</a>
 <a href="#199" id="199">199</a>
+<a href="#200" id="200">200</a>
+<a href="#201" id="201">201</a>
+<a href="#202" id="202">202</a>
+<a href="#203" id="203">203</a>
+<a href="#204" id="204">204</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::fmt::{<span class="self">self</span>, Display, Formatter};
 
 <span class="kw">use crate</span>::{OwnedSexpr, OwnedSexprs, Sexpr, Sexprs};
@@ -357,6 +362,11 @@
                                 <span class="kw">let </span>prev_child = <span class="kw-2">&amp;</span>item[<span class="number">0</span>];
                                 <span class="kw">let </span>child = <span class="kw-2">&amp;</span>item[<span class="number">1</span>];
                                 <span class="kw">match </span>(prev_child, child) {
+                                    <span class="comment">// if the current child is a quantifier, add it in the same
+                                    // line without a leading whitespace
+                                    </span>(<span class="kw">_</span>, Sexpr::Atom([char @ (<span class="string">b&#39;?&#39; </span>| <span class="string">b&#39;*&#39; </span>| <span class="string">b&#39;+&#39;</span>)])) =&gt; {
+                                        <span class="macro">write!</span>(f, <span class="string">&quot;{}&quot;</span>, <span class="kw-2">*</span>char <span class="kw">as </span>char)<span class="question-mark">?</span>;
+                                    }
                                     <span class="comment">// if the previous child was an atom ending with `:` or the
                                     // current child is and atom starting with `@`, stay on the
                                     // same line
