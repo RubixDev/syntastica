@@ -62,24 +62,23 @@ fn compile_parser(
         return Ok(());
     }
 
-    let base_dir = env::var("SYNTASTICA_PARSERS_CLONE_DIR").or_else(|_| env::var("OUT_DIR"))?;
+    let out_dir = env::var("OUT_DIR")?;
+    let base_dir = env::var("SYNTASTICA_PARSERS_CLONE_DIR").unwrap_or_else(|_| out_dir.clone());
     let c_lib_name = format!("parser_{name}{}", path.unwrap_or("")).replace('/', "_");
     let c_lib_filename = format!("lib{c_lib_name}.a");
     let cpp_lib_name = format!("scanner_{name}{}", path.unwrap_or("")).replace('/', "_");
     let cpp_lib_filename = format!("lib{cpp_lib_name}.a");
 
     if let Ok(dir) = env::var("SYNTASTICA_PARSERS_CACHE_DIR") {
-        if fs::copy(
-            Path::new(&dir).join(&target).join(&c_lib_filename),
-            Path::new(&base_dir).join(&c_lib_filename),
-        )
-        .is_ok()
+        if Path::new(&dir)
+            .join(&target)
+            .join(&c_lib_filename)
+            .is_file()
             && (!external_cpp
-                || fs::copy(
-                    Path::new(&dir).join(&target).join(&cpp_lib_filename),
-                    Path::new(&base_dir).join(&cpp_lib_filename),
-                )
-                .is_ok())
+                || Path::new(&dir)
+                    .join(&target)
+                    .join(&cpp_lib_filename)
+                    .is_file())
         {
             println!("cargo:rustc-link-lib=static={c_lib_name}");
             if external_cpp {
@@ -143,7 +142,7 @@ fn compile_parser(
         let cache_dir = Path::new(&dir).join(&target);
         fs::create_dir_all(&cache_dir)?;
         fs::copy(
-            Path::new(&base_dir).join(&c_lib_filename),
+            Path::new(&out_dir).join(&c_lib_filename),
             cache_dir.join(&c_lib_filename),
         )?;
     }
@@ -165,7 +164,7 @@ fn compile_parser(
 
         if let Ok(dir) = env::var("SYNTASTICA_PARSERS_CACHE_DIR") {
             fs::copy(
-                Path::new(&base_dir).join(&cpp_lib_filename),
+                Path::new(&out_dir).join(&cpp_lib_filename),
                 Path::new(&dir).join(&target).join(&cpp_lib_filename),
             )?;
         }
