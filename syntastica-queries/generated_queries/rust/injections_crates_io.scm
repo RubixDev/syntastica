@@ -130,8 +130,7 @@
     [
       (line_comment)
       (block_comment)
-    ]
-    *
+    ]*
     .
     (raw_string_literal) @injection.content
   )

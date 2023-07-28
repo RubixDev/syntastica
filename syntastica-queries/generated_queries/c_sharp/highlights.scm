@@ -227,8 +227,7 @@
 
 (line_directive
   (preproc_integer_literal) @constant
-  (preproc_string_literal)
-  ? @string
+  (preproc_string_literal)? @string
 )
 
 (line_directive) @constant.macro

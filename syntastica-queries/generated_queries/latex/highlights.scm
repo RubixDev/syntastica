@@ -137,8 +137,7 @@
   _ @namespace
   toc: (brack_group
     (_) @text.title.6
-  )
-  ?
+  )?
   text: (curly_group
     (_) @text.title.6
   )
@@ -149,8 +148,7 @@
   _ @namespace
   toc: (brack_group
     (_) @text.title.6
-  )
-  ?
+  )?
   text: (curly_group
     (_) @text.title.6
   )
@@ -161,8 +159,7 @@
   _ @namespace
   toc: (brack_group
     (_) @text.title.5
-  )
-  ?
+  )?
   text: (curly_group
     (_) @text.title.5
   )
@@ -173,8 +170,7 @@
   _ @namespace
   toc: (brack_group
     (_) @text.title.4
-  )
-  ?
+  )?
   text: (curly_group
     (_) @text.title.4
   )
@@ -185,8 +181,7 @@
   _ @namespace
   toc: (brack_group
     (_) @text.title.3
-  )
-  ?
+  )?
   text: (curly_group
     (_) @text.title.3
   )
@@ -197,8 +192,7 @@
   _ @namespace
   toc: (brack_group
     (_) @text.title.2
-  )
-  ?
+  )?
   text: (curly_group
     (_) @text.title.2
   )
@@ -209,8 +203,7 @@
   _ @namespace
   toc: (brack_group
     (_) @text.title.2
-  )
-  ?
+  )?
   text: (curly_group
     (_) @text.title.2
   )
@@ -221,8 +214,7 @@
   _ @namespace
   authors: (curly_group_author_list
     (
-      (author)
-      + @text.title.1
+      (author)+ @text.title.1
     )
   )
 )
@@ -232,8 +224,7 @@
   _ @namespace
   options: (brack_group
     (_) @text.title.1
-  )
-  ?
+  )?
   text: (curly_group
     (_) @text.title.1
   )

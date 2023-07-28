@@ -17,8 +17,7 @@
       @punctuation.bracket
       (user) @constant
       ")" @punctuation.bracket
-    )
-    ?
+    )?
     ":" @punctuation.delimiter
   )
   (#match? @text.danger "^(FIXME|BUG|ERROR)$")
@@ -36,8 +35,7 @@
       @punctuation.bracket
       (user) @constant
       ")" @punctuation.bracket
-    )
-    ?
+    )?
     ":" @punctuation.delimiter
   )
   (#match? @text.warning "^(HACK|WARNING|WARN|FIX)$")
@@ -55,8 +53,7 @@
       @punctuation.bracket
       (user) @constant
       ")" @punctuation.bracket
-    )
-    ?
+    )?
     ":" @punctuation.delimiter
   )
   (#match? @text.note "^(NOTE|XXX|INFO)$")
@@ -74,8 +71,7 @@
       @punctuation.bracket
       (user) @constant
       ")" @punctuation.bracket
-    )
-    ?
+    )?
     ":" @punctuation.delimiter
   )
   (#match? @text.todo "^(TODO|WIP)$")

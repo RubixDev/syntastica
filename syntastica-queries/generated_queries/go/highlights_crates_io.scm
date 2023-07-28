@@ -1,37 +1,32 @@
 (ERROR) @error
 
 (source_file
-  (comment)
-  + @comment.documentation
+  (comment)+ @comment.documentation
   .
   (var_declaration)
 )
 
 (source_file
-  (comment)
-  + @comment.documentation
+  (comment)+ @comment.documentation
   .
   (type_declaration)
 )
 
 (source_file
-  (comment)
-  + @comment.documentation
+  (comment)+ @comment.documentation
   .
   (function_declaration)
 )
 
 (source_file
-  (comment)
-  + @comment.documentation
+  (comment)+ @comment.documentation
   .
   (const_declaration)
 )
 
 (source_file
   .
-  (comment)
-  + @comment.documentation
+  (comment)+ @comment.documentation
 )
 
 (comment) @comment @spell

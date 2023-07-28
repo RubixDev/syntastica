@@ -66,30 +66,26 @@
 (string_content) @spell
 
 (body_statement
-  (comment)
-  + @comment.documentation
+  (comment)+ @comment.documentation
   (method)
 )
 
 (class
-  (comment)
-  + @comment.documentation
+  (comment)+ @comment.documentation
   (body_statement
     (method)
   )
 )
 
 (module
-  (comment)
-  + @comment.documentation
+  (comment)+ @comment.documentation
   (body_statement
     (class)
   )
 )
 
 (program
-  (comment)
-  + @comment.documentation
+  (comment)+ @comment.documentation
   (class)
 )
 
@@ -237,8 +233,7 @@
 )
 
 (call
-  receiver: (constant)
-  ? @type
+  receiver: (constant)? @type
   method: [
     (identifier)
     (constant)

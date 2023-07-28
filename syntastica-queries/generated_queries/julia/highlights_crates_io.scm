@@ -327,8 +327,7 @@
 )
 
 (typed_parameter
-  parameter: (identifier)
-  ? @parameter
+  parameter: (identifier)? @parameter
   type: (_) @type
 )
 
