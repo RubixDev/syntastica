@@ -111,88 +111,88 @@ toml = ["dep:tree-sitter-toml"]
 
 [dependencies.tree-sitter-asm]
 optional = true
-version = "0.1.0"
+version = "=0.1.0"
 
 [dependencies.tree-sitter-c]
 optional = true
-version = "0.20.2"
+version = "=0.20.2"
 
 [dependencies.tree-sitter-c-sharp]
 optional = true
-version = "0.20.0"
+version = "=0.20.0"
 
 [dependencies.tree-sitter-comment]
 optional = true
-version = "0.1.0"
+version = "=0.1.0"
 
 [dependencies.tree-sitter-cpp]
 optional = true
-version = "0.20.0"
+version = "=0.20.0"
 
 [dependencies.tree-sitter-css]
 optional = true
-version = "0.19.0"
+version = "=0.19.0"
 
 [dependencies.tree-sitter-ebnf]
 optional = true
-version = "0.1.0"
+version = "=0.1.0"
 
 [dependencies.tree-sitter-embedded-template]
 optional = true
-version = "0.20.0"
+version = "=0.20.0"
 
 [dependencies.tree-sitter-go]
 optional = true
-version = "0.19.1"
+version = "=0.19.1"
 
 [dependencies.tree-sitter-hexdump]
 optional = true
-version = "0.1.0"
+version = "=0.1.0"
 
 [dependencies.tree-sitter-java]
 optional = true
-version = "0.20.0"
+version = "=0.20.0"
 
 [dependencies.tree-sitter-javascript]
 optional = true
-version = "0.20.0"
+version = "=0.20.0"
 
 [dependencies.tree-sitter-json]
 optional = true
-version = "0.19.0"
+version = "=0.19.0"
 
 [dependencies.tree-sitter-lua]
 optional = true
-version = "0.0.18"
+version = "=0.0.18"
 
 [dependencies.tree-sitter-md]
 optional = true
-version = "0.1.5"
+version = "=0.1.5"
 
 [dependencies.tree-sitter-ocaml]
 optional = true
-version = "0.20.3"
+version = "=0.20.3"
 
 [dependencies.tree-sitter-python]
 optional = true
-version = "0.20.2"
+version = "=0.20.2"
 
 [dependencies.tree-sitter-ruby]
 optional = true
-version = "0.20.0"
+version = "=0.20.0"
 
 [dependencies.tree-sitter-rush]
 optional = true
-version = "0.1.0"
+version = "=0.1.0"
 
 [dependencies.tree-sitter-rust]
 optional = true
-version = "0.20.3"
+version = "=0.20.3"
 
 [dependencies.tree-sitter-scala]
 optional = true
-version = "0.20.1"
+version = "=0.20.1"
 
 [dependencies.tree-sitter-toml]
 optional = true
-version = "0.20.0"
+version = "=0.20.0"

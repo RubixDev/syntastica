@@ -354,7 +354,7 @@ rev = "{rev}"
                 r##"
 [dependencies.{package}]
 optional = true
-version = "{version}"
+version = "={version}"
 "##,
                 version = lang
                     .parser
