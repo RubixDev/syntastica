@@ -1,7 +1,6 @@
 use std::{
     env,
     path::{Path, PathBuf},
-    process,
 };
 
 use anyhow::Result;
@@ -9,6 +8,7 @@ use once_cell::sync::Lazy;
 
 mod add_lang;
 mod codegen;
+mod codegen_all;
 mod set_version;
 
 mod schema {
@@ -26,14 +26,7 @@ pub static LANGUAGE_CONFIG: Lazy<schema::LanguageConfig> = Lazy::new(|| {
         .expect("invalid `languages.toml`")
 });
 
-fn main() {
-    if let Err(err) = try_main() {
-        eprintln!("error running task: {err}");
-        process::exit(1);
-    }
-}
-
-fn try_main() -> Result<()> {
+fn main() -> Result<()> {
     match env::args().nth(1).unwrap_or(String::new()).as_str() {
         "--help" | "-h" | "" => println!(
             "{}",
@@ -50,12 +43,14 @@ Usage: Run with `cargo xtask <task>`, eg. `cargo xtask codegen`.
         codegen js-lists:                     Generate the language and theme lists in the JavaScript bindings
         codegen themes:                       Generate some themes for syntastica-themes
         codegen theme-list:                   Generate the `THEMES` list and `from_str` function for syntastica-themes
+        codegen-all:                          Run all codegen tasks including pre-compilation with the `precomp-git` and `precomp-crates-io` features
         set-version <version>:                Set the version of all syntastica crates
         add-lang <group> <name> <url> [path]: Add boilerplate code for a new language called <name> with sources at <url>/[path] in the feature group <group>
             "###
             .trim(),
         ),
         "codegen" => codegen::run()?,
+        "codegen-all" => codegen_all::run()?,
         "set-version" => set_version::run()?,
         "add-lang" => add_lang::run()?,
         task => eprintln!(

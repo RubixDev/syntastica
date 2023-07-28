@@ -16,7 +16,7 @@ pub fn write() -> Result<()> {
     toml += r###"
 [features]
 #! ## Features
-default = ["runtime-c"]
+default = ["runtime-c", "language-set"]
 
 #! Every supported language has a feature with the same name as the respective public function.
 #! Additionally the three feature groups
@@ -24,6 +24,13 @@ default = ["runtime-c"]
 #! <span class="stab portability"><code>most</code></span>, and
 #! <span class="stab portability"><code>all</code></span>
 #! are available.
+
+## Provide an implementation for [`LanguageSet`](syntastica_core::language_set::LanguageSet)
+## using pre-compiled [`HighlightConfiguration`](syntastica_core::language_set::HighlightConfiguration)s.
+language-set = []
+## Provide an implementation for [`LanguageSet`](syntastica_core::language_set::LanguageSet)
+## using the query strings from `syntastica-queries`.
+raw-language-set = ["dep:syntastica-queries"]
 
 ## Include parsers for the most widely known supported languages.
 "###;

@@ -4,13 +4,17 @@ use anyhow::Result;
 use fancy_regex::Regex;
 use once_cell::sync::Lazy;
 use rsexpr::{OwnedSexpr, OwnedSexprs};
+#[cfg(any(feature = "precomp-git", feature = "precomp-crates-io"))]
+use syntastica_core::ts_runtime::Query;
 
 static QUERIES_DIR: Lazy<String> =
     Lazy::new(|| format!("{}/queries", crate::WORKSPACE_DIR.display()));
 static INHERITS_REGEX: Lazy<Regex> =
     Lazy::new(|| Regex::new(r";+\s*inherits\s*:?\s*([a-z_,()-]+)\s*").unwrap());
 
-pub fn make_queries() -> Result<BTreeMap<String, [String; 6]>> {
+type Queries = BTreeMap<String, ([String; 6], [Option<Vec<u8>>; 6])>;
+
+pub fn make_queries() -> Result<Queries> {
     let mut map = BTreeMap::new();
     for lang in &crate::LANGUAGE_CONFIG.languages {
         let query_file =
@@ -41,16 +45,64 @@ pub fn make_queries() -> Result<BTreeMap<String, [String; 6]>> {
         );
         let locals_crates_io = query_file(lang.queries.locals, "locals.scm", process_locals, true);
 
+        #[cfg(feature = "precomp-git")]
+        let (highlights_buf, injections_buf, locals_buf) = {
+            println!("pre-compiling queries for {} (git)", lang.name);
+            let ts_lang = syntastica_parsers_git::from_name(&lang.name).unwrap();
+            (
+                Some(Query::new(ts_lang, &highlights)?.serialize().unwrap()),
+                Some(Query::new(ts_lang, &injections)?.serialize().unwrap()),
+                Some(Query::new(ts_lang, &locals)?.serialize().unwrap()),
+            )
+        };
+        #[cfg(not(feature = "precomp-git"))]
+        let (highlights_buf, injections_buf, locals_buf) = (None, None, None);
+
+        #[cfg(feature = "precomp-crates-io")]
+        let (highlights_crates_io_buf, injections_crates_io_buf, locals_crates_io_buf) =
+            match syntastica_parsers::from_name(&lang.name) {
+                Some(ts_lang) => {
+                    println!("pre-compiling queries for {} (crates.io)", lang.name);
+                    (
+                        Some(
+                            Query::new(ts_lang, &highlights_crates_io)?
+                                .serialize()
+                                .unwrap(),
+                        ),
+                        Some(
+                            Query::new(ts_lang, &injections_crates_io)?
+                                .serialize()
+                                .unwrap(),
+                        ),
+                        Some(Query::new(ts_lang, &locals_crates_io)?.serialize().unwrap()),
+                    )
+                }
+                None => (Some(vec![]), Some(vec![]), Some(vec![])),
+            };
+        #[cfg(not(feature = "precomp-crates-io"))]
+        let (highlights_crates_io_buf, injections_crates_io_buf, locals_crates_io_buf) =
+            (None, None, None);
+
         map.insert(
             lang.name.clone(),
-            [
-                highlights,
-                injections,
-                locals,
-                highlights_crates_io,
-                injections_crates_io,
-                locals_crates_io,
-            ],
+            (
+                [
+                    highlights,
+                    injections,
+                    locals,
+                    highlights_crates_io,
+                    injections_crates_io,
+                    locals_crates_io,
+                ],
+                [
+                    highlights_buf,
+                    injections_buf,
+                    locals_buf,
+                    highlights_crates_io_buf,
+                    injections_crates_io_buf,
+                    locals_crates_io_buf,
+                ],
+            ),
         );
     }
 

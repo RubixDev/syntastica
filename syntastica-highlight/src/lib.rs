@@ -13,17 +13,17 @@ use std::{iter, mem, ops, str, usize};
 use thiserror::Error;
 use ts_runtime::{
     Language, Node, Parser, Point, Query, QueryCaptures, QueryCursor, QueryError, QueryMatch,
-    Range, Tree,
+    Range, SerializationError, Tree,
 };
 
 const CANCELLATION_CHECK_INTERVAL: usize = 100;
 
 /// Indicates which highlight should be applied to a region of source code.
-#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub struct Highlight(pub usize);
 
 /// Represents the reason why syntax highlighting failed.
-#[derive(Debug, Error, PartialEq, Eq)]
+#[derive(Debug, Error)]
 pub enum Error {
     /// Highlighting was manually cancelled by flipping the cancellation flag.
     #[error("cancelled")]
@@ -32,6 +32,24 @@ pub enum Error {
     /// The provided language uses an incompatible version of tree-sitter.
     #[error("invalid language: incompatible tree-sitter version")]
     InvalidLanguage,
+
+    /// Query (de)serialization failed
+    #[error("query (de)serialization failed: {0:?}")]
+    QuerySerialization(SerializationError),
+
+    /// Serialization failed
+    #[error(transparent)]
+    Serialization(#[from] ciborium::ser::Error<std::io::Error>),
+
+    /// Deserialization failed
+    #[error(transparent)]
+    Deserialization(#[from] ciborium::de::Error<std::io::Error>),
+}
+
+impl From<SerializationError> for Error {
+    fn from(value: SerializationError) -> Self {
+        Self::QuerySerialization(value)
+    }
 }
 
 /// Represents a single step in rendering a syntax-highlighted document.
@@ -48,7 +66,9 @@ pub enum HighlightEvent {
 pub struct HighlightConfiguration {
     pub language: Language,
     pub query: Query,
+    query_source: String,
     combined_injections_query: Option<Query>,
+    locals_query_offset: usize,
     locals_pattern_index: usize,
     highlights_pattern_index: usize,
     highlight_indices: Vec<Option<Highlight>>,
@@ -300,7 +320,9 @@ impl HighlightConfiguration {
         Ok(HighlightConfiguration {
             language,
             query,
+            query_source,
             combined_injections_query,
+            locals_query_offset,
             locals_pattern_index,
             highlights_pattern_index,
             highlight_indices,
@@ -311,6 +333,108 @@ impl HighlightConfiguration {
             local_def_value_capture_index,
             local_ref_capture_index,
             local_scope_capture_index,
+        })
+    }
+
+    pub fn serialize(&self) -> Result<Vec<u8>, Error> {
+        let mut buf = vec![];
+
+        fn write_usize(buf: &mut Vec<u8>, value: usize) {
+            buf.extend_from_slice(&(value as u64).to_le_bytes());
+        }
+
+        fn write_field(buf: &mut Vec<u8>, field: &impl serde::Serialize) -> Result<(), Error> {
+            let mut tmp = vec![];
+            ciborium::into_writer(field, &mut tmp)?;
+            write_usize(buf, tmp.len());
+            buf.append(&mut tmp);
+            Ok(())
+        }
+
+        write_field(&mut buf, &self.query_source)?;
+        write_usize(&mut buf, self.locals_query_offset);
+        write_usize(&mut buf, self.locals_pattern_index);
+        write_usize(&mut buf, self.highlights_pattern_index);
+        write_field(&mut buf, &self.highlight_indices)?;
+        write_field(&mut buf, &self.non_local_variable_patterns)?;
+        write_field(&mut buf, &self.injection_content_capture_index)?;
+        write_field(&mut buf, &self.injection_language_capture_index)?;
+        write_field(&mut buf, &self.local_scope_capture_index)?;
+        write_field(&mut buf, &self.local_def_capture_index)?;
+        write_field(&mut buf, &self.local_def_value_capture_index)?;
+        write_field(&mut buf, &self.local_ref_capture_index)?;
+
+        let mut query = self.query.serialize()?;
+        let mut combined_query = self
+            .combined_injections_query
+            .as_ref()
+            .map_or_else(|| Ok(vec![]), |query| query.serialize())?;
+        write_usize(&mut buf, query.len());
+        buf.append(&mut query);
+        write_usize(&mut buf, combined_query.len());
+        buf.append(&mut combined_query);
+
+        Ok(buf)
+    }
+
+    pub fn deserialize(mut bytes: &[u8], language: Language) -> Result<Self, Error> {
+        fn read_usize(bytes: &mut &[u8]) -> usize {
+            let out = u64::from_le_bytes(bytes[..8].try_into().unwrap()) as usize;
+            *bytes = &bytes[8..];
+            out
+        }
+
+        fn read_field<T: serde::de::DeserializeOwned>(bytes: &mut &[u8]) -> Result<T, Error> {
+            let len = read_usize(bytes);
+            let out = ciborium::from_reader(&bytes[..len])?;
+            *bytes = &bytes[len..];
+            Ok(out)
+        }
+
+        let query_source: String = read_field(&mut bytes)?;
+        let locals_query_offset = read_usize(&mut bytes);
+        let locals_pattern_index = read_usize(&mut bytes);
+        let highlights_pattern_index = read_usize(&mut bytes);
+        let highlight_indices = read_field(&mut bytes)?;
+        let non_local_variable_patterns = read_field(&mut bytes)?;
+        let injection_content_capture_index = read_field(&mut bytes)?;
+        let injection_language_capture_index = read_field(&mut bytes)?;
+        let local_scope_capture_index = read_field(&mut bytes)?;
+        let local_def_capture_index = read_field(&mut bytes)?;
+        let local_def_value_capture_index = read_field(&mut bytes)?;
+        let local_ref_capture_index = read_field(&mut bytes)?;
+
+        let query_len = read_usize(&mut bytes);
+        let query = Query::deserialize(&bytes[..query_len].to_vec(), &language, &query_source)?;
+        bytes = &bytes[query_len..];
+
+        let combined_query_len = read_usize(&mut bytes);
+        let combined_injections_query = if combined_query_len == 0 {
+            None
+        } else {
+            Some(Query::deserialize(
+                &bytes[..combined_query_len].to_vec(),
+                &language,
+                &query_source[..locals_query_offset],
+            )?)
+        };
+
+        Ok(Self {
+            language,
+            query,
+            query_source,
+            combined_injections_query,
+            locals_query_offset,
+            locals_pattern_index,
+            highlights_pattern_index,
+            highlight_indices,
+            non_local_variable_patterns,
+            injection_content_capture_index,
+            injection_language_capture_index,
+            local_scope_capture_index,
+            local_def_capture_index,
+            local_def_value_capture_index,
+            local_ref_capture_index,
         })
     }
 

@@ -33,7 +33,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: xtask
-          args: codegen
+          args: codegen-all
 
       - name: Run Tests
         uses: actions-rs/cargo@v1

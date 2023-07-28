@@ -1,4 +1,4 @@
-//! Forked from https://github.com/tree-sitter/tree-sitter/blob/89edb2ddcaf2928e3197ad6095e1eb1d59bfcc40/cli/loader/src/lib.rs
+//! Forked from <https://github.com/tree-sitter/tree-sitter/blob/89edb2ddcaf2928e3197ad6095e1eb1d59bfcc40/cli/loader/src/lib.rs>
 //!
 //! The MIT License (MIT)
 //!

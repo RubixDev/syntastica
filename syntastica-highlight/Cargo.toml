@@ -23,7 +23,9 @@ runtime-c = ["dep:tree-sitter"]
 runtime-c2rust = ["dep:tree-sitter-c2rust"]
 
 [dependencies]
+ciborium = "0.2.1"
 regex = "1.8.2"
+serde = { version = "1.0.175", features = ["derive"] }
 thiserror = "1.0.40"
 
 tree-sitter = { version = "0.20.10", optional = true }

@@ -212,6 +212,15 @@ fn parsers(
             ::syntastica_queries::#locals,
         ] }
     });
+    let precomp = langs_sorted_by_group.iter().map(|lang| {
+        let name_str = &lang.name;
+        let path = format!("../precomp/{name_str}.bin");
+        quote! { #[cfg(feature = #name_str)] include_bytes!(#path) }
+    });
+
+    let cfg_any = quote! { #[cfg(any(feature = "language-set", feature = "raw-language-set"))] };
+    let cfg_precomp = quote! { #[cfg(feature = "language-set")] };
+    let cfg_raw = quote! { #[cfg(feature = "raw-language-set")] };
 
     quote_use! {
         # use std::{borrow::Cow, cell::UnsafeCell, collections::HashMap};
@@ -227,11 +236,13 @@ fn parsers(
 
         /// A list of all language names that are supported by this parser collection.
         pub const LANGUAGES: &[&str] = &[#(#list),*];
+        #cfg_any
         const LANG_COUNT: usize = LANGUAGES.len();
 
         #(#functions)*
 
         // TODO: use "perfect" hashmap with compile-time known keys
+        #cfg_any
         static EXTENSION_MAP: Lazy<HashMap<&'static str, &'static str>>
             = Lazy::new(|| HashMap::from([#(#extensions),*]));
 
@@ -243,11 +254,15 @@ fn parsers(
             _map
         });
 
+        #cfg_raw
         const QUERIES: &[[&str; 3]] = &[#(#queries),*];
+        #cfg_precomp
+        const PRECOMP: &[&[u8]] = &[#(#precomp),*];
+        const FUNCS: &[&dyn Fn() -> Language] = &[#(#funcs),*];
 
-        fn __get_language(idx: usize) -> Result<HighlightConfiguration> {
-            let funcs: &[&dyn Fn() -> Language] = &[#(#funcs),*];
-            let lang = funcs[idx]();
+        #cfg_raw
+        fn __get_conf(idx: usize) -> Result<HighlightConfiguration> {
+            let lang = FUNCS[idx]();
             let mut conf = HighlightConfiguration::new(
                 lang,
                 QUERIES[idx][0],
@@ -258,18 +273,41 @@ fn parsers(
             Ok(conf)
         }
 
+        #cfg_precomp
+        fn __get_conf_precomp(idx: usize) -> Result<HighlightConfiguration> {
+            let lang = FUNCS[idx]();
+            let mut conf = HighlightConfiguration::deserialize(PRECOMP[idx], lang)?;
+            conf.configure(THEME_KEYS);
+            Ok(conf)
+        }
+
+        /// Try to get a language based on its name.
+        ///
+        /// For any string in [`LANGUAGES`] this will return the respective
+        /// [`Language`](syntastica_core::language_set::Language), for any other string this will
+        /// return `None`.
+        pub fn from_name(name: &str) -> Option<Language> {
+            IDX_MAP.get(&name).map(|&idx| FUNCS[idx]())
+        }
+
         // TODO: maybe create enum with all supported languages
 
-        /// An implementation of [`LanguageSet`]
-        /// including all languages in the enabled feature set.
-        ///
-        /// Languages are loaded the first time they are requested and will then be reused for
-        /// later accesses. To pre-load a list of languages, use
-        /// [`preload`](LanguageSetImpl::preload) or [`preload_all`](LanguageSetImpl::preload_all).
-        pub struct LanguageSetImpl(UnsafeCell<[Option<HighlightConfiguration>; LANG_COUNT]>);
+        #cfg_any
+        struct LanguageSetInner(UnsafeCell<[Option<HighlightConfiguration>; LANG_COUNT]>);
 
-        impl LanguageSet for LanguageSetImpl {
-            fn get_language(&self, name: &str) -> Result<&HighlightConfiguration> {
+        #cfg_any
+        const INIT: Option<HighlightConfiguration> = None;
+        #cfg_any
+        impl LanguageSetInner {
+            fn new() -> Self {
+                Self(UnsafeCell::new([INIT; LANG_COUNT]))
+            }
+
+            fn get_language(
+                &self,
+                name: &str,
+                init: impl Fn(usize) -> Result<HighlightConfiguration>,
+            ) -> Result<&HighlightConfiguration> {
                 if let Some(idx) = IDX_MAP.get(&name) {
                     // SAFETY: We only ever give out shared references to list entries, and only
                     // after they have been initialized. As such it is safe to mutate an entry
@@ -280,7 +318,7 @@ fn parsers(
                         None => {
                             // SAFETY: see above
                             let list = unsafe { self.0.get().as_mut() }.unwrap();
-                            let conf = __get_language(*idx)?;
+                            let conf = init(*idx)?;
                             list[*idx] = Some(conf);
                             Ok(list[*idx].as_ref().unwrap())
                         }
@@ -296,17 +334,67 @@ fn parsers(
                     .map(|name| (*name).into())
             }
 
-            // TODO: injection regex
-            // fn for_injection<'a>(&self, name: &'a str) -> ::std::option::Option<::std::borrow::Cow<'a, str>> {
-            //     ::std::option::Option::None
-            // }
+            fn preload(
+                &mut self,
+                languages: &[&str],
+                init: impl Fn(usize) -> Result<HighlightConfiguration>,
+            ) -> Result<()> {
+                for lang in languages {
+                    match IDX_MAP.get(lang) {
+                        Some(idx) => {
+                            let entry = &mut self.0.get_mut()[*idx];
+                            if entry.is_none() {
+                                *entry = Some(init(*idx)?);
+                            }
+                        }
+                        None => return Err(Error::UnsupportedLanguage(lang.to_string())),
+                    }
+                }
+                Ok(())
+            }
+
+            fn preload_all(&mut self, init: impl Fn(usize) -> Result<HighlightConfiguration>) {
+                self.preload(LANGUAGES, init)
+                    .expect("constant `LANGUAGES` list should only contain valid names")
+            }
         }
 
-        const INIT: Option<HighlightConfiguration> = None;
+        #cfg_any
+        impl Default for LanguageSetInner {
+            fn default() -> Self {
+                Self::new()
+            }
+        }
+
+        /// An implementation of [`LanguageSet`](syntastica_core::language_set::LanguageSet)
+        /// including all languages in the enabled feature set.
+        ///
+        /// Languages are loaded the first time they are requested and will then be reused for
+        /// later accesses. To pre-load a list of languages, use
+        /// [`preload`](LanguageSetImpl::preload) or [`preload_all`](LanguageSetImpl::preload_all).
+        #[derive(Default)]
+        #cfg_precomp
+        pub struct LanguageSetImpl(LanguageSetInner);
+
+        #cfg_precomp
+        impl LanguageSet for LanguageSetImpl {
+            #[inline]
+            fn get_language(&self, name: &str) -> syntastica_core::Result<&HighlightConfiguration> {
+                self.0.get_language(name, __get_conf_precomp)
+            }
+
+            #[inline]
+            fn for_extension<'a>(&self, file_extension: &'a str) -> Option<Cow<'a, str>> {
+                self.0.for_extension(file_extension)
+            }
+        }
+
+        #cfg_precomp
         impl LanguageSetImpl {
             /// Create a new [`LanguageSetImpl`] with no pre-loaded languages.
+            #[inline]
             pub fn new() -> Self {
-                Self(UnsafeCell::new([INIT; LANG_COUNT]))
+                Self::default()
             }
 
             /// Pre-load the given list of languages.
@@ -316,33 +404,69 @@ fn parsers(
             /// # Errors
             /// If the `languages` list contains a name of a language that is not included in this set, an
             /// [`Error::UnsupportedLanguage`] error is returned and no further languages are loaded.
+            #[inline]
             pub fn preload(&mut self, languages: &[&str]) -> Result<()> {
-                for lang in languages {
-                    match IDX_MAP.get(lang) {
-                        Some(idx) => {
-                            let entry = &mut self.0.get_mut()[*idx];
-                            if entry.is_none() {
-                                *entry = Some(__get_language(*idx)?);
-                            }
-                        }
-                        None => return Err(Error::UnsupportedLanguage(lang.to_string())),
-                    }
-                }
-                Ok(())
+                self.0.preload(languages, __get_conf_precomp)
             }
 
             /// Pre-load all languages in this set.
             ///
             /// To pre-load a specific set of languages, use [`preload`](LanguageSetImpl::preload).
+            #[inline]
             pub fn preload_all(&mut self) {
-                self.preload(LANGUAGES)
-                    .expect("constant `LANGUAGES` list should only contain valid names")
+                self.0.preload_all(__get_conf_precomp)
             }
         }
 
-        impl Default for LanguageSetImpl {
-            fn default() -> Self {
-                Self::new()
+        /// An implementation of [`LanguageSet`](syntastica_core::language_set::LanguageSet)
+        /// including all languages in the enabled feature set.
+        ///
+        /// Languages are loaded the first time they are requested and will then be reused for
+        /// later accesses. To pre-load a list of languages, use
+        /// [`preload`](RawLanguageSetImpl::preload) or [`preload_all`](RawLanguageSetImpl::preload_all).
+        #[derive(Default)]
+        #cfg_raw
+        pub struct RawLanguageSetImpl(LanguageSetInner);
+
+        #cfg_raw
+        impl LanguageSet for RawLanguageSetImpl {
+            #[inline]
+            fn get_language(&self, name: &str) -> Result<&HighlightConfiguration> {
+                self.0.get_language(name, __get_conf)
+            }
+
+            #[inline]
+            fn for_extension<'a>(&self, file_extension: &'a str) -> Option<Cow<'a, str>> {
+                self.0.for_extension(file_extension)
+            }
+        }
+
+        #cfg_raw
+        impl RawLanguageSetImpl {
+            /// Create a new [`RawLanguageSetImpl`] with no pre-loaded languages.
+            #[inline]
+            pub fn new() -> Self {
+                Self::default()
+            }
+
+            /// Pre-load the given list of languages.
+            ///
+            /// To pre-load all supported languages, use [`preload_all`](RawLanguageSetImpl::preload_all).
+            ///
+            /// # Errors
+            /// If the `languages` list contains a name of a language that is not included in this set, an
+            /// [`Error::UnsupportedLanguage`] error is returned and no further languages are loaded.
+            #[inline]
+            pub fn preload(&mut self, languages: &[&str]) -> Result<()> {
+                self.0.preload(languages, __get_conf)
+            }
+
+            /// Pre-load all languages in this set.
+            ///
+            /// To pre-load a specific set of languages, use [`preload`](RawLanguageSetImpl::preload).
+            #[inline]
+            pub fn preload_all(&mut self) {
+                self.0.preload_all(__get_conf)
             }
         }
     }

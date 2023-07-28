@@ -32,6 +32,9 @@ inherits = "release"
 opt-level = "s"
 strip = true
 
+[patch.crates-io]
+tree-sitter = { git = "https://github.com/ErinvanderVeen/tree-sitter" }
+
 [package]
 name = "syntastica"
 version = "0.3.0"

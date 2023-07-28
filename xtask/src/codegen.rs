@@ -13,6 +13,7 @@ mod parser_lists;
 mod parsers_dep;
 mod parsers_git;
 mod parsers_gitdep;
+mod precomp;
 mod queries;
 mod theme_gruvbox;
 mod theme_list;
@@ -28,7 +29,7 @@ const TOML_AUTOGEN_HEADER: &str = "
 const TOML_FEATURES_HEAD: &str = r##"
 [features]
 #! ### Features
-default = []
+default = ["language-set"]
 
 #! Every supported language has a feature with the same name as the respective public function.
 #! Additionally the three feature groups
@@ -36,6 +37,13 @@ default = []
 #! <span class="stab portability"><code>most</code></span>, and
 #! <span class="stab portability"><code>all</code></span>
 #! are available.
+
+## Provide an implementation for [`LanguageSet`](syntastica_core::language_set::LanguageSet)
+## using pre-compiled [`HighlightConfiguration`](syntastica_core::language_set::HighlightConfiguration)s.
+language-set = []
+## Provide an implementation for [`LanguageSet`](syntastica_core::language_set::LanguageSet)
+## using the query strings from `syntastica-queries`.
+raw-language-set = ["dep:syntastica-queries"]
 
 ## Include parsers for the most widely known supported languages.
 "##;
@@ -75,33 +83,56 @@ pub fn run() -> Result<()> {
         .to_owned();
 
         let queries_dir = crate::WORKSPACE_DIR.join("syntastica-queries/generated_queries");
-        let _ = fs::remove_dir_all(&queries_dir);
         fs::create_dir_all(&queries_dir)?;
-        fs::write(
-            queries_dir.join("README.md"),
-            include_str!("./codegen/generated_queries_readme.md"),
-        )?;
 
         for (
             ref name,
-            [highlights, injections, locals, highlights_crates_io, injections_crates_io, locals_crates_io],
+            (
+                [highlights, injections, locals, highlights_crates_io, injections_crates_io, locals_crates_io],
+                [highlights_buf, injections_buf, locals_buf, highlights_crates_io_buf, injections_crates_io_buf, locals_crates_io_buf],
+            ),
         ) in queries::make_queries()?
         {
             let lang_dir = queries_dir.join(name);
-            fs::create_dir(&lang_dir)?;
+            fs::create_dir_all(&lang_dir)?;
 
-            fs::write(lang_dir.join("highlights.scm"), highlights)?;
-            fs::write(lang_dir.join("injections.scm"), injections)?;
-            fs::write(lang_dir.join("locals.scm"), locals)?;
+            fs::write(lang_dir.join("highlights.scm"), &highlights)?;
+            fs::write(lang_dir.join("injections.scm"), &injections)?;
+            fs::write(lang_dir.join("locals.scm"), &locals)?;
             fs::write(
                 lang_dir.join("highlights_crates_io.scm"),
-                highlights_crates_io,
+                &highlights_crates_io,
             )?;
             fs::write(
                 lang_dir.join("injections_crates_io.scm"),
-                injections_crates_io,
+                &injections_crates_io,
             )?;
-            fs::write(lang_dir.join("locals_crates_io.scm"), locals_crates_io)?;
+            fs::write(lang_dir.join("locals_crates_io.scm"), &locals_crates_io)?;
+
+            if let Some(highlights_buf) = highlights_buf {
+                fs::write(lang_dir.join("highlights.bin"), highlights_buf)?;
+            }
+            if let Some(injections_buf) = injections_buf {
+                fs::write(lang_dir.join("injections.bin"), injections_buf)?;
+            }
+            if let Some(locals_buf) = locals_buf {
+                fs::write(lang_dir.join("locals.bin"), locals_buf)?;
+            }
+            if let Some(highlights_crates_io_buf) = highlights_crates_io_buf {
+                fs::write(
+                    lang_dir.join("highlights_crates_io.bin"),
+                    highlights_crates_io_buf,
+                )?;
+            }
+            if let Some(injections_crates_io_buf) = injections_crates_io_buf {
+                fs::write(
+                    lang_dir.join("injections_crates_io.bin"),
+                    injections_crates_io_buf,
+                )?;
+            }
+            if let Some(locals_crates_io_buf) = locals_crates_io_buf {
+                fs::write(lang_dir.join("locals_crates_io.bin"), locals_crates_io_buf)?;
+            }
 
             queries_lib_rs += &format!(
                 r###"
@@ -111,9 +142,27 @@ pub const {lang}_LOCALS: &str = include_str!("../generated_queries/{name}/locals
 pub const {lang}_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_queries/{name}/highlights_crates_io.scm");
 pub const {lang}_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/{name}/injections_crates_io.scm");
 pub const {lang}_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/{name}/locals_crates_io.scm");
+pub const {lang}_HIGHLIGHTS_BIN: &[u8] = include_bytes!("../generated_queries/{name}/highlights.bin");
+pub const {lang}_INJECTIONS_BIN: &[u8] = include_bytes!("../generated_queries/{name}/injections.bin");
+pub const {lang}_LOCALS_BIN: &[u8] = include_bytes!("../generated_queries/{name}/locals.bin");
+pub const {lang}_HIGHLIGHTS_CRATES_IO_BIN: &[u8] = include_bytes!("../generated_queries/{name}/highlights_crates_io.bin");
+pub const {lang}_INJECTIONS_CRATES_IO_BIN: &[u8] = include_bytes!("../generated_queries/{name}/injections_crates_io.bin");
+pub const {lang}_LOCALS_CRATES_IO_BIN: &[u8] = include_bytes!("../generated_queries/{name}/locals_crates_io.bin");
 "###,
                 lang = name.to_uppercase()
-            )
+            );
+
+            precomp::write(
+                name,
+                [
+                    &highlights,
+                    &injections,
+                    &locals,
+                    &highlights_crates_io,
+                    &injections_crates_io,
+                    &locals_crates_io,
+                ],
+            )?;
         }
         fs::write(
             crate::WORKSPACE_DIR.join("syntastica-queries/src/lib.rs"),
