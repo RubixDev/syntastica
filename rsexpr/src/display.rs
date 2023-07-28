@@ -158,6 +158,11 @@ impl Display for Sexpr<'_> {
                                 let prev_child = &item[0];
                                 let child = &item[1];
                                 match (prev_child, child) {
+                                    // if the current child is a quantifier, add it in the same
+                                    // line without a leading whitespace
+                                    (_, Sexpr::Atom([char @ (b'?' | b'*' | b'+')])) => {
+                                        write!(f, "{}", *char as char)?;
+                                    }
                                     // if the previous child was an atom ending with `:` or the
                                     // current child is and atom starting with `@`, stay on the
                                     // same line
