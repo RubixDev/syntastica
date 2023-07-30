@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `xtask/src/add_lang.rs`."><title>add_lang.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="xtask" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0-nightly (500647fd8 2023-07-27)" data-channel="nightly" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-6d2c9675f3d09c26.css" data-theme-dark-css="dark-45ceb8f2e522f4d1.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-6d2c9675f3d09c26.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-45ceb8f2e522f4d1.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../xtask/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `xtask/src/add_lang.rs`."><title>add_lang.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="xtask" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0-nightly (32303b219 2023-07-29)" data-channel="nightly" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-6d2c9675f3d09c26.css" data-theme-dark-css="dark-45ceb8f2e522f4d1.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-6d2c9675f3d09c26.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-45ceb8f2e522f4d1.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../xtask/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -243,10 +243,50 @@
 <a href="#243" id="243">243</a>
 <a href="#244" id="244">244</a>
 <a href="#245" id="245">245</a>
+<a href="#246" id="246">246</a>
+<a href="#247" id="247">247</a>
+<a href="#248" id="248">248</a>
+<a href="#249" id="249">249</a>
+<a href="#250" id="250">250</a>
+<a href="#251" id="251">251</a>
+<a href="#252" id="252">252</a>
+<a href="#253" id="253">253</a>
+<a href="#254" id="254">254</a>
+<a href="#255" id="255">255</a>
+<a href="#256" id="256">256</a>
+<a href="#257" id="257">257</a>
+<a href="#258" id="258">258</a>
+<a href="#259" id="259">259</a>
+<a href="#260" id="260">260</a>
+<a href="#261" id="261">261</a>
+<a href="#262" id="262">262</a>
+<a href="#263" id="263">263</a>
+<a href="#264" id="264">264</a>
+<a href="#265" id="265">265</a>
+<a href="#266" id="266">266</a>
+<a href="#267" id="267">267</a>
+<a href="#268" id="268">268</a>
+<a href="#269" id="269">269</a>
+<a href="#270" id="270">270</a>
+<a href="#271" id="271">271</a>
+<a href="#272" id="272">272</a>
+<a href="#273" id="273">273</a>
+<a href="#274" id="274">274</a>
+<a href="#275" id="275">275</a>
+<a href="#276" id="276">276</a>
+<a href="#277" id="277">277</a>
+<a href="#278" id="278">278</a>
+<a href="#279" id="279">279</a>
+<a href="#280" id="280">280</a>
+<a href="#281" id="281">281</a>
+<a href="#282" id="282">282</a>
+<a href="#283" id="283">283</a>
+<a href="#284" id="284">284</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::{
     env,
     fs::{<span class="self">self</span>, OpenOptions},
     io::Write,
+    path::Path,
     process::Command,
     time::Duration,
 };
@@ -255,10 +295,9 @@
 <span class="kw">use </span>crates_io_api::SyncClient;
 <span class="kw">use </span>fancy_regex::Regex;
 <span class="kw">use </span>once_cell::sync::Lazy;
+<span class="kw">use </span>semver::{Version, VersionReq};
 <span class="kw">use </span>serde_json::{Map, Value};
-
-<span class="kw">static </span>URL_REGEX: Lazy&lt;Regex&gt; =
-    Lazy::new(|| Regex::new(<span class="string">r&quot;https:\/\/(github|gitlab)\.com\/([^\/]*)\/([^\/?#]*)&quot;</span>).unwrap());
+<span class="kw">use </span>toml::Table;
 
 <span class="kw">pub fn </span>run() -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
     <span class="kw">let </span>group = env::args()
@@ -274,20 +313,7 @@
 
     <span class="kw">let </span>rev = get_rev(<span class="kw-2">&amp;</span>url).with_context(|| <span class="string">&quot;unable to fetch latest revision of repository&quot;</span>)<span class="question-mark">?</span>;
 
-    <span class="kw">let </span>content_url = <span class="kw">match </span>URL_REGEX.captures(<span class="kw-2">&amp;</span>url) {
-        <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(groups)) =&gt; <span class="kw">match </span><span class="kw-2">&amp;</span>groups[<span class="number">1</span>] {
-            <span class="string">&quot;github&quot; </span>=&gt; <span class="prelude-val">Some</span>(<span class="macro">format!</span>(
-                <span class="string">&quot;https://raw.githubusercontent.com/{}/{}/{rev}&quot;</span>,
-                <span class="kw-2">&amp;</span>groups[<span class="number">2</span>], <span class="kw-2">&amp;</span>groups[<span class="number">3</span>],
-            )),
-            <span class="string">&quot;gitlab&quot; </span>=&gt; <span class="prelude-val">Some</span>(<span class="macro">format!</span>(
-                <span class="string">&quot;https://gitlab.com/{}/{}/-/raw/{rev}&quot;</span>,
-                <span class="kw-2">&amp;</span>groups[<span class="number">2</span>], <span class="kw-2">&amp;</span>groups[<span class="number">3</span>],
-            )),
-            <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(<span class="string">&quot;the regex only allows above options&quot;</span>),
-        },
-        <span class="kw">_ </span>=&gt; <span class="prelude-val">None</span>,
-    };
+    <span class="kw">let </span>content_url = url_to_content_url(<span class="kw-2">&amp;</span>url, <span class="kw-2">&amp;</span>rev);
     <span class="kw">let </span>path_in_url = <span class="kw">match </span><span class="kw-2">&amp;</span>path {
         <span class="prelude-val">Some</span>(path) =&gt; <span class="macro">format!</span>(<span class="string">&quot;/{path}&quot;</span>),
         <span class="prelude-val">None </span>=&gt; String::new(),
@@ -415,7 +441,7 @@ pub const {name}_LOCALS_CRATES_IO: &amp;str = &quot;&quot;;
     <span class="prelude-val">Ok</span>(())
 }
 
-<span class="kw">fn </span>get_rev(url: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;String&gt; {
+<span class="kw">pub fn </span>get_rev(url: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;String&gt; {
     <span class="prelude-val">Ok</span>(String::from_utf8(
         Command::new(<span class="string">&quot;git&quot;</span>)
             .args([<span class="string">&quot;ls-remote&quot;</span>, url])
@@ -428,6 +454,26 @@ pub const {name}_LOCALS_CRATES_IO: &amp;str = &quot;&quot;;
     </span>.replace(<span class="string">&quot;HEAD&quot;</span>, <span class="string">&quot;&quot;</span>)
     .trim()
     .to_owned())
+}
+
+<span class="kw">static </span>URL_REGEX: Lazy&lt;Regex&gt; =
+    Lazy::new(|| Regex::new(<span class="string">r&quot;https:\/\/(github|gitlab)\.com\/([^\/]*)\/([^\/?#]*)&quot;</span>).unwrap());
+
+<span class="kw">pub fn </span>url_to_content_url(url: <span class="kw-2">&amp;</span>str, rev: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Option</span>&lt;String&gt; {
+    <span class="kw">match </span>URL_REGEX.captures(url) {
+        <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(groups)) =&gt; <span class="kw">match </span><span class="kw-2">&amp;</span>groups[<span class="number">1</span>] {
+            <span class="string">&quot;github&quot; </span>=&gt; <span class="prelude-val">Some</span>(<span class="macro">format!</span>(
+                <span class="string">&quot;https://raw.githubusercontent.com/{}/{}/{rev}&quot;</span>,
+                <span class="kw-2">&amp;</span>groups[<span class="number">2</span>], <span class="kw-2">&amp;</span>groups[<span class="number">3</span>],
+            )),
+            <span class="string">&quot;gitlab&quot; </span>=&gt; <span class="prelude-val">Some</span>(<span class="macro">format!</span>(
+                <span class="string">&quot;https://gitlab.com/{}/{}/-/raw/{rev}&quot;</span>,
+                <span class="kw-2">&amp;</span>groups[<span class="number">2</span>], <span class="kw-2">&amp;</span>groups[<span class="number">3</span>],
+            )),
+            <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(<span class="string">&quot;the regex only allows above options&quot;</span>),
+        },
+        <span class="kw">_ </span>=&gt; <span class="prelude-val">None</span>,
+    }
 }
 
 <span class="kw">fn </span>try_get_extensions(content_url: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Option</span>&lt;Vec&lt;String&gt;&gt; {
@@ -470,16 +516,48 @@ pub const {name}_LOCALS_CRATES_IO: &amp;str = &quot;&quot;;
     )
 }
 
-<span class="kw">fn </span>try_get_crates_io_version(package: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Option</span>&lt;String&gt; {
-    <span class="kw">match </span>SyncClient::new(
+<span class="kw">static </span>CRATES_IO_CLIENT: Lazy&lt;SyncClient&gt; = Lazy::new(|| {
+    SyncClient::new(
         <span class="string">&quot;syntastica xtask (github.com/RubixDev/syntastica)&quot;</span>,
-        Duration::from_secs(<span class="number">2</span>),
+        Duration::from_millis(<span class="number">1200</span>),
     )
     .unwrap()
-    .get_crate(package)
-    {
-        <span class="prelude-val">Ok</span>(info) =&gt; <span class="prelude-val">Some</span>(info.versions.first()<span class="question-mark">?</span>.num.clone()),
-        <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="prelude-val">None</span>,
+});
+
+<span class="kw">static </span>TREE_SITTER_VERSION: Lazy&lt;Version&gt; = Lazy::new(|| {
+    Version::parse(
+        toml::from_str::&lt;Table&gt;(
+            <span class="kw-2">&amp;</span>fs::read_to_string(Path::new(<span class="kw-2">&amp;*</span><span class="kw">crate</span>::WORKSPACE_DIR).join(<span class="string">&quot;Cargo.toml&quot;</span>)).unwrap(),
+        )
+        .unwrap()[<span class="string">&quot;workspace&quot;</span>][<span class="string">&quot;dependencies&quot;</span>]
+            .get(<span class="string">&quot;tree-sitter&quot;</span>)
+            .map(|ts_dep| <span class="kw">match </span>ts_dep.as_str() {
+                <span class="prelude-val">Some</span>(str) =&gt; str,
+                <span class="prelude-val">None </span>=&gt; ts_dep[<span class="string">&quot;version&quot;</span>].as_str().unwrap(),
+            })
+            .unwrap(),
+    )
+    .unwrap()
+});
+
+<span class="kw">pub fn </span>try_get_crates_io_version(package: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Option</span>&lt;String&gt; {
+    <span class="kw">match </span>CRATES_IO_CLIENT.get_crate(package) {
+        <span class="prelude-val">Ok</span>(info) <span class="kw">if </span>is_compatible_tree_sitter(package, <span class="kw-2">&amp;</span>info.versions.first()<span class="question-mark">?</span>.num) =&gt; {
+            <span class="prelude-val">Some</span>(info.versions.first()<span class="question-mark">?</span>.num.clone())
+        }
+        <span class="kw">_ </span>=&gt; <span class="prelude-val">None</span>,
+    }
+}
+
+<span class="kw">fn </span>is_compatible_tree_sitter(package: <span class="kw-2">&amp;</span>str, version: <span class="kw-2">&amp;</span>str) -&gt; bool {
+    <span class="kw">match </span>CRATES_IO_CLIENT.crate_dependencies(package, version) {
+        <span class="prelude-val">Ok</span>(deps) =&gt; deps
+            .into_iter()
+            .find(|dep| dep.crate_id == <span class="string">&quot;tree-sitter&quot;</span>)
+            .map_or(<span class="bool-val">false</span>, |dep| {
+                VersionReq::parse(<span class="kw-2">&amp;</span>dep.req).map_or(<span class="bool-val">false</span>, |req| req.matches(<span class="kw-2">&amp;</span>TREE_SITTER_VERSION))
+            }),
+        <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="bool-val">false</span>,
     }
 }
 
