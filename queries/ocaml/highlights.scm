@@ -11,7 +11,25 @@
 ;------
 (
   (type_constructor) @type.builtin
-  (#any-of? @type.builtin "int" "char" "bytes" "string" "float" "bool" "unit" "exn" "array" "list" "option" "int32" "int64" "nativeint" "format6" "lazy_t")
+  (#any-of?
+    @type.builtin
+    "int"
+    "char"
+    "bytes"
+    "string"
+    "float"
+    "bool"
+    "unit"
+    "exn"
+    "array"
+    "list"
+    "option"
+    "int32"
+    "int64"
+    "nativeint"
+    "format6"
+    "lazy_t"
+  )
 )
 
 [

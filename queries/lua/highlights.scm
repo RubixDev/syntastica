@@ -145,7 +145,19 @@
 
 (
   (identifier) @namespace.builtin
-  (#any-of? @namespace.builtin "_G" "debug" "io" "jit" "math" "os" "package" "string" "table" "utf8")
+  (#any-of?
+    @namespace.builtin
+    "_G"
+    "debug"
+    "io"
+    "jit"
+    "math"
+    "os"
+    "package"
+    "string"
+    "table"
+    "utf8"
+  )
 )
 
 (

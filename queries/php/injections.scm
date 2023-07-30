@@ -33,7 +33,17 @@
       )
     )
   )
-  (#any-of? @_shell_func_identifier "shell_exec" "escapeshellarg" "escapeshellcmd" "exec" "passthru" "proc_open" "shell_exec" "system")
+  (#any-of?
+    @_shell_func_identifier
+    "shell_exec"
+    "escapeshellarg"
+    "escapeshellcmd"
+    "exec"
+    "passthru"
+    "proc_open"
+    "shell_exec"
+    "system"
+  )
 )
 
 (
