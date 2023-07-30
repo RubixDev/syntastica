@@ -85,7 +85,8 @@ impl Display for Sexpr<'_> {
                         _ => ('[', ']'),
                     };
 
-                    // keep lists in one line if they start with a predicate
+                    // keep lists in one line if they start with a predicate, unless they contain a
+                    // comment or have more than 7 children
                     if let (Some(Self::Atom([b'#', ..])), Sexpr::List(_)) = (children.first(), self)
                     {
                         #[cfg(feature = "comments")]
@@ -95,7 +96,7 @@ impl Display for Sexpr<'_> {
                         #[cfg(not(feature = "comments"))]
                         let has_comment_child = false;
 
-                        if !has_comment_child {
+                        if !has_comment_child && children.len() <= 7 {
                             // call doesn't cause infinite recursion,
                             // because `f.alternate()` is different
                             #[allow(clippy::recursive_format_impl)]

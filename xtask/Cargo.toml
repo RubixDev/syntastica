@@ -14,7 +14,7 @@ lazy-regex = "3.0.1"
 lua-pattern = { version = "0.1.2", features = ["to-regex"] }
 once_cell = "1.17.1"
 reqwest = { version = "0.11.18", default-features = false, features = ["rustls-tls", "blocking"] }
-rsexpr = { version = "0.2.4", path = "../rsexpr", features = ["comments"] }
+rsexpr = { version = "0.2.5", path = "../rsexpr", features = ["comments"] }
 semver = "1.0.18"
 serde = { version = "1.0.163", features = ["derive"] }
 serde_json = { version = "1.0.100" }
