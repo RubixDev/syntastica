@@ -7,6 +7,13 @@ use std::{
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("cargo:rerun-if-env-changed=SYNTASTICA_PARSERS_CLONE_DIR");
     println!("cargo:rerun-if-env-changed=SYNTASTICA_PARSERS_CACHE_DIR");
+    if let Ok(dir) = env::var("SYNTASTICA_PARSERS_CLONE_DIR") {
+        println!("cargo:rerun-if-changed={dir}")
+    }
+    if let Ok(dir) = env::var("SYNTASTICA_PARSERS_CACHE_DIR") {
+        println!("cargo:rerun-if-changed={dir}")
+    }
+
     if !(cfg!(feature = "docs") && env::var("DOCS_RS").is_ok()) {
         syntastica_macros::parsers_git!();
     }
