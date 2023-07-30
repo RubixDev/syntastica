@@ -9,7 +9,9 @@ use once_cell::sync::Lazy;
 
 mod add_lang;
 mod codegen;
+mod fetch_queries;
 mod set_version;
+mod update_langs;
 
 mod schema {
     include!("../../syntastica-macros/src/schema.rs");
@@ -52,12 +54,16 @@ Usage: Run with `cargo xtask <task>`, eg. `cargo xtask codegen`.
         codegen theme-list:                   Generate the `THEMES` list and `from_str` function for syntastica-themes
         set-version <version>:                Set the version of all syntastica crates
         add-lang <group> <name> <url> [path]: Add boilerplate code for a new language called <name> with sources at <url>/[path] in the feature group <group>
+        update-langs                          Search for new versions of languages
+        fetch-queries                         Fetch latest upstream versions of forked queries
             "###
             .trim(),
         ),
         "codegen" => codegen::run()?,
         "set-version" => set_version::run()?,
         "add-lang" => add_lang::run()?,
+        "update-langs" => update_langs::run()?,
+        "fetch-queries" => fetch_queries::run()?,
         task => eprintln!(
             "unknown task '{task}', run `cargo xtask --help` to see a list of available tasks"
         ),

@@ -158,12 +158,31 @@
   (identifier) @namespace
 )
 
+; Decorators
+;----------
+(decorator
+  "@" @attribute
+  (identifier) @attribute
+)
+
+(decorator
+  "@" @attribute
+  (call_expression
+    (identifier) @attribute
+  )
+)
+
 ; Literals
 ;---------
 [
   (this)
   (super)
 ] @variable.builtin
+
+(
+  (identifier) @variable.builtin
+  (#eq? @variable.builtin "self")
+)
 
 [
   (true)
@@ -197,6 +216,8 @@
 
 (regex_pattern) @string.regex
 
+(regex_flags) @character.special
+
 (regex
   "/" @punctuation.bracket
 )
@@ -211,8 +232,6 @@
 
 ; Punctuation
 ;------------
-"..." @punctuation.special
-
 ";" @punctuation.delimiter
 
 "." @punctuation.delimiter
@@ -228,6 +247,10 @@
 )
 
 (switch_case
+  ":" @punctuation.delimiter
+)
+
+(switch_default
   ":" @punctuation.delimiter
 )
 
@@ -273,6 +296,7 @@
   "&&="
   "||="
   "??="
+  "..."
 ] @operator
 
 (binary_expression
@@ -299,7 +323,6 @@
   [
     "delete"
     "void"
-    "typeof"
   ] @keyword.operator
 )
 
@@ -367,13 +390,10 @@
   "export"
   "extends"
   "get"
-  "in"
-  "instanceof"
   "let"
   "set"
   "static"
   "target"
-  "typeof"
   "var"
   "with"
 ] @keyword
@@ -393,6 +413,9 @@
 [
   "new"
   "delete"
+  "in"
+  "instanceof"
+  "typeof"
 ] @keyword.operator
 
 [

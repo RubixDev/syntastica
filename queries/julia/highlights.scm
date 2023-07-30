@@ -18,12 +18,12 @@
 )
 
 (quote_expression
-  ":"
+  ":" @symbol
   [
     (identifier)
     (operator)
-  ]
-) @symbol
+  ] @symbol
+)
 
 (field_expression
   (identifier) @field
@@ -123,10 +123,6 @@
 )
 
 (type_clause
-  [
-    "<:"
-    ">:"
-  ] @operator
   [
     (identifier) @type
     (field_expression
@@ -429,8 +425,9 @@
     (abstract_definition)
     (struct_definition)
     (function_definition)
+    (short_function_definition)
     (assignment)
-    (const_declaration)
+    (const_statement)
   ]
 )
 

@@ -1,4 +1,4 @@
-;; Forked from https://github.com/rush-rs/tree-sitter-wasm-queries/blob/89d20a0e0df273b2ee1735fbcc013f49df6f3024/queries/wat/highlights.scm
+;; Forked from https://github.com/rush-rs/tree-sitter-wasm-queries/blob/main/queries/wat/highlights.scm
 ;; Licensed under the MIT license
 [
   (int)

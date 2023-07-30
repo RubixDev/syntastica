@@ -1,5 +1,5 @@
-;; Forked from https://github.com/tree-sitter/tree-sitter-regex
-;; The MIT License (MIT) Copyright (c) 2014 Max Brunsfeld
+;; Forked from https://github.com/tree-sitter/tree-sitter-regex/blob/master/queries/highlights.scm
+;; Licensed under the MIT License
 [
   "("
   ")"
@@ -37,9 +37,7 @@
   (lazy)
   "|"
   "="
-  "<="
   "!"
-  "<!"
 ] @operator
 
 (count_quantifier
@@ -60,4 +58,4 @@
 
 (class_character) @constant.character
 
-(pattern_character) @string
+(pattern_character) @string.regex

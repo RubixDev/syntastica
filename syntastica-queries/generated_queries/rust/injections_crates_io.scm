@@ -56,7 +56,7 @@
     path: (identifier) @_sqlx
     (#eq? @_sqlx "sqlx")
     name: (identifier) @_query
-    (#eq? @_query "query")
+    (#match? @_query "^query(_scalar|_scalar_unchecked)?$")
   )
   (token_tree
     .
@@ -73,42 +73,7 @@
     path: (identifier) @_sqlx
     (#eq? @_sqlx "sqlx")
     name: (identifier) @_query_as
-    (#eq? @_query_as "query_as")
-  )
-  (token_tree
-    .
-    (_)
-    [
-      (string_literal)
-      (raw_string_literal)
-    ] @injection.content
-  )
-  (#set! injection.language "sql")
-)
-
-(macro_invocation
-  macro: (scoped_identifier
-    path: (identifier) @_sqlx
-    (#eq? @_sqlx "sqlx")
-    name: (identifier) @_query_as
-    (#eq? @_query_as "query_unchecked")
-  )
-  (token_tree
-    .
-    [
-      (string_literal)
-      (raw_string_literal)
-    ] @injection.content
-  )
-  (#set! injection.language "sql")
-)
-
-(macro_invocation
-  macro: (scoped_identifier
-    path: (identifier) @_sqlx
-    (#eq? @_sqlx "sqlx")
-    name: (identifier) @_query_as
-    (#eq? @_query_as "query_as_unchecked")
+    (#match? @_query_as "^query_as(_unchecked)?$")
   )
   (token_tree
     .

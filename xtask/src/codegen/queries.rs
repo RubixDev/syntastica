@@ -83,7 +83,9 @@ fn process(
         .collect();
     new_queries = group_root_level_captures(new_queries);
     if crates_io {
-        strip_for_crates_io(&mut new_queries);
+        strip(&mut new_queries, CRATES_IO_SKIP_COMMENT);
+    } else {
+        strip(&mut new_queries, NON_CRATES_IO_SKIP_COMMENT);
     }
     remove_comments(&mut new_queries);
     if let Some(func) = processor {
@@ -178,18 +180,19 @@ fn remove_comments(queries: &mut OwnedSexprs) {
     }
 }
 
-fn strip_for_crates_io(queries: &mut OwnedSexprs) {
+const CRATES_IO_SKIP_COMMENT: &[u8] = b"; crates.io skip";
+const NON_CRATES_IO_SKIP_COMMENT: &[u8] = b"; non-crates.io skip";
+fn strip(queries: &mut OwnedSexprs, skip_comment: &[u8]) {
     let mut delete_next = false;
     queries.retain(|query| {
         let delete_this = delete_next;
-        delete_next =
-            matches!(query, OwnedSexpr::Comment(comment) if comment == b"; crates.io skip");
+        delete_next = matches!(query, OwnedSexpr::Comment(comment) if comment == skip_comment);
         !delete_this
     });
 
     for query in queries {
         if let OwnedSexpr::List(children) | OwnedSexpr::Group(children) = query {
-            strip_for_crates_io(children);
+            strip(children, skip_comment);
         }
     }
 }

@@ -1,6 +1,5 @@
-;; Forked from https://github.com/tree-sitter/tree-sitter-go
-;; Copyright (c) 2014 Max Brunsfeld (The MIT License)
-;;
+;; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/go/highlights.scm
+;; Licensed under the Apache License 2.0
 ; Identifiers
 (type_identifier) @type
 
@@ -57,6 +56,21 @@
   name: (field_identifier) @method
 )
 
+; Constructors
+(
+  (call_expression
+    (identifier) @constructor
+  )
+  (#lua-match? @constructor "^[nN]ew.+$")
+)
+
+(
+  (call_expression
+    (identifier) @constructor
+  )
+  (#lua-match? @constructor "^[mM]ake.+$")
+)
+
 ; Operators
 [
   "--"
@@ -74,6 +88,8 @@
   "&"
   "&&"
   "&="
+  "&^"
+  "&^="
   "%"
   "%="
   "^"
@@ -102,15 +118,12 @@
 ; Keywords
 [
   "break"
-  "chan"
   "const"
   "continue"
   "default"
   "defer"
-  "go"
   "goto"
   "interface"
-  "map"
   "range"
   "select"
   "struct"
@@ -122,6 +135,8 @@
 "func" @keyword.function
 
 "return" @keyword.return
+
+"go" @keyword.coroutine
 
 "for" @repeat
 
@@ -138,33 +153,42 @@
 ] @conditional
 
 ;; Builtin types
+[
+  "chan"
+  "map"
+] @type.builtin
+
 (
   (type_identifier) @type.builtin
-  (#any-of? @type.builtin "any" "bool" "byte" "complex128" "complex64" "error" "float32" "float64" "int" "int16" "int32" "int64" "int8" "rune" "string" "uint" "uint16" "uint32" "uint64" "uint8" "uintptr")
+  (#any-of? @type.builtin "any" "bool" "byte" "comparable" "complex128" "complex64" "error" "float32" "float64" "int" "int16" "int32" "int64" "int8" "rune" "string" "uint" "uint16" "uint32" "uint64" "uint8" "uintptr")
 )
 
 ;; Builtin functions
 (
   (identifier) @function.builtin
-  (#any-of? @function.builtin "append" "cap" "close" "complex" "copy" "delete" "imag" "len" "make" "new" "panic" "print" "println" "real" "recover")
+  (#any-of? @function.builtin "append" "cap" "clear" "close" "complex" "copy" "delete" "imag" "len" "make" "new" "panic" "print" "println" "real" "recover")
 )
 
 ; Delimiters
-[
-  "."
-  ","
-  ":"
-  ";"
-] @punctuation.delimiter
+"." @punctuation.delimiter
 
-[
-  "("
-  ")"
-  "{"
-  "}"
-  "["
-  "]"
-] @punctuation.bracket
+"," @punctuation.delimiter
+
+":" @punctuation.delimiter
+
+";" @punctuation.delimiter
+
+"(" @punctuation.bracket
+
+")" @punctuation.bracket
+
+"{" @punctuation.bracket
+
+"}" @punctuation.bracket
+
+"[" @punctuation.bracket
+
+"]" @punctuation.bracket
 
 ; Literals
 (interpreted_string_literal) @string
@@ -186,9 +210,11 @@
   (false)
 ] @boolean
 
-(nil) @constant.builtin
+[
+  (nil)
+  (iota)
+] @constant.builtin
 
-; crates.io skip
 (keyed_element
   .
   (literal_element
@@ -235,3 +261,9 @@
 
 ; Errors
 (ERROR) @error
+
+; Spell
+(
+  (interpreted_string_literal) @spell
+  (#not-has-parent? @spell import_spec)
+)

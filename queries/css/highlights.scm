@@ -69,14 +69,14 @@
 
 (
   (property_name) @type.definition
-  (#match? @type.definition "^--")
+  (#lua-match? @type.definition "^[-][-]")
 )
 
 (plain_value) @constant.builtin
 
 (
   (plain_value) @type
-  (#match? @type "^--")
+  (#lua-match? @type "^[-][-]")
 )
 
 [

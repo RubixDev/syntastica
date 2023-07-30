@@ -2,6 +2,7 @@ use std::{
     env,
     fs::{self, OpenOptions},
     io::Write,
+    path::Path,
     process::Command,
     time::Duration,
 };
@@ -10,10 +11,9 @@ use anyhow::{anyhow, Context, Result};
 use crates_io_api::SyncClient;
 use fancy_regex::Regex;
 use once_cell::sync::Lazy;
+use semver::{Version, VersionReq};
 use serde_json::{Map, Value};
-
-static URL_REGEX: Lazy<Regex> =
-    Lazy::new(|| Regex::new(r"https:\/\/(github|gitlab)\.com\/([^\/]*)\/([^\/?#]*)").unwrap());
+use toml::Table;
 
 pub fn run() -> Result<()> {
     let group = env::args()
@@ -29,20 +29,7 @@ pub fn run() -> Result<()> {
 
     let rev = get_rev(&url).with_context(|| "unable to fetch latest revision of repository")?;
 
-    let content_url = match URL_REGEX.captures(&url) {
-        Ok(Some(groups)) => match &groups[1] {
-            "github" => Some(format!(
-                "https://raw.githubusercontent.com/{}/{}/{rev}",
-                &groups[2], &groups[3],
-            )),
-            "gitlab" => Some(format!(
-                "https://gitlab.com/{}/{}/-/raw/{rev}",
-                &groups[2], &groups[3],
-            )),
-            _ => unreachable!("the regex only allows above options"),
-        },
-        _ => None,
-    };
+    let content_url = url_to_content_url(&url, &rev);
     let path_in_url = match &path {
         Some(path) => format!("/{path}"),
         None => String::new(),
@@ -170,7 +157,7 @@ pub const {name}_LOCALS_CRATES_IO: &str = "";
     Ok(())
 }
 
-fn get_rev(url: &str) -> Result<String> {
+pub fn get_rev(url: &str) -> Result<String> {
     Ok(String::from_utf8(
         Command::new("git")
             .args(["ls-remote", url])
@@ -183,6 +170,26 @@ fn get_rev(url: &str) -> Result<String> {
     .replace("HEAD", "")
     .trim()
     .to_owned())
+}
+
+static URL_REGEX: Lazy<Regex> =
+    Lazy::new(|| Regex::new(r"https:\/\/(github|gitlab)\.com\/([^\/]*)\/([^\/?#]*)").unwrap());
+
+pub fn url_to_content_url(url: &str, rev: &str) -> Option<String> {
+    match URL_REGEX.captures(url) {
+        Ok(Some(groups)) => match &groups[1] {
+            "github" => Some(format!(
+                "https://raw.githubusercontent.com/{}/{}/{rev}",
+                &groups[2], &groups[3],
+            )),
+            "gitlab" => Some(format!(
+                "https://gitlab.com/{}/{}/-/raw/{rev}",
+                &groups[2], &groups[3],
+            )),
+            _ => unreachable!("the regex only allows above options"),
+        },
+        _ => None,
+    }
 }
 
 fn try_get_extensions(content_url: &str) -> Option<Vec<String>> {
@@ -225,16 +232,48 @@ fn try_get_package(content_url: &str) -> Option<String> {
     )
 }
 
-fn try_get_crates_io_version(package: &str) -> Option<String> {
-    match SyncClient::new(
+static CRATES_IO_CLIENT: Lazy<SyncClient> = Lazy::new(|| {
+    SyncClient::new(
         "syntastica xtask (github.com/RubixDev/syntastica)",
-        Duration::from_secs(2),
+        Duration::from_millis(1200),
     )
     .unwrap()
-    .get_crate(package)
-    {
-        Ok(info) => Some(info.versions.first()?.num.clone()),
-        Err(_) => None,
+});
+
+static TREE_SITTER_VERSION: Lazy<Version> = Lazy::new(|| {
+    Version::parse(
+        toml::from_str::<Table>(
+            &fs::read_to_string(Path::new(&*crate::WORKSPACE_DIR).join("Cargo.toml")).unwrap(),
+        )
+        .unwrap()["workspace"]["dependencies"]
+            .get("tree-sitter")
+            .map(|ts_dep| match ts_dep.as_str() {
+                Some(str) => str,
+                None => ts_dep["version"].as_str().unwrap(),
+            })
+            .unwrap(),
+    )
+    .unwrap()
+});
+
+pub fn try_get_crates_io_version(package: &str) -> Option<String> {
+    match CRATES_IO_CLIENT.get_crate(package) {
+        Ok(info) if is_compatible_tree_sitter(package, &info.versions.first()?.num) => {
+            Some(info.versions.first()?.num.clone())
+        }
+        _ => None,
+    }
+}
+
+fn is_compatible_tree_sitter(package: &str, version: &str) -> bool {
+    match CRATES_IO_CLIENT.crate_dependencies(package, version) {
+        Ok(deps) => deps
+            .into_iter()
+            .find(|dep| dep.crate_id == "tree-sitter")
+            .map_or(false, |dep| {
+                VersionReq::parse(&dep.req).map_or(false, |req| req.matches(&TREE_SITTER_VERSION))
+            }),
+        Err(_) => false,
     }
 }
 

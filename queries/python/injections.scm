@@ -1,21 +1,16 @@
-(
-  (comment) @injection.content
-  (#set! injection.language "comment")
-)
-
-; crates.io skip
+;; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/python/injections.scm
+;; Licensed under the Apache License 2.0
 (
   (call
     function: (attribute
       object: (identifier) @_re
     )
     arguments: (argument_list
-      (string
-        (string_content) @injection.content
-      ) @_string
+      (string) @regex
     )
   )
   (#eq? @_re "re")
-  (#match? @_string "^r.*")
-  (#set! injection.language "regex")
+  (#lua-match? @regex "^r.*")
 )
+
+(comment) @comment

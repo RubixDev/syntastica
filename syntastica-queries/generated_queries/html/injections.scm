@@ -1,10 +1,8 @@
-(
-  (style_element
-    (start_tag) @_no_type_lang
-    (#not-match? @_no_type_lang "[ \\t\\n\\v\\f\\r]lang[ \\t\\n\\v\\f\\r]*=")
-    (#not-match? @_no_type_lang "[ \\t\\n\\v\\f\\r]type[ \\t\\n\\v\\f\\r]*=")
-    (raw_text) @injection.content
-  )
+(style_element
+  (start_tag) @_no_type_lang
+  (#not-match? @_no_type_lang "[ \\t\\n\\v\\f\\r]lang[ \\t\\n\\v\\f\\r]*=")
+  (#not-match? @_no_type_lang "[ \\t\\n\\v\\f\\r]type[ \\t\\n\\v\\f\\r]*=")
+  (raw_text) @injection.content
   (#set! injection.language "css")
 )
 
@@ -19,19 +17,17 @@
       )
     )
     (raw_text) @injection.content
+    (#set! injection.language "css")
   )
   (#eq? @_type "type")
   (#eq? @_css "text/css")
-  (#set! injection.language "css")
 )
 
-(
-  (script_element
-    (start_tag) @_no_type_lang
-    (#not-match? @_no_type_lang "[ \\t\\n\\v\\f\\r]lang[ \\t\\n\\v\\f\\r]*=")
-    (#not-match? @_no_type_lang "[ \\t\\n\\v\\f\\r]type[ \\t\\n\\v\\f\\r]*=")
-    (raw_text) @injection.content
-  )
+(script_element
+  (start_tag) @_no_type_lang
+  (#not-match? @_no_type_lang "[ \\t\\n\\v\\f\\r]lang[ \\t\\n\\v\\f\\r]*=")
+  (#not-match? @_no_type_lang "[ \\t\\n\\v\\f\\r]type[ \\t\\n\\v\\f\\r]*=")
+  (raw_text) @injection.content
   (#set! injection.language "javascript")
 )
 
@@ -55,30 +51,30 @@
     (attribute_name) @_attr
     (quoted_attribute_value
       (attribute_value) @injection.content
+      (#set! injection.language "css")
     )
   )
   (#eq? @_attr "style")
-  (#set! injection.language "css")
 )
 
 (
   (attribute
     (quoted_attribute_value
       (attribute_value) @injection.content
+      (#set! injection.language "javascript")
     )
   )
   (#match? @injection.content "\\$\\{")
   (#offset! @injection.content 0 2 0 -1)
-  (#set! injection.language "javascript")
 )
 
 (
   (attribute
     (attribute_value) @injection.content
+    (#set! injection.language "javascript")
   )
   (#match? @injection.content "\\$\\{")
   (#offset! @injection.content 0 2 0 -2)
-  (#set! injection.language "javascript")
 )
 
 (
@@ -96,11 +92,12 @@
         [
           (quoted_attribute_value
             (attribute_value) @injection.content
+            (#set! injection.language "regex")
           )
           (attribute_value) @injection.content
+          (#set! injection.language "regex")
         ]
         (#eq? @_attr "pattern")
-        (#set! injection.language "regex")
       )
     )
   )
@@ -111,8 +108,8 @@
   (#match? @_name "^on[a-z]+$")
   (quoted_attribute_value
     (attribute_value) @injection.content
+    (#set! injection.language "javascript")
   )
-  (#set! injection.language "javascript")
 )
 
 (element
@@ -120,8 +117,8 @@
     (tag_name) @_py_script
   )
   (text) @injection.content
-  (#match? @_py_script "^(py-script|py-repl)$")
   (#set! injection.language "python")
+  (#match? @_py_script "^(py-script|py-repl)$")
 )
 
 (script_element
@@ -134,9 +131,9 @@
     )
   )
   (raw_text) @injection.content
+  (#set! injection.language "python")
   (#eq? @_attr "type")
   (#match? @_type "^(pyscript|py-script)$")
-  (#set! injection.language "python")
 )
 
 (element
@@ -144,6 +141,6 @@
     (tag_name) @_py_config
   )
   (text) @injection.content
-  (#eq? @_py_config "py-config")
   (#set! injection.language "toml")
+  (#eq? @_py_config "py-config")
 )

@@ -12,7 +12,11 @@
 (jsx_element
   close_tag: (jsx_closing_element
     [
+      ; crates.io skip
+      "</"
+      ; non-crates.io skip
       "<"
+      ; non-crates.io skip
       "/"
       ">"
     ] @tag.delimiter
@@ -21,17 +25,13 @@
 
 (jsx_self_closing_element
   [
-    "/"
-    ">"
     "<"
-  ] @tag.delimiter
-)
-
-(jsx_fragment
-  [
-    ">"
-    "<"
+    ; crates.io skip
+    "/>"
+    ; non-crates.io skip
     "/"
+    ; non-crates.io skip
+    ">"
   ] @tag.delimiter
 )
 
@@ -60,6 +60,14 @@
 
 ; Handle the dot operator effectively - <My.Component>
 (jsx_opening_element
+  ; crates.io skip
+  (
+    (member_expression
+      (identifier) @tag
+      (property_identifier) @constructor
+    )
+  )
+  ; non-crates.io skip
   (
     (nested_identifier
       (identifier) @tag
@@ -77,6 +85,14 @@
 
 ; Handle the dot operator effectively - </My.Component>
 (jsx_closing_element
+  ; crates.io skip
+  (
+    (member_expression
+      (identifier) @tag
+      (property_identifier) @constructor
+    )
+  )
+  ; non-crates.io skip
   (
     (nested_identifier
       (identifier) @tag
@@ -94,6 +110,14 @@
 
 ; Handle the dot operator effectively - <My.Component />
 (jsx_self_closing_element
+  ; crates.io skip
+  (
+    (member_expression
+      (identifier) @tag
+      (property_identifier) @constructor
+    )
+  )
+  ; non-crates.io skip
   (
     (nested_identifier
       (identifier) @tag

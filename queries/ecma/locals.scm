@@ -2,52 +2,52 @@
 ;; Licensed under the Apache License 2.0
 ; Scopes
 ;-------
-(statement_block) @local.scope
+(statement_block) @scope
 
-(function) @local.scope
+(function) @scope
 
-(arrow_function) @local.scope
+(arrow_function) @scope
 
-(function_declaration) @local.scope
+(function_declaration) @scope
 
-(method_definition) @local.scope
+(method_definition) @scope
 
-(for_statement) @local.scope
+(for_statement) @scope
 
-(for_in_statement) @local.scope
+(for_in_statement) @scope
 
-(catch_clause) @local.scope
+(catch_clause) @scope
 
 ; Definitions
 ;------------
 (variable_declarator
-  name: (identifier) @local.definition
+  name: (identifier) @definition.var
 )
 
 (import_specifier
-  (identifier) @local.definition
+  (identifier) @definition.import
 )
 
 (namespace_import
-  (identifier) @local.definition
+  (identifier) @definition.import
 )
 
 (function_declaration
   (
-    (identifier) @local.definition
+    (identifier) @definition.function
   )
   (#set! definition.var.scope parent)
 )
 
 (method_definition
   (
-    (property_identifier) @local.definition
+    (property_identifier) @definition.function
   )
   (#set! definition.var.scope parent)
 )
 
 ; References
 ;------------
-(identifier) @local.reference
+(identifier) @reference
 
-(shorthand_property_identifier) @local.reference
+(shorthand_property_identifier) @reference

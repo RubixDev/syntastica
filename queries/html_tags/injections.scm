@@ -9,9 +9,8 @@
     (start_tag) @_no_type_lang
     (#not-lua-match? @_no_type_lang "%slang%s*=")
     (#not-lua-match? @_no_type_lang "%stype%s*=")
-    (raw_text) @injection.content
+    (raw_text) @css
   )
-  (#set! injection.language "css")
 )
 
 (
@@ -24,11 +23,10 @@
         )
       )
     )
-    (raw_text) @injection.content
+    (raw_text) @css
   )
   (#eq? @_type "type")
   (#eq? @_css "text/css")
-  (#set! injection.language "css")
 )
 
 ; <script>...</script>
@@ -38,9 +36,8 @@
     (start_tag) @_no_type_lang
     (#not-lua-match? @_no_type_lang "%slang%s*=")
     (#not-lua-match? @_no_type_lang "%stype%s*=")
-    (raw_text) @injection.content
+    (raw_text) @javascript
   )
-  (#set! injection.language "javascript")
 )
 
 ; <script type="language-name">
@@ -51,12 +48,12 @@
         (attribute_name) @_attr
         (#eq? @_attr "type")
         (quoted_attribute_value
-          (attribute_value) @injection.language
+          (attribute_value) @language
         )
       )
     )
   )
-  (raw_text) @injection.content
+  (raw_text) @content
 )
 
 ; <a style="/* css */">
@@ -64,11 +61,10 @@
   (attribute
     (attribute_name) @_attr
     (quoted_attribute_value
-      (attribute_value) @injection.content
+      (attribute_value) @css
     )
   )
   (#eq? @_attr "style")
-  (#set! injection.language "css")
 )
 
 ; lit-html style template interpolation
@@ -77,27 +73,22 @@
 (
   (attribute
     (quoted_attribute_value
-      (attribute_value) @injection.content
+      (attribute_value) @javascript
     )
   )
-  (#lua-match? @injection.content "%${")
-  (#offset! @injection.content 0 2 0 -1)
-  (#set! injection.language "javascript")
+  (#lua-match? @javascript "%${")
+  (#offset! @javascript 0 2 0 -1)
 )
 
 (
   (attribute
-    (attribute_value) @injection.content
+    (attribute_value) @javascript
   )
-  (#lua-match? @injection.content "%${")
-  (#offset! @injection.content 0 2 0 -2)
-  (#set! injection.language "javascript")
+  (#lua-match? @javascript "%${")
+  (#offset! @javascript 0 2 0 -2)
 )
 
-(
-  (comment) @injection.content
-  (#set! injection.language "comment")
-)
+(comment) @comment
 
 ; <input pattern="[0-9]"> or <input pattern=[0-9]>
 (element
@@ -109,12 +100,11 @@
         (attribute_name) @_attr
         [
           (quoted_attribute_value
-            (attribute_value) @injection.content
+            (attribute_value) @regex
           )
-          (attribute_value) @injection.content
+          (attribute_value) @regex
         ]
         (#eq? @_attr "pattern")
-        (#set! injection.language "regex")
       )
     )
   )
@@ -125,7 +115,6 @@
   (attribute_name) @_name
   (#lua-match? @_name "^on[a-z]+$")
   (quoted_attribute_value
-    (attribute_value) @injection.content
+    (attribute_value) @javascript
   )
-  (#set! injection.language "javascript")
 )

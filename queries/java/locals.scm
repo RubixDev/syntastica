@@ -2,130 +2,134 @@
 ;; Licensed under the Apache License 2.0
 ;; SCOPES
 ; declarations
-(program) @local.scope
+(program) @scope
 
 (class_declaration
-  body: (_) @local.scope
+  body: (_) @scope
 )
 
 (record_declaration
-  body: (_) @local.scope
+  body: (_) @scope
 )
 
 (enum_declaration
-  body: (_) @local.scope
+  body: (_) @scope
 )
 
-(lambda_expression) @local.scope
+(lambda_expression) @scope
 
-(enhanced_for_statement) @local.scope
+(enhanced_for_statement) @scope
 
 ; block
-(block) @local.scope
+(block) @scope
 
 ; if/else
-(if_statement) @local.scope
+(if_statement) @scope
 
 ; if+else
 (if_statement
-  consequence: (_) @local.scope
+  consequence: (_) @scope
 )
 
 ; if body in case there are no braces
 (if_statement
-  alternative: (_) @local.scope
+  alternative: (_) @scope
 )
 
 ; else body in case there are no braces
 ; try/catch
-(try_statement) @local.scope
+(try_statement) @scope
 
 ; covers try+catch, individual try and catch are covered by (block)
-(catch_clause) @local.scope
+(catch_clause) @scope
 
 ; needed because `Exception` variable
 ; loops
-(for_statement) @local.scope
+(for_statement) @scope
 
 ; whole for_statement because loop iterator variable
 (for_statement
   ; "for" body in case there are no braces
-  body: (_) @local.scope
+  body: (_) @scope
 )
 
 (do_statement
-  body: (_) @local.scope
+  body: (_) @scope
 )
 
 (while_statement
-  body: (_) @local.scope
+  body: (_) @scope
 )
 
 ; Functions
-(constructor_declaration) @local.scope
+(constructor_declaration) @scope
 
-(method_declaration) @local.scope
+(method_declaration) @scope
 
 ;; DEFINITIONS
 (package_declaration
-  (identifier) @local.definition
+  (identifier) @definition.namespace
 )
 
 (class_declaration
-  name: (identifier) @local.definition
+  name: (identifier) @definition.type
 )
 
 (record_declaration
-  name: (identifier) @local.definition
+  name: (identifier) @definition.type
 )
 
 (enum_declaration
-  name: (identifier) @local.definition
+  name: (identifier) @definition.enum
 )
 
 (method_declaration
-  name: (identifier) @local.definition
+  name: (identifier) @definition.method
 )
 
 (local_variable_declaration
   declarator: (variable_declarator
-    name: (identifier) @local.definition
+    name: (identifier) @definition.var
   )
 )
 
 (enhanced_for_statement
   ; for (var item : items) {
-  name: (identifier) @local.definition
+  name: (identifier) @definition.var
 )
 
 (formal_parameter
-  name: (identifier) @local.definition
+  name: (identifier) @definition.parameter
 )
 
 (catch_formal_parameter
-  name: (identifier) @local.definition
+  name: (identifier) @definition.parameter
 )
 
 (inferred_parameters
-  (identifier) @local.definition
+  (identifier) @definition.parameter
 )
 
 ; (x,y) -> ...
 (lambda_expression
-  parameters: (identifier) @local.definition
+  parameters: (identifier) @definition.parameter
 )
 
 ; x -> ...
-; ((scoped_identifier
-;   (identifier) @local.definition)
-;  (#has-ancestor? @local.definition import_declaration))
+(
+  (scoped_identifier
+    (identifier) @definition.import
+  )
+  (#has-ancestor? @definition.import import_declaration)
+)
+
 (field_declaration
   declarator: (variable_declarator
-    name: (identifier) @local.definition
+    name: (identifier) @definition.field
   )
 )
 
 ;; REFERENCES
-(identifier) @local.reference
+(identifier) @reference
 
-(type_identifier) @local.reference
+(type_identifier) @reference

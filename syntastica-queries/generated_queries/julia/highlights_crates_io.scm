@@ -11,8 +11,9 @@
     (abstract_definition)
     (struct_definition)
     (function_definition)
+    (short_function_definition)
     (assignment)
-    (const_declaration)
+    (const_statement)
   ]
 )
 
@@ -297,10 +298,6 @@
 
 (type_clause
   [
-    "<:"
-    ">:"
-  ] @operator
-  [
     (identifier) @type
     (field_expression
       (identifier) @type
@@ -399,12 +396,12 @@
 )
 
 (quote_expression
-  ":"
+  ":" @symbol
   [
     (identifier)
     (operator)
-  ]
-) @symbol
+  ] @symbol
+)
 
 (macro_definition
   name: (identifier) @function.macro

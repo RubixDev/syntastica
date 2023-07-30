@@ -63,6 +63,7 @@ most = [
     "comment",
     "markdown",
     "markdown_inline",
+    "regex",
     "ruby",
     "scala",
 ]
@@ -103,6 +104,7 @@ markdown_inline = ["dep:tree-sitter-md"]
 ocaml = ["dep:tree-sitter-ocaml"]
 ocaml_interface = ["dep:tree-sitter-ocaml"]
 python = ["dep:tree-sitter-python"]
+regex = ["dep:tree-sitter-regex"]
 ruby = ["dep:tree-sitter-ruby"]
 rush = ["dep:tree-sitter-rush"]
 rust = ["dep:tree-sitter-rust"]
@@ -115,7 +117,7 @@ version = "=0.1.0"
 
 [dependencies.tree-sitter-c]
 optional = true
-version = "=0.20.2"
+version = "=0.20.4"
 
 [dependencies.tree-sitter-c-sharp]
 optional = true
@@ -127,7 +129,7 @@ version = "=0.1.0"
 
 [dependencies.tree-sitter-cpp]
 optional = true
-version = "=0.20.0"
+version = "=0.20.2"
 
 [dependencies.tree-sitter-css]
 optional = true
@@ -143,7 +145,7 @@ version = "=0.20.0"
 
 [dependencies.tree-sitter-go]
 optional = true
-version = "=0.19.1"
+version = "=0.20.0"
 
 [dependencies.tree-sitter-hexdump]
 optional = true
@@ -171,11 +173,15 @@ version = "=0.1.5"
 
 [dependencies.tree-sitter-ocaml]
 optional = true
-version = "=0.20.3"
+version = "=0.20.4"
 
 [dependencies.tree-sitter-python]
 optional = true
-version = "=0.20.2"
+version = "=0.20.3"
+
+[dependencies.tree-sitter-regex]
+optional = true
+version = "=0.20.0"
 
 [dependencies.tree-sitter-ruby]
 optional = true

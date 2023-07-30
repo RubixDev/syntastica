@@ -1,4 +1,4 @@
-;; Forked from https://github.com/helix-editor/helix
+;; Forked from https://github.com/helix-editor/helix/blob/master/runtime/queries/go/locals.scm
 ;; Licensed under the Mozilla Public License 2.0
 ; Scopes
 (block) @local.scope

@@ -1,3 +1,5 @@
+;; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/javascript/locals.scm
+;; Licensed under the Apache License 2.0
 ; inherits: ecma
 ; Both properties are matched here.
 ;
@@ -9,37 +11,37 @@
   property: [
     (property_identifier)
     (private_property_identifier)
-  ] @local.definition
+  ] @definition.var
 )
 
 ; this.foo = "bar"
 (assignment_expression
   left: (member_expression
     object: (this)
-    property: (property_identifier) @local.definition
+    property: (property_identifier) @definition.var
   )
 )
 
 (formal_parameters
-  (identifier) @local.definition
+  (identifier) @definition.parameter
 )
 
 ; function(arg = []) {
 (formal_parameters
   (assignment_pattern
-    left: (identifier) @local.definition
+    left: (identifier) @definition.parameter
   )
 )
 
 ; x => x
 (arrow_function
-  parameter: (identifier) @local.definition
+  parameter: (identifier) @definition.parameter
 )
 
 ;; ({ a }) => null
 (formal_parameters
   (object_pattern
-    (shorthand_property_identifier_pattern) @local.definition
+    (shorthand_property_identifier_pattern) @definition.parameter
   )
 )
 
@@ -47,7 +49,7 @@
 (formal_parameters
   (object_pattern
     (pair_pattern
-      value: (identifier) @local.definition
+      value: (identifier) @definition.parameter
     )
   )
 )
@@ -55,13 +57,13 @@
 ;; ([ a ]) => null
 (formal_parameters
   (array_pattern
-    (identifier) @local.definition
+    (identifier) @definition.parameter
   )
 )
 
 (formal_parameters
   (rest_pattern
-    (identifier) @local.definition
+    (identifier) @definition.parameter
   )
 )
 
@@ -76,7 +78,7 @@
     [
       (property_identifier)
       (private_property_identifier)
-    ] @local.definition
+    ] @definition.function
   )
   (#set! definition.var.scope parent)
 )
@@ -84,5 +86,5 @@
 ; this.foo()
 (member_expression
   object: (this)
-  property: (property_identifier) @local.reference
+  property: (property_identifier) @reference
 )

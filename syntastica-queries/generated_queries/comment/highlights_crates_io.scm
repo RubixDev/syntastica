@@ -43,7 +43,7 @@
 
 ("text"
   @text.note @nospell
-  (#match? @text.note "^(NOTE|XXX|INFO)$")
+  (#match? @text.note "^(NOTE|XXX|INFO|DOCS|PERF|TEST)$")
 )
 
 (
@@ -56,7 +56,7 @@
     )?
     ":" @punctuation.delimiter
   )
-  (#match? @text.note "^(NOTE|XXX|INFO)$")
+  (#match? @text.note "^(NOTE|XXX|INFO|DOCS|PERF|TEST)$")
 )
 
 ("text"

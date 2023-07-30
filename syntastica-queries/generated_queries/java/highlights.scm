@@ -144,6 +144,7 @@
   "implements"
   "instanceof"
   "interface"
+  "@interface"
   "permits"
   "to"
   "with"
@@ -242,6 +243,10 @@
 )
 
 (class_declaration
+  name: (identifier) @type
+)
+
+(annotation_type_declaration
   name: (identifier) @type
 )
 

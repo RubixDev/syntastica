@@ -33,11 +33,12 @@
   arguments: [
     (arguments
       (template_string) @injection.content
+      (#set! injection.language "html")
     )
     (template_string) @injection.content
+    (#set! injection.language "html")
   ]
   (#offset! @injection.content 0 1 0 -1)
-  (#set! injection.language "html")
 )
 
 (call_expression
@@ -47,8 +48,8 @@
   )
   arguments: (
     (template_string) @injection.content
-    (#offset! @injection.content 0 1 0 -1)
     (#set! injection.language "graphql")
+    (#offset! @injection.content 0 1 0 -1)
   )
 )
 
@@ -59,8 +60,8 @@
   )
   arguments: (
     (template_string) @injection.content
-    (#offset! @injection.content 0 1 0 -1)
     (#set! injection.language "glimmer")
+    (#offset! @injection.content 0 1 0 -1)
   )
 )
 
@@ -71,8 +72,8 @@
   )
   arguments: (
     (template_string) @injection.content
-    (#offset! @injection.content 0 1 0 -1)
     (#set! injection.language "css")
+    (#offset! @injection.content 0 1 0 -1)
   )
 )
 
@@ -83,8 +84,8 @@
   )
   arguments: (
     (template_string) @injection.content
-    (#offset! @injection.content 0 1 0 -1)
     (#set! injection.language "css")
+    (#offset! @injection.content 0 1 0 -1)
   )
 )
 
@@ -99,8 +100,8 @@
   )
   arguments: (
     (template_string) @injection.content
-    (#offset! @injection.content 0 1 0 -1)
     (#set! injection.language "css")
+    (#offset! @injection.content 0 1 0 -1)
   )
 )
 
@@ -115,8 +116,8 @@
   )
   arguments: (
     (template_string) @injection.content
-    (#offset! @injection.content 0 1 0 -1)
     (#set! injection.language "css")
+    (#offset! @injection.content 0 1 0 -1)
   )
 )
 
@@ -127,9 +128,9 @@
 
 (
   (template_string) @injection.content
+  (#set! injection.language "graphql")
   (#match? @injection.content "^`#graphql")
   (#offset! @injection.content 0 1 0 -1)
-  (#set! injection.language "graphql")
 )
 
 (assignment_expression
@@ -138,8 +139,8 @@
     (#match? @_prop "^(innerHTML|outerHTML)$")
   )
   right: (template_string) @injection.content
-  (#offset! @injection.content 0 1 0 -1)
   (#set! injection.language "html")
+  (#offset! @injection.content 0 1 0 -1)
 )
 
 (assignment_expression
@@ -148,6 +149,6 @@
     (#match? @_prop "^(innerHTML|outerHTML)$")
   )
   right: (string) @injection.content
-  (#offset! @injection.content 0 1 0 -1)
   (#set! injection.language "html")
+  (#offset! @injection.content 0 1 0 -1)
 )

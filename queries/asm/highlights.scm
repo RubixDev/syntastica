@@ -1,3 +1,5 @@
+;; Forked from https://github.com/rush-rs/tree-sitter-asm/blob/main/queries/asm/highlights.scm
+;; Licensed under the MIT license
 ; General
 (label
   (ident) @label

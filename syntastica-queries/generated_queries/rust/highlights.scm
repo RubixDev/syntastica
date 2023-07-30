@@ -1,13 +1,19 @@
 (macro_invocation
-  macro: (identifier) @_ident @exception
-  "!" @exception
-  (#match? @_ident "assert")
+  macro: (identifier) @debug
+  "!" @debug
+  (#eq? @debug "dbg")
 )
 
 (macro_invocation
-  macro: (identifier) @_ident @exception
+  macro: (identifier) @exception
   "!" @exception
-  (#eq? @_ident "panic")
+  (#match? @exception "assert")
+)
+
+(macro_invocation
+  macro: (identifier) @exception
+  "!" @exception
+  (#eq? @exception "panic")
 )
 
 (empty_type
@@ -35,6 +41,8 @@
   ":"
   "::"
   ";"
+  "->"
+  "=>"
 ] @punctuation.delimiter
 
 (for_lifetimes
@@ -92,7 +100,6 @@
   "+="
   "-"
   "-="
-  "->"
   ".."
   "..="
   "/"
@@ -103,7 +110,6 @@
   "<="
   "="
   "=="
-  "=>"
   ">"
   ">="
   ">>"
@@ -132,8 +138,9 @@
 ] @repeat
 
 [
-  "else"
   "if"
+  "else"
+  "match"
 ] @conditional
 
 (visibility_modifier
@@ -185,6 +192,8 @@
 [
   "const"
   "static"
+  "dyn"
+  "extern"
 ] @storageclass
 
 [
@@ -199,12 +208,9 @@
 
 [
   "default"
-  "dyn"
   "enum"
-  "extern"
   "impl"
   "let"
-  "match"
   "move"
   "pub"
   "struct"
@@ -366,6 +372,24 @@
   (crate)
   (super)
 ] @namespace
+
+(
+  (scoped_type_identifier
+    path: (identifier) @type
+    name: (type_identifier) @constant
+  )
+  (#match? @type "^[A-Z]")
+  (#match? @constant "^[A-Z]")
+)
+
+(
+  (scoped_identifier
+    path: (identifier) @type
+    name: (identifier) @constant
+  )
+  (#match? @type "^[A-Z]")
+  (#match? @constant "^[A-Z]")
+)
 
 (
   (scoped_identifier

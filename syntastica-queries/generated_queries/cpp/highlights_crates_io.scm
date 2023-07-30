@@ -1,5 +1,12 @@
 (literal_suffix) @operator
 
+(template_parameter_list
+  [
+    "<"
+    ">"
+  ] @punctuation.bracket
+)
+
 (template_argument_list
   [
     "<"
@@ -9,9 +16,22 @@
 
 "::" @punctuation.delimiter
 
+"<=>" @operator
+
 [
   "new"
   "delete"
+  "xor"
+  "bitand"
+  "bitor"
+  "compl"
+  "not"
+  "xor_eq"
+  "and_eq"
+  "or_eq"
+  "not_eq"
+  "and"
+  "or"
 ] @keyword.operator
 
 [
@@ -39,6 +59,8 @@
   "template"
   "typename"
   "using"
+  "concept"
+  "requires"
 ] @keyword
 
 [
@@ -54,7 +76,9 @@
 
 (true) @boolean
 
-(nullptr) @constant.builtin
+(null
+  "nullptr" @constant.builtin
+)
 
 (this) @variable.builtin
 
@@ -284,6 +308,10 @@
   name: (type_identifier) @type.definition
 )
 
+(concept_definition
+  name: (identifier) @type.definition
+)
+
 (function_declarator
   declarator: (field_identifier) @method
 )
@@ -321,22 +349,22 @@
 
 (
   (identifier) @field
-  (#match? @field "(^_|^m_|_$)")
+  (#match? @field "^m?_[\\s\\S]*$")
 )
 
 (ERROR) @error
 
 [
   "__attribute__"
+  "__declspec"
+  "__based"
   "__cdecl"
   "__clrcall"
   "__stdcall"
   "__fastcall"
   "__thiscall"
   "__vectorcall"
-  "_unaligned"
-  "__unaligned"
-  "__declspec"
+  (ms_pointer_modifier)
   (attribute_declaration)
 ] @attribute
 
@@ -346,6 +374,10 @@
 
 (parameter_declaration
   declarator: (pointer_declarator) @parameter
+)
+
+(parameter_declaration
+  declarator: (array_declarator) @parameter
 )
 
 (parameter_declaration
@@ -361,6 +393,14 @@
 
 (preproc_function_def
   name: (identifier) @function.macro
+)
+
+(function_declarator
+  declarator: (parenthesized_declarator
+    (pointer_declarator
+      declarator: (field_identifier) @function
+    )
+  )
 )
 
 (function_declarator
@@ -387,6 +427,11 @@
   name: (_) @constant
 )
 
+(preproc_def
+  (preproc_arg) @constant.builtin
+  (#match? @constant.builtin "^(stderr|stdin|stdout)$")
+)
+
 (
   (identifier) @constant.builtin
   (#match? @constant.builtin "^(stderr|stdin|stdout)$")
@@ -400,9 +445,20 @@
   name: (identifier) @constant
 )
 
+(preproc_def
+  (preproc_arg) @constant
+  (#match? @constant "^[A-Z][A-Z0-9_]+$")
+)
+
 (
   (identifier) @constant
   (#match? @constant "^[A-Z][A-Z0-9_]+$")
+)
+
+(sized_type_specifier
+  _ @type.builtin
+  type:
+  _?
 )
 
 (primitive_type) @type.builtin
@@ -415,13 +471,15 @@
   "extern" @storageclass
 )
 
-(type_qualifier) @type.qualifier
+[
+  (type_qualifier)
+  (gnu_asm_qualifier)
+] @type.qualifier
 
 (storage_class_specifier) @storageclass
 
 [
   (type_identifier)
-  (sized_type_specifier)
   (type_descriptor)
 ] @type
 
@@ -446,10 +504,12 @@
   (#not-has-parent? @_parent template_method function_declarator call_expression)
 )
 
-[
-  (preproc_arg)
-  (preproc_defined)
-] @function.macro
+(preproc_defined) @function.macro
+
+(
+  (preproc_arg) @function.macro
+  (#set! "priority" 90)
+)
 
 (char_literal) @character
 
@@ -532,6 +592,7 @@
   ";"
   ":"
   ","
+  "::"
 ] @punctuation.delimiter
 
 "#include" @include
@@ -545,6 +606,8 @@
   "#else"
   "#elif"
   "#endif"
+  "#elifdef"
+  "#elifndef"
   (preproc_directive)
 ] @preproc
 
@@ -565,7 +628,10 @@
 
 "return" @keyword.return
 
-"sizeof" @keyword.operator
+[
+  "sizeof"
+  "offsetof"
+] @keyword.operator
 
 [
   "default"
@@ -574,6 +640,15 @@
   "typedef"
   "union"
   "goto"
+  "asm"
+  "__asm__"
 ] @keyword
 
-(identifier) @variable
+(preproc_def
+  (preproc_arg) @variable
+)
+
+(
+  (identifier) @variable
+  (#set! "priority" 95)
+)

@@ -1,3 +1,8 @@
+(
+  (interpreted_string_literal) @spell
+  (#not-has-parent? @spell import_spec)
+)
+
 (ERROR) @error
 
 (source_file
@@ -35,7 +40,17 @@
   name: (field_identifier) @field
 )
 
-(nil) @constant.builtin
+(keyed_element
+  .
+  (literal_element
+    (identifier) @field
+  )
+)
+
+[
+  (nil)
+  (iota)
+] @constant.builtin
 
 [
   (true)
@@ -56,31 +71,40 @@
 
 (interpreted_string_literal) @string
 
-[
-  "("
-  ")"
-  "{"
-  "}"
-  "["
-  "]"
-] @punctuation.bracket
+"]" @punctuation.bracket
 
-[
-  "."
-  ","
-  ":"
-  ";"
-] @punctuation.delimiter
+"[" @punctuation.bracket
+
+"}" @punctuation.bracket
+
+"{" @punctuation.bracket
+
+")" @punctuation.bracket
+
+"(" @punctuation.bracket
+
+";" @punctuation.delimiter
+
+":" @punctuation.delimiter
+
+"," @punctuation.delimiter
+
+"." @punctuation.delimiter
 
 (
   (identifier) @function.builtin
-  (#match? @function.builtin "^(append|cap|close|complex|copy|delete|imag|len|make|new|panic|print|println|real|recover)$")
+  (#match? @function.builtin "^(append|cap|clear|close|complex|copy|delete|imag|len|make|new|panic|print|println|real|recover)$")
 )
 
 (
   (type_identifier) @type.builtin
-  (#match? @type.builtin "^(any|bool|byte|complex128|complex64|error|float32|float64|int|int16|int32|int64|int8|rune|string|uint|uint16|uint32|uint64|uint8|uintptr)$")
+  (#match? @type.builtin "^(any|bool|byte|comparable|complex128|complex64|error|float32|float64|int|int16|int32|int64|int8|rune|string|uint|uint16|uint32|uint64|uint8|uintptr)$")
 )
+
+[
+  "chan"
+  "map"
+] @type.builtin
 
 [
   "else"
@@ -96,21 +120,20 @@
 
 "for" @repeat
 
+"go" @keyword.coroutine
+
 "return" @keyword.return
 
 "func" @keyword.function
 
 [
   "break"
-  "chan"
   "const"
   "continue"
   "default"
   "defer"
-  "go"
   "goto"
   "interface"
-  "map"
   "range"
   "select"
   "struct"
@@ -135,6 +158,8 @@
   "&"
   "&&"
   "&="
+  "&^"
+  "&^="
   "%"
   "%="
   "^"
@@ -157,6 +182,20 @@
   "|="
   "||"
 ] @operator
+
+(
+  (call_expression
+    (identifier) @constructor
+  )
+  (#match? @constructor "^[mM]ake[\\s\\S]+$")
+)
+
+(
+  (call_expression
+    (identifier) @constructor
+  )
+  (#match? @constructor "^[nN]ew[\\s\\S]+$")
+)
 
 (method_spec
   name: (field_identifier) @method

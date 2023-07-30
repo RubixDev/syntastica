@@ -22,6 +22,10 @@
   )
 )
 
+(ambient_declaration
+  "global" @namespace
+)
+
 (arrow_function
   parameter: (identifier) @parameter
 )
@@ -36,6 +40,14 @@
   (object_pattern
     (pair_pattern
       value: (identifier) @parameter
+    )
+  )
+)
+
+(required_parameter
+  (object_pattern
+    (object_assignment_pattern
+      (shorthand_property_identifier_pattern) @parameter
     )
   )
 )
@@ -76,6 +88,21 @@
   ] @punctuation.special
 )
 
+(flow_maybe_type
+  "?" @punctuation.special
+)
+
+(public_field_definition
+  [
+    "?"
+    "!"
+  ] @punctuation.special
+)
+
+(optional_type
+  "?" @punctuation.special
+)
+
 (optional_parameter
   "?" @punctuation.special
 )
@@ -84,7 +111,15 @@
   "?" @punctuation.special
 )
 
+(method_definition
+  "?" @punctuation.special
+)
+
 (method_signature
+  "?" @punctuation.special
+)
+
+(abstract_method_signature
   "?" @punctuation.special
 )
 
@@ -94,7 +129,15 @@
   "?:" @punctuation.delimiter
 )
 
+(omitting_type_annotation
+  "-?:" @punctuation.delimiter
+)
+
 (index_signature
+  ":" @punctuation.delimiter
+)
+
+(type_predicate_annotation
   ":" @punctuation.delimiter
 )
 
@@ -108,6 +151,13 @@
 
 (union_type
   "|" @punctuation.delimiter
+)
+
+(object_type
+  [
+    "{|"
+    "|}"
+  ] @punctuation.bracket
 )
 
 (type_parameters
@@ -155,9 +205,22 @@
   "readonly"
 ] @type.qualifier
 
-(as_expression
-  "as" @keyword
+(mapped_type_clause
+  "as" @keyword.operator
 )
+
+(export_statement
+  "as" @keyword.operator
+)
+
+(as_expression
+  "as" @keyword.operator
+)
+
+[
+  "keyof"
+  "satisfies"
+] @keyword.operator
 
 [
   "declare"
@@ -165,14 +228,20 @@
   "export"
   "implements"
   "interface"
-  "keyof"
   "type"
   "namespace"
   "override"
-  "satisfies"
   "module"
+  "asserts"
   "infer"
+  "is"
 ] @keyword
+
+(import_require_clause
+  source: (string) @text.uri
+)
+
+"require" @include
 
 (switch_default
   "default" @conditional
@@ -192,6 +261,9 @@
 [
   "new"
   "delete"
+  "in"
+  "instanceof"
+  "typeof"
 ] @keyword.operator
 
 ["function"] @keyword.function
@@ -214,13 +286,10 @@
   "export"
   "extends"
   "get"
-  "in"
-  "instanceof"
   "let"
   "set"
   "static"
   "target"
-  "typeof"
   "var"
   "with"
 ] @keyword
@@ -281,7 +350,6 @@
   [
     "delete"
     "void"
-    "typeof"
   ] @keyword.operator
 )
 
@@ -347,7 +415,12 @@
   "&&="
   "||="
   "??="
+  "..."
 ] @operator
+
+(switch_default
+  ":" @punctuation.delimiter
+)
 
 (switch_case
   ":" @punctuation.delimiter
@@ -367,8 +440,6 @@
 
 ";" @punctuation.delimiter
 
-"..." @punctuation.special
-
 (
   (identifier) @number
   (#match? @number "^(NaN|Infinity)$")
@@ -379,6 +450,8 @@
 (regex
   "/" @punctuation.bracket
 )
+
+(regex_flags) @character.special
 
 (regex_pattern) @string.regex
 
@@ -412,10 +485,27 @@
   (false)
 ] @boolean
 
+(
+  (identifier) @variable.builtin
+  (#eq? @variable.builtin "self")
+)
+
 [
   (this)
   (super)
 ] @variable.builtin
+
+(decorator
+  "@" @attribute
+  (call_expression
+    (identifier) @attribute
+  )
+)
+
+(decorator
+  "@" @attribute
+  (identifier) @attribute
+)
 
 (namespace_import
   (identifier) @namespace

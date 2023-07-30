@@ -3,7 +3,7 @@
 ; inherits: c
 (
   (identifier) @field
-  (#match? @field "(^_|^m_|_$)")
+  (#lua-match? @field "^m?_.*$")
 )
 
 (parameter_declaration
@@ -44,7 +44,6 @@
   declarator: (field_identifier) @method
 )
 
-; crates.io skip
 (concept_definition
   name: (identifier) @type.definition
 )
@@ -59,7 +58,7 @@
 
 (
   (namespace_identifier) @type
-  (#lua-match? @type "^[A-Z]")
+  (#lua-match? @type "^%u")
 )
 
 (case_statement
@@ -242,14 +241,14 @@
       (identifier) @constructor
     )
   )
-  (#lua-match? @constructor "^[A-Z]")
+  (#lua-match? @constructor "^%u")
 )
 
 (
   (call_expression
     function: (identifier) @constructor
   )
-  (#lua-match? @constructor "^[A-Z]")
+  (#lua-match? @constructor "^%u")
 )
 
 (
@@ -258,7 +257,7 @@
       name: (identifier) @constructor
     )
   )
-  (#lua-match? @constructor "^[A-Z]")
+  (#lua-match? @constructor "^%u")
 )
 
 (
@@ -267,7 +266,7 @@
       field: (field_identifier) @constructor
     )
   )
-  (#lua-match? @constructor "^[A-Z]")
+  (#lua-match? @constructor "^%u")
 )
 
 ;; constructing a type in an initializer list: Constructor ():  **SuperType (1)**
@@ -276,13 +275,15 @@
     (field_identifier) @constructor
     (argument_list)
   )
-  (#lua-match? @constructor "^[A-Z]")
+  (#lua-match? @constructor "^%u")
 )
 
 ; Constants
 (this) @variable.builtin
 
-(nullptr) @constant.builtin
+(null
+  "nullptr" @constant.builtin
+)
 
 (true) @boolean
 
@@ -309,9 +310,7 @@
   "template"
   "typename"
   "using"
-  ; crates.io skip
   "concept"
-  ; crates.io skip
   "requires"
 ] @keyword
 
@@ -333,36 +332,31 @@
 [
   "new"
   "delete"
-  ; crates.io skip
   "xor"
-  ; crates.io skip
   "bitand"
-  ; crates.io skip
   "bitor"
-  ; crates.io skip
   "compl"
-  ; crates.io skip
   "not"
-  ; crates.io skip
   "xor_eq"
-  ; crates.io skip
   "and_eq"
-  ; crates.io skip
   "or_eq"
-  ; crates.io skip
   "not_eq"
-  ; crates.io skip
   "and"
-  ; crates.io skip
   "or"
 ] @keyword.operator
 
-; crates.io skip
 "<=>" @operator
 
 "::" @punctuation.delimiter
 
 (template_argument_list
+  [
+    "<"
+    ">"
+  ] @punctuation.bracket
+)
+
+(template_parameter_list
   [
     "<"
     ">"

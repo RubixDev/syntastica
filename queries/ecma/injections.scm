@@ -4,28 +4,24 @@
   (
     (comment) @_jsdoc_comment
     (#lua-match? @_jsdoc_comment "^/[*][*][^*].*[*]/$")
-  ) @injection.content
-  (#set! injection.language "jsdoc")
+  ) @jsdoc
 )
 
-(
-  (comment) @injection.content
-  (#set! injection.language "comment")
-)
+(comment) @comment
 
 ; html(`...`), html`...`, sql(...) etc
 (call_expression
   function: (
-    (identifier) @injection.language
+    (identifier) @language
   )
   arguments: [
     (arguments
-      (template_string) @injection.content
+      (template_string) @content
     )
-    (template_string) @injection.content
+    (template_string) @content
   ]
-  (#offset! @injection.content 0 1 0 -1)
-  (#not-eq? @injection.language "svg")
+  (#offset! @content 0 1 0 -1)
+  (#not-eq? @language "svg")
 )
 
 ; svg`...` or svg(`...`), which uses the html parser, so is not included in the previous query
@@ -36,12 +32,11 @@
   )
   arguments: [
     (arguments
-      (template_string) @injection.content
+      (template_string) @html
     )
-    (template_string) @injection.content
+    (template_string) @html
   ]
-  (#offset! @injection.content 0 1 0 -1)
-  (#set! injection.language "html")
+  (#offset! @html 0 1 0 -1)
 )
 
 (call_expression
@@ -50,9 +45,8 @@
     (#eq? @_name "gql")
   )
   arguments: (
-    (template_string) @injection.content
-    (#offset! @injection.content 0 1 0 -1)
-    (#set! injection.language "graphql")
+    (template_string) @graphql
+    (#offset! @graphql 0 1 0 -1)
   )
 )
 
@@ -62,16 +56,14 @@
     (#eq? @_name "hbs")
   )
   arguments: (
-    (template_string) @injection.content
-    (#offset! @injection.content 0 1 0 -1)
-    (#set! injection.language "glimmer")
+    (template_string) @glimmer
+    (#offset! @glimmer 0 1 0 -1)
   )
 )
 
 ; crates.io skip
 (
-  (glimmer_template) @injection.content
-  (#set! injection.language "glimmer")
+  (glimmer_template) @glimmer
 )
 
 ; styled.div`<css>`
@@ -81,9 +73,8 @@
     (#eq? @_name "styled")
   )
   arguments: (
-    (template_string) @injection.content
-    (#offset! @injection.content 0 1 0 -1)
-    (#set! injection.language "css")
+    (template_string) @css
+    (#offset! @css 0 1 0 -1)
   )
 )
 
@@ -94,9 +85,8 @@
     (#eq? @_name "styled")
   )
   arguments: (
-    (template_string) @injection.content
-    (#offset! @injection.content 0 1 0 -1)
-    (#set! injection.language "css")
+    (template_string) @css
+    (#offset! @css 0 1 0 -1)
   )
 )
 
@@ -111,9 +101,8 @@
     )
   )
   arguments: (
-    (template_string) @injection.content
-    (#offset! @injection.content 0 1 0 -1)
-    (#set! injection.language "css")
+    (template_string) @css
+    (#offset! @css 0 1 0 -1)
   )
 )
 
@@ -128,25 +117,20 @@
     )
   )
   arguments: (
-    (template_string) @injection.content
-    (#offset! @injection.content 0 1 0 -1)
-    (#set! injection.language "css")
+    (template_string) @css
+    (#offset! @css 0 1 0 -1)
   )
 )
 
-(
-  (regex_pattern) @injection.content
-  (#set! injection.language "regex")
-)
+(regex_pattern) @regex
 
 ; ((comment) @_gql_comment
 ;   (#eq? @_gql_comment "/* GraphQL */")
 ;   (template_string) @graphql)
 (
-  (template_string) @injection.content
-  (#lua-match? @injection.content "^`#graphql")
-  (#offset! @injection.content 0 1 0 -1)
-  (#set! injection.language "graphql")
+  (template_string) @graphql
+  (#lua-match? @graphql "^`#graphql")
+  (#offset! @graphql 0 1 0 -1)
 )
 
 ; el.innerHTML = `<html>`
@@ -155,9 +139,8 @@
     property: (property_identifier) @_prop
     (#any-of? @_prop "innerHTML" "outerHTML")
   )
-  right: (template_string) @injection.content
-  (#offset! @injection.content 0 1 0 -1)
-  (#set! injection.language "html")
+  right: (template_string) @html
+  (#offset! @html 0 1 0 -1)
 )
 
 ; el.innerHTML = '<html>'
@@ -166,7 +149,6 @@
     property: (property_identifier) @_prop
     (#any-of? @_prop "innerHTML" "outerHTML")
   )
-  right: (string) @injection.content
-  (#offset! @injection.content 0 1 0 -1)
-  (#set! injection.language "html")
+  right: (string) @html
+  (#offset! @html 0 1 0 -1)
 )

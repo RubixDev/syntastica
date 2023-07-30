@@ -9,8 +9,7 @@
     (#eq? @_attr "jsx")
   )
   (jsx_expression
-    (template_string) @injection.content
-    (#offset! @injection.content 0 1 0 -1)
-    (#set! injection.language)
+    (template_string) @css
+    (#offset! @css 0 1 0 -1)
   )
 )

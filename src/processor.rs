@@ -66,9 +66,9 @@ use crate::Highlights;
 ///     ("new", Some("function.call")),
 ///     ("(", Some("punctuation.bracket")),
 ///     ("r", Some("string")),
-///     ("\"", Some("string")),
+///     ("\"", Some("string.regex")),
 ///     (".", Some("punctuation.special")), // this is the injected regex language
-///     ("\"", Some("string")),
+///     ("\"", Some("string.regex")),
 ///     (")", Some("punctuation.bracket")),
 /// ]]);
 /// ```

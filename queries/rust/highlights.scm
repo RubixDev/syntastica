@@ -1,6 +1,5 @@
-; Forked from https://github.com/tree-sitter/tree-sitter-rust
-; Copyright (c) 2017 Maxim Sokolov
-; Licensed under the MIT license.
+;; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/rust/highlights.scm
+;; Licensed under the Apache License 2.0
 ; Identifier conventions
 (identifier) @variable
 
@@ -151,6 +150,24 @@
   (#lua-match? @constant "^[A-Z][A-Z%d_]*$")
 )
 
+(
+  (scoped_identifier
+    path: (identifier) @type
+    name: (identifier) @constant
+  )
+  (#lua-match? @type "^[A-Z]")
+  (#lua-match? @constant "^[A-Z]")
+)
+
+(
+  (scoped_type_identifier
+    path: (identifier) @type
+    name: (type_identifier) @constant
+  )
+  (#lua-match? @type "^[A-Z]")
+  (#lua-match? @constant "^[A-Z]")
+)
+
 [
   (crate)
   (super)
@@ -184,7 +201,7 @@
   (#lua-match? @type "^[A-Z]")
 )
 
-;; Correct enum constructors
+; Correct enum constructors
 (call_expression
   function: (scoped_identifier
     "::"
@@ -219,7 +236,7 @@
   (#any-of? @constant.builtin "Some" "None" "Ok" "Err")
 )
 
-;; Macro definitions
+; Macro definitions
 "$" @function.macro
 
 (metavariable) @function.macro
@@ -228,7 +245,7 @@
   "macro_rules!" @function.macro
 )
 
-;; Attribute macros
+; Attribute macros
 (attribute_item
   (attribute
     (identifier) @function.macro
@@ -242,12 +259,12 @@
   )
 )
 
-;; Derive macros (assume all arguments are types)
+; Derive macros (assume all arguments are types)
 ; (attribute
 ;   (identifier) @_name
 ;   arguments: (attribute (attribute (identifier) @type))
 ;   (#eq? @_name "derive"))
-;; Function-like macros
+; Function-like macros
 (macro_invocation
   macro: (identifier) @function.macro
 )
@@ -259,7 +276,7 @@
   )
 )
 
-;;; Literals
+; Literals
 [
   (line_comment)
   (block_comment)
@@ -305,7 +322,7 @@
 
 (char_literal) @character
 
-;;; Keywords
+; Keywords
 [
   "use"
   "mod"
@@ -317,12 +334,9 @@
 
 [
   "default"
-  "dyn"
   "enum"
-  "extern"
   "impl"
   "let"
-  "match"
   "move"
   "pub"
   "struct"
@@ -346,6 +360,8 @@
 [
   "const"
   "static"
+  "dyn"
+  "extern"
 ] @storageclass
 
 (lifetime
@@ -395,8 +411,9 @@
 )
 
 [
-  "else"
   "if"
+  "else"
+  "match"
 ] @conditional
 
 [
@@ -413,7 +430,7 @@
   "for" @repeat
 )
 
-;;; Operators & Punctuation
+; Operators
 [
   "!"
   "!="
@@ -428,7 +445,6 @@
   "+="
   "-"
   "-="
-  "->"
   ".."
   "..="
   "/"
@@ -439,7 +455,6 @@
   "<="
   "="
   "=="
-  "=>"
   ">"
   ">="
   ">>"
@@ -453,6 +468,7 @@
   "||"
 ] @operator
 
+; Punctuation
 [
   "("
   ")"
@@ -500,6 +516,8 @@
   ":"
   "::"
   ";"
+  "->"
+  "=>"
 ] @punctuation.delimiter
 
 (attribute_item
@@ -522,13 +540,19 @@
 )
 
 (macro_invocation
-  macro: (identifier) @_ident @exception
+  macro: (identifier) @exception
   "!" @exception
-  (#eq? @_ident "panic")
+  (#eq? @exception "panic")
 )
 
 (macro_invocation
-  macro: (identifier) @_ident @exception
+  macro: (identifier) @exception
   "!" @exception
-  (#contains? @_ident "assert")
+  (#contains? @exception "assert")
+)
+
+(macro_invocation
+  macro: (identifier) @debug
+  "!" @debug
+  (#eq? @debug "dbg")
 )

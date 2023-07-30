@@ -1,6 +1,11 @@
 (ERROR) @error
 
 (
+  (identifier) @type.builtin
+  (#match? @type.builtin "^(BaseException|Exception|ArithmeticError|BufferError|LookupError|AssertionError|AttributeError|EOFError|FloatingPointError|GeneratorExit|ImportError|ModuleNotFoundError|IndexError|KeyError|KeyboardInterrupt|MemoryError|NameError|NotImplementedError|OSError|OverflowError|RecursionError|ReferenceError|RuntimeError|StopIteration|StopAsyncIteration|SyntaxError|IndentationError|TabError|SystemError|SystemExit|TypeError|UnboundLocalError|UnicodeError|UnicodeEncodeError|UnicodeDecodeError|UnicodeTranslateError|ValueError|ZeroDivisionError|EnvironmentError|IOError|WindowsError|BlockingIOError|ChildProcessError|ConnectionError|BrokenPipeError|ConnectionAbortedError|ConnectionRefusedError|ConnectionResetError|FileExistsError|FileNotFoundError|InterruptedError|IsADirectoryError|NotADirectoryError|PermissionError|ProcessLookupError|TimeoutError|Warning|UserWarning|DeprecationWarning|PendingDeprecationWarning|SyntaxWarning|RuntimeWarning|FutureWarning|ImportWarning|UnicodeWarning|BytesWarning|ResourceWarning|bool|int|float|complex|list|tuple|range|str|bytes|bytearray|memoryview|set|frozenset|dict|type|object)$")
+)
+
+(
   (class_definition
     (block
       (function_definition
@@ -23,7 +28,7 @@
       )
     )
   )
-  (#match? @field "^([A-Z])@!.*$")
+  (#match? @field "^[a-z][\\s\\S]*$")
 )
 
 (
@@ -36,7 +41,7 @@
       )
     )
   )
-  (#match? @field "^([A-Z])@!.*$")
+  (#match? @field "^[a-z][\\s\\S]*$")
 )
 
 (class_definition
@@ -64,6 +69,8 @@
   ";"
   (ellipsis)
 ] @punctuation.delimiter
+
+(type_conversion) @function.macro
 
 (interpolation
   "{" @punctuation.special
@@ -243,7 +250,7 @@
     .
     (comment) @preproc
   )
-  (#match? @preproc "^#!/")
+  (#match? @preproc "^#!\\/")
 )
 
 (comment) @comment @spell
@@ -428,15 +435,10 @@
 )
 
 (
-  (identifier) @type.builtin
-  (#match? @type.builtin "^(BaseException|Exception|ArithmeticError|BufferError|LookupError|AssertionError|AttributeError|EOFError|FloatingPointError|GeneratorExit|ImportError|ModuleNotFoundError|IndexError|KeyError|KeyboardInterrupt|MemoryError|NameError|NotImplementedError|OSError|OverflowError|RecursionError|ReferenceError|RuntimeError|StopIteration|StopAsyncIteration|SyntaxError|IndentationError|TabError|SystemError|SystemExit|TypeError|UnboundLocalError|UnicodeError|UnicodeEncodeError|UnicodeDecodeError|UnicodeTranslateError|ValueError|ZeroDivisionError|EnvironmentError|IOError|WindowsError|BlockingIOError|ChildProcessError|ConnectionError|BrokenPipeError|ConnectionAbortedError|ConnectionRefusedError|ConnectionResetError|FileExistsError|FileNotFoundError|InterruptedError|IsADirectoryError|NotADirectoryError|PermissionError|ProcessLookupError|TimeoutError|Warning|UserWarning|DeprecationWarning|PendingDeprecationWarning|SyntaxWarning|RuntimeWarning|FutureWarning|ImportWarning|UnicodeWarning|BytesWarning|ResourceWarning|bool|int|float|complex|list|tuple|range|str|bytes|bytearray|memoryview|set|frozenset|dict|type|object)$")
-)
-
-(
   (attribute
     attribute: (identifier) @field
   )
-  (#match? @field "^([A-Z])@!.*$")
+  (#match? @field "^[[a-z]_][\\s\\S]*$")
 )
 
 (

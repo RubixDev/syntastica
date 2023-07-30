@@ -49,7 +49,7 @@
   (command_name
     (word) @function.builtin
   )
-  (#match? @function.builtin "^(alias|cd|clear|echo|eval|exit|getopts|popd|pushd|return|set|shift|shopt|source|test)$")
+  (#match? @function.builtin "^(alias|bg|bind|break|builtin|caller|cd|command|compgen|complete|compopt|continue|coproc|dirs|disown|echo|enable|eval|exec|exit|fc|fg|getopts|hash|help|history|jobs|kill|let|logout|mapfile|popd|printf|pushd|pwd|read|readarray|return|set|shift|shopt|source|suspend|test|time|times|trap|type|typeset|ulimit|umask|unalias|wait)$")
 )
 
 (command_name
@@ -104,6 +104,8 @@
   "for"
   "do"
   "done"
+  "select"
+  "until"
   "while"
 ] @repeat
 

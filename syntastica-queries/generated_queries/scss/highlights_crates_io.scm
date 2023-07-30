@@ -129,14 +129,14 @@
 
 (
   (plain_value) @type
-  (#match? @type "^--")
+  (#match? @type "^[-][-]")
 )
 
 (plain_value) @constant.builtin
 
 (
   (property_name) @type.definition
-  (#match? @type.definition "^--")
+  (#match? @type.definition "^[-][-]")
 )
 
 (namespace_name) @namespace

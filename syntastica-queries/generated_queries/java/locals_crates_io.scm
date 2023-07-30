@@ -96,6 +96,13 @@
   parameters: (identifier) @local.definition
 )
 
+(
+  (scoped_identifier
+    (identifier) @local.definition
+  )
+  (#has-ancestor? @local.definition import_declaration)
+)
+
 (field_declaration
   declarator: (variable_declarator
     name: (identifier) @local.definition

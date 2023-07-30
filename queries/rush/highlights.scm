@@ -1,4 +1,4 @@
-;; Forked from https://github.com/rush-rs/tree-sitter-rush/blob/6081a422d4f5dfb0426c09582e82e7070bb749d1/queries/rush/highlights.scm
+;; Forked from https://github.com/rush-rs/tree-sitter-rush/blob/main/queries/rush/highlights.scm
 ;; Licensed under the MIT license
 ; General Identifiers
 (ident) @variable

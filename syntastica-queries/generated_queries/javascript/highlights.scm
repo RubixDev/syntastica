@@ -11,6 +11,24 @@
 )
 
 (formal_parameters
+  (assignment_pattern
+    (object_pattern
+      (object_assignment_pattern
+        (shorthand_property_identifier_pattern) @parameter
+      )
+    )
+  )
+)
+
+(formal_parameters
+  (assignment_pattern
+    (object_pattern
+      (shorthand_property_identifier_pattern) @parameter
+    )
+  )
+)
+
+(formal_parameters
   (array_pattern
     (identifier) @parameter
   )
@@ -20,6 +38,14 @@
   (object_pattern
     (pair_pattern
       value: (identifier) @parameter
+    )
+  )
+)
+
+(formal_parameters
+  (object_pattern
+    (object_assignment_pattern
+      (shorthand_property_identifier_pattern) @parameter
     )
   )
 )
@@ -44,9 +70,9 @@
 
 (jsx_self_closing_element
   (
-    (nested_identifier
+    (member_expression
       (identifier) @tag
-      (identifier) @constructor
+      (property_identifier) @constructor
     )
   )
 )
@@ -60,9 +86,9 @@
 
 (jsx_closing_element
   (
-    (nested_identifier
+    (member_expression
       (identifier) @tag
-      (identifier) @constructor
+      (property_identifier) @constructor
     )
   )
 )
@@ -76,9 +102,9 @@
 
 (jsx_opening_element
   (
-    (nested_identifier
+    (member_expression
       (identifier) @tag
-      (identifier) @constructor
+      (property_identifier) @constructor
     )
   )
 )
@@ -106,27 +132,17 @@
   (property_identifier) @tag.attribute
 )
 
-(jsx_fragment
-  [
-    ">"
-    "<"
-    "/"
-  ] @tag.delimiter
-)
-
 (jsx_self_closing_element
   [
-    "/"
-    ">"
     "<"
+    "/>"
   ] @tag.delimiter
 )
 
 (jsx_element
   close_tag: (jsx_closing_element
     [
-      "<"
-      "/"
+      "</"
       ">"
     ] @tag.delimiter
   )
@@ -159,6 +175,9 @@
 [
   "new"
   "delete"
+  "in"
+  "instanceof"
+  "typeof"
 ] @keyword.operator
 
 ["function"] @keyword.function
@@ -181,13 +200,10 @@
   "export"
   "extends"
   "get"
-  "in"
-  "instanceof"
   "let"
   "set"
   "static"
   "target"
-  "typeof"
   "var"
   "with"
 ] @keyword
@@ -248,7 +264,6 @@
   [
     "delete"
     "void"
-    "typeof"
   ] @keyword.operator
 )
 
@@ -314,7 +329,12 @@
   "&&="
   "||="
   "??="
+  "..."
 ] @operator
+
+(switch_default
+  ":" @punctuation.delimiter
+)
 
 (switch_case
   ":" @punctuation.delimiter
@@ -334,8 +354,6 @@
 
 ";" @punctuation.delimiter
 
-"..." @punctuation.special
-
 (
   (identifier) @number
   (#match? @number "^(NaN|Infinity)$")
@@ -346,6 +364,8 @@
 (regex
   "/" @punctuation.bracket
 )
+
+(regex_flags) @character.special
 
 (regex_pattern) @string.regex
 
@@ -379,10 +399,27 @@
   (false)
 ] @boolean
 
+(
+  (identifier) @variable.builtin
+  (#eq? @variable.builtin "self")
+)
+
 [
   (this)
   (super)
 ] @variable.builtin
+
+(decorator
+  "@" @attribute
+  (call_expression
+    (identifier) @attribute
+  )
+)
+
+(decorator
+  "@" @attribute
+  (identifier) @attribute
+)
 
 (namespace_import
   (identifier) @namespace

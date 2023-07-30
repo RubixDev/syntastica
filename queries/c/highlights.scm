@@ -1,6 +1,14 @@
 ;; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/c/highlights.scm
 ;; Licensed under the Apache License 2.0
-(identifier) @variable
+; Lower priority to prefer @parameter when identifier appears in parameter_declaration.
+(
+  (identifier) @variable
+  (#set! "priority" 95)
+)
+
+(preproc_def
+  (preproc_arg) @variable
+)
 
 [
   "default"
@@ -9,9 +17,14 @@
   "typedef"
   "union"
   "goto"
+  "asm"
+  "__asm__"
 ] @keyword
 
-"sizeof" @keyword.operator
+[
+  "sizeof"
+  "offsetof"
+] @keyword.operator
 
 "return" @keyword.return
 
@@ -37,6 +50,8 @@
   "#else"
   "#elif"
   "#endif"
+  "#elifdef"
+  "#elifndef"
   (preproc_directive)
 ] @preproc
 
@@ -48,6 +63,7 @@
   ";"
   ":"
   ","
+  "::"
 ] @punctuation.delimiter
 
 "..." @punctuation.special
@@ -129,10 +145,12 @@
 
 (char_literal) @character
 
-[
-  (preproc_arg)
-  (preproc_defined)
-] @function.macro
+(
+  (preproc_arg) @function.macro
+  (#set! "priority" 90)
+)
+
+(preproc_defined) @function.macro
 
 (
   (
@@ -157,13 +175,15 @@
 
 [
   (type_identifier)
-  (sized_type_specifier)
   (type_descriptor)
 ] @type
 
 (storage_class_specifier) @storageclass
 
-(type_qualifier) @type.qualifier
+[
+  (type_qualifier)
+  (gnu_asm_qualifier)
+] @type.qualifier
 
 (linkage_specification
   "extern" @storageclass
@@ -175,8 +195,19 @@
 
 (primitive_type) @type.builtin
 
+(sized_type_specifier
+  _ @type.builtin
+  type:
+  _?
+)
+
 (
   (identifier) @constant
+  (#lua-match? @constant "^[A-Z][A-Z0-9_]+$")
+)
+
+(preproc_def
+  (preproc_arg) @constant
   (#lua-match? @constant "^[A-Z][A-Z0-9_]+$")
 )
 
@@ -190,6 +221,11 @@
 
 (
   (identifier) @constant.builtin
+  (#any-of? @constant.builtin "stderr" "stdin" "stdout")
+)
+
+(preproc_def
+  (preproc_arg) @constant.builtin
   (#any-of? @constant.builtin "stderr" "stdin" "stdout")
 )
 
@@ -218,6 +254,14 @@
   declarator: (identifier) @function
 )
 
+(function_declarator
+  declarator: (parenthesized_declarator
+    (pointer_declarator
+      declarator: (field_identifier) @function
+    )
+  )
+)
+
 (preproc_function_def
   name: (identifier) @function.macro
 )
@@ -235,6 +279,10 @@
 )
 
 (parameter_declaration
+  declarator: (array_declarator) @parameter
+)
+
+(parameter_declaration
   declarator: (pointer_declarator) @parameter
 )
 
@@ -244,15 +292,15 @@
 
 [
   "__attribute__"
+  "__declspec"
+  "__based"
   "__cdecl"
   "__clrcall"
   "__stdcall"
   "__fastcall"
   "__thiscall"
   "__vectorcall"
-  "_unaligned"
-  "__unaligned"
-  "__declspec"
+  (ms_pointer_modifier)
   (attribute_declaration)
 ] @attribute
 

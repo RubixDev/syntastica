@@ -7,8 +7,9 @@
     (abstract_definition)
     (struct_definition)
     (function_definition)
+    (short_function_definition)
     (assignment)
-    (const_declaration)
+    (const_statement)
   ]
   (#match? @injection.content "^\"\"\"")
   (#offset! @injection.content 0 3 0 -3)

@@ -26,6 +26,9 @@ sign-commit = true
 sign-tag = true
 shared-version = true
 
+[workspace.dependencies]
+tree-sitter = "0.20.10"
+
 # optimize wasm for small code size
 [profile.release-wasm]
 inherits = "release"
@@ -69,7 +72,7 @@ syntastica-highlight = { version = "0.3.0", path = "syntastica-highlight", defau
 
 [dev-dependencies]
 toml = "0.7.4"
-tree-sitter = "0.20.10"
+tree-sitter.workspace = true
 
 syntastica-macros = { version = "0.3.0", path = "./syntastica-macros" }
 syntastica-parsers = { version = "0.3.0", path = "./syntastica-parsers", features = ["all"] }

@@ -9,8 +9,9 @@
     (abstract_definition)
     (struct_definition)
     (function_definition)
+    (short_function_definition)
     (assignment)
-    (const_declaration)
+    (const_statement)
   ]
   (#lua-match? @markdown "^\"\"\"")
   (#offset! @markdown 0 3 0 -3)

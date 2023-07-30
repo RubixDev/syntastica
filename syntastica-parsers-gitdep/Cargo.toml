@@ -144,12 +144,12 @@ rev = "36dc26acc7818920de2e103e20a9f42358caf926"
 [dependencies.tree-sitter-bash]
 optional = true
 git = "https://github.com/tree-sitter/tree-sitter-bash"
-rev = "ee2a8f9906b53a785b784ee816c0016c2b6866d2"
+rev = "1b0321ee85701d5036c334a6f04761cdc672e64c"
 
 [dependencies.tree-sitter-c]
 optional = true
 git = "https://github.com/tree-sitter/tree-sitter-c"
-rev = "cac392ac3d7d365c469971b117e92a0df3bc8305"
+rev = "39bea7d391f57c5f0e061419e1c3066e03eb14b3"
 
 [dependencies.tree-sitter-c-sharp]
 optional = true
@@ -164,12 +164,12 @@ rev = "c9a7e2df7cac2dfb730f766a4f343308f84ff346"
 [dependencies.tree-sitter-cpp]
 optional = true
 git = "https://github.com/tree-sitter/tree-sitter-cpp"
-rev = "70aed2e9e83eb7320ab7c454d3084300bf587037"
+rev = "f88bf81238ec2842682e4d1dac0acf3b43b686e9"
 
 [dependencies.tree-sitter-css]
 optional = true
 git = "https://github.com/tree-sitter/tree-sitter-css"
-rev = "769203d0f9abe1a9a691ac2b9fe4bb4397a73c51"
+rev = "5f2c94b897601b4029fedcce7db4c6d76ce8a128"
 
 [dependencies.tree-sitter-diff]
 optional = true
@@ -189,12 +189,12 @@ rev = "203f7bd3c1bbfbd98fc19add4b8fcb213c059205"
 [dependencies.tree-sitter-go]
 optional = true
 git = "https://github.com/tree-sitter/tree-sitter-go"
-rev = "64457ea6b73ef5422ed1687178d4545c3e91334a"
+rev = "bbaa67a180cfe0c943e50c55130918be8efb20bd"
 
 [dependencies.tree-sitter-haskell]
 optional = true
 git = "https://github.com/tree-sitter/tree-sitter-haskell"
-rev = "ba0bfb0e5d8e9e31c160d287878c6f26add3ec08"
+rev = "99706824b92f162d4e0f47c7e930bbccb367276e"
 
 [dependencies.tree-sitter-hexdump]
 optional = true
@@ -204,17 +204,17 @@ rev = "09eaf4fcfed00be93928d7d3d82b490cd1343b80"
 [dependencies.tree-sitter-java]
 optional = true
 git = "https://github.com/tree-sitter/tree-sitter-java"
-rev = "c194ee5e6ede5f26cf4799feead4a8f165dcf14d"
+rev = "6c8329e2da78fae78e87c3c6f5788a2b005a4afc"
 
 [dependencies.tree-sitter-javascript]
 optional = true
 git = "https://github.com/tree-sitter/tree-sitter-javascript"
-rev = "5720b249490b3c17245ba772f6be4a43edb4e3b7"
+rev = "f772967f7b7bc7c28f845be2420a38472b16a8ee"
 
 [dependencies.tree-sitter-json]
 optional = true
 git = "https://github.com/tree-sitter/tree-sitter-json"
-rev = "40a81c01a40ac48744e0c8ccabbaba1920441199"
+rev = "ca3f8919800e3c1ad4508de3bfd7b0b860ce434f"
 
 [dependencies.tree-sitter-json5]
 optional = true
@@ -239,22 +239,22 @@ rev = "7268c1cea5df56ac0c779cd37d6631d4e6f41d4f"
 [dependencies.tree-sitter-md]
 optional = true
 git = "https://github.com/MDeiml/tree-sitter-markdown"
-rev = "936cc84289f6de83c263ae8e659fb342867ceb16"
+rev = "aaf76797aa8ecd9a5e78e0ec3681941de6c945ee"
 
 [dependencies.tree-sitter-ocaml]
 optional = true
 git = "https://github.com/tree-sitter/tree-sitter-ocaml"
-rev = "82e103cee0ffb61ee59f9b654b8e1d4b8e9cab74"
+rev = "694c57718fd85d514f8b81176038e7a4cfabcaaf"
 
 [dependencies.tree-sitter-php]
 optional = true
 git = "https://github.com/tree-sitter/tree-sitter-php"
-rev = "d38adb26304d9b9d38e9a3b4aae0ec4b29bf9462"
+rev = "d76de26b8218df208949f46b31e0c422020eda3a"
 
 [dependencies.tree-sitter-python]
 optional = true
 git = "https://github.com/tree-sitter/tree-sitter-python"
-rev = "62827156d01c74dc1538266344e788da74536b8a"
+rev = "5af00f64af6bbf822f208243cce5cf75396fb6f5"
 
 [dependencies.tree-sitter-ql]
 optional = true
@@ -264,7 +264,7 @@ rev = "bd087020f0d8c183080ca615d38de0ec827aeeaf"
 [dependencies.tree-sitter-regex]
 optional = true
 git = "https://github.com/tree-sitter/tree-sitter-regex"
-rev = "e1cfca3c79896ff79842f057ea13e529b66af636"
+rev = "2354482d7e2e8f8ff33c1ef6c8aa5690410fbc96"
 
 [dependencies.tree-sitter-ruby]
 optional = true
@@ -274,7 +274,7 @@ rev = "f257f3f57833d584050336921773738a3fd8ca22"
 [dependencies.tree-sitter-rush]
 optional = true
 git = "https://github.com/rush-rs/tree-sitter-rush"
-rev = "6081a422d4f5dfb0426c09582e82e7070bb749d1"
+rev = "20c04a0824dabcbf8119a84979cfb1c6f6c2155f"
 
 [dependencies.tree-sitter-rust]
 optional = true
@@ -284,7 +284,7 @@ rev = "0a70e15da977489d954c219af9b50b8a722630ee"
 [dependencies.tree-sitter-scala]
 optional = true
 git = "https://github.com/tree-sitter/tree-sitter-scala"
-rev = "8062487fb3b7f3ce1bb7ce1fd1c84bed60c75203"
+rev = "a2f36c2477859110d5b7b675f395e50241fbc004"
 
 [dependencies.tree-sitter-scss]
 optional = true
@@ -299,9 +299,9 @@ rev = "ae4cdb5d27bf876a432b6c30b6a88f56c9b3e761"
 [dependencies.tree-sitter-verilog]
 optional = true
 git = "https://github.com/tree-sitter/tree-sitter-verilog"
-rev = "4457145e795b363f072463e697dfe2f6973c9a52"
+rev = "902031343056bc0b11f3e47b33f036a9cf59f58d"
 
 [dependencies.tree-sitter-yaml]
 optional = true
 git = "https://github.com/wingyplus/tree-sitter-yaml"
-rev = "6f5ce9ba49fb20a1ed6f822213cae35a63de353b"
+rev = "f4c407b8cb34ec61b15d74a08ac661800576720a"

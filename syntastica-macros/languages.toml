@@ -19,8 +19,8 @@ name = "bash"
 group = "some"
 file-extensions = ["sh", "bash", "PKGBUILD"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-bash", rev = "ee2a8f9906b53a785b784ee816c0016c2b6866d2" }
-external-scanner = { c = false, cpp = true }
+git = { url = "https://github.com/tree-sitter/tree-sitter-bash", rev = "1b0321ee85701d5036c334a6f04761cdc672e64c" }
+external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_bash"
 rust-func = "language"
 package = "tree-sitter-bash"
@@ -35,12 +35,12 @@ name = "c"
 group = "some"
 file-extensions = ["c", "h"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-c", rev = "cac392ac3d7d365c469971b117e92a0df3bc8305" }
+git = { url = "https://github.com/tree-sitter/tree-sitter-c", rev = "39bea7d391f57c5f0e061419e1c3066e03eb14b3" }
 external-scanner = { c = false, cpp = false }
 ffi-func = "tree_sitter_c"
 rust-func = "language"
 package = "tree-sitter-c"
-crates-io = "0.20.2"
+crates-io = "0.20.4"
 [languages.queries]
 nvim-like = true
 injections = true
@@ -83,12 +83,12 @@ name = "cpp"
 group = "some"
 file-extensions = ["cc", "cpp", "hpp", "h"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-cpp", rev = "70aed2e9e83eb7320ab7c454d3084300bf587037" }
-external-scanner = { c = false, cpp = true }
+git = { url = "https://github.com/tree-sitter/tree-sitter-cpp", rev = "f88bf81238ec2842682e4d1dac0acf3b43b686e9" }
+external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_cpp"
 rust-func = "language"
 package = "tree-sitter-cpp"
-crates-io = "0.20.0"
+crates-io = "0.20.2"
 [languages.queries]
 nvim-like = true
 injections = true
@@ -99,7 +99,7 @@ name = "css"
 group = "some"
 file-extensions = ["css"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-css", rev = "769203d0f9abe1a9a691ac2b9fe4bb4397a73c51" }
+git = { url = "https://github.com/tree-sitter/tree-sitter-css", rev = "5f2c94b897601b4029fedcce7db4c6d76ce8a128" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_css"
 rust-func = "language"
@@ -196,12 +196,12 @@ name = "go"
 group = "some"
 file-extensions = ["go"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-go", rev = "64457ea6b73ef5422ed1687178d4545c3e91334a" }
+git = { url = "https://github.com/tree-sitter/tree-sitter-go", rev = "bbaa67a180cfe0c943e50c55130918be8efb20bd" }
 external-scanner = { c = false, cpp = false }
 ffi-func = "tree_sitter_go"
 rust-func = "language"
 package = "tree-sitter-go"
-crates-io = "0.19.1"
+crates-io = "0.20.0"
 [languages.queries]
 nvim-like = true
 injections = true
@@ -212,7 +212,7 @@ name = "haskell"
 group = "most"
 file-extensions = ["hs"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-haskell", rev = "ba0bfb0e5d8e9e31c160d287878c6f26add3ec08" }
+git = { url = "https://github.com/tree-sitter/tree-sitter-haskell", rev = "99706824b92f162d4e0f47c7e930bbccb367276e" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_haskell"
 rust-func = "language"
@@ -244,8 +244,8 @@ name = "html"
 group = "some"
 file-extensions = ["html"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-html", rev = "86c253e675e7fdd1c0482efe0706f24bafbc3a7d" }
-external-scanner = { c = false, cpp = true }
+git = { url = "https://github.com/tree-sitter/tree-sitter-html", rev = "e5d7d7decbbdec5a4c90bbc69436b3828f5646e7" }
+external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_html"
 # unsupported because of incompatible old tree-sitter dependency
 # rust-func = "language"
@@ -261,7 +261,7 @@ name = "java"
 group = "some"
 file-extensions = ["java"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-java", rev = "c194ee5e6ede5f26cf4799feead4a8f165dcf14d" }
+git = { url = "https://github.com/tree-sitter/tree-sitter-java", rev = "6c8329e2da78fae78e87c3c6f5788a2b005a4afc" }
 external-scanner = { c = false, cpp = false }
 ffi-func = "tree_sitter_java"
 rust-func = "language"
@@ -277,7 +277,7 @@ name = "javascript"
 group = "some"
 file-extensions = ["js", "jsx", "cjs", "mjs"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-javascript", rev = "5720b249490b3c17245ba772f6be4a43edb4e3b7" }
+git = { url = "https://github.com/tree-sitter/tree-sitter-javascript", rev = "f772967f7b7bc7c28f845be2420a38472b16a8ee" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_javascript"
 rust-func = "language"
@@ -310,7 +310,7 @@ name = "json"
 group = "some"
 file-extensions = ["json"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-json", rev = "40a81c01a40ac48744e0c8ccabbaba1920441199" }
+git = { url = "https://github.com/tree-sitter/tree-sitter-json", rev = "ca3f8919800e3c1ad4508de3bfd7b0b860ce434f" }
 external-scanner = { c = false, cpp = false }
 ffi-func = "tree_sitter_json"
 rust-func = "language"
@@ -360,7 +360,7 @@ group = "all"
 file-extensions = ["jl"]
 wasm = false
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-julia", rev = "4d4dc7d8a4ad3856200a9ef151f9056fc14cec8b" }
+git = { url = "https://github.com/tree-sitter/tree-sitter-julia", rev = "d68ded9d5131878a2a06211ef0b47b72e70c6c08" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_julia"
 # unsupported because of incompatible old tree-sitter dependency
@@ -426,7 +426,7 @@ name = "markdown"
 group = "most"
 file-extensions = ["md"]
 [languages.parser]
-git = { url = "https://github.com/MDeiml/tree-sitter-markdown", rev = "936cc84289f6de83c263ae8e659fb342867ceb16", path = "tree-sitter-markdown" }
+git = { url = "https://github.com/MDeiml/tree-sitter-markdown", rev = "aaf76797aa8ecd9a5e78e0ec3681941de6c945ee", path = "tree-sitter-markdown" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_markdown"
 rust-func = "language"
@@ -443,7 +443,7 @@ group = "most"
 # TODO: `.md` for both markdown parsers?
 file-extensions = ["md"]
 [languages.parser]
-git = { url = "https://github.com/MDeiml/tree-sitter-markdown", rev = "936cc84289f6de83c263ae8e659fb342867ceb16", path = "tree-sitter-markdown-inline" }
+git = { url = "https://github.com/MDeiml/tree-sitter-markdown", rev = "aaf76797aa8ecd9a5e78e0ec3681941de6c945ee", path = "tree-sitter-markdown-inline" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_markdown_inline"
 rust-func = "inline_language"
@@ -459,12 +459,12 @@ name = "ocaml"
 group = "all"
 file-extensions = ["ml"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-ocaml", rev = "82e103cee0ffb61ee59f9b654b8e1d4b8e9cab74", path = "ocaml" }
-external-scanner = { c = false, cpp = true }
+git = { url = "https://github.com/tree-sitter/tree-sitter-ocaml", rev = "694c57718fd85d514f8b81176038e7a4cfabcaaf", path = "ocaml" }
+external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_ocaml"
 rust-func = "language_ocaml"
 package = "tree-sitter-ocaml"
-crates-io = "0.20.3"
+crates-io = "0.20.4"
 [languages.queries]
 nvim-like = true
 injections = true
@@ -475,12 +475,12 @@ name = "ocaml_interface"
 group = "all"
 file-extensions = ["mli"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-ocaml", rev = "82e103cee0ffb61ee59f9b654b8e1d4b8e9cab74", path = "interface" }
-external-scanner = { c = false, cpp = true }
+git = { url = "https://github.com/tree-sitter/tree-sitter-ocaml", rev = "694c57718fd85d514f8b81176038e7a4cfabcaaf", path = "interface" }
+external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_ocaml_interface"
 rust-func = "language_ocaml_interface"
 package = "tree-sitter-ocaml"
-crates-io = "0.20.3"
+crates-io = "0.20.4"
 [languages.queries]
 nvim-like = true
 injections = true
@@ -491,7 +491,7 @@ name = "php"
 group = "most"
 file-extensions = ["php"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-php", rev = "d38adb26304d9b9d38e9a3b4aae0ec4b29bf9462" }
+git = { url = "https://github.com/tree-sitter/tree-sitter-php", rev = "d76de26b8218df208949f46b31e0c422020eda3a" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_php"
 rust-func = "language"
@@ -507,12 +507,12 @@ name = "python"
 group = "some"
 file-extensions = ["py"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-python", rev = "62827156d01c74dc1538266344e788da74536b8a" }
-external-scanner = { c = false, cpp = true }
+git = { url = "https://github.com/tree-sitter/tree-sitter-python", rev = "5af00f64af6bbf822f208243cce5cf75396fb6f5" }
+external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_python"
 rust-func = "language"
 package = "tree-sitter-python"
-crates-io = "0.20.2"
+crates-io = "0.20.3"
 [languages.queries]
 nvim-like = true
 injections = true
@@ -539,12 +539,12 @@ name = "regex"
 group = "most"
 file-extensions = []
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-regex", rev = "e1cfca3c79896ff79842f057ea13e529b66af636" }
+git = { url = "https://github.com/tree-sitter/tree-sitter-regex", rev = "2354482d7e2e8f8ff33c1ef6c8aa5690410fbc96" }
 external-scanner = { c = false, cpp = false }
 ffi-func = "tree_sitter_regex"
 rust-func = "language"
 package = "tree-sitter-regex"
-# crates-io = ""
+crates-io = "0.20.0"
 [languages.queries]
 nvim-like = false
 injections = false
@@ -571,7 +571,7 @@ name = "rush"
 group = "all"
 file-extensions = ["rush"]
 [languages.parser]
-git = { url = "https://github.com/rush-rs/tree-sitter-rush", rev = "6081a422d4f5dfb0426c09582e82e7070bb749d1" }
+git = { url = "https://github.com/rush-rs/tree-sitter-rush", rev = "20c04a0824dabcbf8119a84979cfb1c6f6c2155f" }
 external-scanner = { c = false, cpp = false }
 ffi-func = "tree_sitter_rush"
 rust-func = "language"
@@ -603,7 +603,7 @@ name = "scala"
 group = "most"
 file-extensions = ["scala", "sbt"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-scala", rev = "8062487fb3b7f3ce1bb7ce1fd1c84bed60c75203" }
+git = { url = "https://github.com/tree-sitter/tree-sitter-scala", rev = "a2f36c2477859110d5b7b675f395e50241fbc004" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_scala"
 rust-func = "language"
@@ -651,7 +651,7 @@ name = "tsx"
 group = "some"
 file-extensions = ["tsx"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-typescript", rev = "286e90c32060032225f636a573d0e999f7766c97", path = "tsx" }
+git = { url = "https://github.com/tree-sitter/tree-sitter-typescript", rev = "b1bf4825d9eaa0f3bdeb1e52f099533328acfbdf", path = "tsx" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_tsx"
 # unsupported because of incompatible old tree-sitter dependency
@@ -668,7 +668,7 @@ name = "typescript"
 group = "some"
 file-extensions = ["ts"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-typescript", rev = "286e90c32060032225f636a573d0e999f7766c97", path = "typescript" }
+git = { url = "https://github.com/tree-sitter/tree-sitter-typescript", rev = "b1bf4825d9eaa0f3bdeb1e52f099533328acfbdf", path = "typescript" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_typescript"
 # unsupported because of incompatible old tree-sitter dependency
@@ -685,7 +685,7 @@ name = "verilog"
 group = "all"
 file-extensions = ["v", "verilog", "vlg", "vh"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-verilog", rev = "4457145e795b363f072463e697dfe2f6973c9a52" }
+git = { url = "https://github.com/tree-sitter/tree-sitter-verilog", rev = "902031343056bc0b11f3e47b33f036a9cf59f58d" }
 external-scanner = { c = false, cpp = false }
 ffi-func = "tree_sitter_verilog"
 rust-func = "language"
@@ -717,7 +717,7 @@ name = "yaml"
 group = "some"
 file-extensions = ["yaml"]
 [languages.parser]
-git = { url = "https://github.com/wingyplus/tree-sitter-yaml", rev = "6f5ce9ba49fb20a1ed6f822213cae35a63de353b" }
+git = { url = "https://github.com/wingyplus/tree-sitter-yaml", rev = "f4c407b8cb34ec61b15d74a08ac661800576720a" }
 external-scanner = { c = false, cpp = true }
 ffi-func = "tree_sitter_yaml"
 rust-func = "language"

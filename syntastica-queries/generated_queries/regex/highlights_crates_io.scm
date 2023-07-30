@@ -35,9 +35,7 @@
   (lazy)
   "|"
   "="
-  "<="
   "!"
-  "<!"
 ] @operator
 
 (count_quantifier
@@ -58,4 +56,4 @@
 
 (class_character) @constant.character
 
-(pattern_character) @string
+(pattern_character) @string.regex
