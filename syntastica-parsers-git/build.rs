@@ -126,9 +126,9 @@ fn compile_parser(
     let mut c_config = cc::Build::new();
     c_config.include(&src_dir);
     c_config
-        .flag("-Wno-unused-parameter")
-        .flag("-Wno-unused-but-set-variable")
-        .flag("-Wno-trigraphs")
+        .flag_if_supported("-Wno-unused-parameter")
+        .flag_if_supported("-Wno-unused-but-set-variable")
+        .flag_if_supported("-Wno-trigraphs")
         .flag_if_supported("-w");
     let parser_path = src_dir.join("parser.c");
     c_config.file(&parser_path);
