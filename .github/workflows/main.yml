@@ -1,0 +1,223 @@
+name: Main
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: write
+
+env:
+  CARGO_INCREMENTAL: 0
+  CARGO_NET_RETRY: 10
+  CARGO_TERM_COLOR: always
+  CARGO_REGISTRIES_CRATES_IO_PROTOCOL: sparse
+  RUSTUP_MAX_RETRIES: 10
+
+jobs:
+  # run all cargo tests in workspace
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+
+      - name: Restore Cache
+        uses: Swatinem/rust-cache@v2
+
+      - name: Run Codegen
+        uses: actions-rs/cargo@v1
+        with:
+          command: xtask
+          args: codegen
+
+      - name: Run Tests
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
+          args: --workspace --all-features
+
+  # build syntastica-js
+  build-js:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Prepare CI
+        run: |
+          bash _prepare_ci.sh
+
+      - name: Install Toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: wasm32-unknown-emscripten
+
+      - name: Setup NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Setup Emscripten
+        uses: mymindstorm/setup-emsdk@v11
+        with:
+          actions-cache-folder: 'emsdk-cache'
+
+      - name: Restore Cache
+        uses: Swatinem/rust-cache@v2
+
+      - name: Run Codegen
+        uses: actions-rs/cargo@v1
+        with:
+          command: xtask
+          args: codegen
+
+      - name: Prepare CI
+        run: |
+          bash _prepare_ci.sh
+
+      - name: Build
+        run: |
+          cd syntastica-js
+          npm ci
+          npm run build
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: syntastica-js
+          path: syntastica-js/pkg
+          retention-days: 5
+
+  # run and commit auto-generated code
+  codegen:
+    runs-on: ubuntu-latest
+    if: github.repository == 'RubixDev/syntastica'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Prepare CI
+        run: |
+          bash _prepare_ci.sh
+
+      - name: Install Toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+
+      - name: Restore Cache
+        uses: Swatinem/rust-cache@v2
+
+      - name: Generate Code
+        uses: actions-rs/cargo@v1
+        with:
+          command: xtask
+          args: codegen
+
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          add:
+            syntastica-queries/src/lib.rs syntastica-parsers/Cargo.toml
+            syntastica-parsers-gitdep/Cargo.toml syntastica-parsers*/README.md
+            syntastica-js/src/index.ts syntastica-themes/src
+          committer_name: github-actions[bot]
+          committer_email: 41898282+github-actions[bot]@users.noreply.github.com
+          message: 'chore: run codegen'
+
+      - name: Upload Queries as Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: queries
+          path: syntastica-queries/generated_queries
+          retention-days: 10
+
+  # build the gh-pages site
+  pages:
+    needs: [build-js, tests]
+    if: github.repository == 'RubixDev/syntastica'
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    env:
+      RUSTFLAGS: '--deny warnings'
+      DOCS_RS: true
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Download syntastica-js build
+        uses: actions/download-artifact@v3
+        with:
+          name: syntastica-js
+          path: syntastica-js/pkg
+
+      - name: Install Rust Toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          override: true
+
+      - name: Setup NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Restore Cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          cache-targets: false
+          cache-on-failure: true
+
+      - name: Run Codegen
+        uses: actions-rs/cargo@v1
+        with:
+          command: xtask
+          args: codegen
+
+      - name: Build Rust Documentation
+        uses: actions-rs/cargo@v1
+        with:
+          command: doc
+          args: --workspace --all-features --no-deps
+
+      - name: Build TypeScript Documentation
+        run: |
+          cd syntastica-js
+          npm ci
+          npm run doc
+
+      - name: Build Vite Demo
+        run: |
+          cd examples/js/vite
+          # set base directory to `/syntastica/demos/vite/`
+          sed -i 's#defineConfig({#\0base:"/syntastica/demos/vite/",#g' vite.config.ts
+          npm ci
+          npm run build
+
+      - name: Prepare GitHub Pages Deployment
+        run: |
+          # redirect to `syntastica` Rust docs from main page
+          echo '<meta http-equiv="Refresh" content="0; url=syntastica" />' >> target/doc/index.html
+          # copy over the TypeScript docs
+          cp -r syntastica-js/docs target/doc/js
+          # create the `demos` folder
+          mkdir -p target/doc/demos
+          # copy over the vite demo
+          cp -r examples/js/vite/dist target/doc/demos/vite
+
+      - name: Deploy Docs
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: ./target/doc
