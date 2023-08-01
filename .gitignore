@@ -1,3 +1,5 @@
 /target
 /Cargo.lock
 /ignored/
+/syntastica-queries/generated_queries/
+/syntastica-js/pkg/
