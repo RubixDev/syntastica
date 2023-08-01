@@ -1,8 +1,8 @@
 [package]
 name = "syntastica-core"
-version = "0.3.0"
+version.workspace = true
 authors.workspace = true
-edition = "2021"
+edition.workspace = true
 license.workspace = true
 repository.workspace = true
 description = "Shared types and traits used by other syntastica crates"
@@ -26,16 +26,17 @@ runtime-c2rust = ["dep:tree-sitter-c2rust", "syntastica-highlight/runtime-c2rust
 docs = ["dep:document-features", "dep:rustc_version"]
 
 [dependencies]
-document-features = { version = "0.2.7", optional = true }
-palette = { version = "0.7.2", default-features = false, features = ["std"] }
-syntastica-highlight = { version = "0.3.0", path = "../syntastica-highlight", default-features = false }
-thiserror = "1.0.40"
+syntastica-highlight.workspace = true
 
-tree-sitter = { version = "0.20.10", optional = true }
-tree-sitter-c2rust = { version = "0.20.10", optional = true }
+tree-sitter = { workspace = true, optional = true }
+tree-sitter-c2rust = { workspace = true, optional = true }
+
+document-features = { workspace = true, optional = true }
+palette = { version = "0.7.2", default-features = false, features = ["std"] }
+thiserror.workspace = true
 
 ## Provide implementations of serde's `Serialize` and `Deserialize` traits for [`Theme`](theme::Theme)
-serde = { version = "1.0.160", features = ["derive"], optional = true }
+serde = { workspace = true, features = ["derive"], optional = true }
 
 [build-dependencies]
-rustc_version = { version = "0.4.0", optional = true }
+rustc_version = { workspace = true, optional = true }

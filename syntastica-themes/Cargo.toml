@@ -1,8 +1,8 @@
 [package]
 name = "syntastica-themes"
-version = "0.3.0"
+version.workspace = true
 authors.workspace = true
-edition = "2021"
+edition.workspace = true
 license.workspace = true
 repository.workspace = true
 description = "A collection of themes for syntastica"
@@ -26,8 +26,9 @@ runtime-c2rust = ["syntastica-core/runtime-c2rust"]
 docs = ["dep:document-features", "dep:rustc_version"]
 
 [dependencies]
-document-features = { version = "0.2.7", optional = true }
-syntastica-core = { version = "0.3.0", path = "../syntastica-core", default-features = false }
+syntastica-core.workspace = true
+
+document-features = { workspace = true, optional = true }
 
 [build-dependencies]
-rustc_version = { version = "0.4.0", optional = true }
+rustc_version = { workspace = true, optional = true }

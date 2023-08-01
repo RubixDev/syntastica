@@ -1,8 +1,8 @@
 [package]
 name = "syntastica-highlight"
-version = "0.3.0"
+version.workspace = true
 authors.workspace = true
-edition = "2021"
+edition.workspace = true
 license = "MIT"
 repository.workspace = true
 description = "Stripped-down and slightly modified fork of tree-sitter-highlight for use by syntastica"
@@ -23,8 +23,8 @@ runtime-c = ["dep:tree-sitter"]
 runtime-c2rust = ["dep:tree-sitter-c2rust"]
 
 [dependencies]
-regex = "1.8.2"
-thiserror = "1.0.40"
+tree-sitter = { workspace = true, optional = true }
+tree-sitter-c2rust = { workspace = true, optional = true }
 
-tree-sitter = { version = "0.20.10", optional = true }
-tree-sitter-c2rust = { version = "0.20.10", optional = true }
+regex = "1.8.2"
+thiserror.workspace = true

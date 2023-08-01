@@ -22,11 +22,11 @@ to-regex = []
 docs = ["dep:document-features", "dep:rustc_version"]
 
 [dependencies]
-document-features = { version = "0.2.7", optional = true }
-thiserror = "1.0.40"
+document-features = { workspace = true, optional = true }
+thiserror.workspace = true
 
 [build-dependencies]
-rustc_version = { version = "0.4.0", optional = true }
+rustc_version = { workspace = true, optional = true }
 
 [package.metadata.docs.rs]
 all-features = true
