@@ -1,4 +1,5 @@
 #![doc = include_str!("../README.md")]
+#![cfg_attr(all(doc, CHANNEL_NIGHTLY), feature(doc_auto_cfg))]
 #![cfg_attr(rustfmt, rustfmt_skip)]
 
 pub const ASM_HIGHLIGHTS: &str = include_str!("../generated_queries/asm/highlights.scm");
