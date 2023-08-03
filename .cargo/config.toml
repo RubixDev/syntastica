@@ -1,3 +1,4 @@
 [alias]
 xtask = "run --package xtask --"
-make = "run --package xtask --"
+make = "xtask"
+x = "xtask"
