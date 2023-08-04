@@ -1,14 +1,9 @@
 // TODO: docs
 
-use std::{
-    borrow::Cow,
-    cell::RefCell,
-    collections::HashMap,
-    path::{Path, PathBuf},
-};
+use std::{borrow::Cow, cell::RefCell, collections::HashMap, path::PathBuf};
 
 use anyhow::Result;
-use syntastica_core::language_set::{HighlightConfiguration, LanguageSet};
+use syntastica_core::language_set::{FileType, HighlightConfiguration, LanguageSet};
 
 use loader::{Config, Loader};
 
@@ -35,30 +30,20 @@ impl LanguageLoader {
 }
 
 impl LanguageSet for LanguageLoader {
-    fn for_extension<'a>(&self, file_extension: &'a str) -> Option<Cow<'a, str>> {
+    fn for_file_type(&self, _file_type: FileType) -> Option<Cow<'static, str>> {
+        None
+    }
+
+    fn for_injection<'a>(&self, name: &'a str) -> Option<Cow<'a, str>> {
         Some(
             self.loader
-                .language_configuration_for_file_name(Path::new(file_extension))
+                .language_configuration_for_injection_string(name)
                 .ok()??
                 .1
                 .scope
                 .clone()?
                 .into(),
         )
-    }
-
-    fn for_injection<'a>(&self, name: &'a str) -> Option<Cow<'a, str>> {
-        self.for_extension(name).or_else(|| {
-            Some(
-                self.loader
-                    .language_configuration_for_injection_string(name)
-                    .ok()??
-                    .1
-                    .scope
-                    .clone()?
-                    .into(),
-            )
-        })
     }
 
     fn get_language(&self, name: &str) -> Result<&HighlightConfiguration, syntastica_core::Error> {

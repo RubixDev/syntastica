@@ -1,6 +1,7 @@
 use std::fmt::{self, Display, Formatter};
 
 use serde::Deserialize;
+use tft::FileType;
 
 #[derive(Clone, Debug, Deserialize)]
 pub struct LanguageConfig {
@@ -16,7 +17,7 @@ fn default_true() -> bool {
 pub struct Language {
     pub name: String,
     pub group: Group,
-    pub file_extensions: Vec<String>,
+    pub file_types: Vec<FileType>,
     #[serde(default = "default_true")]
     pub wasm: bool,
     // TODO: injection regex

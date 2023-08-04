@@ -2,9 +2,10 @@
 //!
 //! Also re-exports [`syntastica_highlight::HighlightConfiguration`] and [`tree_sitter::Language`].
 
-use std::borrow::Cow;
+use std::{borrow::Cow, path::Path};
 
 pub use syntastica_highlight::HighlightConfiguration;
+pub use tft::FileType;
 
 pub use crate::ts_runtime::Language;
 
@@ -18,17 +19,17 @@ pub use crate::ts_runtime::Language;
 /// A [`LanguageSet`] has two different uses:
 ///
 /// 1. Providing tree-sitter parsers and queries (see [`get_language`](LanguageSet::get_language))
-/// 2. Resolving a language name based on a file extension or injection name (see
-///    [`for_extension`](LanguageSet::for_extension) and
+/// 2. Resolving a language name based on a file type or injection name (see
+///    [`for_file_type`](LanguageSet::for_file_type) and
 ///    [`for_injection`](LanguageSet::for_injection))
 pub trait LanguageSet {
-    /// Find a language based on the given file extension.
+    /// Find a language based on the given [`FileType`].
     ///
-    /// If the set includes a language for the given file extension, then the name of the language
-    /// that file extension belongs to should be returned. This name must result in an `Ok` value
-    /// when passed to [`get_language`](LanguageSet::get_language). If the file extension is _not_
-    /// supported, `None` should be returned.
-    fn for_extension<'a>(&self, file_extension: &'a str) -> Option<Cow<'a, str>>;
+    /// If the set includes a language for the given file type, then the name of that language
+    /// should be returned. This name must result in an `Ok` value when passed to
+    /// [`get_language`](LanguageSet::get_language). If the file type is _not_ supported, [`None`]
+    /// should be returned.
+    fn for_file_type(&self, file_type: FileType) -> Option<Cow<'static, str>>;
 
     /// Find a language for an injection.
     ///
@@ -44,9 +45,14 @@ pub trait LanguageSet {
     /// passed to [`get_language`](LanguageSet::get_language). If no matching language is found,
     /// `None` should be returned.
     ///
-    /// The default implementation forwards to [`for_extension`](LanguageSet::for_extension).
+    /// The default implementation tries to detect a [`FileType`] using `name` as both a filename
+    /// and a file extension, and passes that to [`for_file_type`](LanguageSet::for_file_type).
     fn for_injection<'a>(&self, name: &'a str) -> Option<Cow<'a, str>> {
-        self.for_extension(name)
+        // try to detect a file type, once using the name as a full path and once using it as the
+        // extension, and if one is found, pass it to `self.for_file_type`
+        tft::try_detect(Path::new(name), "")
+            .or_else(|| tft::try_detect(Path::new(&format!("file.{name}")), ""))
+            .and_then(|ft| self.for_file_type(ft))
     }
 
     /// Get the language with the given name.

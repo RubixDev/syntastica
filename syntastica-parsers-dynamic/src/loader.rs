@@ -1,4 +1,4 @@
-//! Forked from https://github.com/tree-sitter/tree-sitter/blob/89edb2ddcaf2928e3197ad6095e1eb1d59bfcc40/cli/loader/src/lib.rs
+//! Forked from <https://github.com/tree-sitter/tree-sitter/blob/89edb2ddcaf2928e3197ad6095e1eb1d59bfcc40/cli/loader/src/lib.rs>
 //!
 //! The MIT License (MIT)
 //!
@@ -152,76 +152,76 @@ impl Loader {
         Ok(None)
     }
 
-    pub fn language_configuration_for_file_name(
-        &self,
-        path: &Path,
-    ) -> Result<Option<(Language, &LanguageConfiguration)>> {
-        // Find all the language configurations that match this file name
-        // or a suffix of the file name.
-        let configuration_ids = path
-            .file_name()
-            .and_then(|n| n.to_str())
-            .and_then(|file_name| self.language_configuration_ids_by_file_type.get(file_name))
-            .or_else(|| {
-                path.extension()
-                    .and_then(|extension| extension.to_str())
-                    .and_then(|extension| {
-                        self.language_configuration_ids_by_file_type.get(extension)
-                    })
-            });
-
-        if let Some(configuration_ids) = configuration_ids {
-            if !configuration_ids.is_empty() {
-                let configuration;
-
-                // If there is only one language configuration, then use it.
-                if configuration_ids.len() == 1 {
-                    configuration = &self.language_configurations[configuration_ids[0]];
-                }
-                // If multiple language configurations match, then determine which
-                // one to use by applying the configurations' content regexes.
-                else {
-                    let file_contents = fs::read(path)
-                        .with_context(|| format!("Failed to read path {:?}", path))?;
-                    let file_contents = String::from_utf8_lossy(&file_contents);
-                    let mut best_score = -2isize;
-                    let mut best_configuration_id = None;
-                    for configuration_id in configuration_ids {
-                        let config = &self.language_configurations[*configuration_id];
-
-                        // If the language configuration has a content regex, assign
-                        // a score based on the length of the first match.
-                        let score;
-                        if let Some(content_regex) = &config.content_regex {
-                            if let Some(mat) = content_regex.find(&file_contents) {
-                                score = (mat.end() - mat.start()) as isize;
-                            }
-                            // If the content regex does not match, then *penalize* this
-                            // language configuration, so that language configurations
-                            // without content regexes are preferred over those with
-                            // non-matching content regexes.
-                            else {
-                                score = -1;
-                            }
-                        } else {
-                            score = 0;
-                        }
-                        if score > best_score {
-                            best_configuration_id = Some(*configuration_id);
-                            best_score = score;
-                        }
-                    }
-
-                    configuration = &self.language_configurations[best_configuration_id.unwrap()];
-                }
-
-                let language = self.language_for_id(configuration.language_id)?;
-                return Ok(Some((language, configuration)));
-            }
-        }
-
-        Ok(None)
-    }
+    // pub fn language_configuration_for_file_name(
+    //     &self,
+    //     path: &Path,
+    // ) -> Result<Option<(Language, &LanguageConfiguration)>> {
+    //     // Find all the language configurations that match this file name
+    //     // or a suffix of the file name.
+    //     let configuration_ids = path
+    //         .file_name()
+    //         .and_then(|n| n.to_str())
+    //         .and_then(|file_name| self.language_configuration_ids_by_file_type.get(file_name))
+    //         .or_else(|| {
+    //             path.extension()
+    //                 .and_then(|extension| extension.to_str())
+    //                 .and_then(|extension| {
+    //                     self.language_configuration_ids_by_file_type.get(extension)
+    //                 })
+    //         });
+    //
+    //     if let Some(configuration_ids) = configuration_ids {
+    //         if !configuration_ids.is_empty() {
+    //             let configuration;
+    //
+    //             // If there is only one language configuration, then use it.
+    //             if configuration_ids.len() == 1 {
+    //                 configuration = &self.language_configurations[configuration_ids[0]];
+    //             }
+    //             // If multiple language configurations match, then determine which
+    //             // one to use by applying the configurations' content regexes.
+    //             else {
+    //                 let file_contents = fs::read(path)
+    //                     .with_context(|| format!("Failed to read path {:?}", path))?;
+    //                 let file_contents = String::from_utf8_lossy(&file_contents);
+    //                 let mut best_score = -2isize;
+    //                 let mut best_configuration_id = None;
+    //                 for configuration_id in configuration_ids {
+    //                     let config = &self.language_configurations[*configuration_id];
+    //
+    //                     // If the language configuration has a content regex, assign
+    //                     // a score based on the length of the first match.
+    //                     let score;
+    //                     if let Some(content_regex) = &config.content_regex {
+    //                         if let Some(mat) = content_regex.find(&file_contents) {
+    //                             score = (mat.end() - mat.start()) as isize;
+    //                         }
+    //                         // If the content regex does not match, then *penalize* this
+    //                         // language configuration, so that language configurations
+    //                         // without content regexes are preferred over those with
+    //                         // non-matching content regexes.
+    //                         else {
+    //                             score = -1;
+    //                         }
+    //                     } else {
+    //                         score = 0;
+    //                     }
+    //                     if score > best_score {
+    //                         best_configuration_id = Some(*configuration_id);
+    //                         best_score = score;
+    //                     }
+    //                 }
+    //
+    //                 configuration = &self.language_configurations[best_configuration_id.unwrap()];
+    //             }
+    //
+    //             let language = self.language_for_id(configuration.language_id)?;
+    //             return Ok(Some((language, configuration)));
+    //         }
+    //     }
+    //
+    //     Ok(None)
+    // }
 
     pub fn language_configuration_for_injection_string(
         &self,

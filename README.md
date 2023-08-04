@@ -180,7 +180,7 @@ This is the list of examples found here:
 - [Highlight once](#example-highlight-once)
 - [Highlight the same input multiple times](#example-highlight-the-same-input-multiple-times)
 - [Highlight multiple different inputs](#example-highlight-multiple-different-inputs)
-- [Detect the language based on a file extension](#example-detect-language-from-file-extension)
+- [Detect the language based on a file type](#example-detect-language-from-file-type)
 - [Specify a custom theme](#example-custom-theme)
 
 ### Example: highlight once
@@ -302,23 +302,30 @@ println!("{}", syntastica::render(
 ));
 ```
 
-### Example: detect language from file extension
+### Example: detect language from file type
 
 This is an alteration of the [first example](#example-highlight-once) showing
-how to detect the language to use based on a file extension. See that first
-example for explanations of the rest of the code.
+how to detect the language to use based on a file type. See that first example
+for explanations of the rest of the code.
+
+`syntastica` uses [`tft`](https://crates.io/crates/tft) for file types which
+provides automatic detection.
 
 ```rust
 use syntastica::{renderer::TerminalRenderer, language_set::LanguageSet};
 use syntastica_parsers::LanguageSetImpl;
 
+// detect the file type given a file's path and content.
+// this requires a dependency on `tft`
+let ft = tft::detect("main.rs", "");
+
 let language_set = LanguageSetImpl::new();
 let output = syntastica::highlight(
     r#"fn main() { println!("42"); }"#,
-    // the `LanguageSet` trait also provides a `for_extension` function
+    // the `LanguageSet` trait also provides a `for_file_type` function
     // which returns an `Option<Cow<'static, str>>`
     // make sure to have the trait in scope
-    language_set.for_extension("rs").unwrap().as_ref(),
+    language_set.for_file_type(ft).unwrap().as_ref(),
     &language_set,
     &mut TerminalRenderer::new(None),
     syntastica_themes::gruvbox::dark(),

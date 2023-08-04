@@ -33,6 +33,7 @@ tree-sitter-c2rust = { workspace = true, optional = true }
 
 document-features = { workspace = true, optional = true }
 palette = { version = "0.7.2", default-features = false, features = ["std"] }
+tft = { workspace = true, features = ["detect"] }
 thiserror.workspace = true
 
 ## Provide implementations of serde's `Serialize` and `Deserialize` traits for [`Theme`](theme::Theme)

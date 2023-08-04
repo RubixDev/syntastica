@@ -1,7 +1,7 @@
 [[languages]]
 name = "asm"
 group = "most"
-file-extensions = ["s", "asm"]
+file-types = ["asm", "vmasm"]
 [languages.parser]
 git = { url = "https://github.com/rush-rs/tree-sitter-asm", rev = "36dc26acc7818920de2e103e20a9f42358caf926" }
 external-scanner = { c = false, cpp = false }
@@ -17,7 +17,7 @@ locals = false
 [[languages]]
 name = "bash"
 group = "some"
-file-extensions = ["sh", "bash", "PKGBUILD"]
+file-types = ["sh", "bash", "ksh"]
 [languages.parser]
 git = { url = "https://github.com/tree-sitter/tree-sitter-bash", rev = "1b0321ee85701d5036c334a6f04761cdc672e64c" }
 external-scanner = { c = true, cpp = false }
@@ -33,7 +33,7 @@ locals = true
 [[languages]]
 name = "c"
 group = "some"
-file-extensions = ["c", "h"]
+file-types = ["c"]
 [languages.parser]
 git = { url = "https://github.com/tree-sitter/tree-sitter-c", rev = "39bea7d391f57c5f0e061419e1c3066e03eb14b3" }
 external-scanner = { c = false, cpp = false }
@@ -49,7 +49,7 @@ locals = false
 [[languages]]
 name = "c_sharp"
 group = "most"
-file-extensions = ["cs"]
+file-types = ["csharp"]
 [languages.parser]
 git = { url = "https://github.com/tree-sitter/tree-sitter-c-sharp", rev = "1648e21b4f087963abf0101ee5221bb413107b07" }
 external-scanner = { c = true, cpp = false }
@@ -65,7 +65,7 @@ locals = true
 [[languages]]
 name = "comment"
 group = "most"
-file-extensions = []
+file-types = []
 [languages.parser]
 git = { url = "https://github.com/stsewd/tree-sitter-comment", rev = "c9a7e2df7cac2dfb730f766a4f343308f84ff346" }
 external-scanner = { c = true, cpp = false }
@@ -81,7 +81,7 @@ locals = false
 [[languages]]
 name = "cpp"
 group = "some"
-file-extensions = ["cc", "cpp", "hpp", "h"]
+file-types = ["cpp"]
 [languages.parser]
 git = { url = "https://github.com/tree-sitter/tree-sitter-cpp", rev = "f88bf81238ec2842682e4d1dac0acf3b43b686e9" }
 external-scanner = { c = true, cpp = false }
@@ -97,7 +97,7 @@ locals = false
 [[languages]]
 name = "css"
 group = "some"
-file-extensions = ["css"]
+file-types = ["css"]
 [languages.parser]
 git = { url = "https://github.com/tree-sitter/tree-sitter-css", rev = "5f2c94b897601b4029fedcce7db4c6d76ce8a128" }
 external-scanner = { c = true, cpp = false }
@@ -113,7 +113,7 @@ locals = false
 [[languages]]
 name = "dart"
 group = "most"
-file-extensions = ["dart"]
+file-types = ["dart"]
 [languages.parser]
 git = { url = "https://github.com/UserNobody14/tree-sitter-dart", rev = "e398400a0b785af3cf571f5a57eccab242f0cdf9" }
 external-scanner = { c = true, cpp = false }
@@ -130,7 +130,7 @@ locals = true
 [[languages]]
 name = "diff"
 group = "most"
-file-extensions = ["patch", "diff"]
+file-types = ["diff"]
 [languages.parser]
 git = { url = "https://github.com/the-mikedavis/tree-sitter-diff", rev = "f69bde8e56f431863eba2fe4bab23e7d9692855f" }
 external-scanner = { c = false, cpp = false }
@@ -146,7 +146,7 @@ locals = false
 [[languages]]
 name = "ebnf"
 group = "all"
-file-extensions = ["ebnf"]
+file-types = ["ebnf"]
 [languages.parser]
 git = { url = "https://github.com/RubixDev/ebnf", rev = "8e635b0b723c620774dfb8abf382a7f531894b40", path = "crates/tree-sitter-ebnf" }
 external-scanner = { c = false, cpp = false }
@@ -162,7 +162,7 @@ locals = false
 [[languages]]
 name = "ejs"
 group = "all"
-file-extensions = ["ejs"]
+file-types = ["ejavascript"]
 [languages.parser]
 git = { url = "https://github.com/tree-sitter/tree-sitter-embedded-template", rev = "203f7bd3c1bbfbd98fc19add4b8fcb213c059205" }
 external-scanner = { c = false, cpp = false }
@@ -178,7 +178,7 @@ locals = false
 [[languages]]
 name = "erb"
 group = "all"
-file-extensions = ["erb"]
+file-types = ["eruby"]
 [languages.parser]
 git = { url = "https://github.com/tree-sitter/tree-sitter-embedded-template", rev = "203f7bd3c1bbfbd98fc19add4b8fcb213c059205" }
 external-scanner = { c = false, cpp = false }
@@ -194,7 +194,7 @@ locals = false
 [[languages]]
 name = "go"
 group = "some"
-file-extensions = ["go"]
+file-types = ["go"]
 [languages.parser]
 git = { url = "https://github.com/tree-sitter/tree-sitter-go", rev = "bbaa67a180cfe0c943e50c55130918be8efb20bd" }
 external-scanner = { c = false, cpp = false }
@@ -210,7 +210,7 @@ locals = true
 [[languages]]
 name = "haskell"
 group = "most"
-file-extensions = ["hs"]
+file-types = ["haskell"]
 [languages.parser]
 git = { url = "https://github.com/tree-sitter/tree-sitter-haskell", rev = "99706824b92f162d4e0f47c7e930bbccb367276e" }
 external-scanner = { c = true, cpp = false }
@@ -226,7 +226,7 @@ locals = false
 [[languages]]
 name = "hexdump"
 group = "all"
-file-extensions = ["hexdump"]
+file-types = ["hexdump"]
 [languages.parser]
 git = { url = "https://github.com/rush-rs/tree-sitter-hexdump", rev = "09eaf4fcfed00be93928d7d3d82b490cd1343b80" }
 external-scanner = { c = false, cpp = false }
@@ -242,7 +242,7 @@ locals = false
 [[languages]]
 name = "html"
 group = "some"
-file-extensions = ["html"]
+file-types = ["html"]
 [languages.parser]
 git = { url = "https://github.com/tree-sitter/tree-sitter-html", rev = "e5d7d7decbbdec5a4c90bbc69436b3828f5646e7" }
 external-scanner = { c = true, cpp = false }
@@ -259,7 +259,7 @@ locals = false
 [[languages]]
 name = "java"
 group = "some"
-file-extensions = ["java"]
+file-types = ["java"]
 [languages.parser]
 git = { url = "https://github.com/tree-sitter/tree-sitter-java", rev = "6c8329e2da78fae78e87c3c6f5788a2b005a4afc" }
 external-scanner = { c = false, cpp = false }
@@ -275,7 +275,7 @@ locals = true
 [[languages]]
 name = "javascript"
 group = "some"
-file-extensions = ["js", "jsx", "cjs", "mjs"]
+file-types = ["javascript", "jsx"]
 [languages.parser]
 git = { url = "https://github.com/tree-sitter/tree-sitter-javascript", rev = "f772967f7b7bc7c28f845be2420a38472b16a8ee" }
 external-scanner = { c = true, cpp = false }
@@ -291,7 +291,7 @@ locals = true
 [[languages]]
 name = "jsdoc"
 group = "most"
-file-extensions = []
+file-types = []
 [languages.parser]
 git = { url = "https://github.com/tree-sitter/tree-sitter-jsdoc", rev = "189a6a4829beb9cdbe837260653b4a3dfb0cc3db" }
 external-scanner = { c = false, cpp = false }
@@ -308,7 +308,7 @@ locals = false
 [[languages]]
 name = "json"
 group = "some"
-file-extensions = ["json"]
+file-types = ["json"]
 [languages.parser]
 git = { url = "https://github.com/tree-sitter/tree-sitter-json", rev = "ca3f8919800e3c1ad4508de3bfd7b0b860ce434f" }
 external-scanner = { c = false, cpp = false }
@@ -324,7 +324,7 @@ locals = false
 [[languages]]
 name = "json5"
 group = "most"
-file-extensions = ["json5"]
+file-types = ["json5"]
 [languages.parser]
 git = { url = "https://github.com/Joakker/tree-sitter-json5", rev = "5dd5cdc418d9659682556b6adca2dd9ace0ac6d2" }
 external-scanner = { c = false, cpp = false }
@@ -340,7 +340,7 @@ locals = false
 [[languages]]
 name = "jsonc"
 group = "most"
-file-extensions = ["jsonc"]
+file-types = ["jsonc"]
 [languages.parser]
 git = { url = "https://gitlab.com/WhyNotHugo/tree-sitter-jsonc", rev = "02b01653c8a1c198ae7287d566efa86a135b30d5" }
 external-scanner = { c = false, cpp = false }
@@ -357,7 +357,7 @@ locals = false
 [[languages]]
 name = "julia"
 group = "all"
-file-extensions = ["jl"]
+file-types = ["julia"]
 wasm = false
 [languages.parser]
 git = { url = "https://github.com/tree-sitter/tree-sitter-julia", rev = "d68ded9d5131878a2a06211ef0b47b72e70c6c08" }
@@ -375,7 +375,7 @@ locals = true
 [[languages]]
 name = "latex"
 group = "most"
-file-extensions = ["tex", "sty", "cls", "aux"]
+file-types = ["tex"]
 [languages.parser]
 git = { url = "https://github.com/latex-lsp/tree-sitter-latex", rev = "2ae2021d7b224fb6aa57b760e0d146059f943bb8" }
 external-scanner = { c = true, cpp = false }
@@ -391,7 +391,7 @@ locals = false
 [[languages]]
 name = "llvm"
 group = "all"
-file-extensions = ["llvm", "ll"]
+file-types = ["llvm"]
 wasm = false
 [languages.parser]
 git = { url = "https://github.com/benwilliamgraham/tree-sitter-llvm", rev = "d47c95d78ef0e7495a74d214dd6fcddf6e402dfc" }
@@ -408,7 +408,7 @@ locals = false
 [[languages]]
 name = "lua"
 group = "some"
-file-extensions = ["lua"]
+file-types = ["lua"]
 [languages.parser]
 git = { url = "https://github.com/muniftanjim/tree-sitter-lua", rev = "7268c1cea5df56ac0c779cd37d6631d4e6f41d4f" }
 external-scanner = { c = true, cpp = false }
@@ -424,7 +424,7 @@ locals = true
 [[languages]]
 name = "markdown"
 group = "most"
-file-extensions = ["md"]
+file-types = ["markdown"]
 [languages.parser]
 git = { url = "https://github.com/MDeiml/tree-sitter-markdown", rev = "aaf76797aa8ecd9a5e78e0ec3681941de6c945ee", path = "tree-sitter-markdown" }
 external-scanner = { c = true, cpp = false }
@@ -440,8 +440,8 @@ locals = false
 [[languages]]
 name = "markdown_inline"
 group = "most"
-# TODO: `.md` for both markdown parsers?
-file-extensions = ["md"]
+# TODO: markdown filetype for both markdown parsers?
+file-types = ["markdown"]
 [languages.parser]
 git = { url = "https://github.com/MDeiml/tree-sitter-markdown", rev = "aaf76797aa8ecd9a5e78e0ec3681941de6c945ee", path = "tree-sitter-markdown-inline" }
 external-scanner = { c = true, cpp = false }
@@ -457,7 +457,7 @@ locals = false
 [[languages]]
 name = "ocaml"
 group = "all"
-file-extensions = ["ml"]
+file-types = ["ocaml"]
 [languages.parser]
 git = { url = "https://github.com/tree-sitter/tree-sitter-ocaml", rev = "694c57718fd85d514f8b81176038e7a4cfabcaaf", path = "ocaml" }
 external-scanner = { c = true, cpp = false }
@@ -473,7 +473,7 @@ locals = true
 [[languages]]
 name = "ocaml_interface"
 group = "all"
-file-extensions = ["mli"]
+file-types = ["ocamlinterface"]
 [languages.parser]
 git = { url = "https://github.com/tree-sitter/tree-sitter-ocaml", rev = "694c57718fd85d514f8b81176038e7a4cfabcaaf", path = "interface" }
 external-scanner = { c = true, cpp = false }
@@ -489,7 +489,7 @@ locals = true
 [[languages]]
 name = "php"
 group = "most"
-file-extensions = ["php"]
+file-types = ["php"]
 [languages.parser]
 git = { url = "https://github.com/tree-sitter/tree-sitter-php", rev = "d76de26b8218df208949f46b31e0c422020eda3a" }
 external-scanner = { c = true, cpp = false }
@@ -505,7 +505,7 @@ locals = true
 [[languages]]
 name = "python"
 group = "some"
-file-extensions = ["py"]
+file-types = ["python"]
 [languages.parser]
 git = { url = "https://github.com/tree-sitter/tree-sitter-python", rev = "5af00f64af6bbf822f208243cce5cf75396fb6f5" }
 external-scanner = { c = true, cpp = false }
@@ -521,7 +521,7 @@ locals = true
 [[languages]]
 name = "ql"
 group = "all"
-file-extensions = ["ql", "qll"]
+file-types = ["ql"]
 [languages.parser]
 git = { url = "https://github.com/tree-sitter/tree-sitter-ql", rev = "bd087020f0d8c183080ca615d38de0ec827aeeaf" }
 external-scanner = { c = false, cpp = false }
@@ -537,7 +537,7 @@ locals = true
 [[languages]]
 name = "regex"
 group = "most"
-file-extensions = []
+file-types = []
 [languages.parser]
 git = { url = "https://github.com/tree-sitter/tree-sitter-regex", rev = "2354482d7e2e8f8ff33c1ef6c8aa5690410fbc96" }
 external-scanner = { c = false, cpp = false }
@@ -553,7 +553,7 @@ locals = false
 [[languages]]
 name = "ruby"
 group = "most"
-file-extensions = ["rb"]
+file-types = ["ruby"]
 [languages.parser]
 git = { url = "https://github.com/tree-sitter/tree-sitter-ruby", rev = "f257f3f57833d584050336921773738a3fd8ca22" }
 external-scanner = { c = false, cpp = true }
@@ -569,7 +569,7 @@ locals = true
 [[languages]]
 name = "rush"
 group = "all"
-file-extensions = ["rush"]
+file-types = ["rush"]
 [languages.parser]
 git = { url = "https://github.com/rush-rs/tree-sitter-rush", rev = "20c04a0824dabcbf8119a84979cfb1c6f6c2155f" }
 external-scanner = { c = false, cpp = false }
@@ -585,7 +585,7 @@ locals = true
 [[languages]]
 name = "rust"
 group = "some"
-file-extensions = ["rs"]
+file-types = ["rust"]
 [languages.parser]
 git = { url = "https://github.com/tree-sitter/tree-sitter-rust", rev = "0a70e15da977489d954c219af9b50b8a722630ee" }
 external-scanner = { c = true, cpp = false }
@@ -601,7 +601,7 @@ locals = true
 [[languages]]
 name = "scala"
 group = "most"
-file-extensions = ["scala", "sbt"]
+file-types = ["scala", "sbt"]
 [languages.parser]
 git = { url = "https://github.com/tree-sitter/tree-sitter-scala", rev = "a2f36c2477859110d5b7b675f395e50241fbc004" }
 external-scanner = { c = true, cpp = false }
@@ -617,7 +617,7 @@ locals = true
 [[languages]]
 name = "scss"
 group = "most"
-file-extensions = ["scss"]
+file-types = ["scss"]
 [languages.parser]
 git = { url = "https://github.com/serenadeai/tree-sitter-scss", rev = "c478c6868648eff49eb04a4df90d703dc45b312a" }
 external-scanner = { c = true, cpp = false }
@@ -633,7 +633,7 @@ locals = false
 [[languages]]
 name = "toml"
 group = "some"
-file-extensions = ["toml"]
+file-types = ["toml"]
 [languages.parser]
 git = { url = "https://github.com/Mathspy/tree-sitter-toml", rev = "ae4cdb5d27bf876a432b6c30b6a88f56c9b3e761" }
 external-scanner = { c = true, cpp = false }
@@ -649,7 +649,7 @@ locals = true
 [[languages]]
 name = "tsx"
 group = "some"
-file-extensions = ["tsx"]
+file-types = ["tsx"]
 [languages.parser]
 git = { url = "https://github.com/tree-sitter/tree-sitter-typescript", rev = "b1bf4825d9eaa0f3bdeb1e52f099533328acfbdf", path = "tsx" }
 external-scanner = { c = true, cpp = false }
@@ -666,7 +666,7 @@ locals = true
 [[languages]]
 name = "typescript"
 group = "some"
-file-extensions = ["ts"]
+file-types = ["typescript"]
 [languages.parser]
 git = { url = "https://github.com/tree-sitter/tree-sitter-typescript", rev = "b1bf4825d9eaa0f3bdeb1e52f099533328acfbdf", path = "typescript" }
 external-scanner = { c = true, cpp = false }
@@ -683,7 +683,7 @@ locals = true
 [[languages]]
 name = "verilog"
 group = "all"
-file-extensions = ["v", "verilog", "vlg", "vh"]
+file-types = ["verilog"]
 [languages.parser]
 git = { url = "https://github.com/tree-sitter/tree-sitter-verilog", rev = "902031343056bc0b11f3e47b33f036a9cf59f58d" }
 external-scanner = { c = false, cpp = false }
@@ -699,7 +699,7 @@ locals = true
 [[languages]]
 name = "wat"
 group = "all"
-file-extensions = ["wat"]
+file-types = ["wat"]
 [languages.parser]
 git = { url = "https://github.com/wasm-lsp/tree-sitter-wasm", rev = "2ca28a9f9d709847bf7a3de0942a84e912f59088", path = "wat" }
 external-scanner = { c = false, cpp = false }
@@ -715,7 +715,7 @@ locals = false
 [[languages]]
 name = "yaml"
 group = "some"
-file-extensions = ["yaml"]
+file-types = ["yaml"]
 [languages.parser]
 git = { url = "https://github.com/wingyplus/tree-sitter-yaml", rev = "f4c407b8cb34ec61b15d74a08ac661800576720a" }
 external-scanner = { c = false, cpp = true }

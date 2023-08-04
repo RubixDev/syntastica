@@ -173,15 +173,19 @@ fn parsers(
             let name_str = &lang.name;
             quote! { #[cfg(feature = #name_str)] #name_str }
         });
-    let extensions = LANGUAGE_CONFIG
+    let file_types = LANGUAGE_CONFIG
         .languages
         .iter()
         .filter(&filter)
         .flat_map(|lang| {
             let name_str = &lang.name;
-            lang.file_extensions
-                .iter()
-                .map(move |ext| quote! { #[cfg(feature = #name_str)] (#ext, #name_str) })
+            lang.file_types.iter().map(move |ft| {
+                let ft = format_ident!("{ft:?}");
+                quote! {
+                    #[cfg(feature = #name_str)]
+                    (::syntastica_core::language_set::FileType::#ft, #name_str)
+                }
+            })
         });
     let mut langs_sorted_by_group = LANGUAGE_CONFIG.languages.clone();
     langs_sorted_by_group.sort_by_key(|lang| lang.group);
@@ -217,7 +221,7 @@ fn parsers(
         # use std::{borrow::Cow, cell::UnsafeCell, collections::HashMap};
 
         # use syntastica_core::{
-            language_set::{HighlightConfiguration, LanguageSet, Language},
+            language_set::{HighlightConfiguration, LanguageSet, Language, FileType},
             Error, Result,
             theme::THEME_KEYS,
         };
@@ -232,8 +236,8 @@ fn parsers(
         #(#functions)*
 
         // TODO: use "perfect" hashmap with compile-time known keys
-        static EXTENSION_MAP: Lazy<HashMap<&'static str, &'static str>>
-            = Lazy::new(|| HashMap::from([#(#extensions),*]));
+        static FILE_TYPE_MAP: Lazy<HashMap<FileType, &'static str>>
+            = Lazy::new(|| HashMap::from([#(#file_types),*]));
 
         // TODO: use "perfect" hashmap with compile-time known keys
         static IDX_MAP: Lazy<HashMap<&'static str, usize>> = Lazy::new(|| {
@@ -290,9 +294,9 @@ fn parsers(
                 }
             }
 
-            fn for_extension<'a>(&self, file_extension: &'a str) -> Option<Cow<'a, str>> {
-                EXTENSION_MAP
-                    .get(&file_extension)
+            fn for_file_type(&self, file_type: FileType) -> Option<Cow<'static, str>> {
+                FILE_TYPE_MAP
+                    .get(&file_type)
                     .map(|name| (*name).into())
             }
 
