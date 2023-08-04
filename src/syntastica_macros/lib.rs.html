@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `syntastica-macros/src/lib.rs`."><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="syntastica_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0-nightly (db7ff98a7 2023-07-31)" data-channel="nightly" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-6d2c9675f3d09c26.css" data-theme-dark-css="dark-45ceb8f2e522f4d1.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-6d2c9675f3d09c26.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-45ceb8f2e522f4d1.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../syntastica_macros/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `syntastica-macros/src/lib.rs`."><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="syntastica_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0-nightly (474709a9a 2023-08-03)" data-channel="nightly" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-6d2c9675f3d09c26.css" data-theme-dark-css="dark-45ceb8f2e522f4d1.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-6d2c9675f3d09c26.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-45ceb8f2e522f4d1.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../syntastica_macros/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -397,6 +397,10 @@
 <a href="#397" id="397">397</a>
 <a href="#398" id="398">398</a>
 <a href="#399" id="399">399</a>
+<a href="#400" id="400">400</a>
+<a href="#401" id="401">401</a>
+<a href="#402" id="402">402</a>
+<a href="#403" id="403">403</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>once_cell::sync::Lazy;
 <span class="kw">use </span>proc_macro::TokenStream;
 <span class="kw">use </span>quote::{format_ident, quote};
@@ -572,15 +576,19 @@
             <span class="kw">let </span>name_str = <span class="kw-2">&amp;</span>lang.name;
             <span class="macro">quote! </span>{ <span class="attr">#[cfg(feature = #name_str)] </span>#name_str }
         });
-    <span class="kw">let </span>extensions = LANGUAGE_CONFIG
+    <span class="kw">let </span>file_types = LANGUAGE_CONFIG
         .languages
         .iter()
         .filter(<span class="kw-2">&amp;</span>filter)
         .flat_map(|lang| {
             <span class="kw">let </span>name_str = <span class="kw-2">&amp;</span>lang.name;
-            lang.file_extensions
-                .iter()
-                .map(<span class="kw">move </span>|ext| <span class="macro">quote! </span>{ <span class="attr">#[cfg(feature = #name_str)] </span>(#ext, #name_str) })
+            lang.file_types.iter().map(<span class="kw">move </span>|ft| {
+                <span class="kw">let </span>ft = <span class="macro">format_ident!</span>(<span class="string">&quot;{ft:?}&quot;</span>);
+                <span class="macro">quote! </span>{
+                    <span class="attr">#[cfg(feature = #name_str)]
+                    </span>(::syntastica_core::language_set::FileType::#ft, #name_str)
+                }
+            })
         });
     <span class="kw">let </span><span class="kw-2">mut </span>langs_sorted_by_group = LANGUAGE_CONFIG.languages.clone();
     langs_sorted_by_group.sort_by_key(|lang| lang.group);
@@ -616,7 +624,7 @@
         # <span class="kw">use </span>std::{borrow::Cow, cell::UnsafeCell, collections::HashMap};
 
         # <span class="kw">use </span>syntastica_core::{
-            language_set::{HighlightConfiguration, LanguageSet, Language},
+            language_set::{HighlightConfiguration, LanguageSet, Language, FileType},
             Error, <span class="prelude-ty">Result</span>,
             theme::THEME_KEYS,
         };
@@ -631,8 +639,8 @@
         #(#functions)*
 
         <span class="comment">// TODO: use &quot;perfect&quot; hashmap with compile-time known keys
-        </span><span class="kw">static </span>EXTENSION_MAP: Lazy&lt;HashMap&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str&gt;&gt;
-            = Lazy::new(|| HashMap::from([#(#extensions),<span class="kw-2">*</span>]));
+        </span><span class="kw">static </span>FILE_TYPE_MAP: Lazy&lt;HashMap&lt;FileType, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str&gt;&gt;
+            = Lazy::new(|| HashMap::from([#(#file_types),<span class="kw-2">*</span>]));
 
         <span class="comment">// TODO: use &quot;perfect&quot; hashmap with compile-time known keys
         </span><span class="kw">static </span>IDX_MAP: Lazy&lt;HashMap&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str, usize&gt;&gt; = Lazy::new(|| {
@@ -689,9 +697,9 @@
                 }
             }
 
-            <span class="kw">fn </span>for_extension&lt;<span class="lifetime">&#39;a</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, file_extension: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str) -&gt; <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;&gt; {
-                EXTENSION_MAP
-                    .get(<span class="kw-2">&amp;</span>file_extension)
+            <span class="kw">fn </span>for_file_type(<span class="kw-2">&amp;</span><span class="self">self</span>, file_type: FileType) -&gt; <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;static</span>, str&gt;&gt; {
+                FILE_TYPE_MAP
+                    .get(<span class="kw-2">&amp;</span>file_type)
                     .map(|name| (<span class="kw-2">*</span>name).into())
             }
 

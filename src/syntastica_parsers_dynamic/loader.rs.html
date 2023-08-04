@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `syntastica-parsers-dynamic/src/loader.rs`."><title>loader.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="syntastica_parsers_dynamic" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0-nightly (db7ff98a7 2023-07-31)" data-channel="nightly" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-6d2c9675f3d09c26.css" data-theme-dark-css="dark-45ceb8f2e522f4d1.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-6d2c9675f3d09c26.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-45ceb8f2e522f4d1.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../syntastica_parsers_dynamic/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `syntastica-parsers-dynamic/src/loader.rs`."><title>loader.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="syntastica_parsers_dynamic" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0-nightly (474709a9a 2023-08-03)" data-channel="nightly" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-6d2c9675f3d09c26.css" data-theme-dark-css="dark-45ceb8f2e522f4d1.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-6d2c9675f3d09c26.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-45ceb8f2e522f4d1.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../syntastica_parsers_dynamic/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -690,7 +690,7 @@
 <a href="#690" id="690">690</a>
 <a href="#691" id="691">691</a>
 <a href="#692" id="692">692</a>
-</pre></div><pre class="rust"><code><span class="doccomment">//! Forked from https://github.com/tree-sitter/tree-sitter/blob/89edb2ddcaf2928e3197ad6095e1eb1d59bfcc40/cli/loader/src/lib.rs
+</pre></div><pre class="rust"><code><span class="doccomment">//! Forked from &lt;https://github.com/tree-sitter/tree-sitter/blob/89edb2ddcaf2928e3197ad6095e1eb1d59bfcc40/cli/loader/src/lib.rs&gt;
 //!
 //! The MIT License (MIT)
 //!
@@ -844,78 +844,78 @@
         <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>)
     }
 
-    <span class="kw">pub fn </span>language_configuration_for_file_name(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        path: <span class="kw-2">&amp;</span>Path,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;(Language, <span class="kw-2">&amp;</span>LanguageConfiguration)&gt;&gt; {
-        <span class="comment">// Find all the language configurations that match this file name
-        // or a suffix of the file name.
-        </span><span class="kw">let </span>configuration_ids = path
-            .file_name()
-            .and_then(|n| n.to_str())
-            .and_then(|file_name| <span class="self">self</span>.language_configuration_ids_by_file_type.get(file_name))
-            .or_else(|| {
-                path.extension()
-                    .and_then(|extension| extension.to_str())
-                    .and_then(|extension| {
-                        <span class="self">self</span>.language_configuration_ids_by_file_type.get(extension)
-                    })
-            });
+    <span class="comment">// pub fn language_configuration_for_file_name(
+    //     &amp;self,
+    //     path: &amp;Path,
+    // ) -&gt; Result&lt;Option&lt;(Language, &amp;LanguageConfiguration)&gt;&gt; {
+    //     // Find all the language configurations that match this file name
+    //     // or a suffix of the file name.
+    //     let configuration_ids = path
+    //         .file_name()
+    //         .and_then(|n| n.to_str())
+    //         .and_then(|file_name| self.language_configuration_ids_by_file_type.get(file_name))
+    //         .or_else(|| {
+    //             path.extension()
+    //                 .and_then(|extension| extension.to_str())
+    //                 .and_then(|extension| {
+    //                     self.language_configuration_ids_by_file_type.get(extension)
+    //                 })
+    //         });
+    //
+    //     if let Some(configuration_ids) = configuration_ids {
+    //         if !configuration_ids.is_empty() {
+    //             let configuration;
+    //
+    //             // If there is only one language configuration, then use it.
+    //             if configuration_ids.len() == 1 {
+    //                 configuration = &amp;self.language_configurations[configuration_ids[0]];
+    //             }
+    //             // If multiple language configurations match, then determine which
+    //             // one to use by applying the configurations&#39; content regexes.
+    //             else {
+    //                 let file_contents = fs::read(path)
+    //                     .with_context(|| format!(&quot;Failed to read path {:?}&quot;, path))?;
+    //                 let file_contents = String::from_utf8_lossy(&amp;file_contents);
+    //                 let mut best_score = -2isize;
+    //                 let mut best_configuration_id = None;
+    //                 for configuration_id in configuration_ids {
+    //                     let config = &amp;self.language_configurations[*configuration_id];
+    //
+    //                     // If the language configuration has a content regex, assign
+    //                     // a score based on the length of the first match.
+    //                     let score;
+    //                     if let Some(content_regex) = &amp;config.content_regex {
+    //                         if let Some(mat) = content_regex.find(&amp;file_contents) {
+    //                             score = (mat.end() - mat.start()) as isize;
+    //                         }
+    //                         // If the content regex does not match, then *penalize* this
+    //                         // language configuration, so that language configurations
+    //                         // without content regexes are preferred over those with
+    //                         // non-matching content regexes.
+    //                         else {
+    //                             score = -1;
+    //                         }
+    //                     } else {
+    //                         score = 0;
+    //                     }
+    //                     if score &gt; best_score {
+    //                         best_configuration_id = Some(*configuration_id);
+    //                         best_score = score;
+    //                     }
+    //                 }
+    //
+    //                 configuration = &amp;self.language_configurations[best_configuration_id.unwrap()];
+    //             }
+    //
+    //             let language = self.language_for_id(configuration.language_id)?;
+    //             return Ok(Some((language, configuration)));
+    //         }
+    //     }
+    //
+    //     Ok(None)
+    // }
 
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(configuration_ids) = configuration_ids {
-            <span class="kw">if </span>!configuration_ids.is_empty() {
-                <span class="kw">let </span>configuration;
-
-                <span class="comment">// If there is only one language configuration, then use it.
-                </span><span class="kw">if </span>configuration_ids.len() == <span class="number">1 </span>{
-                    configuration = <span class="kw-2">&amp;</span><span class="self">self</span>.language_configurations[configuration_ids[<span class="number">0</span>]];
-                }
-                <span class="comment">// If multiple language configurations match, then determine which
-                // one to use by applying the configurations&#39; content regexes.
-                </span><span class="kw">else </span>{
-                    <span class="kw">let </span>file_contents = fs::read(path)
-                        .with_context(|| <span class="macro">format!</span>(<span class="string">&quot;Failed to read path {:?}&quot;</span>, path))<span class="question-mark">?</span>;
-                    <span class="kw">let </span>file_contents = String::from_utf8_lossy(<span class="kw-2">&amp;</span>file_contents);
-                    <span class="kw">let </span><span class="kw-2">mut </span>best_score = -<span class="number">2isize</span>;
-                    <span class="kw">let </span><span class="kw-2">mut </span>best_configuration_id = <span class="prelude-val">None</span>;
-                    <span class="kw">for </span>configuration_id <span class="kw">in </span>configuration_ids {
-                        <span class="kw">let </span>config = <span class="kw-2">&amp;</span><span class="self">self</span>.language_configurations[<span class="kw-2">*</span>configuration_id];
-
-                        <span class="comment">// If the language configuration has a content regex, assign
-                        // a score based on the length of the first match.
-                        </span><span class="kw">let </span>score;
-                        <span class="kw">if let </span><span class="prelude-val">Some</span>(content_regex) = <span class="kw-2">&amp;</span>config.content_regex {
-                            <span class="kw">if let </span><span class="prelude-val">Some</span>(mat) = content_regex.find(<span class="kw-2">&amp;</span>file_contents) {
-                                score = (mat.end() - mat.start()) <span class="kw">as </span>isize;
-                            }
-                            <span class="comment">// If the content regex does not match, then *penalize* this
-                            // language configuration, so that language configurations
-                            // without content regexes are preferred over those with
-                            // non-matching content regexes.
-                            </span><span class="kw">else </span>{
-                                score = -<span class="number">1</span>;
-                            }
-                        } <span class="kw">else </span>{
-                            score = <span class="number">0</span>;
-                        }
-                        <span class="kw">if </span>score &gt; best_score {
-                            best_configuration_id = <span class="prelude-val">Some</span>(<span class="kw-2">*</span>configuration_id);
-                            best_score = score;
-                        }
-                    }
-
-                    configuration = <span class="kw-2">&amp;</span><span class="self">self</span>.language_configurations[best_configuration_id.unwrap()];
-                }
-
-                <span class="kw">let </span>language = <span class="self">self</span>.language_for_id(configuration.language_id)<span class="question-mark">?</span>;
-                <span class="kw">return </span><span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>((language, configuration)));
-            }
-        }
-
-        <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>)
-    }
-
-    <span class="kw">pub fn </span>language_configuration_for_injection_string(
+    </span><span class="kw">pub fn </span>language_configuration_for_injection_string(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         string: <span class="kw-2">&amp;</span>str,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;(Language, <span class="kw-2">&amp;</span>LanguageConfiguration)&gt;&gt; {
