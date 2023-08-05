@@ -9,6 +9,13 @@ use thiserror::Error;
 /// Uses [`Error`](enum@Error) for the error variant.
 pub type Result<T> = std::result::Result<T, Error>;
 
+// TODO: rethink the error type:
+// - do we really want to expose other errors publicly?
+// - should it be split into multiple types?
+// - are all variants required?
+// - should `Custom` maybe hold a `Box<dyn Error>` (or similar) instead
+// - use `Box<str>` or `Arc<str>` instead of `String`? (mutation isn't required)
+
 /// The main error type.
 #[derive(Debug, Error)]
 pub enum Error {

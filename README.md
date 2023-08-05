@@ -1,5 +1,7 @@
 # `syntastica`
 
+<!-- TODO: msrv -->
+
 Modern and easy syntax highlighting using tree-sitter
 
 > Note: If viewing this file on [GitHub](https://github.com/RubixDev/syntastica)

@@ -56,6 +56,7 @@ pub struct Theme(BTreeMap<String, ThemeValue>);
 /// [`ResolvedTheme::find_style`], which will return the best match it finds. See the method's docs
 /// for more information. Alternatively, [`ResolvedTheme::get`] can be used to only look for an
 /// exact match.
+// TODO: better support for background color
 #[derive(Clone, Hash, Debug, PartialEq, Eq)]
 pub struct ResolvedTheme(BTreeMap<String, Style>);
 
