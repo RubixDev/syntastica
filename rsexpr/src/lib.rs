@@ -107,11 +107,13 @@ pub struct OwnedSexprs(Vec<OwnedSexpr>);
 /// ```
 /// let sexpr = rsexpr::from_slice(b"[ a b c ]").unwrap();
 /// assert_eq!(format!("{sexpr}"), "[a b c]");
+/// # #[rustfmt::skip]
 /// assert_eq!(format!("{sexpr:#}"), "[
 ///   a
 ///   b
 ///   c
 /// ]");
+/// # #[rustfmt::skip]
 /// assert_eq!(format!("{sexpr:#.4}"), "[
 ///     a
 ///     b

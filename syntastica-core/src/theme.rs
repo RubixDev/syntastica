@@ -369,8 +369,11 @@ impl ThemeValue {
 /// # Example
 ///
 /// ```
-/// use syntastica_core::{theme, theme::{Theme, ThemeValue}};
 /// use std::collections::BTreeMap;
+/// use syntastica_core::{
+///     theme,
+///     theme::{Theme, ThemeValue},
+/// };
 ///
 /// let theme = theme! {
 ///     // specify colors using hex literals
@@ -394,6 +397,7 @@ impl ThemeValue {
 ///     },
 /// };
 ///
+/// # #[rustfmt::skip]
 /// assert_eq!(theme, Theme::new(BTreeMap::from([
 ///     ("purple".to_owned(), ThemeValue::Simple("#c678dd".to_owned())),
 ///     ("blue".to_owned(), ThemeValue::Simple("#61afef".to_owned())),

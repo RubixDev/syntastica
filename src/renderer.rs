@@ -128,7 +128,10 @@ pub fn resolve_styles<'src>(
 /// // render to HTML
 /// let output = syntastica::render(&highlights, &mut HtmlRenderer, theme);
 ///
-/// assert_eq!(output, r#"<span style="color:rgb(255,0,0);">&lt;fn&gt;</span>none"#);
+/// assert_eq!(
+///     output,
+///     r#"<span style="color:rgb(255,0,0);">&lt;fn&gt;</span>none"#
+/// );
 /// ```
 pub struct HtmlRenderer;
 

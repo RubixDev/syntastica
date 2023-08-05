@@ -10,7 +10,10 @@
 //! let tree = lua_pattern::parse("%l").unwrap();
 //! assert_eq!(tree, [PatternObject::Class(Class::Lowercase)]);
 //! #[cfg(feature = "to-regex")]
-//! assert_eq!(lua_pattern::try_to_regex(&tree, false, false).unwrap(), "[a-z]");
+//! assert_eq!(
+//!     lua_pattern::try_to_regex(&tree, false, false).unwrap(),
+//!     "[a-z]"
+//! );
 //! ```
 #![cfg_attr(
     feature = "docs",

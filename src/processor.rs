@@ -30,7 +30,7 @@ use crate::Highlights;
 /// a [`Processor`] instance.
 ///
 /// ```
-/// use syntastica::{Processor, style::Style};
+/// use syntastica::{style::Style, Processor};
 /// use syntastica_parsers::{Lang, LanguageSetImpl};
 ///
 /// let highlights = Processor::process_once(
@@ -38,7 +38,8 @@ use crate::Highlights;
 ///     Lang::Rust, // the code's language
 ///     // any valid `LanguageSet` supporting the required language
 ///     &LanguageSetImpl::new(),
-/// ).unwrap();
+/// )
+/// .unwrap();
 ///
 /// assert_eq!(highlights, vec![vec![("fn", Some("keyword.function"))]]);
 /// ```
@@ -49,7 +50,7 @@ use crate::Highlights;
 /// instance which can then be used to process multiple different inputs.
 ///
 /// ```
-/// use syntastica::{Processor, style::Style};
+/// use syntastica::{style::Style, Processor};
 /// use syntastica_parsers_git::{Lang, LanguageSetImpl};
 ///
 /// // get a `LanguageSet`
@@ -63,18 +64,23 @@ use crate::Highlights;
 /// assert_eq!(highlights, vec![vec![("# comment", Some("comment"))]]);
 ///
 /// // process input with injections
-/// let highlights = processor.process(r#"Regex::new(r".")"#, Lang::Rust).unwrap();
-/// assert_eq!(highlights, vec![vec![
-///     ("Regex", Some("type")),
-///     ("::", Some("punctuation.delimiter")),
-///     ("new", Some("function.call")),
-///     ("(", Some("punctuation.bracket")),
-///     ("r", Some("string")),
-///     ("\"", Some("string.regex")),
-///     (".", Some("punctuation.special")), // this is the injected regex language
-///     ("\"", Some("string.regex")),
-///     (")", Some("punctuation.bracket")),
-/// ]]);
+/// let highlights = processor
+///     .process(r#"Regex::new(r".")"#, Lang::Rust)
+///     .unwrap();
+/// assert_eq!(
+///     highlights,
+///     vec![vec![
+///         ("Regex", Some("type")),
+///         ("::", Some("punctuation.delimiter")),
+///         ("new", Some("function.call")),
+///         ("(", Some("punctuation.bracket")),
+///         ("r", Some("string")),
+///         ("\"", Some("string.regex")),
+///         (".", Some("punctuation.special")), // this is the injected regex language
+///         ("\"", Some("string.regex")),
+///         (")", Some("punctuation.bracket")),
+///     ]]
+/// );
 /// ```
 pub struct Processor<'set, Set: LanguageSet> {
     set: &'set Set,
@@ -144,9 +150,9 @@ impl<'set, Set: LanguageSet> Processor<'set, Set> {
     ///
     /// # Example
     /// ```
-    /// use tree_sitter::{Parser, InputEdit, Point};
-    /// use syntastica::{language_set::LanguageSet, Processor, renderer::TerminalRenderer};
+    /// use syntastica::{language_set::LanguageSet, renderer::TerminalRenderer, Processor};
     /// use syntastica_parsers::{Lang, LanguageSetImpl};
+    /// use tree_sitter::{InputEdit, Parser, Point};
     ///
     /// // create a LanguageSet, Processor, Renderer, and ResolvedTheme
     /// let set = LanguageSetImpl::new();
@@ -162,30 +168,36 @@ impl<'set, Set: LanguageSet> Processor<'set, Set> {
     /// // parse, process, and render source code
     /// let code = "fn test() {}";
     /// let mut tree = parser.parse(code, None).unwrap();
-    /// println!("{}", syntastica::render(
-    ///     &processor.process_tree(code, Lang::Rust, &tree.root_node())?,
-    ///     &mut renderer,
-    ///     &theme,
-    /// ));
+    /// println!(
+    ///     "{}",
+    ///     syntastica::render(
+    ///         &processor.process_tree(code, Lang::Rust, &tree.root_node())?,
+    ///         &mut renderer,
+    ///         &theme,
+    ///     )
+    /// );
     ///
     /// // edit the code and tree
     /// let new_code = "fn test(a: u32) {}";
     /// tree.edit(&InputEdit {
-    ///   start_byte: 8,
-    ///   old_end_byte: 8,
-    ///   new_end_byte: 14,
-    ///   start_position: Point::new(0, 8),
-    ///   old_end_position: Point::new(0, 8),
-    ///   new_end_position: Point::new(0, 14),
+    ///     start_byte: 8,
+    ///     old_end_byte: 8,
+    ///     new_end_byte: 14,
+    ///     start_position: Point::new(0, 8),
+    ///     old_end_position: Point::new(0, 8),
+    ///     new_end_position: Point::new(0, 14),
     /// });
     ///
     /// // re-parse, process, and render the code
     /// let new_tree = parser.parse(new_code, Some(&tree)).unwrap();
-    /// println!("{}", syntastica::render(
-    ///     &processor.process_tree(new_code, Lang::Rust, &new_tree.root_node())?,
-    ///     &mut renderer,
-    ///     &theme,
-    /// ));
+    /// println!(
+    ///     "{}",
+    ///     syntastica::render(
+    ///         &processor.process_tree(new_code, Lang::Rust, &new_tree.root_node())?,
+    ///         &mut renderer,
+    ///         &theme,
+    ///     )
+    /// );
     ///
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
