@@ -13,12 +13,12 @@ repos:
     rev: v1.0
     hooks:
       - id: clippy
-  - repo: https://github.com/adamchainz/pre-commit-dprint
-    rev: v0.36.1
+  - repo: https://github.com/RubixDev/pre-commit-dprint
+    rev: v0.40.2
     hooks:
       - id: dprint
         pass_filenames: false
   - repo: https://github.com/crate-ci/typos
-    rev: typos-dict-v0.9.26
+    rev: typos-dict-v0.10.8
     hooks:
       - id: typos
