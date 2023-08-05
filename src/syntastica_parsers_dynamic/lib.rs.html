@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `syntastica-parsers-dynamic/src/lib.rs`."><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="syntastica_parsers_dynamic" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0-nightly (474709a9a 2023-08-03)" data-channel="nightly" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-6d2c9675f3d09c26.css" data-theme-dark-css="dark-45ceb8f2e522f4d1.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-6d2c9675f3d09c26.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-45ceb8f2e522f4d1.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../syntastica_parsers_dynamic/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `syntastica-parsers-dynamic/src/lib.rs`."><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="syntastica_parsers_dynamic" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0-nightly (e4c144684 2023-08-04)" data-channel="nightly" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-6d2c9675f3d09c26.css" data-theme-dark-css="dark-45ceb8f2e522f4d1.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-6d2c9675f3d09c26.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-45ceb8f2e522f4d1.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../syntastica_parsers_dynamic/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -78,21 +78,86 @@
 <a href="#78" id="78">78</a>
 <a href="#79" id="79">79</a>
 <a href="#80" id="80">80</a>
+<a href="#81" id="81">81</a>
+<a href="#82" id="82">82</a>
+<a href="#83" id="83">83</a>
+<a href="#84" id="84">84</a>
+<a href="#85" id="85">85</a>
+<a href="#86" id="86">86</a>
+<a href="#87" id="87">87</a>
+<a href="#88" id="88">88</a>
+<a href="#89" id="89">89</a>
+<a href="#90" id="90">90</a>
+<a href="#91" id="91">91</a>
+<a href="#92" id="92">92</a>
+<a href="#93" id="93">93</a>
+<a href="#94" id="94">94</a>
+<a href="#95" id="95">95</a>
+<a href="#96" id="96">96</a>
+<a href="#97" id="97">97</a>
+<a href="#98" id="98">98</a>
+<a href="#99" id="99">99</a>
+<a href="#100" id="100">100</a>
+<a href="#101" id="101">101</a>
+<a href="#102" id="102">102</a>
+<a href="#103" id="103">103</a>
+<a href="#104" id="104">104</a>
+<a href="#105" id="105">105</a>
+<a href="#106" id="106">106</a>
+<a href="#107" id="107">107</a>
+<a href="#108" id="108">108</a>
+<a href="#109" id="109">109</a>
+<a href="#110" id="110">110</a>
+<a href="#111" id="111">111</a>
+<a href="#112" id="112">112</a>
+<a href="#113" id="113">113</a>
 </pre></div><pre class="rust"><code><span class="comment">// TODO: docs
 
 </span><span class="kw">use </span>std::{borrow::Cow, cell::RefCell, collections::HashMap, path::PathBuf};
 
 <span class="kw">use </span>anyhow::Result;
-<span class="kw">use </span>syntastica_core::language_set::{FileType, HighlightConfiguration, LanguageSet};
+<span class="kw">use </span>syntastica_core::language_set::{
+    FileType, HighlightConfiguration, LanguageSet, SupportedLanguage,
+};
 
 <span class="kw">use </span>loader::{Config, Loader};
 
 <span class="kw">mod </span>loader;
 
+<span class="comment">// TODO: this workaround is not perfect in any way
+</span><span class="kw">pub enum </span>Lang {
+    Scope(Box&lt;str&gt;),
+    Injection(Box&lt;str&gt;),
+}
+
+<span class="kw">impl </span>SupportedLanguage <span class="kw">for </span>Lang {
+    <span class="kw">fn </span>name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Cow&lt;<span class="lifetime">&#39;_</span>, str&gt; {
+        <span class="kw">match </span><span class="self">self </span>{
+            <span class="self">Self</span>::Scope(scope) =&gt; Cow::Borrowed(scope),
+            <span class="self">Self</span>::Injection(name) =&gt; Cow::Owned(<span class="macro">format!</span>(<span class="string">&quot;###{name}&quot;</span>)),
+        }
+    }
+
+    <span class="kw">fn </span>for_name(name: <span class="kw">impl </span>AsRef&lt;str&gt;) -&gt; syntastica_core::Result&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">match </span>name.as_ref().strip_prefix(<span class="string">&quot;###&quot;</span>) {
+            <span class="prelude-val">Some</span>(injection_name) =&gt; <span class="prelude-val">Ok</span>(<span class="self">Self</span>::Injection(injection_name.into())),
+            <span class="prelude-val">None </span>=&gt; <span class="prelude-val">Ok</span>(<span class="self">Self</span>::Scope(name.as_ref().into())),
+        }
+    }
+
+    <span class="kw">fn </span>for_file_type(_file_type: FileType) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="prelude-val">None
+    </span>}
+
+    <span class="kw">fn </span>for_injection(name: <span class="kw">impl </span>AsRef&lt;str&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="prelude-val">Some</span>(<span class="self">Self</span>::Injection(name.as_ref().into()))
+    }
+}
+
 <span class="comment">// TODO: `query_search_dirs`?
 </span><span class="kw">pub struct </span>LanguageLoader {
     loader: Loader,
-    highlight_configs: RefCell&lt;HashMap&lt;String, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>HighlightConfiguration&gt;&gt;,
+    highlight_configs: RefCell&lt;HashMap&lt;Box&lt;str&gt;, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>HighlightConfiguration&gt;&gt;,
 }
 
 <span class="kw">impl </span>LanguageLoader {
@@ -110,40 +175,41 @@
 }
 
 <span class="kw">impl </span>LanguageSet <span class="kw">for </span>LanguageLoader {
-    <span class="kw">fn </span>for_file_type(<span class="kw-2">&amp;</span><span class="self">self</span>, _file_type: FileType) -&gt; <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;static</span>, str&gt;&gt; {
-        <span class="prelude-val">None
-    </span>}
+    <span class="kw">type </span>Language = Lang;
 
-    <span class="kw">fn </span>for_injection&lt;<span class="lifetime">&#39;a</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str) -&gt; <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;&gt; {
-        <span class="prelude-val">Some</span>(
-            <span class="self">self</span>.loader
-                .language_configuration_for_injection_string(name)
-                .ok()<span class="question-mark">??
+    <span class="kw">fn </span>get_language(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        language: <span class="self">Self</span>::Language,
+    ) -&gt; syntastica_core::Result&lt;<span class="kw-2">&amp;</span>HighlightConfiguration&gt; {
+        <span class="kw">let </span>name = <span class="kw">match </span>language {
+            Lang::Scope(scope) =&gt; scope,
+            Lang::Injection(name) =&gt; <span class="self">self
+                </span>.loader
+                .language_configuration_for_injection_string(<span class="kw-2">&amp;</span>name)
+                .map_err(|<span class="kw">_</span>| syntastica_core::Error::UnsupportedLanguage(name.to_string()))<span class="question-mark">?
+                </span>.ok_or_else(|| syntastica_core::Error::UnsupportedLanguage(name.to_string()))<span class="question-mark">?
                 </span>.<span class="number">1
                 </span>.scope
-                .clone()<span class="question-mark">?
-                </span>.into(),
-        )
-    }
+                .clone()
+                .ok_or_else(|| syntastica_core::Error::UnsupportedLanguage(name.to_string()))<span class="question-mark">?
+                </span>.into_boxed_str(),
+        };
 
-    <span class="kw">fn </span>get_language(<span class="kw-2">&amp;</span><span class="self">self</span>, name: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span>HighlightConfiguration, syntastica_core::Error&gt; {
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(config) = <span class="self">self</span>.highlight_configs.borrow().get(name) {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(config) = <span class="self">self</span>.highlight_configs.borrow().get(name.as_ref()) {
             <span class="kw">return </span><span class="prelude-val">Ok</span>(<span class="kw-2">*</span>config);
         }
 
         <span class="kw">let </span>(lang, lang_config) = <span class="self">self
             </span>.loader
-            .language_configuration_for_scope(name)
+            .language_configuration_for_scope(name.as_ref())
             .map_err(|err| syntastica_core::Error::Custom(err.to_string()))<span class="question-mark">?
-            </span>.ok_or_else(|| syntastica_core::Error::UnsupportedLanguage(name.to_owned()))<span class="question-mark">?</span>;
+            </span>.ok_or_else(|| syntastica_core::Error::UnsupportedLanguage(name.to_string()))<span class="question-mark">?</span>;
 
         <span class="kw">let </span>config_ref = lang_config
             .highlight_config(lang)
             .map_err(|err| syntastica_core::Error::Custom(err.to_string()))<span class="question-mark">?
-            </span>.ok_or_else(|| syntastica_core::Error::UnsupportedLanguage(name.to_owned()))<span class="question-mark">?</span>;
-        <span class="self">self</span>.highlight_configs
-            .borrow_mut()
-            .insert(name.to_owned(), config_ref);
+            </span>.ok_or_else(|| syntastica_core::Error::UnsupportedLanguage(name.to_string()))<span class="question-mark">?</span>;
+        <span class="self">self</span>.highlight_configs.borrow_mut().insert(name, config_ref);
 
         <span class="prelude-val">Ok</span>(config_ref)
     }

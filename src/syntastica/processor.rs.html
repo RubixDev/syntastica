@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/processor.rs`."><title>processor.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="syntastica" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0-nightly (474709a9a 2023-08-03)" data-channel="nightly" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-6d2c9675f3d09c26.css" data-theme-dark-css="dark-45ceb8f2e522f4d1.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-6d2c9675f3d09c26.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-45ceb8f2e522f4d1.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../syntastica/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/processor.rs`."><title>processor.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="syntastica" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0-nightly (e4c144684 2023-08-04)" data-channel="nightly" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-6d2c9675f3d09c26.css" data-theme-dark-css="dark-45ceb8f2e522f4d1.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-6d2c9675f3d09c26.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-45ceb8f2e522f4d1.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../syntastica/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -302,8 +302,23 @@
 <a href="#302" id="302">302</a>
 <a href="#303" id="303">303</a>
 <a href="#304" id="304">304</a>
+<a href="#305" id="305">305</a>
+<a href="#306" id="306">306</a>
+<a href="#307" id="307">307</a>
+<a href="#308" id="308">308</a>
+<a href="#309" id="309">309</a>
+<a href="#310" id="310">310</a>
+<a href="#311" id="311">311</a>
+<a href="#312" id="312">312</a>
+<a href="#313" id="313">313</a>
+<a href="#314" id="314">314</a>
+<a href="#315" id="315">315</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>syntastica_core::ts_runtime::Node;
-<span class="kw">use </span>syntastica_core::{language_set::LanguageSet, theme::THEME_KEYS, <span class="prelude-ty">Result</span>};
+<span class="kw">use </span>syntastica_core::{
+    language_set::{LanguageSet, SupportedLanguage},
+    theme::THEME_KEYS,
+    <span class="prelude-ty">Result</span>,
+};
 <span class="kw">use </span>syntastica_highlight::{Highlight, HighlightEvent, Highlighter};
 
 <span class="kw">use </span><span class="kw">crate</span>::Highlights;
@@ -330,15 +345,16 @@
 /// a [`Processor`] instance.
 ///
 /// ```
-/// use syntastica::{Processor, style::Style};
-/// use syntastica_parsers::LanguageSetImpl;
+/// use syntastica::{style::Style, Processor};
+/// use syntastica_parsers::{Lang, LanguageSetImpl};
 ///
 /// let highlights = Processor::process_once(
-///     &quot;fn&quot;,   // the code to process
-///     &quot;rust&quot;, // the code&#39;s language
+///     &quot;fn&quot;,       // the code to process
+///     Lang::Rust, // the code&#39;s language
 ///     // any valid `LanguageSet` supporting the required language
 ///     &amp;LanguageSetImpl::new(),
-/// ).unwrap();
+/// )
+/// .unwrap();
 ///
 /// assert_eq!(highlights, vec![vec![(&quot;fn&quot;, Some(&quot;keyword.function&quot;))]]);
 /// ```
@@ -349,8 +365,8 @@
 /// instance which can then be used to process multiple different inputs.
 ///
 /// ```
-/// use syntastica::{Processor, style::Style};
-/// use syntastica_parsers_git::LanguageSetImpl;
+/// use syntastica::{style::Style, Processor};
+/// use syntastica_parsers_git::{Lang, LanguageSetImpl};
 ///
 /// // get a `LanguageSet`
 /// let language_set = LanguageSetImpl::new();
@@ -359,22 +375,27 @@
 /// let mut processor = Processor::new(&amp;language_set);
 ///
 /// // process some input
-/// let highlights = processor.process(&quot;# comment&quot;, &quot;python&quot;).unwrap();
+/// let highlights = processor.process(&quot;# comment&quot;, Lang::Python).unwrap();
 /// assert_eq!(highlights, vec![vec![(&quot;# comment&quot;, Some(&quot;comment&quot;))]]);
 ///
 /// // process input with injections
-/// let highlights = processor.process(r#&quot;Regex::new(r&quot;.&quot;)&quot;#, &quot;rust&quot;).unwrap();
-/// assert_eq!(highlights, vec![vec![
-///     (&quot;Regex&quot;, Some(&quot;type&quot;)),
-///     (&quot;::&quot;, Some(&quot;punctuation.delimiter&quot;)),
-///     (&quot;new&quot;, Some(&quot;function.call&quot;)),
-///     (&quot;(&quot;, Some(&quot;punctuation.bracket&quot;)),
-///     (&quot;r&quot;, Some(&quot;string&quot;)),
-///     (&quot;\&quot;&quot;, Some(&quot;string.regex&quot;)),
-///     (&quot;.&quot;, Some(&quot;punctuation.special&quot;)), // this is the injected regex language
-///     (&quot;\&quot;&quot;, Some(&quot;string.regex&quot;)),
-///     (&quot;)&quot;, Some(&quot;punctuation.bracket&quot;)),
-/// ]]);
+/// let highlights = processor
+///     .process(r#&quot;Regex::new(r&quot;.&quot;)&quot;#, Lang::Rust)
+///     .unwrap();
+/// assert_eq!(
+///     highlights,
+///     vec![vec![
+///         (&quot;Regex&quot;, Some(&quot;type&quot;)),
+///         (&quot;::&quot;, Some(&quot;punctuation.delimiter&quot;)),
+///         (&quot;new&quot;, Some(&quot;function.call&quot;)),
+///         (&quot;(&quot;, Some(&quot;punctuation.bracket&quot;)),
+///         (&quot;r&quot;, Some(&quot;string&quot;)),
+///         (&quot;\&quot;&quot;, Some(&quot;string.regex&quot;)),
+///         (&quot;.&quot;, Some(&quot;punctuation.special&quot;)), // this is the injected regex language
+///         (&quot;\&quot;&quot;, Some(&quot;string.regex&quot;)),
+///         (&quot;)&quot;, Some(&quot;punctuation.bracket&quot;)),
+///     ]]
+/// );
 /// ```
 </span><span class="kw">pub struct </span>Processor&lt;<span class="lifetime">&#39;set</span>, Set: LanguageSet&gt; {
     set: <span class="kw-2">&amp;</span><span class="lifetime">&#39;set </span>Set,
@@ -401,10 +422,10 @@
     /// return type, and possible errors.
     </span><span class="kw">pub fn </span>process_once&lt;<span class="lifetime">&#39;src</span>&gt;(
         code: <span class="kw-2">&amp;</span><span class="lifetime">&#39;src </span>str,
-        language_name: <span class="kw-2">&amp;</span>str,
+        language: Set::Language,
         set: <span class="kw-2">&amp;</span><span class="lifetime">&#39;set </span>Set,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Highlights&lt;<span class="lifetime">&#39;src</span>&gt;&gt; {
-        <span class="self">Self</span>::new(set).process(code, language_name)
+        <span class="self">Self</span>::new(set).process(code, language)
     }
 
     <span class="doccomment">/// Process the given `code` using the language specified by `language_name`.
@@ -426,9 +447,9 @@
     </span><span class="kw">pub fn </span>process&lt;<span class="lifetime">&#39;src</span>&gt;(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         code: <span class="kw-2">&amp;</span><span class="lifetime">&#39;src </span>str,
-        language_name: <span class="kw-2">&amp;</span>str,
+        language: Set::Language,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Highlights&lt;<span class="lifetime">&#39;src</span>&gt;&gt; {
-        <span class="self">self</span>.process_impl(code, language_name, <span class="prelude-val">None</span>)
+        <span class="self">self</span>.process_impl(code, language, <span class="prelude-val">None</span>)
     }
 
     <span class="doccomment">/// Process the given `code` using the language specified by `language_name` using an already
@@ -444,11 +465,12 @@
     ///
     /// # Example
     /// ```
-    /// use tree_sitter::{Parser, InputEdit, Point};
-    /// use syntastica::{language_set::LanguageSet, Processor, renderer::TerminalRenderer};
+    /// use syntastica::{language_set::LanguageSet, renderer::TerminalRenderer, Processor};
+    /// use syntastica_parsers::{Lang, LanguageSetImpl};
+    /// use tree_sitter::{InputEdit, Parser, Point};
     ///
     /// // create a LanguageSet, Processor, Renderer, and ResolvedTheme
-    /// let set = syntastica_parsers::LanguageSetImpl::new();
+    /// let set = LanguageSetImpl::new();
     /// let mut processor = Processor::new(&amp;set);
     /// let mut renderer = TerminalRenderer::new(None);
     /// let theme = syntastica_themes::one::dark();
@@ -456,35 +478,41 @@
     /// // create a tree-sitter parser
     /// let mut parser = Parser::new();
     /// // and set the desired language
-    /// parser.set_language(set.get_language(&quot;rust&quot;)?.language)?;
+    /// parser.set_language(Lang::Rust.get())?;
     ///
     /// // parse, process, and render source code
     /// let code = &quot;fn test() {}&quot;;
     /// let mut tree = parser.parse(code, None).unwrap();
-    /// println!(&quot;{}&quot;, syntastica::render(
-    ///     &amp;processor.process_tree(code, &quot;rust&quot;, &amp;tree.root_node())?,
-    ///     &amp;mut renderer,
-    ///     &amp;theme,
-    /// ));
+    /// println!(
+    ///     &quot;{}&quot;,
+    ///     syntastica::render(
+    ///         &amp;processor.process_tree(code, Lang::Rust, &amp;tree.root_node())?,
+    ///         &amp;mut renderer,
+    ///         &amp;theme,
+    ///     )
+    /// );
     ///
     /// // edit the code and tree
     /// let new_code = &quot;fn test(a: u32) {}&quot;;
     /// tree.edit(&amp;InputEdit {
-    ///   start_byte: 8,
-    ///   old_end_byte: 8,
-    ///   new_end_byte: 14,
-    ///   start_position: Point::new(0, 8),
-    ///   old_end_position: Point::new(0, 8),
-    ///   new_end_position: Point::new(0, 14),
+    ///     start_byte: 8,
+    ///     old_end_byte: 8,
+    ///     new_end_byte: 14,
+    ///     start_position: Point::new(0, 8),
+    ///     old_end_position: Point::new(0, 8),
+    ///     new_end_position: Point::new(0, 14),
     /// });
     ///
     /// // re-parse, process, and render the code
     /// let new_tree = parser.parse(new_code, Some(&amp;tree)).unwrap();
-    /// println!(&quot;{}&quot;, syntastica::render(
-    ///     &amp;processor.process_tree(new_code, &quot;rust&quot;, &amp;new_tree.root_node())?,
-    ///     &amp;mut renderer,
-    ///     &amp;theme,
-    /// ));
+    /// println!(
+    ///     &quot;{}&quot;,
+    ///     syntastica::render(
+    ///         &amp;processor.process_tree(new_code, Lang::Rust, &amp;new_tree.root_node())?,
+    ///         &amp;mut renderer,
+    ///         &amp;theme,
+    ///     )
+    /// );
     ///
     /// # Ok::&lt;(), Box&lt;dyn std::error::Error&gt;&gt;(())
     /// ```
@@ -506,43 +534,37 @@
     </span><span class="kw">pub fn </span>process_tree&lt;<span class="lifetime">&#39;src</span>&gt;(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         code: <span class="kw-2">&amp;</span><span class="lifetime">&#39;src </span>str,
-        language_name: <span class="kw-2">&amp;</span>str,
+        language: Set::Language,
         tree: <span class="kw-2">&amp;</span>Node&lt;<span class="lifetime">&#39;_</span>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Highlights&lt;<span class="lifetime">&#39;src</span>&gt;&gt; {
-        <span class="self">self</span>.process_impl(code, language_name, <span class="prelude-val">Some</span>(tree))
+        <span class="self">self</span>.process_impl(code, language, <span class="prelude-val">Some</span>(tree))
     }
 
     <span class="kw">fn </span>process_impl&lt;<span class="lifetime">&#39;src</span>&gt;(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         code: <span class="kw-2">&amp;</span><span class="lifetime">&#39;src </span>str,
-        language_name: <span class="kw-2">&amp;</span>str,
+        language: Set::Language,
         tree: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Node&lt;<span class="lifetime">&#39;_</span>&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Highlights&lt;<span class="lifetime">&#39;src</span>&gt;&gt; {
-        <span class="kw">let </span>highlight_config = <span class="self">self</span>.set.get_language(language_name)<span class="question-mark">?</span>;
+        <span class="kw">let </span>highlight_config = <span class="self">self</span>.set.get_language(language)<span class="question-mark">?</span>;
 
         <span class="kw">let </span>injection_callback = |lang_name: <span class="kw-2">&amp;</span>str| {
             <span class="kw">let </span>lang_name = lang_name.to_ascii_lowercase();
-            <span class="comment">// if `lang_name` matches a language/parser name in `languages`, use that language
-            </span><span class="self">self</span>.set
-                .get_language(<span class="kw-2">&amp;</span>lang_name)
+            <span class="comment">// if `lang_name` is a supported language in the set, use that
+            </span>Set::Language::for_name(<span class="kw-2">&amp;</span>lang_name)
                 .ok()
-                <span class="comment">// else if `injection_callback` returns a name, try getting a language for that name
-                </span>.or_else(|| {
-                    <span class="self">self</span>.set
-                        .for_injection(<span class="kw-2">&amp;</span>lang_name)
-                        .and_then(|name| <span class="self">self</span>.set.get_language(name.as_ref()).ok())
-                })
-                <span class="comment">// else, `lang_name` might be a mimetype like `text/css`, so try both again with the
-                // text after the last `/`
+                <span class="comment">// else if `for_injection` returns a name, try getting a language for that name
+                </span>.or_else(|| Set::Language::for_injection(<span class="kw-2">&amp;</span>lang_name))
+                <span class="comment">// else, `lang_name` might be a mimetype like `application/json`, so try both again
+                // with the text after the last `/`
                 </span>.or_else(|| {
                     lang_name.rsplit_once(<span class="string">&#39;/&#39;</span>).and_then(|(<span class="kw">_</span>, name)| {
-                        <span class="self">self</span>.set.get_language(name).ok().or_else(|| {
-                            <span class="self">self</span>.set
-                                .for_injection(name)
-                                .and_then(|name| <span class="self">self</span>.set.get_language(name.as_ref()).ok())
-                        })
+                        Set::Language::for_name(name)
+                            .ok()
+                            .or_else(|| Set::Language::for_injection(name))
                     })
                 })
+                .and_then(|lang| <span class="self">self</span>.set.get_language(lang).ok())
         };
 
         <span class="kw">match </span>tree {
