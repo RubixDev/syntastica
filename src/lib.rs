@@ -49,19 +49,20 @@ pub type ThemedHighlights<'src> = Vec<Vec<(&'src str, Option<Style>)>>;
 /// - [`Processor::process_once`] returns an error.
 /// - The `TryInto<ResolvedTheme>` implementation on `T` errors. If `T` is [`Theme`](theme::Theme),
 ///   look at [`Theme::resolve_links`](theme::Theme::resolve_links) for when this might happen.
-pub fn highlight<T, E>(
+pub fn highlight<S, T, E>(
     code: impl AsRef<str>,
-    language_name: &str,
-    language_set: &impl LanguageSet,
+    language: S::Language,
+    language_set: &S,
     renderer: &mut impl Renderer,
     theme: T,
 ) -> Result<String>
 where
+    S: LanguageSet,
     T: TryInto<ResolvedTheme, Error = E>,
     crate::Error: From<E>,
 {
     Ok(render(
-        &Processor::process_once(code.as_ref(), language_name, language_set)?,
+        &Processor::process_once(code.as_ref(), language, language_set)?,
         renderer,
         theme.try_into()?,
     ))

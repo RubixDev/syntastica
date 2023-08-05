@@ -16,6 +16,7 @@ syntastica-queries.workspace = true
 
 document-features = { workspace = true, optional = true }
 once_cell.workspace = true
+strum = { workspace = true, features = ["derive", "phf"] }
 
 [build-dependencies]
 rustc_version = { workspace = true, optional = true }

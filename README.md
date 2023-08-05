@@ -191,13 +191,13 @@ section about [use cases](#use-cases) for when it is appropriate to use
 
 ```rust
 use syntastica::renderer::TerminalRenderer;
-use syntastica_parsers::LanguageSetImpl;
+use syntastica_parsers::{Lang, LanguageSetImpl};
 
 let output = syntastica::highlight(
     // the code to highlight
     r#"fn main() { println!("42"); }"#,
-    // the name of the input's language
-    "rust",
+    // the input's language
+    Lang::Rust,
     // use `syntastica-parsers` language set
     &LanguageSetImpl::new(),
     // use the TerminalRenderer with no background color
@@ -217,14 +217,14 @@ two different renderers.
 
 ```rust
 use syntastica::{Processor, style::Color, renderer::*};
-use syntastica_parsers::LanguageSetImpl;
+use syntastica_parsers::{Lang, LanguageSetImpl};
 
 // process the input once, but store the raw highlight information
 let highlights = Processor::process_once(
     // the code to highlight
     r#"fn main() { println!("42"); }"#,
-    // the name of the input's language
-    "rust",
+    // the input's language
+    Lang::Rust,
     // use `syntastica-parsers` language set
     &LanguageSetImpl::new(),
 )
@@ -255,7 +255,7 @@ inputs should be highlighted.
 
 ```rust
 use syntastica::{Processor, style::Color, renderer::*};
-use syntastica_parsers::LanguageSetImpl;
+use syntastica_parsers::{Lang, LanguageSetImpl};
 
 // create a language set and a `Processor`
 let language_set = LanguageSetImpl::new();
@@ -267,13 +267,13 @@ let mut processor = Processor::new(&language_set);
 let highlights_rust = processor.process(
     // the code to highlight
     r#"fn main() { println!("42"); }"#,
-    // the name of the input's language
-    "rust",
+    // the input's language
+    Lang::Rust,
 )
 .unwrap_or_else(|err| panic!("highlighting failed: {err}"));
 
 // process some other input in another language
-let highlights_js = processor.process(r"console.log('42')", "javascript")
+let highlights_js = processor.process(r"console.log('42')", Lang::Javascript)
     .unwrap_or_else(|err| panic!("highlighting failed: {err}"));
 
 // render the rust code to the terminal using the
@@ -312,8 +312,8 @@ for explanations of the rest of the code.
 provides automatic detection.
 
 ```rust
-use syntastica::{renderer::TerminalRenderer, language_set::LanguageSet};
-use syntastica_parsers::LanguageSetImpl;
+use syntastica::{renderer::TerminalRenderer, language_set::{LanguageSet, SupportedLanguage}};
+use syntastica_parsers::{Lang, LanguageSetImpl};
 
 // detect the file type given a file's path and content.
 // this requires a dependency on `tft`
@@ -322,10 +322,10 @@ let ft = tft::detect("main.rs", "");
 let language_set = LanguageSetImpl::new();
 let output = syntastica::highlight(
     r#"fn main() { println!("42"); }"#,
-    // the `LanguageSet` trait also provides a `for_file_type` function
-    // which returns an `Option<Cow<'static, str>>`
+    // the `SupportedLanguage` trait provides a `for_file_type` function
+    // which returns an `Option<Lang>`
     // make sure to have the trait in scope
-    language_set.for_file_type(ft).unwrap().as_ref(),
+    Lang::for_file_type(ft).unwrap(),
     &language_set,
     &mut TerminalRenderer::new(None),
     syntastica_themes::gruvbox::dark(),
@@ -344,7 +344,7 @@ information.
 
 ```rust
 use syntastica::{renderer::TerminalRenderer, theme};
-use syntastica_parsers::LanguageSetImpl;
+use syntastica_parsers::{Lang, LanguageSetImpl};
 
 let theme = theme! {
     // specify colors using hex literals
@@ -357,7 +357,7 @@ let theme = theme! {
     "function": "$blue",
 
     // specify more styling options in curly braces
-    // (note that currently this order required by the macro)
+    // (note that currently this order is required by the macro)
     "string": {
         color: None,
         underline: false,
@@ -370,7 +370,7 @@ let theme = theme! {
 
 let output = syntastica::highlight(
     r#"fn main() { println!("42"); }"#,
-    "rust",
+    Lang::Rust,
     &LanguageSetImpl::new(),
     &mut TerminalRenderer::new(None),
     theme,

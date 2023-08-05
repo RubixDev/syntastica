@@ -3,16 +3,48 @@
 use std::{borrow::Cow, cell::RefCell, collections::HashMap, path::PathBuf};
 
 use anyhow::Result;
-use syntastica_core::language_set::{FileType, HighlightConfiguration, LanguageSet};
+use syntastica_core::language_set::{
+    FileType, HighlightConfiguration, LanguageSet, SupportedLanguage,
+};
 
 use loader::{Config, Loader};
 
 mod loader;
 
+// TODO: this workaround is not perfect in any way
+pub enum Lang {
+    Scope(Box<str>),
+    Injection(Box<str>),
+}
+
+impl SupportedLanguage for Lang {
+    fn name(&self) -> Cow<'_, str> {
+        match self {
+            Self::Scope(scope) => Cow::Borrowed(scope),
+            Self::Injection(name) => Cow::Owned(format!("###{name}")),
+        }
+    }
+
+    fn for_name(name: impl AsRef<str>) -> syntastica_core::Result<Self> {
+        match name.as_ref().strip_prefix("###") {
+            Some(injection_name) => Ok(Self::Injection(injection_name.into())),
+            None => Ok(Self::Scope(name.as_ref().into())),
+        }
+    }
+
+    fn for_file_type(_file_type: FileType) -> Option<Self> {
+        None
+    }
+
+    fn for_injection(name: impl AsRef<str>) -> Option<Self> {
+        Some(Self::Injection(name.as_ref().into()))
+    }
+}
+
 // TODO: `query_search_dirs`?
 pub struct LanguageLoader {
     loader: Loader,
-    highlight_configs: RefCell<HashMap<String, &'static HighlightConfiguration>>,
+    highlight_configs: RefCell<HashMap<Box<str>, &'static HighlightConfiguration>>,
 }
 
 impl LanguageLoader {
@@ -30,40 +62,41 @@ impl LanguageLoader {
 }
 
 impl LanguageSet for LanguageLoader {
-    fn for_file_type(&self, _file_type: FileType) -> Option<Cow<'static, str>> {
-        None
-    }
+    type Language = Lang;
 
-    fn for_injection<'a>(&self, name: &'a str) -> Option<Cow<'a, str>> {
-        Some(
-            self.loader
-                .language_configuration_for_injection_string(name)
-                .ok()??
+    fn get_language(
+        &self,
+        language: Self::Language,
+    ) -> syntastica_core::Result<&HighlightConfiguration> {
+        let name = match language {
+            Lang::Scope(scope) => scope,
+            Lang::Injection(name) => self
+                .loader
+                .language_configuration_for_injection_string(&name)
+                .map_err(|_| syntastica_core::Error::UnsupportedLanguage(name.to_string()))?
+                .ok_or_else(|| syntastica_core::Error::UnsupportedLanguage(name.to_string()))?
                 .1
                 .scope
-                .clone()?
-                .into(),
-        )
-    }
+                .clone()
+                .ok_or_else(|| syntastica_core::Error::UnsupportedLanguage(name.to_string()))?
+                .into_boxed_str(),
+        };
 
-    fn get_language(&self, name: &str) -> Result<&HighlightConfiguration, syntastica_core::Error> {
-        if let Some(config) = self.highlight_configs.borrow().get(name) {
+        if let Some(config) = self.highlight_configs.borrow().get(name.as_ref()) {
             return Ok(*config);
         }
 
         let (lang, lang_config) = self
             .loader
-            .language_configuration_for_scope(name)
+            .language_configuration_for_scope(name.as_ref())
             .map_err(|err| syntastica_core::Error::Custom(err.to_string()))?
-            .ok_or_else(|| syntastica_core::Error::UnsupportedLanguage(name.to_owned()))?;
+            .ok_or_else(|| syntastica_core::Error::UnsupportedLanguage(name.to_string()))?;
 
         let config_ref = lang_config
             .highlight_config(lang)
             .map_err(|err| syntastica_core::Error::Custom(err.to_string()))?
-            .ok_or_else(|| syntastica_core::Error::UnsupportedLanguage(name.to_owned()))?;
-        self.highlight_configs
-            .borrow_mut()
-            .insert(name.to_owned(), config_ref);
+            .ok_or_else(|| syntastica_core::Error::UnsupportedLanguage(name.to_string()))?;
+        self.highlight_configs.borrow_mut().insert(name, config_ref);
 
         Ok(config_ref)
     }

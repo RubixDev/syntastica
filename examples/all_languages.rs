@@ -1,7 +1,7 @@
 use std::{collections::BTreeMap, env};
 
-use syntastica::{renderer::TerminalRenderer, Processor};
-use syntastica_parsers_git::LanguageSetImpl;
+use syntastica::{language_set::SupportedLanguage, renderer::TerminalRenderer, Processor};
+use syntastica_parsers_git::{Lang, LanguageSetImpl};
 
 fn main() {
     let filter = env::args().nth(1).unwrap_or_default();
@@ -33,7 +33,7 @@ fn example(
     println!(
         "{}",
         syntastica::render(
-            &processor.process(code.trim(), lang_name)?,
+            &processor.process(code.trim(), Lang::for_name(lang_name)?)?,
             &mut TerminalRenderer::new(None),
             syntastica_themes::one::dark(),
         )

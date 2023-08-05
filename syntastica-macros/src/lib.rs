@@ -1,3 +1,6 @@
+use std::borrow::Cow;
+
+use heck::ToPascalCase;
 use once_cell::sync::Lazy;
 use proc_macro::TokenStream;
 use quote::{format_ident, quote};
@@ -98,6 +101,7 @@ pub fn parsers_ffi(_: TokenStream) -> TokenStream {
         }
     });
     parsers(
+        "syntastica_parsers_git",
         functions,
         |_| true,
         Some(quote! {
@@ -112,15 +116,15 @@ pub fn parsers_ffi(_: TokenStream) -> TokenStream {
 
 #[proc_macro]
 pub fn parsers_gitdep(_: TokenStream) -> TokenStream {
-    parsers_rust(false, "")
+    parsers_rust("syntastica_parsers_gitdep", false, "")
 }
 
 #[proc_macro]
 pub fn parsers_dep(_: TokenStream) -> TokenStream {
-    parsers_rust(true, "_CRATES_IO")
+    parsers_rust("syntastica_parsers", true, "_CRATES_IO")
 }
 
-fn parsers_rust(crates_io: bool, query_suffix: &str) -> TokenStream {
+fn parsers_rust(crate_name: &str, crates_io: bool, query_suffix: &str) -> TokenStream {
     let functions = LANGUAGE_CONFIG.languages.iter().map(|lang| {
         let feat = lang.group.to_string();
         let name = format_ident!("{}", lang.name);
@@ -152,6 +156,7 @@ fn parsers_rust(crates_io: bool, query_suffix: &str) -> TokenStream {
         }
     });
     parsers(
+        crate_name,
         functions,
         |lang| lang.parser.rust_func.is_some() && (!crates_io || lang.parser.crates_io.is_some()),
         None,
@@ -160,12 +165,22 @@ fn parsers_rust(crates_io: bool, query_suffix: &str) -> TokenStream {
 }
 
 fn parsers(
+    crate_name: &str,
     functions: impl Iterator<Item = proc_macro2::TokenStream>,
     filter: impl Fn(&&Language) -> bool,
     extra: Option<proc_macro2::TokenStream>,
     query_suffix: &str,
 ) -> TokenStream {
     let list = LANGUAGE_CONFIG
+        .languages
+        .iter()
+        .filter(&filter)
+        .map(|lang| {
+            let name_str = &lang.name;
+            let variant = format_ident!("{}", lang.name.to_pascal_case());
+            quote! { #[cfg(feature = #name_str)] Lang::#variant }
+        });
+    let names_list = LANGUAGE_CONFIG
         .languages
         .iter()
         .filter(&filter)
@@ -179,11 +194,12 @@ fn parsers(
         .filter(&filter)
         .flat_map(|lang| {
             let name_str = &lang.name;
+            let variant = format_ident!("{}", lang.name.to_pascal_case());
             lang.file_types.iter().map(move |ft| {
                 let ft = format_ident!("{ft:?}");
                 quote! {
                     #[cfg(feature = #name_str)]
-                    (::syntastica_core::language_set::FileType::#ft, #name_str)
+                    (::syntastica_core::language_set::FileType::#ft, Lang::#variant)
                 }
             })
         });
@@ -191,10 +207,11 @@ fn parsers(
     langs_sorted_by_group.sort_by_key(|lang| lang.group);
     let func_map = langs_sorted_by_group.iter().filter(&filter).map(|lang| {
         let name_str = &lang.name;
+        let variant = format_ident!("{}", lang.name.to_pascal_case());
         quote! {
             #[cfg(feature = #name_str)]
             {
-                _map.insert(#name_str, _idx);
+                _map.insert(Lang::#variant, _idx);
                 _idx += 1;
             }
         }
@@ -202,7 +219,7 @@ fn parsers(
     let funcs = langs_sorted_by_group.iter().filter(&filter).map(|lang| {
         let name = format_ident!("{}", lang.name);
         let name_str = &lang.name;
-        quote! { #[cfg(feature = #name_str)] &#name }
+        quote! { #[cfg(feature = #name_str)] #name }
     });
     let queries = langs_sorted_by_group.iter().filter(&filter).map(|lang| {
         let name_str = &lang.name;
@@ -216,12 +233,57 @@ fn parsers(
             ::syntastica_queries::#locals,
         ] }
     });
+    let lang_enum_example_use = format!("use {crate_name}::{{Lang, LANGUAGES, LANGUAGE_NAMES}};");
+    let lang_enum = LANGUAGE_CONFIG
+        .languages
+        .iter()
+        .filter(&filter)
+        .map(|lang| {
+            let feat = lang.group.to_string();
+            let name_str = &lang.name;
+            let ft_support = if lang.file_types.is_empty() {
+                Cow::Borrowed("supports no file types")
+            } else {
+                format!(
+                    "supports these file types: {}",
+                    lang.file_types
+                        .iter()
+                        .map(|ft| format!(
+                            "[`{ft}`](::syntastica_core::language_set::FileType::{ft:?})"
+                        ))
+                        .collect::<Vec<_>>()
+                        .join(", ")
+                )
+                .into()
+            };
+            let doc = format!("Provides the [`{name_str}`] language, {ft_support}.");
+            let variant = format_ident!("{}", lang.name.to_pascal_case());
+            quote! {
+                #[doc = #doc]
+                #[cfg(any(feature = #feat, feature = #name_str))]
+                #variant
+            }
+        });
+    let lang_get_match = LANGUAGE_CONFIG
+        .languages
+        .iter()
+        .filter(&filter)
+        .map(|lang| {
+            let name = format_ident!("{}", lang.name);
+            let name_str = &lang.name;
+            let variant = format_ident!("{}", lang.name.to_pascal_case());
+            quote! {
+                #[cfg(feature = #name_str)]
+                Self::#variant => #name(),
+            }
+        });
+    let lang_set_type = quote! { type Language = Lang; };
 
     quote_use! {
         # use std::{borrow::Cow, cell::UnsafeCell, collections::HashMap};
 
         # use syntastica_core::{
-            language_set::{HighlightConfiguration, LanguageSet, Language, FileType},
+            language_set::{HighlightConfiguration, LanguageSet, Language, FileType, SupportedLanguage},
             Error, Result,
             theme::THEME_KEYS,
         };
@@ -229,18 +291,21 @@ fn parsers(
 
         #extra
 
-        /// A list of all language names that are supported by this parser collection.
-        pub const LANGUAGES: &[&str] = &[#(#list),*];
+        /// A list of all languages supported by the current feature set.
+        pub const LANGUAGES: &[Lang] = &[#(#list),*];
         const LANG_COUNT: usize = LANGUAGES.len();
+
+        /// A list of all language names supported by the current feature set.
+        pub const LANGUAGE_NAMES: &[&str] = &[#(#names_list),*];
 
         #(#functions)*
 
         // TODO: use "perfect" hashmap with compile-time known keys
-        static FILE_TYPE_MAP: Lazy<HashMap<FileType, &'static str>>
+        static FILE_TYPE_MAP: Lazy<HashMap<FileType, Lang>>
             = Lazy::new(|| HashMap::from([#(#file_types),*]));
 
         // TODO: use "perfect" hashmap with compile-time known keys
-        static IDX_MAP: Lazy<HashMap<&'static str, usize>> = Lazy::new(|| {
+        static IDX_MAP: Lazy<HashMap<Lang, usize>> = Lazy::new(|| {
             let mut _map = HashMap::new();
             let mut _idx = 0;
             #(#func_map)*
@@ -248,10 +313,10 @@ fn parsers(
         });
 
         const QUERIES: &[[&str; 3]] = &[#(#queries),*];
+        const FUNCS: &[fn() -> Language] = &[#(#funcs),*];
 
         fn __get_language(idx: usize) -> Result<HighlightConfiguration> {
-            let funcs: &[&dyn Fn() -> Language] = &[#(#funcs),*];
-            let lang = funcs[idx]();
+            let lang = FUNCS[idx]();
             let mut conf = HighlightConfiguration::new(
                 lang,
                 QUERIES[idx][0],
@@ -262,9 +327,100 @@ fn parsers(
             Ok(conf)
         }
 
-        // TODO: maybe create enum with all supported languages
+        /// An enum of every supported language in the current feature set.
+        ///
+        /// An instance of the respective tree-stter
+        /// [`Language`](::syntastica_core::language_set::Language) can be obtained with the
+        /// [`get`](Lang::get) method.
+        ///
+        /// You can also get a [`Lang`] from its name using
+        /// [`for_name`](::syntastica_core::language_set::SupportedLanguage::for_name), or for a
+        /// [`FileType`](::syntastica_core::language_set::FileType) using
+        /// [`for_file_type`](::syntastica_core::language_set::SupportedLanguage::for_file_type).
+        /// See the docs for each variant to see its "name" and the supported file types.
+        /// Both of these require the
+        /// [`SupportedLanguage`](::syntastica_core::language_set::SupportedLanguage) trait to be
+        /// in scope.
+        ///
+        /// See [`LANGUAGES`] for a list containing all variants and [`LANGUAGE_NAMES`] for a list
+        /// of all valid names.
+        ///
+        /// The enum is marked as non-exhaustive for two reasons:
+        ///
+        /// 1. New languages may be added in the future
+        /// 2. The variants are enabled/disabled by features
+        ///
+        /// # Example
+        ///
+        /// ```
+        #[doc = #lang_enum_example_use]
+        /// use syntastica_core::language_set::{SupportedLanguage, FileType};
+        ///
+        /// // you can get a `Lang` from its name
+        /// assert_eq!(Lang::Rust, Lang::for_name("rust").unwrap());
+        /// // and for a file type
+        /// assert_eq!(Some(Lang::Rust), Lang::for_file_type(FileType::Rust));
+        ///
+        /// // `LANGUAGES` is a list of all variants,
+        /// // `LANGUAGE_NAMES` is a list of all variant names
+        /// for (&lang, &name) in LANGUAGES.iter().zip(LANGUAGE_NAMES) {
+        ///     assert_eq!(lang, Lang::for_name(name).unwrap());
+        ///
+        ///     // `Lang` instances can be turned into strings
+        ///     assert_eq!(lang, Lang::for_name(lang.name()).unwrap());
+        ///     assert_eq!(lang, Lang::for_name(lang.to_string()).unwrap());
+        ///     assert_eq!(lang, Lang::for_name(lang.as_ref()).unwrap());
+        ///     let lang_name: &'static str = lang.into();
+        ///     assert_eq!(lang, Lang::for_name(lang_name).unwrap());
+        /// }
+        /// ```
+        #[non_exhaustive]
+        #[derive(
+            Debug,
+            Clone,
+            Copy,
+            PartialEq,
+            Eq,
+            Hash,
+            ::strum::Display,
+            ::strum::AsRefStr,
+            ::strum::IntoStaticStr,
+            ::strum::EnumString,
+        )]
+        #[strum(serialize_all = "snake_case", use_phf)]
+        pub enum Lang {
+            #(#lang_enum),*
+        }
 
-        /// An implementation of [`LanguageSet`]
+        impl Lang {
+            /// Get an instance of the respective
+            /// [`Language`](::syntastica_core::language_set::Language).
+            pub fn get(&self) -> Language {
+                match self {
+                    #(#lang_get_match)*
+                    _ => unreachable!("all variants are matched")
+                }
+            }
+        }
+
+        impl SupportedLanguage for Lang {
+            fn name(&self) -> Cow<'_, str> {
+                Cow::Borrowed(self.into())
+            }
+
+            fn for_name(name: impl AsRef<str>) -> Result<Self> {
+                <Self as ::std::str::FromStr>::from_str(name.as_ref())
+                    .map_err(|_| Error::UnsupportedLanguage(name.as_ref().to_owned()))
+            }
+
+            fn for_file_type(file_type: FileType) -> Option<Self> {
+                FILE_TYPE_MAP
+                    .get(&file_type)
+                    .map(|name| (*name).into())
+            }
+        }
+
+        /// An implementation of [`LanguageSet`](::syntastica_core::language_set::LanguageSet)
         /// including all languages in the enabled feature set.
         ///
         /// Languages are loaded the first time they are requested and will then be reused for
@@ -273,37 +429,25 @@ fn parsers(
         pub struct LanguageSetImpl(UnsafeCell<[Option<HighlightConfiguration>; LANG_COUNT]>);
 
         impl LanguageSet for LanguageSetImpl {
-            fn get_language(&self, name: &str) -> Result<&HighlightConfiguration> {
-                if let Some(idx) = IDX_MAP.get(&name) {
-                    // SAFETY: We only ever give out shared references to list entries, and only
-                    // after they have been initialized. As such it is safe to mutate an entry
-                    // which is still `None` and then give out a shared reference.
-                    let list = unsafe { self.0.get().as_ref() }.unwrap();
-                    match list[*idx].as_ref() {
-                        Some(config) => Ok(config),
-                        None => {
-                            // SAFETY: see above
-                            let list = unsafe { self.0.get().as_mut() }.unwrap();
-                            let conf = __get_language(*idx)?;
-                            list[*idx] = Some(conf);
-                            Ok(list[*idx].as_ref().unwrap())
-                        }
+            #lang_set_type
+
+            fn get_language(&self, language: Self::Language) -> Result<&HighlightConfiguration> {
+                let idx = IDX_MAP[&language];
+                // SAFETY: We only ever give out shared references to list entries, and only
+                // after they have been initialized. As such it is safe to mutate an entry
+                // which is still `None` and then give out a shared reference.
+                let list = unsafe { self.0.get().as_ref() }.unwrap();
+                match list[idx].as_ref() {
+                    Some(config) => Ok(config),
+                    None => {
+                        // SAFETY: see above
+                        let list = unsafe { self.0.get().as_mut() }.unwrap();
+                        let conf = __get_language(idx)?;
+                        list[idx] = Some(conf);
+                        Ok(list[idx].as_ref().unwrap())
                     }
-                } else {
-                    Err(Error::UnsupportedLanguage(name.to_owned()))
                 }
             }
-
-            fn for_file_type(&self, file_type: FileType) -> Option<Cow<'static, str>> {
-                FILE_TYPE_MAP
-                    .get(&file_type)
-                    .map(|name| (*name).into())
-            }
-
-            // TODO: injection regex
-            // fn for_injection<'a>(&self, name: &'a str) -> ::std::option::Option<::std::borrow::Cow<'a, str>> {
-            //     ::std::option::Option::None
-            // }
         }
 
         const INIT: Option<HighlightConfiguration> = None;
@@ -316,20 +460,12 @@ fn parsers(
             /// Pre-load the given list of languages.
             ///
             /// To pre-load all supported languages, use [`preload_all`](LanguageSetImpl::preload_all).
-            ///
-            /// # Errors
-            /// If the `languages` list contains a name of a language that is not included in this set, an
-            /// [`Error::UnsupportedLanguage`] error is returned and no further languages are loaded.
-            pub fn preload(&mut self, languages: &[&str]) -> Result<()> {
+            pub fn preload(&mut self, languages: &[Lang]) -> Result<()> {
                 for lang in languages {
-                    match IDX_MAP.get(lang) {
-                        Some(idx) => {
-                            let entry = &mut self.0.get_mut()[*idx];
-                            if entry.is_none() {
-                                *entry = Some(__get_language(*idx)?);
-                            }
-                        }
-                        None => return Err(Error::UnsupportedLanguage(lang.to_string())),
+                    let idx = IDX_MAP[lang];
+                    let entry = &mut self.0.get_mut()[idx];
+                    if entry.is_none() {
+                        *entry = Some(__get_language(idx)?);
                     }
                 }
                 Ok(())
@@ -338,9 +474,8 @@ fn parsers(
             /// Pre-load all languages in this set.
             ///
             /// To pre-load a specific set of languages, use [`preload`](LanguageSetImpl::preload).
-            pub fn preload_all(&mut self) {
+            pub fn preload_all(&mut self) -> Result<()> {
                 self.preload(LANGUAGES)
-                    .expect("constant `LANGUAGES` list should only contain valid names")
             }
         }
 

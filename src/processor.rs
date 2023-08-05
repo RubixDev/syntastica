@@ -1,5 +1,9 @@
 use syntastica_core::ts_runtime::Node;
-use syntastica_core::{language_set::LanguageSet, theme::THEME_KEYS, Result};
+use syntastica_core::{
+    language_set::{LanguageSet, SupportedLanguage},
+    theme::THEME_KEYS,
+    Result,
+};
 use syntastica_highlight::{Highlight, HighlightEvent, Highlighter};
 
 use crate::Highlights;
@@ -27,11 +31,11 @@ use crate::Highlights;
 ///
 /// ```
 /// use syntastica::{Processor, style::Style};
-/// use syntastica_parsers::LanguageSetImpl;
+/// use syntastica_parsers::{Lang, LanguageSetImpl};
 ///
 /// let highlights = Processor::process_once(
-///     "fn",   // the code to process
-///     "rust", // the code's language
+///     "fn",       // the code to process
+///     Lang::Rust, // the code's language
 ///     // any valid `LanguageSet` supporting the required language
 ///     &LanguageSetImpl::new(),
 /// ).unwrap();
@@ -46,7 +50,7 @@ use crate::Highlights;
 ///
 /// ```
 /// use syntastica::{Processor, style::Style};
-/// use syntastica_parsers_git::LanguageSetImpl;
+/// use syntastica_parsers_git::{Lang, LanguageSetImpl};
 ///
 /// // get a `LanguageSet`
 /// let language_set = LanguageSetImpl::new();
@@ -55,11 +59,11 @@ use crate::Highlights;
 /// let mut processor = Processor::new(&language_set);
 ///
 /// // process some input
-/// let highlights = processor.process("# comment", "python").unwrap();
+/// let highlights = processor.process("# comment", Lang::Python).unwrap();
 /// assert_eq!(highlights, vec![vec![("# comment", Some("comment"))]]);
 ///
 /// // process input with injections
-/// let highlights = processor.process(r#"Regex::new(r".")"#, "rust").unwrap();
+/// let highlights = processor.process(r#"Regex::new(r".")"#, Lang::Rust).unwrap();
 /// assert_eq!(highlights, vec![vec![
 ///     ("Regex", Some("type")),
 ///     ("::", Some("punctuation.delimiter")),
@@ -97,10 +101,10 @@ impl<'set, Set: LanguageSet> Processor<'set, Set> {
     /// return type, and possible errors.
     pub fn process_once<'src>(
         code: &'src str,
-        language_name: &str,
+        language: Set::Language,
         set: &'set Set,
     ) -> Result<Highlights<'src>> {
-        Self::new(set).process(code, language_name)
+        Self::new(set).process(code, language)
     }
 
     /// Process the given `code` using the language specified by `language_name`.
@@ -122,9 +126,9 @@ impl<'set, Set: LanguageSet> Processor<'set, Set> {
     pub fn process<'src>(
         &mut self,
         code: &'src str,
-        language_name: &str,
+        language: Set::Language,
     ) -> Result<Highlights<'src>> {
-        self.process_impl(code, language_name, None)
+        self.process_impl(code, language, None)
     }
 
     /// Process the given `code` using the language specified by `language_name` using an already
@@ -142,9 +146,10 @@ impl<'set, Set: LanguageSet> Processor<'set, Set> {
     /// ```
     /// use tree_sitter::{Parser, InputEdit, Point};
     /// use syntastica::{language_set::LanguageSet, Processor, renderer::TerminalRenderer};
+    /// use syntastica_parsers::{Lang, LanguageSetImpl};
     ///
     /// // create a LanguageSet, Processor, Renderer, and ResolvedTheme
-    /// let set = syntastica_parsers::LanguageSetImpl::new();
+    /// let set = LanguageSetImpl::new();
     /// let mut processor = Processor::new(&set);
     /// let mut renderer = TerminalRenderer::new(None);
     /// let theme = syntastica_themes::one::dark();
@@ -152,13 +157,13 @@ impl<'set, Set: LanguageSet> Processor<'set, Set> {
     /// // create a tree-sitter parser
     /// let mut parser = Parser::new();
     /// // and set the desired language
-    /// parser.set_language(set.get_language("rust")?.language)?;
+    /// parser.set_language(Lang::Rust.get())?;
     ///
     /// // parse, process, and render source code
     /// let code = "fn test() {}";
     /// let mut tree = parser.parse(code, None).unwrap();
     /// println!("{}", syntastica::render(
-    ///     &processor.process_tree(code, "rust", &tree.root_node())?,
+    ///     &processor.process_tree(code, Lang::Rust, &tree.root_node())?,
     ///     &mut renderer,
     ///     &theme,
     /// ));
@@ -177,7 +182,7 @@ impl<'set, Set: LanguageSet> Processor<'set, Set> {
     /// // re-parse, process, and render the code
     /// let new_tree = parser.parse(new_code, Some(&tree)).unwrap();
     /// println!("{}", syntastica::render(
-    ///     &processor.process_tree(new_code, "rust", &new_tree.root_node())?,
+    ///     &processor.process_tree(new_code, Lang::Rust, &new_tree.root_node())?,
     ///     &mut renderer,
     ///     &theme,
     /// ));
@@ -202,43 +207,37 @@ impl<'set, Set: LanguageSet> Processor<'set, Set> {
     pub fn process_tree<'src>(
         &mut self,
         code: &'src str,
-        language_name: &str,
+        language: Set::Language,
         tree: &Node<'_>,
     ) -> Result<Highlights<'src>> {
-        self.process_impl(code, language_name, Some(tree))
+        self.process_impl(code, language, Some(tree))
     }
 
     fn process_impl<'src>(
         &mut self,
         code: &'src str,
-        language_name: &str,
+        language: Set::Language,
         tree: Option<&Node<'_>>,
     ) -> Result<Highlights<'src>> {
-        let highlight_config = self.set.get_language(language_name)?;
+        let highlight_config = self.set.get_language(language)?;
 
         let injection_callback = |lang_name: &str| {
             let lang_name = lang_name.to_ascii_lowercase();
-            // if `lang_name` matches a language/parser name in `languages`, use that language
-            self.set
-                .get_language(&lang_name)
+            // if `lang_name` is a supported language in the set, use that
+            Set::Language::for_name(&lang_name)
                 .ok()
-                // else if `injection_callback` returns a name, try getting a language for that name
-                .or_else(|| {
-                    self.set
-                        .for_injection(&lang_name)
-                        .and_then(|name| self.set.get_language(name.as_ref()).ok())
-                })
-                // else, `lang_name` might be a mimetype like `text/css`, so try both again with the
-                // text after the last `/`
+                // else if `for_injection` returns a name, try getting a language for that name
+                .or_else(|| Set::Language::for_injection(&lang_name))
+                // else, `lang_name` might be a mimetype like `application/json`, so try both again
+                // with the text after the last `/`
                 .or_else(|| {
                     lang_name.rsplit_once('/').and_then(|(_, name)| {
-                        self.set.get_language(name).ok().or_else(|| {
-                            self.set
-                                .for_injection(name)
-                                .and_then(|name| self.set.get_language(name.as_ref()).ok())
-                        })
+                        Set::Language::for_name(name)
+                            .ok()
+                            .or_else(|| Set::Language::for_injection(name))
                     })
                 })
+                .and_then(|lang| self.set.get_language(lang).ok())
         };
 
         match tree {

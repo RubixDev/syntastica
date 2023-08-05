@@ -8,15 +8,16 @@ use std::{
 };
 
 use syntastica::{
+    language_set::SupportedLanguage,
     renderer::{HtmlRenderer, TerminalRenderer},
     style::Color,
     theme::ResolvedTheme,
     Highlights, Processor,
 };
-use syntastica_parsers_git::LanguageSetImpl;
+use syntastica_parsers_git::{Lang, LanguageSetImpl};
 
-static mut LANGS_LIST: Vec<String> = vec![];
-static mut LANGS_LIST_REF: Vec<&'static str> = vec![];
+static mut LANG_NAMES_LIST: Vec<String> = vec![];
+static mut LANGS_LIST: Vec<Lang> = vec![];
 static mut LANGUAGES: Option<LanguageSetImpl> = None;
 static mut PROCESSOR: Option<Processor<'static, LanguageSetImpl>> = None;
 
@@ -61,11 +62,20 @@ pub unsafe extern "C" fn init(langs: *const *const c_char, langs_len: usize) {
     unsafe {
         LANGUAGES = Some(match langs {
             Some(langs) => {
-                LANGS_LIST = langs;
-                LANGS_LIST_REF = LANGS_LIST.iter().map(|str| str.as_str()).collect();
+                LANG_NAMES_LIST = langs;
+                LANGS_LIST = Vec::with_capacity(LANG_NAMES_LIST.len());
+                for name in &LANG_NAMES_LIST {
+                    match Lang::for_name(name) {
+                        Ok(lang) => LANGS_LIST.push(lang),
+                        Err(err) => {
+                            eprintln!("initialization failed: {err}");
+                            return;
+                        }
+                    }
+                }
                 let mut set = LanguageSetImpl::new();
-                if let Err(err) = set.preload(&LANGS_LIST_REF) {
-                    eprintln!("initialization failed: {err}")
+                if let Err(err) = set.preload(&LANGS_LIST) {
+                    eprintln!("initialization failed: {err}");
                 }
                 set
             }
@@ -101,6 +111,11 @@ pub unsafe fn highlight(
     let theme = unsafe { string_from_ptr(theme) };
     let renderer = unsafe { string_from_ptr(renderer) };
 
+    let Ok(language) = Lang::for_name(&language) else {
+        eprintln!("unsupported language '{language}'");
+        return std::ptr::null();
+    };
+
     let Some(theme) = syntastica_themes::from_str(&theme) else {
         eprintln!("invalid theme '{theme}'");
         return std::ptr::null();
@@ -109,7 +124,7 @@ pub unsafe fn highlight(
     // SAFETY: This application is single-threaded, so it is safe to use mutable statics
     let highlights = match unsafe { PROCESSOR.as_mut() }
         .expect("`init` was called before")
-        .process(&code, &language)
+        .process(&code, language)
     {
         Ok(highlights) => highlights,
         Err(err) => {
@@ -141,11 +156,16 @@ pub unsafe fn process(code: *const c_char, language: *const c_char) {
     let code = unsafe { string_from_ptr(code) };
     let language = unsafe { string_from_ptr(language) };
 
+    let Ok(language) = Lang::for_name(&language) else {
+        eprintln!("unsupported language '{language}'");
+        return;
+    };
+
     // SAFETY: This application is single-threaded, so it is safe to use mutable statics
     unsafe { CODE = code };
     let highlights = match unsafe { PROCESSOR.as_mut() }
         .expect("`init` was called before")
-        .process(unsafe { &CODE }, &language)
+        .process(unsafe { &CODE }, language)
     {
         Ok(highlights) => highlights,
         Err(err) => {

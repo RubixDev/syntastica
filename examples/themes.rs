@@ -2,14 +2,14 @@ use std::collections::HashMap;
 
 use syntastica::{renderer::TerminalRenderer, Highlights, Processor};
 use syntastica_core::theme::ResolvedTheme;
-use syntastica_parsers_git::LanguageSetImpl;
+use syntastica_parsers_git::{Lang, LanguageSetImpl};
 
 fn main() {
     let examples: HashMap<String, String> =
         toml::from_str(include_str!("./example_programs.toml")).unwrap();
 
     let highlights =
-        Processor::process_once(&examples["rust"], "rust", &LanguageSetImpl::new()).unwrap();
+        Processor::process_once(&examples["rust"], Lang::Rust, &LanguageSetImpl::new()).unwrap();
 
     for theme in syntastica_themes::THEMES {
         example(

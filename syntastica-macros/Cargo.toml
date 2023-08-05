@@ -13,6 +13,7 @@ description = "Macros for internal use in syntastica"
 proc-macro = true
 
 [dependencies]
+heck = "0.4.1"
 once_cell.workspace = true
 proc-macro2 = "1.0.58"
 quote = "1.0.27"
