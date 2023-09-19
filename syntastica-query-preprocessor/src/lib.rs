@@ -388,7 +388,7 @@ fn replace_predicates(tree: &mut OwnedSexpr) {
     if let OwnedSexpr::List(list) | OwnedSexpr::Group(list) = tree {
         match list.first() {
             Some(OwnedSexpr::Atom(atom)) if atom.first() == Some(&b'#') => {
-                let match_predicate = OwnedSexpr::Atom(match &atom[..5] == b"#not-" {
+                let match_predicate = OwnedSexpr::Atom(match atom.starts_with(b"#not-") {
                     false => b"#match?".to_vec(),
                     true => b"#not-match?".to_vec(),
                 });
