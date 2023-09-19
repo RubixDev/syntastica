@@ -65,6 +65,7 @@ pub fn darker() -> ResolvedTheme {
         ("type".to_owned(), Style::new(Color::new(199, 146, 234), false, false, false, false)),
         ("type.builtin".to_owned(), Style::new(Color::new(199, 146, 234), false, false, false, false)),
         ("type.definition".to_owned(), Style::new(Color::new(199, 146, 234), false, false, false, false)),
+        ("type.qualifier".to_owned(), Style::new(Color::new(137, 221, 255), false, false, false, false)),
         ("variable".to_owned(), Style::new(Color::new(176, 190, 197), false, false, false, false)),
         ("variable.builtin".to_owned(), Style::new(Color::new(176, 190, 197), false, false, false, false)),
     ]))
@@ -128,6 +129,7 @@ pub fn lighter() -> ResolvedTheme {
         ("type".to_owned(), Style::new(Color::new(124, 77, 255), false, false, false, false)),
         ("type.builtin".to_owned(), Style::new(Color::new(124, 77, 255), false, false, false, false)),
         ("type.definition".to_owned(), Style::new(Color::new(124, 77, 255), false, false, false, false)),
+        ("type.qualifier".to_owned(), Style::new(Color::new(57, 173, 181), false, false, false, false)),
         ("variable".to_owned(), Style::new(Color::new(84, 110, 122), false, false, false, false)),
         ("variable.builtin".to_owned(), Style::new(Color::new(84, 110, 122), false, false, false, false)),
     ]))
@@ -191,6 +193,7 @@ pub fn oceanic() -> ResolvedTheme {
         ("type".to_owned(), Style::new(Color::new(199, 146, 234), false, false, false, false)),
         ("type.builtin".to_owned(), Style::new(Color::new(199, 146, 234), false, false, false, false)),
         ("type.definition".to_owned(), Style::new(Color::new(199, 146, 234), false, false, false, false)),
+        ("type.qualifier".to_owned(), Style::new(Color::new(137, 221, 255), false, false, false, false)),
         ("variable".to_owned(), Style::new(Color::new(176, 190, 197), false, false, false, false)),
         ("variable.builtin".to_owned(), Style::new(Color::new(176, 190, 197), false, false, false, false)),
     ]))
@@ -254,6 +257,7 @@ pub fn palenight() -> ResolvedTheme {
         ("type".to_owned(), Style::new(Color::new(199, 146, 234), false, false, false, false)),
         ("type.builtin".to_owned(), Style::new(Color::new(199, 146, 234), false, false, false, false)),
         ("type.definition".to_owned(), Style::new(Color::new(199, 146, 234), false, false, false, false)),
+        ("type.qualifier".to_owned(), Style::new(Color::new(137, 221, 255), false, false, false, false)),
         ("variable".to_owned(), Style::new(Color::new(166, 172, 205), false, false, false, false)),
         ("variable.builtin".to_owned(), Style::new(Color::new(166, 172, 205), false, false, false, false)),
     ]))
@@ -317,6 +321,7 @@ pub fn deep_ocean() -> ResolvedTheme {
         ("type".to_owned(), Style::new(Color::new(199, 146, 234), false, false, false, false)),
         ("type.builtin".to_owned(), Style::new(Color::new(199, 146, 234), false, false, false, false)),
         ("type.definition".to_owned(), Style::new(Color::new(199, 146, 234), false, false, false, false)),
+        ("type.qualifier".to_owned(), Style::new(Color::new(137, 221, 255), false, false, false, false)),
         ("variable".to_owned(), Style::new(Color::new(166, 172, 205), false, false, false, false)),
         ("variable.builtin".to_owned(), Style::new(Color::new(166, 172, 205), false, false, false, false)),
     ]))

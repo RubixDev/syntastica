@@ -2,6 +2,7 @@
 
 import subprocess
 
+
 class SubTheme:
     """
     A class to represent a sub-theme of a colorscheme.
@@ -87,6 +88,7 @@ pub fn {self.name}() -> ResolvedTheme {{
 {self.get_from_nvim()}
 }}
 """
+
 
 class Theme:
     """
@@ -197,6 +199,8 @@ if __name__ == "__main__":
     """
 
     # List of packer.nvim packages of the themes below
+    # use('navarasu/onedark.nvim')
+    # use('ellisonleao/gruvbox.nvim')
     # use('folke/tokyonight.nvim')
     # use { 'catppuccin/nvim', as = 'catppuccin' }
     # use('projekt0n/github-nvim-theme')
@@ -228,6 +232,48 @@ if __name__ == "__main__":
     # use('Yazeed1s/minimal.nvim')
 
     themes_to_import = [
+        Theme("one", "https://github.com/navarasu/onedark.nvim", [
+            SubTheme(
+                "cool",
+                "lua require('onedark').setup { style = 'cool' }; require('onedark').load()"
+                ),
+            SubTheme(
+                "dark",
+                "lua require('onedark').setup { style = 'dark' }; require('onedark').load()"
+                ),
+            SubTheme(
+                "darker",
+                "lua require('onedark').setup { style = 'darker' }; require('onedark').load()"
+                ),
+            SubTheme(
+                "deep",
+                "lua require('onedark').setup { style = 'deep' }; require('onedark').load()"
+                ),
+            SubTheme(
+                "light",
+                "lua require('onedark').setup { style = 'light' }; require('onedark').load()"
+                ),
+            SubTheme(
+                "warm",
+                "lua require('onedark').setup { style = 'warm' }; require('onedark').load()"
+                ),
+            SubTheme(
+                "warmer",
+                "lua require('onedark').setup { style = 'warmer' }; require('onedark').load()"
+                ),
+            ]
+        ),
+        Theme("gruvbox", "https://github.com/ellisonleao/gruvbox.nvim", [
+            SubTheme(
+                "dark",
+                "set background=dark | colorscheme gruvbox"
+                ),
+            SubTheme(
+                "light",
+                "set background=light | colorscheme gruvbox"
+                ),
+            ]
+        ),
         Theme("catppuccin", "https://github.com/catppuccin/nvim", [
             SubTheme(
                 "latte",
