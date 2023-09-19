@@ -2,7 +2,7 @@ use thiserror::Error;
 
 use crate::ParenKind;
 
-/// The default result type. The error variant is a vector of [`Error`](crate::Error)s
+/// The default result type. The error variant is a vector of [`Error`](enum@Error)s
 pub type Result<T> = std::result::Result<T, Vec<Error>>;
 
 /// The crate error type.
