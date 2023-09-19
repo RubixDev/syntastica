@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["CRATES_IO_SKIP_COMMENT","NON_CRATES_IO_SKIP_COMMENT"],"fn":["group_root_level_captures","lua_to_regex","make_queries","process","process_highlights","process_injections","process_locals","read_queries","remove_comments","replace_injection_captures","replace_locals_captures","replace_predicates","strip","ungroup_root_level_captures"],"static":["INHERITS_REGEX","QUERIES_DIR"]};
+window.SIDEBAR_ITEMS = {"fn":["make_queries"],"static":["QUERIES_DIR"]};

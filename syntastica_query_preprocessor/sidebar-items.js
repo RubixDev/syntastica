@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["process_highlights","process_highlights_with_inherits","process_injections","process_injections_with_inherits","process_locals","process_locals_with_inherits"]};

@@ -1,0 +1,59 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="`syntastica-query-preprocessor`"><title>syntastica_query_preprocessor - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../static.files/rustdoc-085727c29c2fa99e.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="syntastica_query_preprocessor" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0-nightly (65ea825f4 2023-09-18)" data-channel="nightly" data-search-js="search-5d3eaacf19ebf04f.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../crates.js"></script><script defer src="../static.files/main-f6ec288034ea164c.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc mod crate"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="logo-container" href="../syntastica_query_preprocessor/index.html"><img class="rust-logo" src="../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><h2></h2></nav><nav class="sidebar"><a class="logo-container" href="../syntastica_query_preprocessor/index.html"><img class="rust-logo" src="../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><h2 class="location"><a href="#">Crate syntastica_query_preprocessor</a></h2><div class="sidebar-elems"><ul class="block"><li class="version">Version 0.4.1</li><li><a id="all-types" href="all.html">All Items</a></li></ul><section><ul class="block"><li><a href="#functions">Functions</a></li></ul></section></div></nav><main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1>Crate <a class="mod" href="#">syntastica_query_preprocessor</a><button id="copy-path" title="Copy item path to clipboard"><img src="../static.files/clipboard-7571035ce49a181d.svg" width="19" height="18" alt="Copy item path"></button></h1><span class="out-of-band"><a class="src" href="../src/syntastica_query_preprocessor/lib.rs.html#1-443">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><h2 id="syntastica-query-preprocessor"><a href="#syntastica-query-preprocessor"><code>syntastica-query-preprocessor</code></a></h2>
+<p>The tree-sitter query pre-processor used by
+<a href="https://crates.io/crates/syntastica"><code>syntastica</code></a>.</p>
+<p>See
+<a href="https://rubixdev.github.io/syntastica/syntastica/#general-side-products">the project overview</a>
+for more information.</p>
+<h3 id="overview"><a href="#overview">Overview</a></h3>
+<p><code>syntastica-query-preprocessor</code> is a pre-processor for tree-sitter queries which
+allows usage of <code>; inherits &lt;lang&gt;</code> comments, conditional skipping of nodes with
+comments, usage of additional predicates like <code>lua-match?</code>, <code>contains?</code> and
+<code>any-of?</code>, Neovim’s old injections syntax, and order reversing for priority
+flipping. The crate can be used to use queries designed for Neovim with the
+official <a href="https://crates.io/crates/tree-sitter">tree-sitter rust bindings</a> with
+minimal manual changes.</p>
+<h3 id="usage"><a href="#usage">Usage</a></h3>
+<p>This crate exposes six public functions:</p>
+<ul>
+<li><a href="fn.process_highlights.html" title="fn syntastica_query_preprocessor::process_highlights"><code>process_highlights</code></a></li>
+<li><a href="fn.process_injections.html" title="fn syntastica_query_preprocessor::process_injections"><code>process_injections</code></a></li>
+<li><a href="fn.process_locals.html" title="fn syntastica_query_preprocessor::process_locals"><code>process_locals</code></a></li>
+<li><a href="fn.process_highlights_with_inherits.html" title="fn syntastica_query_preprocessor::process_highlights_with_inherits"><code>process_highlights_with_inherits</code></a></li>
+<li><a href="fn.process_injections_with_inherits.html" title="fn syntastica_query_preprocessor::process_injections_with_inherits"><code>process_injections_with_inherits</code></a></li>
+<li><a href="fn.process_locals_with_inherits.html" title="fn syntastica_query_preprocessor::process_locals_with_inherits"><code>process_locals_with_inherits</code></a></li>
+</ul>
+<p>The first three are used for simple pre-processing of a single query source file
+which is passed in as a <code>&amp;str</code>.</p>
+<p>The last three assume a directory structure of
+<code>queries/&lt;lang_name&gt;/&lt;highlights|injections|locals&gt;.scm</code> (where <code>queries</code> is the
+directory pointed to by the <code>base_dir</code> parameter), and read the queries from the
+file system. This allows usage of <code>; inherits &lt;lang_one&gt;[,&lt;lang_two&gt;,...]</code>
+comments inside the query files to include the contents of another language’s
+query file at the location of the comment. The <code>lang_name</code> parameter specifies
+the directory name in which the entry query file is located.</p>
+<p>All six functions take the two arguments <code>strip_comment</code> and <code>nvim_like</code>. The
+<code>strip_comment</code> argument specifies a comment string that will indicate nodes to
+be excluded from the output. This must include the leading <code>;</code>, so passing an
+empty string has the effect of not excluding anything.</p>
+<p>Setting <code>nvim_like</code> to <code>true</code> mainly does the following:</p>
+<p><code>#[not-]lua-match?</code>, <code>#[not-]any-of?</code> and <code>#[not-]contains?</code> predicates are
+replaced with a <code>#match?</code> or <code>#not-match?</code> predicate expressing the same
+constraint. Note that regular expressions cannot represent all Lua patterns, so
+the conversion from <code>lua-match</code> to <code>match</code> may fail and panic.</p>
+<p>Additional behavior differs for the kind of queries:</p>
+<ul>
+<li>For highlight queries, the order of the queries is reversed. This is needed
+because Neovim prioritizes queries lower down in the file over earlier ones,
+whereas the official
+<a href="https://crates.io/crates/tree-sitter">tree-sitter Rust bindings</a> do the
+opposite.</li>
+<li>For injection queries, Neovim used to use <code>@&lt;lang_name&gt;</code>, <code>@content</code>,
+<code>@language</code>, and <code>@combined</code> captures. These will be replaced with the new
+(and official) syntax using <code>#set! injection.language &quot;&lt;lang_name&gt;&quot;</code>,
+<code>@injection.content</code>, <code>@injection.language</code>, and <code>#set! injection.combined</code>
+respectively.</li>
+<li>For locals queries, Neovim uses <code>@scope</code>, <code>@reference</code>, and various
+<code>@definition.&lt;kind&gt;</code> captures. These will be replaced by the official
+<code>@local.scope</code>, <code>@local.reference</code>, and <code>@local.definition</code> captures.</li>
+</ul>
+</div></details><h2 id="functions" class="small-section-header"><a href="#functions">Functions</a></h2><ul class="item-table"><li><div class="item-name"><a class="fn" href="fn.process_highlights.html" title="fn syntastica_query_preprocessor::process_highlights">process_highlights</a></div><div class="desc docblock-short">Pre-process highlight queries.</div></li><li><div class="item-name"><a class="fn" href="fn.process_highlights_with_inherits.html" title="fn syntastica_query_preprocessor::process_highlights_with_inherits">process_highlights_with_inherits</a></div><div class="desc docblock-short">Pre-process highlight queries with support for <code>; inherits &lt;lang&gt;</code> comments.</div></li><li><div class="item-name"><a class="fn" href="fn.process_injections.html" title="fn syntastica_query_preprocessor::process_injections">process_injections</a></div><div class="desc docblock-short">Pre-process injection queries.</div></li><li><div class="item-name"><a class="fn" href="fn.process_injections_with_inherits.html" title="fn syntastica_query_preprocessor::process_injections_with_inherits">process_injections_with_inherits</a></div><div class="desc docblock-short">Pre-process injection queries with support for <code>; inherits &lt;lang&gt;</code> comments.</div></li><li><div class="item-name"><a class="fn" href="fn.process_locals.html" title="fn syntastica_query_preprocessor::process_locals">process_locals</a></div><div class="desc docblock-short">Pre-process locals queries.</div></li><li><div class="item-name"><a class="fn" href="fn.process_locals_with_inherits.html" title="fn syntastica_query_preprocessor::process_locals_with_inherits">process_locals_with_inherits</a></div><div class="desc docblock-short">Pre-process locals queries with support for <code>; inherits &lt;lang&gt;</code> comments.</div></li></ul></section></div></main></body></html>
