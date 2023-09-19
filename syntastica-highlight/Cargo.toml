@@ -2,6 +2,7 @@
 name = "syntastica-highlight"
 version.workspace = true
 authors.workspace = true
+documentation = "https://rubixdev.github.io/syntastica/syntastica_highlight/"
 edition.workspace = true
 license = "MIT"
 repository.workspace = true

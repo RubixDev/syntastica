@@ -2,6 +2,7 @@
 name = "syntastica-core"
 version.workspace = true
 authors.workspace = true
+documentation = "https://rubixdev.github.io/syntastica/syntastica_core/"
 edition.workspace = true
 license.workspace = true
 repository.workspace = true

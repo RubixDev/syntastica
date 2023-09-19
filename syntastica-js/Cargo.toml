@@ -2,6 +2,7 @@
 name = "syntastica-js"
 version.workspace = true
 authors.workspace = true
+documentation = "https://rubixdev.github.io/syntastica/syntastica_js/"
 edition.workspace = true
 license.workspace = true
 repository.workspace = true

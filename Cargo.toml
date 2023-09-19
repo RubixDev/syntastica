@@ -19,6 +19,7 @@ members = [
 
 package.version = "0.3.0"
 package.authors = ["RubixDev <silas.groh@t-online.de>"]
+package.documentation = "https://rubixdev.github.io/syntastica/"
 package.edition = "2021"
 package.license = "GPL-3.0-only"
 package.repository = "https://github.com/RubixDev/syntastica"
@@ -65,6 +66,7 @@ strip = true
 name = "syntastica"
 version.workspace = true
 authors.workspace = true
+documentation = "https://rubixdev.github.io/syntastica/syntastica/"
 edition.workspace = true
 keywords = ["tree-sitter", "syntect", "highlight", "parsing", "syntax"]
 license.workspace = true
