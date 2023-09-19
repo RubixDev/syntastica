@@ -129,9 +129,9 @@ jobs:
         uses: EndBug/add-and-commit@v9
         with:
           add:
-            syntastica-queries/src/lib.rs syntastica-parsers/Cargo.toml
-            syntastica-parsers-gitdep/Cargo.toml syntastica-parsers*/README.md
-            syntastica-js/src/index.ts syntastica-themes/src
+            syntastica-queries/generated_queries syntastica-queries/src/lib.rs
+            syntastica-parsers/Cargo.toml syntastica-parsers-gitdep/Cargo.toml
+            syntastica-parsers*/README.md syntastica-js/src/index.ts syntastica-themes/src
           committer_name: github-actions[bot]
           committer_email: 41898282+github-actions[bot]@users.noreply.github.com
           message: 'chore: run codegen'
