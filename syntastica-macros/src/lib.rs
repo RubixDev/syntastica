@@ -280,14 +280,14 @@ fn parsers(
     let lang_set_type = quote! { type Language = Lang; };
 
     quote_use! {
-        # use std::{borrow::Cow, cell::UnsafeCell, collections::HashMap};
+        # use std::{borrow::Cow, collections::HashMap};
 
         # use syntastica_core::{
             language_set::{HighlightConfiguration, LanguageSet, Language, FileType, SupportedLanguage},
             Error, Result,
             theme::THEME_KEYS,
         };
-        # use once_cell::sync::Lazy;
+        # use once_cell::sync::{Lazy, OnceCell};
 
         #extra
 
@@ -426,46 +426,34 @@ fn parsers(
         /// Languages are loaded the first time they are requested and will then be reused for
         /// later accesses. To pre-load a list of languages, use
         /// [`preload`](LanguageSetImpl::preload) or [`preload_all`](LanguageSetImpl::preload_all).
-        pub struct LanguageSetImpl(UnsafeCell<[Option<HighlightConfiguration>; LANG_COUNT]>);
+        pub struct LanguageSetImpl([OnceCell<HighlightConfiguration>; LANG_COUNT]);
 
         impl LanguageSet for LanguageSetImpl {
             #lang_set_type
 
             fn get_language(&self, language: Self::Language) -> Result<&HighlightConfiguration> {
                 let idx = IDX_MAP[&language];
-                // SAFETY: We only ever give out shared references to list entries, and only
-                // after they have been initialized. As such it is safe to mutate an entry
-                // which is still `None` and then give out a shared reference.
-                let list = unsafe { self.0.get().as_ref() }.unwrap();
-                match list[idx].as_ref() {
-                    Some(config) => Ok(config),
-                    None => {
-                        // SAFETY: see above
-                        let list = unsafe { self.0.get().as_mut() }.unwrap();
-                        let conf = __get_language(idx)?;
-                        list[idx] = Some(conf);
-                        Ok(list[idx].as_ref().unwrap())
-                    }
-                }
+                self.0[idx].get_or_try_init(|| __get_language(idx))
             }
         }
 
-        const INIT: Option<HighlightConfiguration> = None;
         impl LanguageSetImpl {
             /// Create a new [`LanguageSetImpl`] with no pre-loaded languages.
             pub fn new() -> Self {
-                Self(UnsafeCell::new([INIT; LANG_COUNT]))
+                #[allow(clippy::declare_interior_mutable_const)]
+                const INIT: OnceCell<HighlightConfiguration> = OnceCell::new();
+                Self([INIT; LANG_COUNT])
             }
 
             /// Pre-load the given list of languages.
             ///
             /// To pre-load all supported languages, use [`preload_all`](LanguageSetImpl::preload_all).
-            pub fn preload(&mut self, languages: &[Lang]) -> Result<()> {
+            pub fn preload(&self, languages: &[Lang]) -> Result<()> {
                 for lang in languages {
                     let idx = IDX_MAP[lang];
-                    let entry = &mut self.0.get_mut()[idx];
-                    if entry.is_none() {
-                        *entry = Some(__get_language(idx)?);
+                    let entry = &self.0[idx];
+                    if entry.get().is_none() {
+                        drop(entry.set(__get_language(idx)?));
                     }
                 }
                 Ok(())

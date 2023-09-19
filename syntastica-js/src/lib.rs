@@ -73,7 +73,7 @@ pub unsafe extern "C" fn init(langs: *const *const c_char, langs_len: usize) {
                         }
                     }
                 }
-                let mut set = LanguageSetImpl::new();
+                let set = LanguageSetImpl::new();
                 if let Err(err) = set.preload(&LANGS_LIST) {
                     eprintln!("initialization failed: {err}");
                 }

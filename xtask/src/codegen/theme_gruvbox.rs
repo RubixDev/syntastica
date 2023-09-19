@@ -100,7 +100,9 @@ pub fn make_theme() -> Result<String> {
     let mut raw_theme = BTreeMap::new();
     for match_ in groups_regex.captures_iter(&groups_lua) {
         let match_ = match_?;
-        let Some(key) = match_.get(1).or_else(|| match_.get(2)) else { continue; };
+        let Some(key) = match_.get(1).or_else(|| match_.get(2)) else {
+            continue;
+        };
         let value = match_.get(4).map_or_else(
             || {
                 RawThemeValue::Styles(
