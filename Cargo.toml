@@ -5,6 +5,7 @@ members = [
     "./lua-pattern",
     "./tree-sitter-wasm-build-tool",
     "./syntastica-core",
+    "./syntastica-query-preprocessor",
     "./syntastica-queries",
     "./syntastica-parsers",
     "./syntastica-parsers-git",
@@ -37,6 +38,7 @@ syntastica-parsers = { version = "0.3.0", path = "./syntastica-parsers" }
 syntastica-parsers-dynamic = { version = "0.3.0", path = "./syntastica-parsers-dynamic" }
 syntastica-parsers-git = { version = "0.3.0", path = "./syntastica-parsers-git" }
 syntastica-parsers-gitdep = { version = "0.3.0", path = "./syntastica-parsers-gitdep" }
+syntastica-query-preprocessor = { version = "0.3.0", path = "./syntastica-query-preprocessor" }
 syntastica-queries = { version = "0.3.0", path = "./syntastica-queries" }
 syntastica-themes = { version = "0.3.0", path = "./syntastica-themes" }
 
@@ -99,12 +101,15 @@ syntastica-macros.workspace = true
 syntastica-parsers = { workspace = true, features = ["all"] }
 syntastica-parsers-git = { workspace = true, features = ["all"] }
 syntastica-queries.workspace = true
+syntastica-query-preprocessor.workspace = true
 syntastica-themes.workspace = true
 
 tree-sitter.workspace = true
 
+once_cell.workspace = true
 tft = { workspace = true, features = ["detect"] }
 toml.workspace = true
+tree-sitter-csv = "1.1.1"
 
 [build-dependencies]
 rustc_version = { workspace = true, optional = true }

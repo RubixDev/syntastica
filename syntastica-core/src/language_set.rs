@@ -76,7 +76,8 @@ pub trait LanguageSet {
 
     /// Get the language with the given name.
     ///
-    /// **The returned [`HighlightConfiguration`] _must_ be configured with
+    /// **The returned [`HighlightConfiguration`] _must_ be
+    /// [configured](HighlightConfiguration::configure) with
     /// [`THEME_KEYS`](crate::theme::THEME_KEYS).**
     ///
     /// The function is given an instance of [`Self::Language`] and as such should not need to

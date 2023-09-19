@@ -62,6 +62,10 @@ features for all supported languages, as well as the three feature groups
 `some`, `most`, and `all`. Take a look at the respective crate documentation for
 more information.
 
+If you want to additionally use languages that are not in any of these parser
+collections, one approach is shown in the
+[custom languages example](https://github.com/RubixDev/syntastica/blob/main/examples/custom_languages.rs).
+
 - [`syntastica-parsers`](https://crates.io/crates/syntastica-parsers) is
   probably the easiest to start with. It uses parsers from
   [crates.io](https://crates.io). This has the main benefit of being well
@@ -164,6 +168,21 @@ direct association with the main project and can be used completely separately.
   however (obviously), which is why during the processing of the queries (with
   `cargo xtask codegen queries`), all Lua patterns are replaced with regular
   expressions using this crate.
+- [`syntastica-query-preprocessor`](https://crates.io/crates/syntastica-query-preprocessor)
+  is a pre-processor for tree-sitter queries which allows usage of
+  `; inherits <lang>` comments, conditional skipping of nodes with comments,
+  usage of additional predicates like `lua-match?`, `contains?` and `any-of?`,
+  Neovim's old injections syntax, and order reversing for priority flipping. The
+  crate can be used to use queries designed for Neovim with the official
+  [tree-sitter Rust bindings](https://crates.io/crates/tree-sitter) with minimal
+  manual changes. Despite having `syntastica` in the name, the crate can be used
+  externally and does not depend on any of the other `syntastica-` crates. In
+  `syntastica` it is used in the
+  [`codegen queries` xtask](https://github.com/RubixDev/syntastica/blob/main/xtask/src/codegen/queries.rs),
+  because many of the queries are forked from
+  [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter), and to
+  adjust the queries for older parser versions from
+  [crates.io](https://crates.io).
 
 ## WebAssembly support
 

@@ -1,0 +1,15 @@
+[package]
+name = "syntastica-query-preprocessor"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "The tree-sitter query pre-processor used by syntastica"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+lazy-regex = "3.0.1"
+lua-pattern = { version = "0.1.2", features = ["to-regex"] }
+rsexpr = { version = "0.2.5", features = ["comments"] }
