@@ -174,6 +174,11 @@ jobs:
         with:
           node-version: 18
 
+      - name: Install Dioxus CLI
+        uses: taiki-e/install-action@v2
+        with:
+          tool: dioxus-cli
+
       - name: Restore Cache
         uses: Swatinem/rust-cache@v2
         with:
@@ -206,6 +211,13 @@ jobs:
           npm ci
           npm run build
 
+      - name: Build Dioxus Demo
+        run: |
+          cd examples/js/dioxus
+          # set base directory to `/syntastica/demos/dioxus/`
+          sed -i -E 's#(\[web.app\])#\1\nbase_path = "syntastica/demos/dioxus"#g' Dioxus.toml
+          dx build --release
+
       - name: Prepare GitHub Pages Deployment
         run: |
           # redirect to `syntastica` Rust docs from main page
@@ -216,6 +228,8 @@ jobs:
           mkdir -p target/doc/demos
           # copy over the vite demo
           cp -r examples/js/vite/dist target/doc/demos/vite
+          # copy over the dioxus demo
+          cp -r examples/js/dioxus/dist target/doc/demos/dioxus
 
       - name: Deploy Docs
         uses: JamesIves/github-pages-deploy-action@v4

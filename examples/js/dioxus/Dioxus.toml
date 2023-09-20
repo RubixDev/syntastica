@@ -1,0 +1,19 @@
+[application]
+name = "syntastica-dioxus-demo"
+default_platform = "web"
+out_dir = "dist"
+asset_dir = "public"
+
+[web.app]
+title = "syntastica + Dioxus demo"
+
+[web.watcher]
+index_on_404 = true
+watch_path = ["src", "public"]
+
+[web.resource]
+style = ["style.css"]
+script = []
+
+[web.resource.dev]
+script = []
