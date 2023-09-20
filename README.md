@@ -4,8 +4,10 @@
 
 Modern and easy syntax highlighting using tree-sitter
 
-> Note: If viewing this file on [GitHub](https://github.com/RubixDev/syntastica)
-> or [crates.io](https://crates.io/crates/syntastica), some links might not be
+> **Note**
+>
+> If viewing this file on [GitHub](https://github.com/RubixDev/syntastica) or
+> [crates.io](https://crates.io/crates/syntastica), some links might not be
 > working. Go to the
 > [custom docs page](https://rubixdev.github.io/syntastica/syntastica/) or the
 > [docs.rs page](https://docs.rs/syntastica/) instead, which additionally
