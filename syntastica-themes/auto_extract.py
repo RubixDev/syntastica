@@ -235,31 +235,31 @@ if __name__ == "__main__":
         Theme("one", "https://github.com/navarasu/onedark.nvim", [
             SubTheme(
                 "cool",
-                "lua require('onedark').setup { style = 'cool' }; require('onedark').load()"
+                "set background=dark | lua require('onedark').setup { style = 'cool' }; require('onedark').load()"
                 ),
             SubTheme(
                 "dark",
-                "lua require('onedark').setup { style = 'dark' }; require('onedark').load()"
+                "set background=dark | lua require('onedark').setup { style = 'dark' }; require('onedark').load()"
                 ),
             SubTheme(
                 "darker",
-                "lua require('onedark').setup { style = 'darker' }; require('onedark').load()"
+                "set background=dark | lua require('onedark').setup { style = 'darker' }; require('onedark').load()"
                 ),
             SubTheme(
                 "deep",
-                "lua require('onedark').setup { style = 'deep' }; require('onedark').load()"
+                "set background=dark | lua require('onedark').setup { style = 'deep' }; require('onedark').load()"
                 ),
             SubTheme(
                 "light",
-                "lua require('onedark').setup { style = 'light' }; require('onedark').load()"
+                "set background=light | lua require('onedark').setup { style = 'light' }; require('onedark').load()"
                 ),
             SubTheme(
                 "warm",
-                "lua require('onedark').setup { style = 'warm' }; require('onedark').load()"
+                "set background=dark | lua require('onedark').setup { style = 'warm' }; require('onedark').load()"
                 ),
             SubTheme(
                 "warmer",
-                "lua require('onedark').setup { style = 'warmer' }; require('onedark').load()"
+                "set background=dark | lua require('onedark').setup { style = 'warmer' }; require('onedark').load()"
                 ),
             ]
         ),
