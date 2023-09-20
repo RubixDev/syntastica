@@ -218,6 +218,14 @@ jobs:
           sed -i -E 's#(\[web.app\])#\1\nbase_path = "syntastica/demos/dioxus"#g' Dioxus.toml
           dx build --release
 
+      - name: Build wasm-pack + NPM Demo
+        run: |
+          cd examples/js/wasm-pack-with-npm-pkg
+          # set base directory to `/syntastica/demos/wasm-pack-npm/`
+          sed -i 's#defineConfig({#\0base:"/syntastica/demos/wasm-pack-npm/",#g' vite.config.ts
+          npm ci
+          npm run build
+
       - name: Prepare GitHub Pages Deployment
         run: |
           # redirect to `syntastica` Rust docs from main page
@@ -230,6 +238,8 @@ jobs:
           cp -r examples/js/vite/dist target/doc/demos/vite
           # copy over the dioxus demo
           cp -r examples/js/dioxus/dist target/doc/demos/dioxus
+          # copy over the wasm-pack-npm demo
+          cp -r examples/js/wasm-pack-with-npm-pkg/dist target/doc/demos/wasm-pack-npm
 
       - name: Deploy Docs
         uses: JamesIves/github-pages-deploy-action@v4
