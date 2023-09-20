@@ -164,10 +164,9 @@ jobs:
           path: syntastica-js/pkg
 
       - name: Install Rust Toolchain
-        uses: actions-rs/toolchain@v1
+        uses: dtolnay/rust-toolchain@nightly
         with:
-          toolchain: nightly
-          override: true
+          targets: wasm32-unknown-unknown
 
       - name: Setup NodeJS
         uses: actions/setup-node@v3
