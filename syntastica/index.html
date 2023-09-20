@@ -167,7 +167,47 @@ adjust the queries for older parser versions from
 <a href="https://crates.io">crates.io</a>.</li>
 </ul>
 <h3 id="webassembly-support"><a href="#webassembly-support">WebAssembly support</a></h3>
-<p>TODO: WebAssembly support</p>
+<p><code>syntastica</code> can be used with WebAssembly, although the current support is a bit
+lacking. There are currently two primary ways to use <code>syntastica</code> in a
+WebAssembly context.</p>
+<h4 id="1-using-the-tree-sitter-c2rust-runtime"><a href="#1-using-the-tree-sitter-c2rust-runtime">1. Using the <code>tree-sitter-c2rust</code> runtime</a></h4>
+<p>In order to make <code>syntastica</code> compile to <code>wasm32-unknown-unknown</code> targets,
+feature flags can be used to use the
+<a href="https://crates.io/crates/tree-sitter-c2rust">c2rust transpilation of tree-sitter</a>
+instead of the
+<a href="https://crates.io/crates/tree-sitter">official C implementation</a>. This is only
+supported by the <code>syntastica-parsers-git</code> parser collection, and only parsers
+that don’t use an external C++ scanner are available.</p>
+<p>To use this approach, simply set <code>default-features = false</code> and enable the
+<code>runtime-c2rust</code> feature for <em>all</em> <code>syntastica</code> dependencies. An example using
+this approach for use of <code>syntastica</code> in a Dioxus project can be found
+<a href="https://github.com/RubixDev/syntastica/tree/main/examples/wasm/dioxus">here</a>.</p>
+<h4 id="2-using-emscripten--the-syntastica-js-package"><a href="#2-using-emscripten--the-syntastica-js-package">2. Using Emscripten / the <code>syntastica-js</code> package</a></h4>
+<p><code>syntastica</code> can also be compiled to <code>wasm32-unknown-emscripen</code> which has much
+better support for C and C++ interop. But annoyingly, basically the entire Rust
+Wasm ecosystem is built around the <code>wasm32-unknown-unknown</code> target (e.g.,
+<code>wasm-pack</code> and <code>wasm-bindgen</code> can only be used with <code>wasm32-unknown-unknown</code>),
+which makes it very cumbersome to use Emscripten for Rust. In the attempt to
+make using <code>syntastica</code> on the web a bit easier, the
+<a href="https://github.com/RubixDev/syntastica/tree/main/syntastica-js"><code>syntastica-js</code> crate</a>
+and accompanying
+<a href="https://www.npmjs.com/package/syntastica"><code>syntastica</code> NPM package</a> provide a
+JavaScript/TypeScript wrapper around an Emscripten build of <code>syntastica</code>.</p>
+<p>There are three examples using <code>syntastica-js</code>:</p>
+<ul>
+<li><a href="https://github.com/RubixDev/syntastica/tree/main/examples/wasm/vite">Usage from TypeScript in the browser with Vite and Svelte</a></li>
+<li><a href="https://github.com/RubixDev/syntastica/tree/main/examples/wasm/node">Usage from JavaScript in NodeJS for console applications</a></li>
+<li><a href="https://github.com/RubixDev/syntastica/tree/main/examples/wasm/wasm-pack-with-npm-pkg">Usage from Rust in the browser using wasm-bindgen</a></li>
+</ul>
+<blockquote>
+<p><strong>Note</strong></p>
+<p>The <code>syntastica</code> NPM package is currently not being updated and uses an old
+version of <code>syntastica</code>, because the current implementation always includes
+all parsers in one big binary, which would be over 60 MB big with all
+currently supported parsers. The eventual plan is to find a way to split the
+package into multiple binaries that can be fetched from a server on-demand,
+and to provide multiple NPM packages for manual selection of the parsers.</p>
+</blockquote>
 <h3 id="examples"><a href="#examples">Examples</a></h3>
 <p>This section contains some basic usage examples. More specific examples can be
 found in the documentation of some items such as the <a href="struct.Processor.html" title="struct syntastica::Processor"><code>Processor</code></a> type or the
@@ -370,12 +410,31 @@ specifier is still at <code>0</code>, changes to the <code>MINOR</code> version 
 changes. The <code>PATCH</code> part is only incremented if the public API stays exactly
 the same.</p>
 <h3 id="inspiration"><a href="#inspiration">Inspiration</a></h3>
-<p>TODO: shortly explain origins (lirstings)</p>
-<h3 id="todo"><a href="#todo">TODO</a></h3>
-<ul>
-<li><input disabled="" type="checkbox"/>
-easy compilation to WebAssembly using <code>tree-sitter-c2rust</code></li>
-</ul>
+<p>The entire idea of this project started out as a way to use tree-sitter code
+highlighting in a LaTeX project. While working with
+<a href="https://github.com/MikMuellerDev">@MikMuellerDev</a> on
+<a href="https://github.com/rush-rs/paper">our paper</a> on <a href="https://rush-lang.de/">rush</a> I
+created a CLI app called <a href="https://github.com/rush-rs/lirstings"><code>lirstings</code></a>.
+The initial sketch simply called out to the <code>tree-sitter-cli</code> and converted the
+output HTML to LaTeX code. However, not long after that I already implemented
+some of the logic myself and made a
+<a href="https://github.com/rush-rs/lirstings/commit/d2fc87213e8e2d629033f2eba99b2d019883fd43">first public commit</a>.
+This version of <code>lirstings</code> (called <code>ts2tex</code> at the time) already laid out some
+groundwork like
+<a href="https://rubixdev.github.io/syntastica/syntastica_query_preprocessor/">query pre-processing</a>
+and <a href="https://rubixdev.github.io/syntastica/syntastica/theme/">theming</a> that is
+still present in <code>syntastica</code> today. Towards the end of our project we wanted to
+use the same highlighting on our <a href="https://play.rush-lang.de/">rush playground</a>,
+which would require <code>lirstings</code> to become more general and support WebAssembly.
+Work on that started in the
+<a href="https://github.com/rush-rs/lirstings/tree/generalize">generalize branch</a> just
+enough to suffice for our needs at the time.</p>
+<p>After the entire rush project was done and after taking a break for a while, I
+started <code>syntastica</code> with the intent to be a library from the ground up, and a
+possible replacement for <a href="https://crates.io/crates/syntect"><code>syntect</code></a>. The main
+difference from <code>lirstings</code> at the start was the parser collection(s), providing
+a rigid set of parsers and queries for users. Over time <code>syntastica</code> then grew
+to the big project it is today.</p>
 <h3 id="features"><a href="#features">Features</a></h3>
 <ul>
 <li>
