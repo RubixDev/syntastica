@@ -205,7 +205,7 @@ jobs:
 
       - name: Build Vite Demo
         run: |
-          cd examples/js/vite
+          cd examples/wasm/vite
           # set base directory to `/syntastica/demos/vite/`
           sed -i 's#defineConfig({#\0base:"/syntastica/demos/vite/",#g' vite.config.ts
           npm ci
@@ -213,14 +213,14 @@ jobs:
 
       - name: Build Dioxus Demo
         run: |
-          cd examples/js/dioxus
+          cd examples/wasm/dioxus
           # set base directory to `/syntastica/demos/dioxus/`
           sed -i -E 's#(\[web.app\])#\1\nbase_path = "syntastica/demos/dioxus"#g' Dioxus.toml
           dx build --release
 
       - name: Build wasm-pack + NPM Demo
         run: |
-          cd examples/js/wasm-pack-with-npm-pkg
+          cd examples/wasm/wasm-pack-with-npm-pkg
           # set base directory to `/syntastica/demos/wasm-pack-npm/`
           sed -i 's#defineConfig({#\0base:"/syntastica/demos/wasm-pack-npm/",#g' vite.config.ts
           npm ci
@@ -235,11 +235,11 @@ jobs:
           # create the `demos` folder
           mkdir -p target/doc/demos
           # copy over the vite demo
-          cp -r examples/js/vite/dist target/doc/demos/vite
+          cp -r examples/wasm/vite/dist target/doc/demos/vite
           # copy over the dioxus demo
-          cp -r examples/js/dioxus/dist target/doc/demos/dioxus
+          cp -r examples/wasm/dioxus/dist target/doc/demos/dioxus
           # copy over the wasm-pack-npm demo
-          cp -r examples/js/wasm-pack-with-npm-pkg/dist target/doc/demos/wasm-pack-npm
+          cp -r examples/wasm/wasm-pack-with-npm-pkg/dist target/doc/demos/wasm-pack-npm
 
       - name: Deploy Docs
         uses: JamesIves/github-pages-deploy-action@v4
