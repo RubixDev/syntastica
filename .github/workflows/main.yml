@@ -178,6 +178,11 @@ jobs:
         with:
           tool: dioxus-cli
 
+      - name: Install wasm-pack
+        uses: taiki-e/install-action@v2
+        with:
+          tool: wasm-pack
+
       - name: Restore Cache
         uses: Swatinem/rust-cache@v2
         with:
@@ -222,6 +227,7 @@ jobs:
           cd examples/wasm/wasm-pack-with-npm-pkg
           # set base directory to `/syntastica/demos/wasm-pack-npm/`
           sed -i 's#defineConfig({#\0base:"/syntastica/demos/wasm-pack-npm/",#g' vite.config.ts
+          wasm-pack build --target web .
           npm ci
           npm run build
 

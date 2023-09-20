@@ -18,6 +18,7 @@ all parsers, including those that use C++.
 You can run a development server locally by executing these commands:
 
 ```bash
+wasm-pack build --target web .
 npm i
 npm run dev
 ```
