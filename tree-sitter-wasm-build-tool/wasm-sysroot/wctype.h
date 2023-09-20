@@ -36,14 +36,7 @@ typedef const int * wctrans_t;
 #undef iswdigit
 
 int       iswalnum(wint_t);
-
-// #ifndef iswalpha
-// int iswalpha(wint_t ch) {
-//     return (ch >= 65 && ch <= 90) || (ch >= 97 && ch <= 122);
-// }
-// #endif
-int iswalpha(wint_t);
-
+int       iswalpha(wint_t);
 int       iswblank(wint_t);
 int       iswcntrl(wint_t);
 int       iswdigit(wint_t);
@@ -51,16 +44,10 @@ int       iswgraph(wint_t);
 int       iswlower(wint_t);
 int       iswprint(wint_t);
 int       iswpunct(wint_t);
-
-// #ifndef iswspace
-// int iswspace(wint_t ch) {
-//     return ch == 32 || (ch >= 9 && ch <= 13);
-// }
-// #endif
-int iswspace(wint_t);
-
+int       iswspace(wint_t);
 int       iswupper(wint_t);
 int       iswxdigit(wint_t);
+
 int       iswctype(wint_t, wctype_t);
 wint_t    towctrans(wint_t, wctrans_t);
 wint_t    towlower(wint_t);
