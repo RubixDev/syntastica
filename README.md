@@ -462,8 +462,29 @@ the same.
 
 ## Inspiration
 
-TODO: shortly explain origins (lirstings)
+The entire idea of this project started out as a way to use tree-sitter code
+highlighting in a LaTeX project. While working with
+[@MikMuellerDev](https://github.com/MikMuellerDev) on
+[our paper](https://github.com/rush-rs/paper) on [rush](https://rush-lang.de/) I
+created a CLI app called [`lirstings`](https://github.com/rush-rs/lirstings).
+The initial sketch simply called out to the `tree-sitter-cli` and converted the
+output HTML to LaTeX code. However, not long after that I already implemented
+some of the logic myself and made a
+[first public commit](https://github.com/rush-rs/lirstings/commit/d2fc87213e8e2d629033f2eba99b2d019883fd43).
+This version of `lirstings` (called `ts2tex` at the time) already laid out some
+groundwork like
+[query pre-processing](https://rubixdev.github.io/syntastica/syntastica_query_preprocessor/)
+and [theming](https://rubixdev.github.io/syntastica/syntastica/theme/) that is
+still present in `syntastica` today. Towards the end of our project we wanted to
+use the same highlighting on our [rush playground](https://play.rush-lang.de/),
+which would require `lirstings` to become more general and support WebAssembly.
+Work on that started in the
+[generalize branch](https://github.com/rush-rs/lirstings/tree/generalize) just
+enough to suffice for our needs at the time.
 
-## TODO
-
-- [ ] easy compilation to WebAssembly using `tree-sitter-c2rust`
+After the entire rush project was done and after taking a break for a while, I
+started `syntastica` with the intent to be a library from the ground up, and a
+possible replacement for [`syntect`](https://crates.io/crates/syntect). The main
+difference from `lirstings` at the start was the parser collection(s), providing
+a rigid set of parsers and queries for users. Over time `syntastica` then grew
+to the big project it is today.
