@@ -33,7 +33,7 @@ tree-sitter = { workspace = true, optional = true }
 tree-sitter-c2rust = { workspace = true, optional = true }
 
 document-features = { workspace = true, optional = true }
-palette = { version = "0.7.2", default-features = false, features = ["std"] }
+palette = { version = "0.7.3", default-features = false, features = ["std"] }
 tft = { workspace = true, features = ["detect"] }
 thiserror.workspace = true
 

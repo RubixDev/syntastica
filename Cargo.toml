@@ -46,15 +46,15 @@ syntastica-themes = { version = "0.4.1", path = "./syntastica-themes" }
 tree-sitter = "0.20.10"
 tree-sitter-c2rust = "0.20.10"
 
-cc = "1.0.79"
+cc = "1.0.83"
 document-features = "0.2.7"
 once_cell = "1.18.0"
 rustc_version = "0.4.0"
-serde = "1.0.180"
+serde = "1.0.188"
 strum = "0.25.0"
 tft = { version = "0.1.0", default-features = false }
-thiserror = "1.0.44"
-toml = "0.7.6"
+thiserror = "1.0.48"
+toml = "0.8.0"
 
 # optimize wasm for small code size
 [profile.release-wasm]
@@ -94,7 +94,7 @@ docs = ["dep:document-features", "dep:rustc_version"]
 syntastica-core.workspace = true
 syntastica-highlight.workspace = true
 
-aho-corasick = "1.0.1"
+aho-corasick = "1.1.0"
 document-features = { workspace = true, optional = true }
 thiserror.workspace = true
 
