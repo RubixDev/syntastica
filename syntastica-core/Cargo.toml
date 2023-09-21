@@ -23,6 +23,10 @@ runtime-c = ["dep:tree-sitter", "syntastica-highlight/runtime-c"]
 ## for more information.
 runtime-c2rust = ["dep:tree-sitter-c2rust", "syntastica-highlight/runtime-c2rust"]
 
+## Provide implementations of serde's `Serialize` and `Deserialize` traits for [`Theme`](theme::Theme)
+## and [`Style`](style::Style)
+serde = ["dep:serde", "palette/serializing"]
+
 ## Enable this when building the docs
 docs = ["dep:document-features", "dep:rustc_version"]
 
@@ -34,11 +38,9 @@ tree-sitter-c2rust = { workspace = true, optional = true }
 
 document-features = { workspace = true, optional = true }
 palette = { version = "0.7.3", default-features = false, features = ["std"] }
+serde = { workspace = true, features = ["derive"], optional = true }
 tft = { workspace = true, features = ["detect"] }
 thiserror.workspace = true
-
-## Provide implementations of serde's `Serialize` and `Deserialize` traits for [`Theme`](theme::Theme)
-serde = { workspace = true, features = ["derive"], optional = true }
 
 [build-dependencies]
 rustc_version = { workspace = true, optional = true }

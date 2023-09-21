@@ -85,6 +85,7 @@ runtime-c = ["syntastica-core/runtime-c", "syntastica-highlight/runtime-c"]
 runtime-c2rust = ["syntastica-core/runtime-c2rust", "syntastica-highlight/runtime-c2rust"]
 
 ## Provide implementations of serde's `Serialize` and `Deserialize` traits for [`Theme`](theme::Theme)
+## and [`Style`](style::Style)
 serde = ["syntastica-core/serde"]
 
 ## Enable this when building the docs

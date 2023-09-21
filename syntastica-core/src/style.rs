@@ -32,6 +32,7 @@ pub type Color = Srgb<u8>;
 /// - Using the [`From<Color>`](#impl-From<Color>-for-Style) implementation to create a [`Style`]
 ///   with the given [`Color`] and all booleans disabled.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Style {
     color: Color,
     underline: bool,
