@@ -239,7 +239,7 @@
   (nowdoc_body)
   (shell_command_expression)
   ; backtick operator: `ls -la`
-] @string @spell
+] @string
 
 (escape_sequence) @string.escape
 
@@ -251,7 +251,7 @@
 
 (float) @float
 
-(comment) @comment @spell
+(comment) @comment
 
 (named_label_statement) @label
 

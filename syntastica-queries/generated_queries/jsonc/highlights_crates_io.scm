@@ -29,8 +29,6 @@
 
 (ERROR) @error
 
-(string_content) @spell
-
 (array
   (string) @string
 )

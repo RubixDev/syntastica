@@ -76,7 +76,7 @@
 
 (test_operator) @string
 
-(comment) @comment @spell
+(comment) @comment
 
 (
   (word) @boolean
@@ -129,7 +129,7 @@
   (raw_string)
   (ansi_c_string)
   (heredoc_body)
-] @string @spell
+] @string
 
 [
   ">"

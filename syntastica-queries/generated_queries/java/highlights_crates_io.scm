@@ -16,7 +16,7 @@
 [
   (line_comment)
   (block_comment)
-] @comment @spell
+] @comment
 
 (labeled_statement
   (identifier) @label

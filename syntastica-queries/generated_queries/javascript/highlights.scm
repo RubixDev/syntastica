@@ -373,7 +373,7 @@
 
 (template_string) @string
 
-(string) @string @spell
+(string) @string
 
 (
   (string_fragment) @preproc
@@ -387,7 +387,7 @@
   (#match? @comment.documentation "^\\/[\\*][\\*][^\\*][\\s\\S]*[\\*]\\/$")
 )
 
-(comment) @comment @spell
+(comment) @comment
 
 [
   (null)

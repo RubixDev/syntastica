@@ -103,7 +103,7 @@
 
 (implicit_type) @keyword
 
-(comment) @comment @spell
+(comment) @comment
 
 (
   (comment) @comment.documentation

@@ -151,7 +151,7 @@
   (#eq? @_tag "title")
 )
 
-(text) @text @spell
+(text) @text
 
 (attribute
   (quoted_attribute_value) @string

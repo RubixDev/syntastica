@@ -422,7 +422,7 @@
   (#match? @comment.documentation "^\\/[\\*][\\*][^\\*][\\s\\S]*[\\*]\\/$")
 )
 
-(comment) @comment @spell
+(comment) @comment
 
 (implicit_type) @keyword
 

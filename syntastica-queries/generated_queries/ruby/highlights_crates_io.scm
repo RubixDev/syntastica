@@ -63,8 +63,6 @@
   "..."
 ] @operator
 
-(string_content) @spell
-
 (body_statement
   (comment)+ @comment.documentation
   (method)
@@ -89,7 +87,7 @@
   (class)
 )
 
-(comment) @comment @spell
+(comment) @comment
 
 (nil) @constant.builtin
 

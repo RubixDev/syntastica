@@ -1,25 +1,3 @@
-(command_name) @nospell
-
-(citation
-  keys:
-  _ @nospell
-)
-
-(generic_environment
-  begin:
-  _ @nospell
-  end:
-  _ @nospell
-)
-
-(key_value_pair) @nospell
-
-(displayed_equation) @nospell
-
-(inline_formula) @nospell
-
-(text) @spell
-
 (tikz_library_import
   command:
   _ @include

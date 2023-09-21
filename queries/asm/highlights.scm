@@ -16,7 +16,7 @@
 )
 
 ; Comments
-(line_comment) @comment @spell
+(line_comment) @comment
 
 ; Literals
 (int) @number

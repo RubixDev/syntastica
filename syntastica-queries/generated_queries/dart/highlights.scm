@@ -86,9 +86,9 @@
   "hide"
 ] @include
 
-(documentation_comment) @comment.documentation @spell
+(documentation_comment) @comment.documentation
 
-(comment) @comment @spell
+(comment) @comment
 
 (null_literal) @constant.builtin
 

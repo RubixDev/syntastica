@@ -343,7 +343,7 @@
 [
   (line_comment)
   (block_comment)
-] @comment @spell
+] @comment
 
 (
   (block_comment) @comment.documentation

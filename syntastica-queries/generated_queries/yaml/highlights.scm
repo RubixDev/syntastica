@@ -73,7 +73,7 @@
 
 (anchor_name) @type
 
-(comment) @comment @spell
+(comment) @comment
 
 (float_scalar) @number
 

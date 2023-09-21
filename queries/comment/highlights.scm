@@ -1,10 +1,8 @@
 ;; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/comment/highlights.scm
 ;; Licensed under the Apache License 2.0
-(_) @spell
-
 (
   (tag
-    (name) @text.todo @nospell
+    (name) @text.todo
     ("("
       @punctuation.bracket
       (user) @constant
@@ -16,13 +14,13 @@
 )
 
 ("text"
-  @text.todo @nospell
+  @text.todo
   (#any-of? @text.todo "TODO" "WIP")
 )
 
 (
   (tag
-    (name) @text.note @nospell
+    (name) @text.note
     ("("
       @punctuation.bracket
       (user) @constant
@@ -42,7 +40,7 @@
 )
 
 ("text"
-  @text.note @nospell
+  @text.note
   (#any-of?
     @text.note
     "NOTE"
@@ -56,7 +54,7 @@
 
 (
   (tag
-    (name) @text.warning @nospell
+    (name) @text.warning
     ("("
       @punctuation.bracket
       (user) @constant
@@ -68,13 +66,13 @@
 )
 
 ("text"
-  @text.warning @nospell
+  @text.warning
   (#any-of? @text.warning "HACK" "WARNING" "WARN" "FIX")
 )
 
 (
   (tag
-    (name) @text.danger @nospell
+    (name) @text.danger
     ("("
       @punctuation.bracket
       (user) @constant
@@ -86,7 +84,7 @@
 )
 
 ("text"
-  @text.danger @nospell
+  @text.danger
   (#any-of? @text.danger "FIXME" "BUG" "ERROR")
 )
 
@@ -97,5 +95,5 @@
 )
 
 (
-  (uri) @text.uri @nospell
+  (uri) @text.uri
 )

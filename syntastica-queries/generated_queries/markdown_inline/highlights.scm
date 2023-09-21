@@ -94,14 +94,10 @@
   (image_description)
 ] @text.reference
 
-(shortcut_link
-  (link_text) @nospell
-)
-
 [
   (link_destination)
   (uri_autolink)
-] @text.uri @nospell
+] @text.uri
 
 (strikethrough) @text.strike
 
@@ -117,4 +113,4 @@
 [
   (code_span)
   (link_title)
-] @text.literal @nospell
+] @text.literal

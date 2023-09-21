@@ -73,7 +73,7 @@
   "endcase"
 ] @conditional
 
-(comment) @comment @spell
+(comment) @comment
 
 (include_compiler_directive) @constant.macro
 
@@ -199,7 +199,7 @@
 [
   (double_quoted_string)
   (string_literal)
-] @string @spell
+] @string
 
 [
   (default_nettype_compiler_directive)

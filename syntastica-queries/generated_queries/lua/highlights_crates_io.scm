@@ -1,6 +1,6 @@
 (ERROR) @error
 
-(string) @string @spell
+(string) @string
 
 (number) @number
 
@@ -16,7 +16,7 @@
   (#match? @comment.documentation "^[-][-][-]")
 )
 
-(comment) @comment @spell
+(comment) @comment
 
 (function_call
   (identifier) @function.builtin

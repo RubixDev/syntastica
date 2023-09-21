@@ -29,7 +29,7 @@
 
 (int) @number
 
-(line_comment) @comment @spell
+(line_comment) @comment
 
 (instruction
   kind: (_) @function.call

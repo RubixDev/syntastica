@@ -220,7 +220,7 @@
   body: (block
     .
     (expression_statement
-      (string) @string.documentation @spell
+      (string) @string.documentation
     )
   )
 )
@@ -229,7 +229,7 @@
   body: (block
     .
     (expression_statement
-      (string) @string.documentation @spell
+      (string) @string.documentation
     )
   )
 )
@@ -237,7 +237,7 @@
 (module
   .
   (expression_statement
-    (string) @string.documentation @spell
+    (string) @string.documentation
   )
 )
 
@@ -253,7 +253,7 @@
   (#match? @preproc "^#!\\/")
 )
 
-(comment) @comment @spell
+(comment) @comment
 
 (float) @float
 

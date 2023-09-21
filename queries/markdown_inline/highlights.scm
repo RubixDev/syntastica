@@ -3,7 +3,7 @@
 [
   (code_span)
   (link_title)
-] @text.literal @nospell
+] @text.literal
 
 [
   (emphasis_delimiter)
@@ -19,11 +19,7 @@
 [
   (link_destination)
   (uri_autolink)
-] @text.uri @nospell
-
-(shortcut_link
-  (link_text) @nospell
-)
+] @text.uri
 
 [
   (link_label)

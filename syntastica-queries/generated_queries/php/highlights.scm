@@ -158,7 +158,7 @@
 
 (named_label_statement) @label
 
-(comment) @comment @spell
+(comment) @comment
 
 (float) @float
 
@@ -176,7 +176,7 @@
   (heredoc_body)
   (nowdoc_body)
   (shell_command_expression)
-] @string @spell
+] @string
 
 (declare_directive
   [

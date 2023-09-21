@@ -3,7 +3,7 @@
 [
   (line_comment)
   (block_comment)
-] @comment @spell
+] @comment
 
 (charpred
   (className) @function

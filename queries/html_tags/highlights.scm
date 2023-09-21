@@ -12,7 +12,7 @@
   (quoted_attribute_value) @string
 )
 
-(text) @text @spell
+(text) @text
 
 (
   (element

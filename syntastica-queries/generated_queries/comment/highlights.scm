@@ -1,4 +1,4 @@
-(uri) @text.uri @nospell
+(uri) @text.uri
 
 ("text"
   @number
@@ -6,13 +6,13 @@
 )
 
 ("text"
-  @text.danger @nospell
+  @text.danger
   (#match? @text.danger "^(FIXME|BUG|ERROR)$")
 )
 
 (
   (tag
-    (name) @text.danger @nospell
+    (name) @text.danger
     ("("
       @punctuation.bracket
       (user) @constant
@@ -24,13 +24,13 @@
 )
 
 ("text"
-  @text.warning @nospell
+  @text.warning
   (#match? @text.warning "^(HACK|WARNING|WARN|FIX)$")
 )
 
 (
   (tag
-    (name) @text.warning @nospell
+    (name) @text.warning
     ("("
       @punctuation.bracket
       (user) @constant
@@ -42,13 +42,13 @@
 )
 
 ("text"
-  @text.note @nospell
+  @text.note
   (#match? @text.note "^(NOTE|XXX|INFO|DOCS|PERF|TEST)$")
 )
 
 (
   (tag
-    (name) @text.note @nospell
+    (name) @text.note
     ("("
       @punctuation.bracket
       (user) @constant
@@ -60,13 +60,13 @@
 )
 
 ("text"
-  @text.todo @nospell
+  @text.todo
   (#match? @text.todo "^(TODO|WIP)$")
 )
 
 (
   (tag
-    (name) @text.todo @nospell
+    (name) @text.todo
     ("("
       @punctuation.bracket
       (user) @constant
@@ -76,5 +76,3 @@
   )
   (#match? @text.todo "^(TODO|WIP)$")
 )
-
-(_) @spell

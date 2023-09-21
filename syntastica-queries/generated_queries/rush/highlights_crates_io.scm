@@ -80,7 +80,7 @@
 [
   (line_comment)
   (block_comment)
-] @comment @spell
+] @comment
 
 (call_expr
   func: (ident) @function.builtin

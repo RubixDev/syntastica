@@ -14,7 +14,7 @@
 ;---------
 (boolean) @boolean
 
-(comment) @comment @spell
+(comment) @comment
 
 (string) @string
 

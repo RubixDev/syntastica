@@ -235,7 +235,7 @@
 
 (nil) @constant.builtin
 
-(comment) @comment @spell
+(comment) @comment
 
 (program
   (comment)+ @comment.documentation
@@ -260,8 +260,6 @@
   (comment)+ @comment.documentation
   (method)
 )
-
-(string_content) @spell
 
 ; Operators
 [

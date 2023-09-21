@@ -267,7 +267,3 @@
 
 ; Highlighting of quasiquote_body is handled by injections.scm
 ;; ----------------------------------------------------------------------------
-;; Spell checking
-(string) @spell
-
-(comment) @spell

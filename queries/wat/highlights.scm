@@ -16,7 +16,7 @@
 [
   (comment_line)
   (comment_block)
-] @comment @spell
+] @comment
 
 (value_type) @type.builtin
 

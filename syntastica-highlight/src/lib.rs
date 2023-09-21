@@ -725,12 +725,12 @@ where
                 };
             }
 
-            // Skip all captures starting with `_` and skip `@spell` captures
+            // Skip to the next capture not starting with a `_`
             let layer = &mut self.layers[0];
             while let Some((next_match, capture_index)) = layer.captures.peek() {
-                let name =
-                    &layer.config.names()[next_match.captures[*capture_index].index as usize];
-                if name.starts_with('_') || name == "spell" {
+                if layer.config.names()[next_match.captures[*capture_index].index as usize]
+                    .starts_with('_')
+                {
                     layer.captures.next();
                 } else {
                     break;

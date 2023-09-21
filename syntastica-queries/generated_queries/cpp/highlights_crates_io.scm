@@ -389,7 +389,7 @@
   (#match? @comment.documentation "^\\/[\\*][\\*][^\\*][\\s\\S]*[\\*]\\/$")
 )
 
-(comment) @comment @spell
+(comment) @comment
 
 (preproc_function_def
   name: (identifier) @function.macro

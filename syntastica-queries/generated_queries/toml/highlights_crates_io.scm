@@ -32,7 +32,7 @@
 
 (string) @string
 
-(comment) @comment @spell
+(comment) @comment
 
 (boolean) @boolean
 

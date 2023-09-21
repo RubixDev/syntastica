@@ -21,8 +21,6 @@
   (string) @string
 )
 
-(string_content) @spell
-
 (ERROR) @error
 
 [

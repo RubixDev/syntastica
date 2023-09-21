@@ -266,7 +266,7 @@
   name: (identifier) @function.macro
 )
 
-(comment) @comment @spell
+(comment) @comment
 
 (
   (comment) @comment.documentation

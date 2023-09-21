@@ -33,7 +33,7 @@
 [
   (comment)
   (block_comment)
-] @comment @spell
+] @comment
 
 "return" @keyword.return
 

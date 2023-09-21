@@ -21,7 +21,7 @@
 
 (float_scalar) @number
 
-(comment) @comment @spell
+(comment) @comment
 
 (anchor_name) @type
 

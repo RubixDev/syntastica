@@ -30,7 +30,7 @@
 [
   (comment_line)
   (comment_block)
-] @comment @spell
+] @comment
 
 (escape_sequence) @string.escape
 

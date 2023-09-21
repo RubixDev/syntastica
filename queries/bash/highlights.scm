@@ -48,7 +48,7 @@
   (raw_string)
   (ansi_c_string)
   (heredoc_body)
-] @string @spell
+] @string
 
 (variable_assignment
   (word) @string
@@ -97,7 +97,7 @@
   (#any-of? @boolean "true" "false")
 )
 
-(comment) @comment @spell
+(comment) @comment
 
 (test_operator) @string
 

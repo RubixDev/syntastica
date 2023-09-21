@@ -307,7 +307,7 @@
 
 (float) @float
 
-(comment) @comment @spell
+(comment) @comment
 
 (
   (module
@@ -325,7 +325,7 @@
 (module
   .
   (expression_statement
-    (string) @string.documentation @spell
+    (string) @string.documentation
   )
 )
 
@@ -333,7 +333,7 @@
   body: (block
     .
     (expression_statement
-      (string) @string.documentation @spell
+      (string) @string.documentation
     )
   )
 )
@@ -342,7 +342,7 @@
   body: (block
     .
     (expression_statement
-      (string) @string.documentation @spell
+      (string) @string.documentation
     )
   )
 )

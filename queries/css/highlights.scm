@@ -13,7 +13,7 @@
 
 "@import" @include
 
-(comment) @comment @spell
+(comment) @comment
 
 [
   (tag_name)

@@ -336,7 +336,7 @@
 )
 
 ;; Others
-(comment) @comment @spell
+(comment) @comment
 
 (
   (comment) @comment.documentation
@@ -352,7 +352,7 @@
 
 (number) @number
 
-(string) @string @spell
+(string) @string
 
 ;; Error
 (ERROR) @error

@@ -1,8 +1,3 @@
-(
-  (interpreted_string_literal) @spell
-  (#not-has-parent? @spell import_spec)
-)
-
 (ERROR) @error
 
 (source_file
@@ -34,7 +29,7 @@
   (comment)+ @comment.documentation
 )
 
-(comment) @comment @spell
+(comment) @comment
 
 (field_declaration
   name: (field_identifier) @field
@@ -67,7 +62,7 @@
 
 (rune_literal) @string
 
-(raw_string_literal) @string @spell
+(raw_string_literal) @string
 
 (interpreted_string_literal) @string
 

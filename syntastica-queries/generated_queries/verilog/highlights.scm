@@ -166,7 +166,7 @@
 [
   (double_quoted_string)
   (string_literal)
-] @string @spell
+] @string
 
 (net_port_type1
   (simple_identifier) @type
@@ -289,7 +289,7 @@
 
 (include_compiler_directive) @constant.macro
 
-(comment) @comment @spell
+(comment) @comment
 
 [
   "if"

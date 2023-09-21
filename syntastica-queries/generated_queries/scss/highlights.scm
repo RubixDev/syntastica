@@ -191,7 +191,7 @@
   (universal_selector)
 ] @type
 
-(comment) @comment @spell
+(comment) @comment
 
 "@import" @include
 

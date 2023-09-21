@@ -1,7 +1,3 @@
-(comment) @spell
-
-(string) @spell
-
 (quoter) @function.call
 
 (

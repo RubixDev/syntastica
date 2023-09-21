@@ -235,7 +235,7 @@
 ; Literals
 (interpreted_string_literal) @string
 
-(raw_string_literal) @string @spell
+(raw_string_literal) @string
 
 (rune_literal) @string
 
@@ -269,7 +269,7 @@
 )
 
 ; Comments
-(comment) @comment @spell
+(comment) @comment
 
 ;; Doc Comments
 (source_file
@@ -303,9 +303,3 @@
 
 ; Errors
 (ERROR) @error
-
-; Spell
-(
-  (interpreted_string_literal) @spell
-  (#not-has-parent? @spell import_spec)
-)

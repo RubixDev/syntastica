@@ -242,7 +242,7 @@
   (undefined)
 ] @constant.builtin
 
-(comment) @comment @spell
+(comment) @comment
 
 (
   (comment) @comment.documentation
@@ -256,7 +256,7 @@
   (#eq? @preproc "use strict")
 )
 
-(string) @string @spell
+(string) @string
 
 (template_string) @string
 

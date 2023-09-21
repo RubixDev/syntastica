@@ -273,7 +273,7 @@
 [
   (line_comment)
   (block_comment)
-] @comment @spell
+] @comment
 
 (macro_invocation
   macro: (scoped_identifier
