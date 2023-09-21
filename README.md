@@ -209,7 +209,7 @@ this approach for use of `syntastica` in a Dioxus project can be found
 
 ### 2. Using Emscripten / the `syntastica-js` package
 
-`syntastica` can also be compiled to `wasm32-unknown-emscripen` which has much
+`syntastica` can also be compiled to `wasm32-unknown-emscripten` which has much
 better support for C and C++ interop. But annoyingly, basically the entire Rust
 Wasm ecosystem is built around the `wasm32-unknown-unknown` target (e.g.,
 `wasm-pack` and `wasm-bindgen` can only be used with `wasm32-unknown-unknown`),
