@@ -115,6 +115,7 @@
 <a href="#115" id="115">115</a>
 <a href="#116" id="116">116</a>
 <a href="#117" id="117">117</a>
+<a href="#118" id="118">118</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Defines the [`Style`] and [`Color`] types used by
 //! [`ResolvedTheme`](crate::theme::ResolvedTheme)s.
 
@@ -149,6 +150,7 @@
 /// - Using the [`From&lt;Color&gt;`](#impl-From&lt;Color&gt;-for-Style) implementation to create a [`Style`]
 ///   with the given [`Color`] and all booleans disabled.
 </span><span class="attr">#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[cfg_attr(feature = <span class="string">&quot;serde&quot;</span>, derive(serde::Serialize, serde::Deserialize))]
 </span><span class="kw">pub struct </span>Style {
     color: Color,
     underline: bool,
