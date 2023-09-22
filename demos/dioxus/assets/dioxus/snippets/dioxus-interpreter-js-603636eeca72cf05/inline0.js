@@ -163,7 +163,7 @@ let m,p,ls,d,t,op,i,e,z,metaflags;
       function truthy(val) {
         return val === "true" || val === true;
       }
-    let u32buf,u32bufp;let s = "";let lsp,sp,sl; let c = new TextDecoder();const attr = [];
+    const attr = [];
                     let attr_tmp1, attr_tmp2;
                     function get_attr() {
                         attr_tmp2 = u8buf[u8bufp++];
@@ -199,8 +199,8 @@ let m,p,ls,d,t,op,i,e,z,metaflags;
                         else{
                             return ns_cache[ns_cache_tmp2&4294967167];
                         }
-                    }let u8buf,u8bufp;
-            let id,bubbles,field,ptr,value,len,event_name,ns;
+                    }let s = "";let lsp,sp,sl; let c = new TextDecoder();let u32buf,u32bufp;let u8buf,u8bufp;
+            let event_name,len,value,id,bubbles,field,ptr,ns;
             export function create(r){
                 d=r;
             }
@@ -213,10 +213,7 @@ let m,p,ls,d,t,op,i,e,z,metaflags;
                     ls=m.getUint32(d+12*4,true);
                 }
                 p=ls;
-                if ((metaflags>>>3)&1){
-                u32buf=new Uint32Array(m.buffer,m.getUint32(d+3*4,true))
-            }
-            u32bufp=0;if (metaflags&1){
+                if (metaflags&1){
                 lsp = m.getUint32(d+1*4,true);
             }
             if ((metaflags>>>2)&1) {
@@ -242,7 +239,10 @@ let m,p,ls,d,t,op,i,e,z,metaflags;
                     s = c.decode(new DataView(m.buffer, lsp, sl));
                 }
             }
-            sp=0;if ((metaflags>>>5)&1){
+            sp=0;if ((metaflags>>>3)&1){
+                u32buf=new Uint32Array(m.buffer,m.getUint32(d+3*4,true))
+            }
+            u32bufp=0;if ((metaflags>>>5)&1){
                 u8buf=new Uint8Array(m.buffer,m.getUint32(d+5*4,true))
             }
             u8bufp=0;

@@ -566,6 +566,13 @@
 <a href="#566" id="566">566</a>
 <a href="#567" id="567">567</a>
 <a href="#568" id="568">568</a>
+<a href="#569" id="569">569</a>
+<a href="#570" id="570">570</a>
+<a href="#571" id="571">571</a>
+<a href="#572" id="572">572</a>
+<a href="#573" id="573">573</a>
+<a href="#574" id="574">574</a>
+<a href="#575" id="575">575</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! The one theme collection in this module was extracted from &lt;https://github.com/navarasu/onedark.nvim&gt; using `auto_extract.py`.
 
 </span><span class="kw">use </span>std::collections::BTreeMap;
@@ -578,7 +585,8 @@
 <span class="attr">#[rustfmt::skip]
 </span><span class="kw">pub fn </span>cool() -&gt; ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        (<span class="string">&quot;bg0&quot;</span>.to_owned(), Style::color_only(<span class="number">36</span>, <span class="number">43</span>, <span class="number">56</span>)),
+        (<span class="string">&quot;_fg&quot;</span>.to_owned(), Style::color_only(<span class="number">165</span>, <span class="number">176</span>, <span class="number">197</span>)),
+        (<span class="string">&quot;_bg&quot;</span>.to_owned(), Style::color_only(<span class="number">36</span>, <span class="number">43</span>, <span class="number">56</span>)),
         (<span class="string">&quot;annotation&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">165</span>, <span class="number">176</span>, <span class="number">197</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
         (<span class="string">&quot;attribute&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">77</span>, <span class="number">189</span>, <span class="number">203</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
         (<span class="string">&quot;attribute.typescript&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">90</span>, <span class="number">176</span>, <span class="number">246</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
@@ -658,7 +666,8 @@
 <span class="attr">#[rustfmt::skip]
 </span><span class="kw">pub fn </span>dark() -&gt; ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        (<span class="string">&quot;bg0&quot;</span>.to_owned(), Style::color_only(<span class="number">40</span>, <span class="number">44</span>, <span class="number">52</span>)),
+        (<span class="string">&quot;_fg&quot;</span>.to_owned(), Style::color_only(<span class="number">171</span>, <span class="number">178</span>, <span class="number">191</span>)),
+        (<span class="string">&quot;_bg&quot;</span>.to_owned(), Style::color_only(<span class="number">40</span>, <span class="number">44</span>, <span class="number">52</span>)),
         (<span class="string">&quot;annotation&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">171</span>, <span class="number">178</span>, <span class="number">191</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
         (<span class="string">&quot;attribute&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">86</span>, <span class="number">182</span>, <span class="number">194</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
         (<span class="string">&quot;attribute.typescript&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">97</span>, <span class="number">175</span>, <span class="number">239</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
@@ -738,7 +747,8 @@
 <span class="attr">#[rustfmt::skip]
 </span><span class="kw">pub fn </span>darker() -&gt; ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        (<span class="string">&quot;bg0&quot;</span>.to_owned(), Style::color_only(<span class="number">31</span>, <span class="number">35</span>, <span class="number">41</span>)),
+        (<span class="string">&quot;_fg&quot;</span>.to_owned(), Style::color_only(<span class="number">160</span>, <span class="number">168</span>, <span class="number">183</span>)),
+        (<span class="string">&quot;_bg&quot;</span>.to_owned(), Style::color_only(<span class="number">31</span>, <span class="number">35</span>, <span class="number">41</span>)),
         (<span class="string">&quot;annotation&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">160</span>, <span class="number">168</span>, <span class="number">183</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
         (<span class="string">&quot;attribute&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">72</span>, <span class="number">176</span>, <span class="number">189</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
         (<span class="string">&quot;attribute.typescript&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">79</span>, <span class="number">166</span>, <span class="number">237</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
@@ -818,7 +828,8 @@
 <span class="attr">#[rustfmt::skip]
 </span><span class="kw">pub fn </span>deep() -&gt; ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        (<span class="string">&quot;bg0&quot;</span>.to_owned(), Style::color_only(<span class="number">26</span>, <span class="number">33</span>, <span class="number">46</span>)),
+        (<span class="string">&quot;_fg&quot;</span>.to_owned(), Style::color_only(<span class="number">147</span>, <span class="number">164</span>, <span class="number">195</span>)),
+        (<span class="string">&quot;_bg&quot;</span>.to_owned(), Style::color_only(<span class="number">26</span>, <span class="number">33</span>, <span class="number">46</span>)),
         (<span class="string">&quot;annotation&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">147</span>, <span class="number">164</span>, <span class="number">195</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
         (<span class="string">&quot;attribute&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">52</span>, <span class="number">191</span>, <span class="number">208</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
         (<span class="string">&quot;attribute.typescript&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">65</span>, <span class="number">167</span>, <span class="number">252</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
@@ -898,7 +909,8 @@
 <span class="attr">#[rustfmt::skip]
 </span><span class="kw">pub fn </span>light() -&gt; ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        (<span class="string">&quot;bg0&quot;</span>.to_owned(), Style::color_only(<span class="number">250</span>, <span class="number">250</span>, <span class="number">250</span>)),
+        (<span class="string">&quot;_fg&quot;</span>.to_owned(), Style::color_only(<span class="number">56</span>, <span class="number">58</span>, <span class="number">66</span>)),
+        (<span class="string">&quot;_bg&quot;</span>.to_owned(), Style::color_only(<span class="number">250</span>, <span class="number">250</span>, <span class="number">250</span>)),
         (<span class="string">&quot;annotation&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">56</span>, <span class="number">58</span>, <span class="number">66</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
         (<span class="string">&quot;attribute&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">1</span>, <span class="number">132</span>, <span class="number">188</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
         (<span class="string">&quot;attribute.typescript&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">64</span>, <span class="number">120</span>, <span class="number">242</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
@@ -978,7 +990,8 @@
 <span class="attr">#[rustfmt::skip]
 </span><span class="kw">pub fn </span>warm() -&gt; ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        (<span class="string">&quot;bg0&quot;</span>.to_owned(), Style::color_only(<span class="number">44</span>, <span class="number">45</span>, <span class="number">48</span>)),
+        (<span class="string">&quot;_fg&quot;</span>.to_owned(), Style::color_only(<span class="number">177</span>, <span class="number">180</span>, <span class="number">185</span>)),
+        (<span class="string">&quot;_bg&quot;</span>.to_owned(), Style::color_only(<span class="number">44</span>, <span class="number">45</span>, <span class="number">48</span>)),
         (<span class="string">&quot;annotation&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">177</span>, <span class="number">180</span>, <span class="number">185</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
         (<span class="string">&quot;attribute&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">95</span>, <span class="number">175</span>, <span class="number">185</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
         (<span class="string">&quot;attribute.typescript&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">104</span>, <span class="number">174</span>, <span class="number">232</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
@@ -1058,7 +1071,8 @@
 <span class="attr">#[rustfmt::skip]
 </span><span class="kw">pub fn </span>warmer() -&gt; ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        (<span class="string">&quot;bg0&quot;</span>.to_owned(), Style::color_only(<span class="number">35</span>, <span class="number">35</span>, <span class="number">38</span>)),
+        (<span class="string">&quot;_fg&quot;</span>.to_owned(), Style::color_only(<span class="number">167</span>, <span class="number">170</span>, <span class="number">176</span>)),
+        (<span class="string">&quot;_bg&quot;</span>.to_owned(), Style::color_only(<span class="number">35</span>, <span class="number">35</span>, <span class="number">38</span>)),
         (<span class="string">&quot;annotation&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">167</span>, <span class="number">170</span>, <span class="number">176</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
         (<span class="string">&quot;attribute&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">81</span>, <span class="number">168</span>, <span class="number">179</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
         (<span class="string">&quot;attribute.typescript&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">87</span>, <span class="number">165</span>, <span class="number">229</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),

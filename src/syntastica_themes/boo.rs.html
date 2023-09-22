@@ -81,6 +81,7 @@
 <a href="#81" id="81">81</a>
 <a href="#82" id="82">82</a>
 <a href="#83" id="83">83</a>
+<a href="#84" id="84">84</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! The boo theme collection in this module was extracted from &lt;https://github.com/rockerBOO/boo-colorscheme-nvim&gt; using `auto_extract.py`.
 
 </span><span class="kw">use </span>std::collections::BTreeMap;
@@ -93,7 +94,8 @@
 <span class="attr">#[rustfmt::skip]
 </span><span class="kw">pub fn </span>boo() -&gt; ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        (<span class="string">&quot;bg0&quot;</span>.to_owned(), Style::color_only(<span class="number">15</span>, <span class="number">15</span>, <span class="number">16</span>)),
+        (<span class="string">&quot;_fg&quot;</span>.to_owned(), Style::color_only(<span class="number">225</span>, <span class="number">217</span>, <span class="number">234</span>)),
+        (<span class="string">&quot;_bg&quot;</span>.to_owned(), Style::color_only(<span class="number">15</span>, <span class="number">15</span>, <span class="number">16</span>)),
         (<span class="string">&quot;attribute&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">114</span>, <span class="number">84</span>, <span class="number">120</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
         (<span class="string">&quot;boolean&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">185</span>, <span class="number">158</span>, <span class="number">231</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
         (<span class="string">&quot;character&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">132</span>, <span class="number">157</span>, <span class="number">162</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),

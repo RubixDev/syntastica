@@ -206,6 +206,10 @@
 <a href="#206" id="206">206</a>
 <a href="#207" id="207">207</a>
 <a href="#208" id="208">208</a>
+<a href="#209" id="209">209</a>
+<a href="#210" id="210">210</a>
+<a href="#211" id="211">211</a>
+<a href="#212" id="212">212</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! The neon theme collection in this module was extracted from &lt;https://github.com/rafamadriz/neon&gt; using `auto_extract.py`.
 
 </span><span class="kw">use </span>std::collections::BTreeMap;
@@ -218,7 +222,8 @@
 <span class="attr">#[rustfmt::skip]
 </span><span class="kw">pub fn </span>default() -&gt; ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        (<span class="string">&quot;bg0&quot;</span>.to_owned(), Style::color_only(<span class="number">43</span>, <span class="number">45</span>, <span class="number">55</span>)),
+        (<span class="string">&quot;_fg&quot;</span>.to_owned(), Style::color_only(<span class="number">197</span>, <span class="number">205</span>, <span class="number">217</span>)),
+        (<span class="string">&quot;_bg&quot;</span>.to_owned(), Style::color_only(<span class="number">43</span>, <span class="number">45</span>, <span class="number">55</span>)),
         (<span class="string">&quot;character&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">218</span>, <span class="number">133</span>, <span class="number">72</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
         (<span class="string">&quot;character.special&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">218</span>, <span class="number">133</span>, <span class="number">72</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
         (<span class="string">&quot;comment&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">126</span>, <span class="number">130</span>, <span class="number">148</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">true</span>, <span class="bool-val">false</span>)),
@@ -268,7 +273,8 @@
 <span class="attr">#[rustfmt::skip]
 </span><span class="kw">pub fn </span>doom() -&gt; ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        (<span class="string">&quot;bg0&quot;</span>.to_owned(), Style::color_only(<span class="number">40</span>, <span class="number">44</span>, <span class="number">52</span>)),
+        (<span class="string">&quot;_fg&quot;</span>.to_owned(), Style::color_only(<span class="number">187</span>, <span class="number">194</span>, <span class="number">207</span>)),
+        (<span class="string">&quot;_bg&quot;</span>.to_owned(), Style::color_only(<span class="number">40</span>, <span class="number">44</span>, <span class="number">52</span>)),
         (<span class="string">&quot;character&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">218</span>, <span class="number">133</span>, <span class="number">72</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
         (<span class="string">&quot;character.special&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">218</span>, <span class="number">133</span>, <span class="number">72</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
         (<span class="string">&quot;comment&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">126</span>, <span class="number">130</span>, <span class="number">148</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">true</span>, <span class="bool-val">false</span>)),
@@ -318,7 +324,8 @@
 <span class="attr">#[rustfmt::skip]
 </span><span class="kw">pub fn </span>dark() -&gt; ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        (<span class="string">&quot;bg0&quot;</span>.to_owned(), Style::color_only(<span class="number">13</span>, <span class="number">17</span>, <span class="number">23</span>)),
+        (<span class="string">&quot;_fg&quot;</span>.to_owned(), Style::color_only(<span class="number">197</span>, <span class="number">205</span>, <span class="number">217</span>)),
+        (<span class="string">&quot;_bg&quot;</span>.to_owned(), Style::color_only(<span class="number">13</span>, <span class="number">17</span>, <span class="number">23</span>)),
         (<span class="string">&quot;character&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">218</span>, <span class="number">133</span>, <span class="number">72</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
         (<span class="string">&quot;character.special&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">218</span>, <span class="number">133</span>, <span class="number">72</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
         (<span class="string">&quot;comment&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">126</span>, <span class="number">130</span>, <span class="number">148</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">true</span>, <span class="bool-val">false</span>)),
@@ -368,7 +375,8 @@
 <span class="attr">#[rustfmt::skip]
 </span><span class="kw">pub fn </span>light() -&gt; ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        (<span class="string">&quot;bg0&quot;</span>.to_owned(), Style::color_only(<span class="number">211</span>, <span class="number">211</span>, <span class="number">211</span>)),
+        (<span class="string">&quot;_fg&quot;</span>.to_owned(), Style::color_only(<span class="number">76</span>, <span class="number">86</span>, <span class="number">106</span>)),
+        (<span class="string">&quot;_bg&quot;</span>.to_owned(), Style::color_only(<span class="number">211</span>, <span class="number">211</span>, <span class="number">211</span>)),
         (<span class="string">&quot;character&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">218</span>, <span class="number">133</span>, <span class="number">72</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
         (<span class="string">&quot;character.special&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">218</span>, <span class="number">133</span>, <span class="number">72</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
         (<span class="string">&quot;comment&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">126</span>, <span class="number">130</span>, <span class="number">148</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">true</span>, <span class="bool-val">false</span>)),

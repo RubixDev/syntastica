@@ -128,6 +128,8 @@
 <a href="#128" id="128">128</a>
 <a href="#129" id="129">129</a>
 <a href="#130" id="130">130</a>
+<a href="#131" id="131">131</a>
+<a href="#132" id="132">132</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! The everforest theme collection in this module was extracted from &lt;https://github.com/sainnhe/everforest&gt; using `auto_extract.py`.
 
 </span><span class="kw">use </span>std::collections::BTreeMap;
@@ -140,7 +142,8 @@
 <span class="attr">#[rustfmt::skip]
 </span><span class="kw">pub fn </span>dark() -&gt; ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        (<span class="string">&quot;bg0&quot;</span>.to_owned(), Style::color_only(<span class="number">41</span>, <span class="number">37</span>, <span class="number">34</span>)),
+        (<span class="string">&quot;_fg&quot;</span>.to_owned(), Style::color_only(<span class="number">236</span>, <span class="number">225</span>, <span class="number">215</span>)),
+        (<span class="string">&quot;_bg&quot;</span>.to_owned(), Style::color_only(<span class="number">41</span>, <span class="number">37</span>, <span class="number">34</span>)),
         (<span class="string">&quot;boolean&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">207</span>, <span class="number">155</span>, <span class="number">194</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
         (<span class="string">&quot;character&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">127</span>, <span class="number">145</span>, <span class="number">178</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
         (<span class="string">&quot;character.special&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">235</span>, <span class="number">192</span>, <span class="number">109</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
@@ -201,7 +204,8 @@
 <span class="attr">#[rustfmt::skip]
 </span><span class="kw">pub fn </span>light() -&gt; ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        (<span class="string">&quot;bg0&quot;</span>.to_owned(), Style::color_only(<span class="number">241</span>, <span class="number">241</span>, <span class="number">241</span>)),
+        (<span class="string">&quot;_fg&quot;</span>.to_owned(), Style::color_only(<span class="number">84</span>, <span class="number">67</span>, <span class="number">58</span>)),
+        (<span class="string">&quot;_bg&quot;</span>.to_owned(), Style::color_only(<span class="number">241</span>, <span class="number">241</span>, <span class="number">241</span>)),
         (<span class="string">&quot;boolean&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">144</span>, <span class="number">65</span>, <span class="number">128</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
         (<span class="string">&quot;character&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">120</span>, <span class="number">146</span>, <span class="number">189</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
         (<span class="string">&quot;character.special&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">160</span>, <span class="number">109</span>, <span class="number">0</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),

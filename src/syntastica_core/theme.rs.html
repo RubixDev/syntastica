@@ -495,6 +495,8 @@
 <a href="#495" id="495">495</a>
 <a href="#496" id="496">496</a>
 <a href="#497" id="497">497</a>
+<a href="#498" id="498">498</a>
+<a href="#499" id="499">499</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Defines items related to theming the output.
 
 </span><span class="kw">use </span>std::{borrow::Borrow, collections::BTreeMap, ops::Index, str::FromStr};
@@ -724,7 +726,7 @@
     ///
     /// For example, if `key` is `keyword.operator` but this theme only has a style defined for
     /// `keyword`, then the style for `keyword` is returned. Additionally, if no style is found,
-    /// the method tries to use the keys `text` and `text.literal` as fallbacks.
+    /// the method tries to use the keys `_fg`, `text`, and `text.literal` as fallbacks.
     </span><span class="kw">pub fn </span>find_style(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut </span>key: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Option</span>&lt;Style&gt; {
         <span class="comment">// if the theme contains the entire key, use that
         </span><span class="kw">if let </span><span class="prelude-val">Some</span>(style) = <span class="self">self</span>.get(key) {
@@ -740,8 +742,10 @@
             key = rest;
         }
 
-        <span class="comment">// or when the theme doesn&#39;t have any matching style, try to use the `text` style as a fallback
-        </span><span class="self">self</span>.get(<span class="string">&quot;text&quot;</span>)
+        <span class="comment">// or when the theme doesn&#39;t have any matching style, try to use `_fg`, `text` or
+        // `text.literal` as fallbacks
+        </span><span class="self">self</span>.get(<span class="string">&quot;_fg&quot;</span>)
+            .or_else(|| <span class="self">self</span>.get(<span class="string">&quot;text&quot;</span>))
             .or_else(|| <span class="self">self</span>.get(<span class="string">&quot;text.literal&quot;</span>))
             .copied()
     }

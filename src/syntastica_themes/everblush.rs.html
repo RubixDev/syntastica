@@ -81,6 +81,7 @@
 <a href="#81" id="81">81</a>
 <a href="#82" id="82">82</a>
 <a href="#83" id="83">83</a>
+<a href="#84" id="84">84</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! The everblush theme collection in this module was extracted from &lt;https://github.com/Everblush/nvim&gt; using `auto_extract.py`.
 
 </span><span class="kw">use </span>std::collections::BTreeMap;
@@ -93,7 +94,8 @@
 <span class="attr">#[rustfmt::skip]
 </span><span class="kw">pub fn </span>everblush() -&gt; ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        (<span class="string">&quot;bg0&quot;</span>.to_owned(), Style::color_only(<span class="number">20</span>, <span class="number">27</span>, <span class="number">30</span>)),
+        (<span class="string">&quot;_fg&quot;</span>.to_owned(), Style::color_only(<span class="number">218</span>, <span class="number">218</span>, <span class="number">218</span>)),
+        (<span class="string">&quot;_bg&quot;</span>.to_owned(), Style::color_only(<span class="number">20</span>, <span class="number">27</span>, <span class="number">30</span>)),
         (<span class="string">&quot;attribute&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">103</span>, <span class="number">176</span>, <span class="number">232</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
         (<span class="string">&quot;boolean&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">108</span>, <span class="number">191</span>, <span class="number">191</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
         (<span class="string">&quot;character&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">103</span>, <span class="number">176</span>, <span class="number">232</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
@@ -145,7 +147,7 @@
         (<span class="string">&quot;text.danger&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">45</span>, <span class="number">52</span>, <span class="number">55</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
         (<span class="string">&quot;text.emphasis&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">179</span>, <span class="number">185</span>, <span class="number">184</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">true</span>, <span class="bool-val">false</span>)),
         (<span class="string">&quot;text.environment.name&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">229</span>, <span class="number">199</span>, <span class="number">107</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
-        (<span class="string">&quot;text.environtment&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">196</span>, <span class="number">127</span>, <span class="number">213</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
+        (<span class="string">&quot;text.environment&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">196</span>, <span class="number">127</span>, <span class="number">213</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
         (<span class="string">&quot;text.literal&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">140</span>, <span class="number">207</span>, <span class="number">126</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">true</span>, <span class="bool-val">false</span>)),
         (<span class="string">&quot;text.math&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">108</span>, <span class="number">191</span>, <span class="number">191</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
         (<span class="string">&quot;text.note&quot;</span>.to_owned(), Style::new(Color::new(<span class="number">45</span>, <span class="number">52</span>, <span class="number">55</span>), <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)),
