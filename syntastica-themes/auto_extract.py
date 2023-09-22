@@ -312,7 +312,7 @@ if __name__ == "__main__":
                 ),
             ]
         ),
-        Theme("github", "https://github.com/project0n/github-nvim-theme", [
+        Theme("github", "https://github.com/projekt0n/github-nvim-theme", [
             SubTheme(
                 "dark",
                 "colorscheme github_dark"

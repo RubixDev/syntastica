@@ -1,4 +1,4 @@
-//! The github theme collection in this module was extracted from <https://github.com/project0n/github-nvim-theme> using `auto_extract.py`.
+//! The github theme collection in this module was extracted from <https://github.com/projekt0n/github-nvim-theme> using `auto_extract.py`.
 
 use std::collections::BTreeMap;
 
