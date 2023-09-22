@@ -15,7 +15,8 @@ pub type Color = Srgb<u8>;
 
 /// Defines how to style a region of text.
 ///
-/// Besides a [`Color`], the four following booleans can be set:
+/// Besides a main foreground [`Color`], an optional background color and the following four
+/// booleans can be set:
 ///
 /// - `underline`
 /// - `strikethrough`
@@ -26,15 +27,16 @@ pub type Color = Srgb<u8>;
 ///
 /// A [`Style`] can mainly be created in three ways:
 ///
-/// - Using [`Style::new`] to specify the color and all four boolean flags explicitly.
-/// - Using [`Style::color_only`] to specify a color's red, green, and blue values and keep all
-///   booleans disabled.
+/// - Using [`Style::new`] to specify the colors and all boolean flags explicitly.
+/// - Using [`Style::color_only`] to specify the foreground color's red, green, and blue values and
+///   keep all booleans disabled.
 /// - Using the [`From<Color>`](#impl-From<Color>-for-Style) implementation to create a [`Style`]
 ///   with the given [`Color`] and all booleans disabled.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Style {
     color: Color,
+    bg: Option<Color>,
     underline: bool,
     strikethrough: bool,
     italic: bool,
@@ -45,6 +47,7 @@ impl Style {
     /// Create a new [`Style`].
     pub fn new(
         color: Color,
+        bg: Option<Color>,
         underline: bool,
         strikethrough: bool,
         italic: bool,
@@ -52,6 +55,7 @@ impl Style {
     ) -> Self {
         Self {
             color,
+            bg,
             underline,
             strikethrough,
             italic,
@@ -59,19 +63,31 @@ impl Style {
         }
     }
 
-    /// Create a new [`Style`] with only color information attached.
+    /// Create a new [`Style`] with only foreground color information attached.
     ///
     /// The function does not accept a [`Color`] instance, but instead takes the red, green, and
     /// blue values separately to create a new color. To create a color-only [`Style`] from an
     /// existing [`Color`] instance, use the [`From<Color>`](#impl-From<Color>-for-Style)
     /// implementation.
     pub fn color_only(red: u8, green: u8, blue: u8) -> Self {
-        Self::new(Color::new(red, green, blue), false, false, false, false)
+        Self::new(
+            Color::new(red, green, blue),
+            None,
+            false,
+            false,
+            false,
+            false,
+        )
     }
 
-    /// Get this [`Style`]'s [`Color`].
+    /// Get this [`Style`]'s foreground [`Color`].
     pub fn color(&self) -> Color {
         self.color
+    }
+
+    /// Get this [`Style`]'s background [`Color`].
+    pub fn bg(&self) -> Option<Color> {
+        self.bg
     }
 
     /// Whether this [`Style`] is underlined.
@@ -97,7 +113,7 @@ impl Style {
 
 impl From<Color> for Style {
     fn from(color: Color) -> Self {
-        Self::new(color, false, false, false, false)
+        Self::new(color, None, false, false, false, false)
     }
 }
 
@@ -109,6 +125,16 @@ impl Hash for Style {
         Hash::hash(&self.color.green, state);
         Hash::hash(&self.color.blue, state);
         Hash::hash(&self.color.standard, state);
+
+        if let Some(color) = self.bg {
+            Hash::hash(&true, state);
+            Hash::hash(&color.red, state);
+            Hash::hash(&color.green, state);
+            Hash::hash(&color.blue, state);
+            Hash::hash(&color.standard, state);
+        } else {
+            Hash::hash(&false, state);
+        }
 
         Hash::hash(&self.underline, state);
         Hash::hash(&self.strikethrough, state);

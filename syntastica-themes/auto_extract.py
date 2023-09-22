@@ -151,7 +151,7 @@ class Theme:
             A string containing the Rust module definition for the theme.
         """
 
-        rust = f"""//! The {self.name} theme collection in this module was extracted from <{self.url}> using `auto_extract.py`.
+        rust = f"""//! The '{self.name}' theme collection in this module was extracted from <{self.url}> using `auto_extract.py`.
 
 use std::collections::BTreeMap;
 

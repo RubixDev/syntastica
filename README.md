@@ -428,6 +428,7 @@ let theme = theme! {
     // (note that currently this order is required by the macro)
     "string": {
         color: None,
+        bg: None,
         underline: false,
         strikethrough: false,
         italic: true,

@@ -175,6 +175,10 @@ impl Renderer for HtmlRenderer {
     fn styled(&mut self, text: &str, style: Style) -> Cow<'static, str> {
         let (r, g, b) = style.color().into_components();
         let mut css = format!("color:rgb({r},{g},{b});");
+        if let Some(color) = style.bg() {
+            let (r, g, b) = color.into_components();
+            css += &format!("background-color:rgb({r},{g},{b});");
+        }
         if style.underline() && style.strikethrough() {
             css += "text-decoration: underline line-through;"
         } else if style.underline() {
@@ -214,48 +218,44 @@ impl Renderer for HtmlRenderer {
 ///
 /// assert_eq!(output, "\x1b[38;2;255;0;0mfn\x1b[0m none");
 /// ```
+#[derive(Default)]
 pub struct TerminalRenderer {
     background_color: Option<Color>,
+    // TODO: introduce an `escaped` method, then don't run `unstyled` on styled text, to avoid
+    // hacks like this
+    last_raw_text: String,
 }
 
 impl TerminalRenderer {
     /// Create a new [`TerminalRenderer`] with an optional background color.
     pub fn new(background_color: Option<Color>) -> Self {
-        Self { background_color }
+        Self {
+            background_color,
+            last_raw_text: String::new(),
+        }
     }
 }
 
 impl Renderer for TerminalRenderer {
-    fn head(&mut self) -> Cow<'static, str> {
+    fn unstyled<'a>(&mut self, text: &'a str) -> Cow<'a, str> {
+        self.last_raw_text = text.to_owned();
         match self.background_color {
             Some(color) => {
                 let (r, g, b) = color.into_components();
-                format!("\x1b[48;2;{r};{g};{b}m").into()
+                format!("\x1b[48;2;{r};{g};{b}m{text}\x1b[0m").into()
             }
-            None => "".into(),
+            None => text.into(),
         }
     }
 
-    fn tail(&mut self) -> Cow<'static, str> {
-        match self.background_color {
-            Some(_) => "\x1b[0m".into(),
-            None => "".into(),
-        }
-    }
-
-    fn newline(&mut self) -> Cow<'static, str> {
-        match self.background_color {
-            Some(color) => {
-                let (r, g, b) = color.into_components();
-                format!("\x1b[0m\n\x1b[48;2;{r};{g};{b}m").into()
-            }
-            None => "\n".into(),
-        }
-    }
-
-    fn styled(&mut self, text: &str, style: Style) -> Cow<'static, str> {
+    fn styled(&mut self, _text: &str, style: Style) -> Cow<'static, str> {
+        let text = &self.last_raw_text;
         let (r, g, b) = style.color().into_components();
         let mut params = format!("38;2;{r};{g};{b};");
+        if let Some(color) = style.bg().or(self.background_color) {
+            let (r, g, b) = color.into_components();
+            params += &format!("48;2;{r};{g};{b};");
+        }
         if style.underline() {
             params += "4;"
         }
@@ -270,10 +270,6 @@ impl Renderer for TerminalRenderer {
         }
         // trim last `;`
         params.truncate(params.len() - 1);
-        let reset = match self.background_color.is_some() {
-            true => "39;24;29;23;22",
-            false => "0",
-        };
-        format!("\x1b[{params}m{text}\x1b[{reset}m").into()
+        format!("\x1b[{params}m{text}\x1b[0m").into()
     }
 }

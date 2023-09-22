@@ -1,6 +1,11 @@
 //! Defines items related to theming the output.
 
-use std::{borrow::Borrow, collections::BTreeMap, ops::Index, str::FromStr};
+use std::{
+    borrow::{Borrow, Cow},
+    collections::BTreeMap,
+    ops::Index,
+    str::FromStr,
+};
 
 use crate::{
     style::{Color, Style},
@@ -58,7 +63,7 @@ pub struct Theme(BTreeMap<String, ThemeValue>);
 /// exact match.
 // TODO: better support for background color
 #[derive(Clone, Hash, Debug, PartialEq, Eq)]
-pub struct ResolvedTheme(BTreeMap<String, Style>);
+pub struct ResolvedTheme(BTreeMap<Cow<'static, str>, Style>);
 
 /// A value of a [`Theme`] containing style information and/or a link to another key in the
 /// [`Theme`].
@@ -77,11 +82,14 @@ pub enum ThemeValue {
     Simple(String),
     /// A color or link with additional style information.
     Extended {
-        /// The color to use for this style, specified as a hexadecimal string.
+        /// The foreground color to use for this style, specified as a hexadecimal string.
         ///
         /// Either this or [`link`](ThemeValue::Extended::link) has to be set, or calls to
         /// [`Theme::resolve_links`] will fail.
         color: Option<String>,
+
+        /// The background color to use for this style, specified as a hexadecimal string.
+        bg: Option<String>,
 
         /// Whether the text should be underlined. (default is `false`)
         #[cfg_attr(feature = "serde", serde(default))]
@@ -135,13 +143,19 @@ impl Theme {
                 .into_iter()
                 .map(|(key, value)| {
                     Ok((
-                        key,
+                        key.into(),
                         match value {
-                            ThemeValue::Simple(color) => {
-                                Style::new(Color::from_str(&color)?, false, false, false, false)
-                            }
+                            ThemeValue::Simple(color) => Style::new(
+                                Color::from_str(&color)?,
+                                None,
+                                false,
+                                false,
+                                false,
+                                false,
+                            ),
                             ThemeValue::Extended {
                                 color,
+                                bg,
                                 underline,
                                 strikethrough,
                                 italic,
@@ -150,6 +164,7 @@ impl Theme {
                             } => Style::new(
                                 // TODO: maybe rework to not rely on unwrapping
                                 Color::from_str(&color.expect("links have been resolved"))?,
+                                bg.map(|color| Color::from_str(&color)).transpose()?,
                                 underline,
                                 strikethrough,
                                 italic,
@@ -203,31 +218,41 @@ impl From<BTreeMap<String, ThemeValue>> for Theme {
 
 impl ResolvedTheme {
     /// Create a new [`ResolvedTheme`] from a map of [theme keys](THEME_KEYS) to [`Style`]s.
-    pub fn new(highlights: BTreeMap<String, Style>) -> Self {
+    pub fn new(highlights: BTreeMap<Cow<'static, str>, Style>) -> Self {
         Self(highlights)
     }
 
     /// Consume `self` and return the contained theme map.
     ///
     /// May be used to merge multiple [`ResolvedTheme`]s together.
-    pub fn into_inner(self) -> BTreeMap<String, Style> {
+    pub fn into_inner(self) -> BTreeMap<Cow<'static, str>, Style> {
         self.0
     }
 
     /// Returns a reference to the style corresponding to the key.
     pub fn get<Q>(&self, key: &Q) -> Option<&Style>
     where
-        String: Borrow<Q>,
+        Cow<'static, str>: Borrow<Q>,
         Q: Ord + ?Sized,
     {
         self.0.get(key)
     }
 
-    /// Try to find the best possible style supported by the them given a theme key.
+    /// Get the default foreground color, if the theme defines one.
+    pub fn fg(&self) -> Option<Color> {
+        self.get("_normal").map(|style| style.color())
+    }
+
+    /// Get the default background color, if the theme defines one.
+    pub fn bg(&self) -> Option<Color> {
+        self.get("_normal").and_then(|style| style.bg())
+    }
+
+    /// Try to find the best possible style supported by the given a theme key.
     ///
     /// For example, if `key` is `keyword.operator` but this theme only has a style defined for
     /// `keyword`, then the style for `keyword` is returned. Additionally, if no style is found,
-    /// the method tries to use the keys `_fg`, `text`, and `text.literal` as fallbacks.
+    /// the method tries to use the theme's [default foreground](ResolvedTheme::fg) as a fallback.
     pub fn find_style(&self, mut key: &str) -> Option<Style> {
         // if the theme contains the entire key, use that
         if let Some(style) = self.get(key) {
@@ -243,18 +268,14 @@ impl ResolvedTheme {
             key = rest;
         }
 
-        // or when the theme doesn't have any matching style, try to use `_fg`, `text` or
-        // `text.literal` as fallbacks
-        self.get("_fg")
-            .or_else(|| self.get("text"))
-            .or_else(|| self.get("text.literal"))
-            .copied()
+        // or when the theme doesn't have any matching style, try to use the foreground
+        self.fg().map(Style::from)
     }
 }
 
 impl<Q> Index<&Q> for ResolvedTheme
 where
-    String: Borrow<Q>,
+    Cow<'static, str>: Borrow<Q>,
     Q: Ord + ?Sized,
 {
     type Output = Style;
@@ -264,8 +285,8 @@ where
     }
 }
 
-impl From<BTreeMap<String, Style>> for ResolvedTheme {
-    fn from(highlights: BTreeMap<String, Style>) -> Self {
+impl From<BTreeMap<Cow<'static, str>, Style>> for ResolvedTheme {
+    fn from(highlights: BTreeMap<Cow<'static, str>, Style>) -> Self {
         Self::new(highlights)
     }
 }
@@ -286,6 +307,7 @@ impl ThemeValue {
             (
                 ThemeValue::Extended {
                     color: Some(color),
+                    bg,
                     underline,
                     strikethrough,
                     italic,
@@ -297,6 +319,7 @@ impl ThemeValue {
             | (
                 ThemeValue::Extended {
                     color: None,
+                    bg,
                     underline,
                     strikethrough,
                     italic,
@@ -306,6 +329,7 @@ impl ThemeValue {
                 ThemeValue::Simple(color),
             ) => Self::Extended {
                 color: Some(color.clone()),
+                bg: bg.clone(),
                 underline: *underline,
                 strikethrough: *strikethrough,
                 italic: *italic,
@@ -315,6 +339,7 @@ impl ThemeValue {
             (
                 ThemeValue::Extended {
                     color: color @ Some(_),
+                    bg,
                     underline,
                     strikethrough,
                     italic,
@@ -323,6 +348,7 @@ impl ThemeValue {
                 },
                 ThemeValue::Extended {
                     color: _,
+                    bg: other_bg,
                     underline: other_underline,
                     strikethrough: other_strikethrough,
                     italic: other_italic,
@@ -333,6 +359,7 @@ impl ThemeValue {
             | (
                 ThemeValue::Extended {
                     color: None,
+                    bg,
                     underline,
                     strikethrough,
                     italic,
@@ -341,6 +368,7 @@ impl ThemeValue {
                 },
                 ThemeValue::Extended {
                     color,
+                    bg: other_bg,
                     underline: other_underline,
                     strikethrough: other_strikethrough,
                     italic: other_italic,
@@ -349,6 +377,7 @@ impl ThemeValue {
                 },
             ) => Self::Extended {
                 color: color.clone(),
+                bg: bg.clone().or_else(|| other_bg.clone()),
                 underline: *underline || *other_underline,
                 strikethrough: *strikethrough || *other_strikethrough,
                 italic: *italic || *other_italic,
@@ -391,6 +420,7 @@ impl ThemeValue {
 ///     // (note that currently this order required by the macro)
 ///     "string": {
 ///         color: None, // either `None` or `"#<color>"`
+///         bg: None, // either `None` or `"#<color>"`
 ///         underline: false,
 ///         strikethrough: false,
 ///         italic: true,
@@ -408,6 +438,7 @@ impl ThemeValue {
 ///     ("function".to_owned(), ThemeValue::Simple("$blue".to_owned())),
 ///     ("string".to_owned(), ThemeValue::Extended {
 ///         color: None,
+///         bg: None,
 ///         underline: false,
 ///         strikethrough: false,
 ///         italic: true,
@@ -439,6 +470,7 @@ macro_rules! theme_impl {
     };
     (@value {
         color: $color:tt,
+        bg: $bg:tt,
         underline: $underline:expr,
         strikethrough: $strikethrough:expr,
         italic: $italic:expr,
@@ -447,6 +479,7 @@ macro_rules! theme_impl {
     }) => {
         $crate::theme::ThemeValue::Extended {
             color: theme_impl!(@option $color),
+            bg: theme_impl!(@option $bg),
             underline: $underline,
             strikethrough: $strikethrough,
             italic: $italic,
@@ -489,7 +522,7 @@ mod tests {
     #[test]
     fn style_fallback() {
         let theme = theme! {
-            "text": "#000000",
+            "_normal": "#000000",
         }
         .resolve_links()
         .unwrap();
