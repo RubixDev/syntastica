@@ -73,6 +73,7 @@ for more information on all parser collections.
 - [ocaml_interface](https://docs.rs/tree-sitter-ocaml/0.20.4/)
 - [ql](https://github.com/tree-sitter/tree-sitter-ql) (not supported by this collection)
 - [rush](https://docs.rs/tree-sitter-rush/0.1.0/)
+- [ursa](https://docs.rs/tree-sitter-ursa/0.0.3/)
 - [verilog](https://github.com/tree-sitter/tree-sitter-verilog) (not supported by this collection)
 - [wat](https://github.com/wasm-lsp/tree-sitter-wasm) (not supported by this collection)
 

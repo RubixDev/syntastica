@@ -296,6 +296,13 @@ pub const TYPESCRIPT_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_que
 pub const TYPESCRIPT_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/typescript/injections_crates_io.scm");
 pub const TYPESCRIPT_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/typescript/locals_crates_io.scm");
 
+pub const URSA_HIGHLIGHTS: &str = include_str!("../generated_queries/ursa/highlights.scm");
+pub const URSA_INJECTIONS: &str = include_str!("../generated_queries/ursa/injections.scm");
+pub const URSA_LOCALS: &str = include_str!("../generated_queries/ursa/locals.scm");
+pub const URSA_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_queries/ursa/highlights_crates_io.scm");
+pub const URSA_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/ursa/injections_crates_io.scm");
+pub const URSA_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/ursa/locals_crates_io.scm");
+
 pub const VERILOG_HIGHLIGHTS: &str = include_str!("../generated_queries/verilog/highlights.scm");
 pub const VERILOG_INJECTIONS: &str = include_str!("../generated_queries/verilog/injections.scm");
 pub const VERILOG_LOCALS: &str = include_str!("../generated_queries/verilog/locals.scm");
