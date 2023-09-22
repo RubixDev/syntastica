@@ -325,17 +325,29 @@
         <span class="string">&quot;\n&quot;</span>.into()
     }
 
-    <span class="doccomment">/// Is called for every region of the input (including styled ones). May be implemented to
-    /// escape special characters.
+    <span class="doccomment">/// Is called for every region of the input, both styled and unstyled.
+    ///
+    /// May be implemented to escape special characters. The output will be passed to
+    /// [`styled`](Renderer::styled) or [`unstyled`](Renderer::unstyled).
+    ///
+    /// The default implementation returns `text` unchanged.
+    </span><span class="kw">fn </span>escape&lt;<span class="lifetime">&#39;a</span>&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, text: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str) -&gt; Cow&lt;<span class="lifetime">&#39;a</span>, str&gt; {
+        text.into()
+    }
+
+    <span class="doccomment">/// Is called for every unstyled region of the input.
+    ///
+    /// The input was already passed to [`Renderer::escape`] before.
     ///
     /// The default implementation returns `text` unchanged.
     </span><span class="kw">fn </span>unstyled&lt;<span class="lifetime">&#39;a</span>&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, text: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str) -&gt; Cow&lt;<span class="lifetime">&#39;a</span>, str&gt; {
         text.into()
     }
 
-    <span class="doccomment">/// Is called for every styled region of the input. The input was already passed to
-    /// [`Renderer::unstyled`] before. Implementors should return a string representing the input
-    /// `text` in the given [`Style`].
+    <span class="doccomment">/// Is called for every styled region of the input.
+    ///
+    /// The input was already passed to [`Renderer::escape`] before. Implementors should return a
+    /// string representing the input `text` in the given [`Style`].
     </span><span class="kw">fn </span>styled&lt;<span class="lifetime">&#39;a</span>&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, text: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str, style: Style) -&gt; Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;;
 }
 
@@ -352,10 +364,10 @@
     <span class="kw">let </span><span class="kw-2">mut </span>out = renderer.head().into_owned();
     <span class="kw">for </span>(index, line) <span class="kw">in </span>highlights.iter().enumerate() {
         <span class="kw">for </span>(text, style) <span class="kw">in </span>line {
-            <span class="kw">let </span>unstyled = renderer.unstyled(text);
+            <span class="kw">let </span>escaped = renderer.escape(text);
             <span class="kw">match </span>style.and_then(|key| theme.borrow().find_style(key)) {
-                <span class="prelude-val">Some</span>(style) =&gt; out += <span class="kw-2">&amp;</span>renderer.styled(<span class="kw-2">&amp;</span>unstyled, style),
-                <span class="prelude-val">None </span>=&gt; out += <span class="kw-2">&amp;</span>unstyled,
+                <span class="prelude-val">Some</span>(style) =&gt; out += <span class="kw-2">&amp;</span>renderer.styled(<span class="kw-2">&amp;</span>escaped, style),
+                <span class="prelude-val">None </span>=&gt; out += <span class="kw-2">&amp;</span>renderer.unstyled(<span class="kw-2">&amp;</span>escaped),
             }
         }
         <span class="kw">if </span>index != last_line {
@@ -434,7 +446,7 @@
         <span class="string">&quot;&lt;br&gt;&quot;</span>.into()
     }
 
-    <span class="kw">fn </span>unstyled(<span class="kw-2">&amp;mut </span><span class="self">self</span>, text: <span class="kw-2">&amp;</span>str) -&gt; Cow&lt;<span class="lifetime">&#39;static</span>, str&gt; {
+    <span class="kw">fn </span>escape(<span class="kw-2">&amp;mut </span><span class="self">self</span>, text: <span class="kw-2">&amp;</span>str) -&gt; Cow&lt;<span class="lifetime">&#39;static</span>, str&gt; {
         AhoCorasick::new([<span class="string">&quot;&amp;&quot;</span>, <span class="string">&quot;&lt;&quot;</span>, <span class="string">&quot;&gt;&quot;</span>, <span class="string">&quot; &quot;</span>, <span class="string">&quot;\n&quot;</span>, <span class="string">&quot;\t&quot;</span>])
             .unwrap()
             .replace_all(
@@ -454,6 +466,10 @@
     <span class="kw">fn </span>styled(<span class="kw-2">&amp;mut </span><span class="self">self</span>, text: <span class="kw-2">&amp;</span>str, style: Style) -&gt; Cow&lt;<span class="lifetime">&#39;static</span>, str&gt; {
         <span class="kw">let </span>(r, g, b) = style.color().into_components();
         <span class="kw">let </span><span class="kw-2">mut </span>css = <span class="macro">format!</span>(<span class="string">&quot;color:rgb({r},{g},{b});&quot;</span>);
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(color) = style.bg() {
+            <span class="kw">let </span>(r, g, b) = color.into_components();
+            css += <span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;background-color:rgb({r},{g},{b});&quot;</span>);
+        }
         <span class="kw">if </span>style.underline() &amp;&amp; style.strikethrough() {
             css += <span class="string">&quot;text-decoration: underline line-through;&quot;
         </span>} <span class="kw">else if </span>style.underline() {
@@ -493,6 +509,7 @@
 ///
 /// assert_eq!(output, &quot;\x1b[38;2;255;0;0mfn\x1b[0m none&quot;);
 /// ```
+</span><span class="attr">#[derive(Default)]
 </span><span class="kw">pub struct </span>TerminalRenderer {
     background_color: <span class="prelude-ty">Option</span>&lt;Color&gt;,
 }
@@ -505,36 +522,23 @@
 }
 
 <span class="kw">impl </span>Renderer <span class="kw">for </span>TerminalRenderer {
-    <span class="kw">fn </span>head(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; Cow&lt;<span class="lifetime">&#39;static</span>, str&gt; {
+    <span class="kw">fn </span>unstyled&lt;<span class="lifetime">&#39;a</span>&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, text: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str) -&gt; Cow&lt;<span class="lifetime">&#39;a</span>, str&gt; {
         <span class="kw">match </span><span class="self">self</span>.background_color {
             <span class="prelude-val">Some</span>(color) =&gt; {
                 <span class="kw">let </span>(r, g, b) = color.into_components();
-                <span class="macro">format!</span>(<span class="string">&quot;\x1b[48;2;{r};{g};{b}m&quot;</span>).into()
+                <span class="macro">format!</span>(<span class="string">&quot;\x1b[48;2;{r};{g};{b}m{text}\x1b[0m&quot;</span>).into()
             }
-            <span class="prelude-val">None </span>=&gt; <span class="string">&quot;&quot;</span>.into(),
-        }
-    }
-
-    <span class="kw">fn </span>tail(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; Cow&lt;<span class="lifetime">&#39;static</span>, str&gt; {
-        <span class="kw">match </span><span class="self">self</span>.background_color {
-            <span class="prelude-val">Some</span>(<span class="kw">_</span>) =&gt; <span class="string">&quot;\x1b[0m&quot;</span>.into(),
-            <span class="prelude-val">None </span>=&gt; <span class="string">&quot;&quot;</span>.into(),
-        }
-    }
-
-    <span class="kw">fn </span>newline(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; Cow&lt;<span class="lifetime">&#39;static</span>, str&gt; {
-        <span class="kw">match </span><span class="self">self</span>.background_color {
-            <span class="prelude-val">Some</span>(color) =&gt; {
-                <span class="kw">let </span>(r, g, b) = color.into_components();
-                <span class="macro">format!</span>(<span class="string">&quot;\x1b[0m\n\x1b[48;2;{r};{g};{b}m&quot;</span>).into()
-            }
-            <span class="prelude-val">None </span>=&gt; <span class="string">&quot;\n&quot;</span>.into(),
+            <span class="prelude-val">None </span>=&gt; text.into(),
         }
     }
 
     <span class="kw">fn </span>styled(<span class="kw-2">&amp;mut </span><span class="self">self</span>, text: <span class="kw-2">&amp;</span>str, style: Style) -&gt; Cow&lt;<span class="lifetime">&#39;static</span>, str&gt; {
         <span class="kw">let </span>(r, g, b) = style.color().into_components();
         <span class="kw">let </span><span class="kw-2">mut </span>params = <span class="macro">format!</span>(<span class="string">&quot;38;2;{r};{g};{b};&quot;</span>);
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(color) = style.bg().or(<span class="self">self</span>.background_color) {
+            <span class="kw">let </span>(r, g, b) = color.into_components();
+            params += <span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;48;2;{r};{g};{b};&quot;</span>);
+        }
         <span class="kw">if </span>style.underline() {
             params += <span class="string">&quot;4;&quot;
         </span>}
@@ -549,11 +553,7 @@
         </span>}
         <span class="comment">// trim last `;`
         </span>params.truncate(params.len() - <span class="number">1</span>);
-        <span class="kw">let </span>reset = <span class="kw">match </span><span class="self">self</span>.background_color.is_some() {
-            <span class="bool-val">true </span>=&gt; <span class="string">&quot;39;24;29;23;22&quot;</span>,
-            <span class="bool-val">false </span>=&gt; <span class="string">&quot;0&quot;</span>,
-        };
-        <span class="macro">format!</span>(<span class="string">&quot;\x1b[{params}m{text}\x1b[{reset}m&quot;</span>).into()
+        <span class="macro">format!</span>(<span class="string">&quot;\x1b[{params}m{text}\x1b[0m&quot;</span>).into()
     }
 }
 </code></pre></div></section></main></body></html>

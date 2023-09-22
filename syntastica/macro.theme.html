@@ -27,6 +27,7 @@ any call to <a href="theme/struct.Theme.html#method.resolve_links" title="method
     // (note that currently this order required by the macro)
     </span><span class="string">&quot;string&quot;</span>: {
         color: <span class="prelude-val">None</span>, <span class="comment">// either `None` or `&quot;#&lt;color&gt;&quot;`
+        </span>bg: <span class="prelude-val">None</span>, <span class="comment">// either `None` or `&quot;#&lt;color&gt;&quot;`
         </span>underline: <span class="bool-val">false</span>,
         strikethrough: <span class="bool-val">false</span>,
         italic: <span class="bool-val">true</span>,
@@ -43,6 +44,7 @@ any call to <a href="theme/struct.Theme.html#method.resolve_links" title="method
     (<span class="string">&quot;function&quot;</span>.to_owned(), ThemeValue::Simple(<span class="string">&quot;$blue&quot;</span>.to_owned())),
     (<span class="string">&quot;string&quot;</span>.to_owned(), ThemeValue::Extended {
         color: <span class="prelude-val">None</span>,
+        bg: <span class="prelude-val">None</span>,
         underline: <span class="bool-val">false</span>,
         strikethrough: <span class="bool-val">false</span>,
         italic: <span class="bool-val">true</span>,

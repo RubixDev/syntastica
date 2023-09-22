@@ -497,9 +497,47 @@
 <a href="#497" id="497">497</a>
 <a href="#498" id="498">498</a>
 <a href="#499" id="499">499</a>
+<a href="#500" id="500">500</a>
+<a href="#501" id="501">501</a>
+<a href="#502" id="502">502</a>
+<a href="#503" id="503">503</a>
+<a href="#504" id="504">504</a>
+<a href="#505" id="505">505</a>
+<a href="#506" id="506">506</a>
+<a href="#507" id="507">507</a>
+<a href="#508" id="508">508</a>
+<a href="#509" id="509">509</a>
+<a href="#510" id="510">510</a>
+<a href="#511" id="511">511</a>
+<a href="#512" id="512">512</a>
+<a href="#513" id="513">513</a>
+<a href="#514" id="514">514</a>
+<a href="#515" id="515">515</a>
+<a href="#516" id="516">516</a>
+<a href="#517" id="517">517</a>
+<a href="#518" id="518">518</a>
+<a href="#519" id="519">519</a>
+<a href="#520" id="520">520</a>
+<a href="#521" id="521">521</a>
+<a href="#522" id="522">522</a>
+<a href="#523" id="523">523</a>
+<a href="#524" id="524">524</a>
+<a href="#525" id="525">525</a>
+<a href="#526" id="526">526</a>
+<a href="#527" id="527">527</a>
+<a href="#528" id="528">528</a>
+<a href="#529" id="529">529</a>
+<a href="#530" id="530">530</a>
+<a href="#531" id="531">531</a>
+<a href="#532" id="532">532</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Defines items related to theming the output.
 
-</span><span class="kw">use </span>std::{borrow::Borrow, collections::BTreeMap, ops::Index, str::FromStr};
+</span><span class="kw">use </span>std::{
+    borrow::{Borrow, Cow},
+    collections::BTreeMap,
+    ops::Index,
+    str::FromStr,
+};
 
 <span class="kw">use crate</span>::{
     style::{Color, Style},
@@ -557,7 +595,7 @@
 /// exact match.
 </span><span class="comment">// TODO: better support for background color
 </span><span class="attr">#[derive(Clone, Hash, Debug, PartialEq, Eq)]
-</span><span class="kw">pub struct </span>ResolvedTheme(BTreeMap&lt;String, Style&gt;);
+</span><span class="kw">pub struct </span>ResolvedTheme(BTreeMap&lt;Cow&lt;<span class="lifetime">&#39;static</span>, str&gt;, Style&gt;);
 
 <span class="doccomment">/// A value of a [`Theme`] containing style information and/or a link to another key in the
 /// [`Theme`].
@@ -576,11 +614,14 @@
     </span>Simple(String),
     <span class="doccomment">/// A color or link with additional style information.
     </span>Extended {
-        <span class="doccomment">/// The color to use for this style, specified as a hexadecimal string.
+        <span class="doccomment">/// The foreground color to use for this style, specified as a hexadecimal string.
         ///
         /// Either this or [`link`](ThemeValue::Extended::link) has to be set, or calls to
         /// [`Theme::resolve_links`] will fail.
         </span>color: <span class="prelude-ty">Option</span>&lt;String&gt;,
+
+        <span class="doccomment">/// The background color to use for this style, specified as a hexadecimal string.
+        </span>bg: <span class="prelude-ty">Option</span>&lt;String&gt;,
 
         <span class="doccomment">/// Whether the text should be underlined. (default is `false`)
         </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;serde&quot;</span>, serde(default))]
@@ -634,13 +675,19 @@
                 </span>.into_iter()
                 .map(|(key, value)| {
                     <span class="prelude-val">Ok</span>((
-                        key,
+                        key.into(),
                         <span class="kw">match </span>value {
-                            ThemeValue::Simple(color) =&gt; {
-                                Style::new(Color::from_str(<span class="kw-2">&amp;</span>color)<span class="question-mark">?</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)
-                            }
+                            ThemeValue::Simple(color) =&gt; Style::new(
+                                Color::from_str(<span class="kw-2">&amp;</span>color)<span class="question-mark">?</span>,
+                                <span class="prelude-val">None</span>,
+                                <span class="bool-val">false</span>,
+                                <span class="bool-val">false</span>,
+                                <span class="bool-val">false</span>,
+                                <span class="bool-val">false</span>,
+                            ),
                             ThemeValue::Extended {
                                 color,
+                                bg,
                                 underline,
                                 strikethrough,
                                 italic,
@@ -649,6 +696,7 @@
                             } =&gt; Style::new(
                                 <span class="comment">// TODO: maybe rework to not rely on unwrapping
                                 </span>Color::from_str(<span class="kw-2">&amp;</span>color.expect(<span class="string">&quot;links have been resolved&quot;</span>))<span class="question-mark">?</span>,
+                                bg.map(|color| Color::from_str(<span class="kw-2">&amp;</span>color)).transpose()<span class="question-mark">?</span>,
                                 underline,
                                 strikethrough,
                                 italic,
@@ -702,31 +750,41 @@
 
 <span class="kw">impl </span>ResolvedTheme {
     <span class="doccomment">/// Create a new [`ResolvedTheme`] from a map of [theme keys](THEME_KEYS) to [`Style`]s.
-    </span><span class="kw">pub fn </span>new(highlights: BTreeMap&lt;String, Style&gt;) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>new(highlights: BTreeMap&lt;Cow&lt;<span class="lifetime">&#39;static</span>, str&gt;, Style&gt;) -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>(highlights)
     }
 
     <span class="doccomment">/// Consume `self` and return the contained theme map.
     ///
     /// May be used to merge multiple [`ResolvedTheme`]s together.
-    </span><span class="kw">pub fn </span>into_inner(<span class="self">self</span>) -&gt; BTreeMap&lt;String, Style&gt; {
+    </span><span class="kw">pub fn </span>into_inner(<span class="self">self</span>) -&gt; BTreeMap&lt;Cow&lt;<span class="lifetime">&#39;static</span>, str&gt;, Style&gt; {
         <span class="self">self</span>.<span class="number">0
     </span>}
 
     <span class="doccomment">/// Returns a reference to the style corresponding to the key.
     </span><span class="kw">pub fn </span>get&lt;Q&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>Q) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Style&gt;
     <span class="kw">where
-        </span>String: Borrow&lt;Q&gt;,
+        </span>Cow&lt;<span class="lifetime">&#39;static</span>, str&gt;: Borrow&lt;Q&gt;,
         Q: Ord + <span class="question-mark">?</span>Sized,
     {
         <span class="self">self</span>.<span class="number">0</span>.get(key)
     }
 
-    <span class="doccomment">/// Try to find the best possible style supported by the them given a theme key.
+    <span class="doccomment">/// Get the default foreground color, if the theme defines one.
+    </span><span class="kw">pub fn </span>fg(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Color&gt; {
+        <span class="self">self</span>.get(<span class="string">&quot;_normal&quot;</span>).map(|style| style.color())
+    }
+
+    <span class="doccomment">/// Get the default background color, if the theme defines one.
+    </span><span class="kw">pub fn </span>bg(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Color&gt; {
+        <span class="self">self</span>.get(<span class="string">&quot;_normal&quot;</span>).and_then(|style| style.bg())
+    }
+
+    <span class="doccomment">/// Try to find the best possible style supported by the given a theme key.
     ///
     /// For example, if `key` is `keyword.operator` but this theme only has a style defined for
     /// `keyword`, then the style for `keyword` is returned. Additionally, if no style is found,
-    /// the method tries to use the keys `_fg`, `text`, and `text.literal` as fallbacks.
+    /// the method tries to use the theme&#39;s [default foreground](ResolvedTheme::fg) as a fallback.
     </span><span class="kw">pub fn </span>find_style(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut </span>key: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Option</span>&lt;Style&gt; {
         <span class="comment">// if the theme contains the entire key, use that
         </span><span class="kw">if let </span><span class="prelude-val">Some</span>(style) = <span class="self">self</span>.get(key) {
@@ -742,18 +800,14 @@
             key = rest;
         }
 
-        <span class="comment">// or when the theme doesn&#39;t have any matching style, try to use `_fg`, `text` or
-        // `text.literal` as fallbacks
-        </span><span class="self">self</span>.get(<span class="string">&quot;_fg&quot;</span>)
-            .or_else(|| <span class="self">self</span>.get(<span class="string">&quot;text&quot;</span>))
-            .or_else(|| <span class="self">self</span>.get(<span class="string">&quot;text.literal&quot;</span>))
-            .copied()
+        <span class="comment">// or when the theme doesn&#39;t have any matching style, try to use the foreground
+        </span><span class="self">self</span>.fg().map(Style::from)
     }
 }
 
 <span class="kw">impl</span>&lt;Q&gt; Index&lt;<span class="kw-2">&amp;</span>Q&gt; <span class="kw">for </span>ResolvedTheme
 <span class="kw">where
-    </span>String: Borrow&lt;Q&gt;,
+    </span>Cow&lt;<span class="lifetime">&#39;static</span>, str&gt;: Borrow&lt;Q&gt;,
     Q: Ord + <span class="question-mark">?</span>Sized,
 {
     <span class="kw">type </span>Output = Style;
@@ -763,8 +817,8 @@
     }
 }
 
-<span class="kw">impl </span>From&lt;BTreeMap&lt;String, Style&gt;&gt; <span class="kw">for </span>ResolvedTheme {
-    <span class="kw">fn </span>from(highlights: BTreeMap&lt;String, Style&gt;) -&gt; <span class="self">Self </span>{
+<span class="kw">impl </span>From&lt;BTreeMap&lt;Cow&lt;<span class="lifetime">&#39;static</span>, str&gt;, Style&gt;&gt; <span class="kw">for </span>ResolvedTheme {
+    <span class="kw">fn </span>from(highlights: BTreeMap&lt;Cow&lt;<span class="lifetime">&#39;static</span>, str&gt;, Style&gt;) -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>::new(highlights)
     }
 }
@@ -785,6 +839,7 @@
             (
                 ThemeValue::Extended {
                     color: <span class="prelude-val">Some</span>(color),
+                    bg,
                     underline,
                     strikethrough,
                     italic,
@@ -796,6 +851,7 @@
             | (
                 ThemeValue::Extended {
                     color: <span class="prelude-val">None</span>,
+                    bg,
                     underline,
                     strikethrough,
                     italic,
@@ -805,6 +861,7 @@
                 ThemeValue::Simple(color),
             ) =&gt; <span class="self">Self</span>::Extended {
                 color: <span class="prelude-val">Some</span>(color.clone()),
+                bg: bg.clone(),
                 underline: <span class="kw-2">*</span>underline,
                 strikethrough: <span class="kw-2">*</span>strikethrough,
                 italic: <span class="kw-2">*</span>italic,
@@ -814,6 +871,7 @@
             (
                 ThemeValue::Extended {
                     color: color @ <span class="prelude-val">Some</span>(<span class="kw">_</span>),
+                    bg,
                     underline,
                     strikethrough,
                     italic,
@@ -822,6 +880,7 @@
                 },
                 ThemeValue::Extended {
                     color: <span class="kw">_</span>,
+                    bg: other_bg,
                     underline: other_underline,
                     strikethrough: other_strikethrough,
                     italic: other_italic,
@@ -832,6 +891,7 @@
             | (
                 ThemeValue::Extended {
                     color: <span class="prelude-val">None</span>,
+                    bg,
                     underline,
                     strikethrough,
                     italic,
@@ -840,6 +900,7 @@
                 },
                 ThemeValue::Extended {
                     color,
+                    bg: other_bg,
                     underline: other_underline,
                     strikethrough: other_strikethrough,
                     italic: other_italic,
@@ -848,6 +909,7 @@
                 },
             ) =&gt; <span class="self">Self</span>::Extended {
                 color: color.clone(),
+                bg: bg.clone().or_else(|| other_bg.clone()),
                 underline: <span class="kw-2">*</span>underline || <span class="kw-2">*</span>other_underline,
                 strikethrough: <span class="kw-2">*</span>strikethrough || <span class="kw-2">*</span>other_strikethrough,
                 italic: <span class="kw-2">*</span>italic || <span class="kw-2">*</span>other_italic,
@@ -890,6 +952,7 @@
 ///     // (note that currently this order required by the macro)
 ///     &quot;string&quot;: {
 ///         color: None, // either `None` or `&quot;#&lt;color&gt;&quot;`
+///         bg: None, // either `None` or `&quot;#&lt;color&gt;&quot;`
 ///         underline: false,
 ///         strikethrough: false,
 ///         italic: true,
@@ -907,6 +970,7 @@
 ///     (&quot;function&quot;.to_owned(), ThemeValue::Simple(&quot;$blue&quot;.to_owned())),
 ///     (&quot;string&quot;.to_owned(), ThemeValue::Extended {
 ///         color: None,
+///         bg: None,
 ///         underline: false,
 ///         strikethrough: false,
 ///         italic: true,
@@ -938,6 +1002,7 @@
     };
     (@value {
         color: <span class="macro-nonterminal">$color</span>:tt,
+        bg: <span class="macro-nonterminal">$bg</span>:tt,
         underline: <span class="macro-nonterminal">$underline</span>:expr,
         strikethrough: <span class="macro-nonterminal">$strikethrough</span>:expr,
         italic: <span class="macro-nonterminal">$italic</span>:expr,
@@ -946,6 +1011,7 @@
     </span>}) =&gt; {
         <span class="macro-nonterminal">$crate::theme::ThemeValue::Extended </span>{
             color: <span class="macro">theme_impl!</span>(@option <span class="macro-nonterminal">$color</span>),
+            bg: <span class="macro">theme_impl!</span>(@option <span class="macro-nonterminal">$bg</span>),
             underline: <span class="macro-nonterminal">$underline</span>,
             strikethrough: <span class="macro-nonterminal">$strikethrough</span>,
             italic: <span class="macro-nonterminal">$italic</span>,
@@ -988,7 +1054,7 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>style_fallback() {
         <span class="kw">let </span>theme = <span class="macro">theme! </span>{
-            <span class="string">&quot;text&quot;</span>: <span class="string">&quot;#000000&quot;</span>,
+            <span class="string">&quot;_normal&quot;</span>: <span class="string">&quot;#000000&quot;</span>,
         }
         .resolve_links()
         .unwrap();
