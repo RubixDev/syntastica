@@ -10,6 +10,7 @@ fn fib(n: usize) -> usize {
     }
 }
 
+// NOTE: test
 fn main() {
     Regex::new(r"[a-fA-F0-9_]\s(.*)$");
     let a = regex!(r"[a-fA-F0-9_]\s(.*)$");

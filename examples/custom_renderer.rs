@@ -49,8 +49,12 @@ impl Renderer for TypstRenderer {
         r"linebreak();".into()
     }
 
+    fn escape<'a>(&mut self, text: &'a str) -> Cow<'a, str> {
+        format!("raw({text:?})").into()
+    }
+
     fn unstyled<'a>(&mut self, text: &'a str) -> Cow<'a, str> {
-        format!("raw({text:?});").into()
+        format!("{text};").into()
     }
 
     fn styled<'a>(&mut self, text: &'a str, style: Style) -> Cow<'a, str> {
@@ -73,8 +77,6 @@ impl Renderer for TypstRenderer {
             options += "weight:\"bold\",";
         }
 
-        // trim the trailing `;` that `unstyled()` adds after raw text
-        let text = &text[..text.len().saturating_sub(1)];
         format!("{front}text({options}{text}){};", ")".repeat(paren_count)).into()
     }
 }

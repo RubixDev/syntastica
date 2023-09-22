@@ -46,17 +46,29 @@ pub trait Renderer {
         "\n".into()
     }
 
-    /// Is called for every region of the input (including styled ones). May be implemented to
-    /// escape special characters.
+    /// Is called for every region of the input, both styled and unstyled.
+    ///
+    /// May be implemented to escape special characters. The output will be passed to
+    /// [`styled`](Renderer::styled) or [`unstyled`](Renderer::unstyled).
+    ///
+    /// The default implementation returns `text` unchanged.
+    fn escape<'a>(&mut self, text: &'a str) -> Cow<'a, str> {
+        text.into()
+    }
+
+    /// Is called for every unstyled region of the input.
+    ///
+    /// The input was already passed to [`Renderer::escape`] before.
     ///
     /// The default implementation returns `text` unchanged.
     fn unstyled<'a>(&mut self, text: &'a str) -> Cow<'a, str> {
         text.into()
     }
 
-    /// Is called for every styled region of the input. The input was already passed to
-    /// [`Renderer::unstyled`] before. Implementors should return a string representing the input
-    /// `text` in the given [`Style`].
+    /// Is called for every styled region of the input.
+    ///
+    /// The input was already passed to [`Renderer::escape`] before. Implementors should return a
+    /// string representing the input `text` in the given [`Style`].
     fn styled<'a>(&mut self, text: &'a str, style: Style) -> Cow<'a, str>;
 }
 
@@ -73,10 +85,10 @@ pub fn render(
     let mut out = renderer.head().into_owned();
     for (index, line) in highlights.iter().enumerate() {
         for (text, style) in line {
-            let unstyled = renderer.unstyled(text);
+            let escaped = renderer.escape(text);
             match style.and_then(|key| theme.borrow().find_style(key)) {
-                Some(style) => out += &renderer.styled(&unstyled, style),
-                None => out += &unstyled,
+                Some(style) => out += &renderer.styled(&escaped, style),
+                None => out += &renderer.unstyled(&escaped),
             }
         }
         if index != last_line {
@@ -155,7 +167,7 @@ impl Renderer for HtmlRenderer {
         "<br>".into()
     }
 
-    fn unstyled(&mut self, text: &str) -> Cow<'static, str> {
+    fn escape(&mut self, text: &str) -> Cow<'static, str> {
         AhoCorasick::new(["&", "<", ">", " ", "\n", "\t"])
             .unwrap()
             .replace_all(
@@ -221,24 +233,17 @@ impl Renderer for HtmlRenderer {
 #[derive(Default)]
 pub struct TerminalRenderer {
     background_color: Option<Color>,
-    // TODO: introduce an `escaped` method, then don't run `unstyled` on styled text, to avoid
-    // hacks like this
-    last_raw_text: String,
 }
 
 impl TerminalRenderer {
     /// Create a new [`TerminalRenderer`] with an optional background color.
     pub fn new(background_color: Option<Color>) -> Self {
-        Self {
-            background_color,
-            last_raw_text: String::new(),
-        }
+        Self { background_color }
     }
 }
 
 impl Renderer for TerminalRenderer {
     fn unstyled<'a>(&mut self, text: &'a str) -> Cow<'a, str> {
-        self.last_raw_text = text.to_owned();
         match self.background_color {
             Some(color) => {
                 let (r, g, b) = color.into_components();
@@ -248,8 +253,7 @@ impl Renderer for TerminalRenderer {
         }
     }
 
-    fn styled(&mut self, _text: &str, style: Style) -> Cow<'static, str> {
-        let text = &self.last_raw_text;
+    fn styled(&mut self, text: &str, style: Style) -> Cow<'static, str> {
         let (r, g, b) = style.color().into_components();
         let mut params = format!("38;2;{r};{g};{b};");
         if let Some(color) = style.bg().or(self.background_color) {
