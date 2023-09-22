@@ -20,6 +20,8 @@ pub struct Language {
     pub file_types: Vec<FileType>,
     #[serde(default = "default_true")]
     pub wasm: bool,
+    #[serde(default = "default_true")]
+    pub wasm_unknown: bool,
     // TODO: injection regex
     pub parser: Parser,
     pub queries: Queries,

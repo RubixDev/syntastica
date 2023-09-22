@@ -24,7 +24,7 @@ syntastica-macros.workspace = true
 
 cc.workspace = true
 rustc_version = { workspace = true, optional = true }
-tree-sitter-wasm-build-tool = { version = "0.2.2" }
+tree-sitter-wasm-build-tool = { version = "0.2.2", path = "../tree-sitter-wasm-build-tool/" }
 
 [package.metadata.docs.rs]
 all-features = true

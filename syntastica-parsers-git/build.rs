@@ -43,7 +43,7 @@ fn git(repo_dir: &Path) -> Command {
     cmd
 }
 
-#[allow(unused)]
+#[allow(unused, clippy::too_many_arguments)]
 fn compile_parser(
     name: &str,
     url: &str,
@@ -52,6 +52,7 @@ fn compile_parser(
     external_cpp: bool,
     path: Option<&str>,
     wasm: bool,
+    wasm_unknown: bool,
 ) -> Result<(), Box<dyn std::error::Error>> {
     let target = env::var("TARGET")?;
 
@@ -65,7 +66,8 @@ fn compile_parser(
     }
 
     // external cpp scanners are not supported on the `wasm32-unknown-unknown` target
-    if target == "wasm32-unknown-unknown" && external_cpp {
+    // plus extra cases for parsers which require additional libc features
+    if target == "wasm32-unknown-unknown" && (external_cpp || !wasm_unknown) {
         return Ok(());
     }
 

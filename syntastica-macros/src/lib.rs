@@ -31,13 +31,27 @@ pub fn parsers_git(_: TokenStream) -> TokenStream {
                 None => quote_use! { None },
             };
             let wasm = lang.wasm;
+            let wasm_unknown = lang.wasm_unknown;
             quote! {
                 #[cfg(feature = #name)]
-                compile_parser(#name, #url, #rev, #external_c, #external_cpp, #path, #wasm)?;
+                compile_parser(#name, #url, #rev, #external_c, #external_cpp, #path, #wasm, #wasm_unknown)?;
             }
         })
         .collect::<proc_macro2::TokenStream>()
         .into()
+}
+
+fn not_wasm_cfg(lang: &Language) -> proc_macro2::TokenStream {
+    let raw_wasm_cfg = quote! { target_family = "wasm" };
+    let raw_wasm_unknown_cfg = quote! { all(target_arch = "wasm32", target_vendor = "unknown", target_os = "unknown", target_env = "") };
+    match (
+        lang.wasm,
+        lang.parser.external_scanner.cpp || !lang.wasm_unknown,
+    ) {
+        (false, _) => quote! { , not(#raw_wasm_cfg) },
+        (_, true) => quote! { , not(#raw_wasm_unknown_cfg) },
+        _ => quote! {},
+    }
 }
 
 #[proc_macro]
@@ -48,17 +62,9 @@ pub fn parsers_ffi(_: TokenStream) -> TokenStream {
     let extern_c = dedup_ffi_funcs.iter().map(|lang| {
         let name_str = &lang.name;
         let ffi_func = format_ident!("{}", lang.parser.ffi_func);
-        let wasm_cfg = if !lang.wasm {
-            // disable some parsers on wasm targets
-            quote! { , not(target_family = "wasm") }
-        } else if lang.parser.external_scanner.cpp {
-            // disable cpp scanners on wasm32-unknown-unknown
-            quote! { , not(all(target_arch = "wasm32", target_vendor = "unknown", target_os = "unknown", target_env = "")) }
-        } else {
-            quote! {}
-        };
+        let not_wasm_cfg = not_wasm_cfg(lang);
         quote! {
-            #[cfg(all(feature = #name_str #wasm_cfg))]
+            #[cfg(all(feature = #name_str #not_wasm_cfg))]
             fn #ffi_func() -> ::syntastica_core::language_set::Language;
         }
     });
@@ -69,33 +75,27 @@ pub fn parsers_ffi(_: TokenStream) -> TokenStream {
         let ffi_func = format_ident!("{}", lang.parser.ffi_func);
         let doc = format!(
             "Get the parser for [{}]({}/tree/{}). {}",
-            lang.name, lang.parser.git.url, lang.parser.git.rev,
-            match (lang.wasm, lang.parser.external_scanner.cpp) {
+            lang.name,
+            lang.parser.git.url,
+            lang.parser.git.rev,
+            match (
+                lang.wasm,
+                lang.parser.external_scanner.cpp || !lang.wasm_unknown
+            ) {
                 (false, _) => "(not supported on WebAssembly targets)",
                 (_, true) => "(not supported on the `wasm32-unknown-unknown` target)",
                 _ => "",
             },
         );
-        // disable cpp scanners on wasm32-unknown-unknown
-        let raw_wasm_cfg = quote! { target_family = "wasm" };
-        let raw_wasm_cfg_cpp = quote! { all(target_arch = "wasm32", target_vendor = "unknown", target_os = "unknown", target_env = "") };
-        let wasm_cfg = match (lang.wasm, lang.parser.external_scanner.cpp) {
-            (false, _) => quote! { , #raw_wasm_cfg },
-            (_, true) => quote! { , #raw_wasm_cfg_cpp },
-            _ => quote! {},
-        };
-        let not_wasm_cfg = match (lang.wasm, lang.parser.external_scanner.cpp) {
-            (false, _) => quote! { , not(#raw_wasm_cfg) },
-            (_, true) => quote! { , not(#raw_wasm_cfg_cpp) },
-            _ => quote! {},
-        };
+        // disable unsupported parsers on wasm
+        let not_wasm_cfg = not_wasm_cfg(lang);
         quote! {
-            #[cfg(any(feature = #feat, feature = #name_str))]
+            #[cfg(all(any(feature = #feat, feature = #name_str) #not_wasm_cfg))]
             #[doc = #doc]
             pub fn #name() -> ::syntastica_core::language_set::Language {
-                #[cfg(all(not(all(feature = "docs", doc)) #not_wasm_cfg))]
+                #[cfg(not(all(feature = "docs", doc)))]
                 unsafe { #ffi_func() }
-                #[cfg(any(all(feature = "docs", doc) #wasm_cfg))]
+                #[cfg(all(feature = "docs", doc))]
                 ::std::unimplemented!()
             }
         }
@@ -178,7 +178,8 @@ fn parsers(
         .map(|lang| {
             let name_str = &lang.name;
             let variant = format_ident!("{}", lang.name.to_pascal_case());
-            quote! { #[cfg(feature = #name_str)] Lang::#variant }
+            let not_wasm_cfg = not_wasm_cfg(lang);
+            quote! { #[cfg(all(feature = #name_str #not_wasm_cfg))] Lang::#variant }
         });
     let names_list = LANGUAGE_CONFIG
         .languages
@@ -186,7 +187,8 @@ fn parsers(
         .filter(&filter)
         .map(|lang| {
             let name_str = &lang.name;
-            quote! { #[cfg(feature = #name_str)] #name_str }
+            let not_wasm_cfg = not_wasm_cfg(lang);
+            quote! { #[cfg(all(feature = #name_str #not_wasm_cfg))] #name_str }
         });
     let file_types = LANGUAGE_CONFIG
         .languages
@@ -195,10 +197,11 @@ fn parsers(
         .flat_map(|lang| {
             let name_str = &lang.name;
             let variant = format_ident!("{}", lang.name.to_pascal_case());
+            let not_wasm_cfg = not_wasm_cfg(lang);
             lang.file_types.iter().map(move |ft| {
                 let ft = format_ident!("{ft:?}");
                 quote! {
-                    #[cfg(feature = #name_str)]
+                    #[cfg(all(feature = #name_str #not_wasm_cfg))]
                     (::syntastica_core::language_set::FileType::#ft, Lang::#variant)
                 }
             })
@@ -208,8 +211,9 @@ fn parsers(
     let func_map = langs_sorted_by_group.iter().filter(&filter).map(|lang| {
         let name_str = &lang.name;
         let variant = format_ident!("{}", lang.name.to_pascal_case());
+        let not_wasm_cfg = not_wasm_cfg(lang);
         quote! {
-            #[cfg(feature = #name_str)]
+            #[cfg(all(feature = #name_str #not_wasm_cfg))]
             {
                 _map.insert(Lang::#variant, _idx);
                 _idx += 1;
@@ -219,15 +223,17 @@ fn parsers(
     let funcs = langs_sorted_by_group.iter().filter(&filter).map(|lang| {
         let name = format_ident!("{}", lang.name);
         let name_str = &lang.name;
-        quote! { #[cfg(feature = #name_str)] #name }
+        let not_wasm_cfg = not_wasm_cfg(lang);
+        quote! { #[cfg(all(feature = #name_str #not_wasm_cfg))] #name }
     });
     let queries = langs_sorted_by_group.iter().filter(&filter).map(|lang| {
         let name_str = &lang.name;
         let highlights = format_ident!("{}_HIGHLIGHTS{query_suffix}", lang.name.to_uppercase());
         let injections = format_ident!("{}_INJECTIONS{query_suffix}", lang.name.to_uppercase());
         let locals = format_ident!("{}_LOCALS{query_suffix}", lang.name.to_uppercase());
+        let not_wasm_cfg = not_wasm_cfg(lang);
 
-        quote! { #[cfg(feature = #name_str)] [
+        quote! { #[cfg(all(feature = #name_str #not_wasm_cfg))] [
             ::syntastica_queries::#highlights,
             ::syntastica_queries::#injections,
             ::syntastica_queries::#locals,
@@ -258,9 +264,10 @@ fn parsers(
             };
             let doc = format!("Provides the [`{name_str}`] language, {ft_support}.");
             let variant = format_ident!("{}", lang.name.to_pascal_case());
+            let not_wasm_cfg = not_wasm_cfg(lang);
             quote! {
                 #[doc = #doc]
-                #[cfg(any(feature = #feat, feature = #name_str))]
+                #[cfg(all(any(feature = #feat, feature = #name_str) #not_wasm_cfg))]
                 #variant
             }
         });
@@ -272,8 +279,9 @@ fn parsers(
             let name = format_ident!("{}", lang.name);
             let name_str = &lang.name;
             let variant = format_ident!("{}", lang.name.to_pascal_case());
+            let not_wasm_cfg = not_wasm_cfg(lang);
             quote! {
-                #[cfg(feature = #name_str)]
+                #[cfg(all(feature = #name_str #not_wasm_cfg))]
                 Self::#variant => #name(),
             }
         });
