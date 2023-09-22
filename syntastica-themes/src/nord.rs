@@ -10,7 +10,8 @@ use syntastica_core::{
 #[rustfmt::skip]
 pub fn nord() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(46, 52, 64)),
+        ("_fg".to_owned(), Style::color_only(216, 222, 233)),
+        ("_bg".to_owned(), Style::color_only(46, 52, 64)),
         ("attribute".to_owned(), Style::new(Color::new(180, 142, 173), false, false, false, false)),
         ("boolean".to_owned(), Style::new(Color::new(129, 161, 193), false, false, false, true)),
         ("character".to_owned(), Style::new(Color::new(163, 190, 140), false, false, true, false)),

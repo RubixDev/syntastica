@@ -10,7 +10,8 @@ use syntastica_core::{
 #[rustfmt::skip]
 pub fn dracula() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(33, 34, 44)),
+        ("_fg".to_owned(), Style::color_only(244, 243, 242)),
+        ("_bg".to_owned(), Style::color_only(33, 34, 44)),
         ("annotation".to_owned(), Style::new(Color::new(255, 85, 95), false, false, false, false)),
         ("attribute".to_owned(), Style::new(Color::new(241, 250, 135), false, false, false, false)),
         ("boolean".to_owned(), Style::new(Color::new(255, 121, 193), false, false, true, false)),

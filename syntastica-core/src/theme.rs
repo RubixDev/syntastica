@@ -227,7 +227,7 @@ impl ResolvedTheme {
     ///
     /// For example, if `key` is `keyword.operator` but this theme only has a style defined for
     /// `keyword`, then the style for `keyword` is returned. Additionally, if no style is found,
-    /// the method tries to use the keys `text` and `text.literal` as fallbacks.
+    /// the method tries to use the keys `_fg`, `text`, and `text.literal` as fallbacks.
     pub fn find_style(&self, mut key: &str) -> Option<Style> {
         // if the theme contains the entire key, use that
         if let Some(style) = self.get(key) {
@@ -243,8 +243,10 @@ impl ResolvedTheme {
             key = rest;
         }
 
-        // or when the theme doesn't have any matching style, try to use the `text` style as a fallback
-        self.get("text")
+        // or when the theme doesn't have any matching style, try to use `_fg`, `text` or
+        // `text.literal` as fallbacks
+        self.get("_fg")
+            .or_else(|| self.get("text"))
             .or_else(|| self.get("text.literal"))
             .copied()
     }

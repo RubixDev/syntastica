@@ -10,7 +10,8 @@ use syntastica_core::{
 #[rustfmt::skip]
 pub fn darker() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(33, 33, 33)),
+        ("_fg".to_owned(), Style::color_only(176, 190, 197)),
+        ("_bg".to_owned(), Style::color_only(33, 33, 33)),
         ("attribute".to_owned(), Style::new(Color::new(130, 170, 255), false, false, false, false)),
         ("boolean".to_owned(), Style::new(Color::new(247, 140, 108), false, false, false, false)),
         ("character".to_owned(), Style::new(Color::new(247, 140, 108), false, false, false, false)),
@@ -74,7 +75,8 @@ pub fn darker() -> ResolvedTheme {
 #[rustfmt::skip]
 pub fn lighter() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(250, 250, 250)),
+        ("_fg".to_owned(), Style::color_only(84, 110, 122)),
+        ("_bg".to_owned(), Style::color_only(250, 250, 250)),
         ("attribute".to_owned(), Style::new(Color::new(97, 130, 184), false, false, false, false)),
         ("boolean".to_owned(), Style::new(Color::new(247, 109, 71), false, false, false, false)),
         ("character".to_owned(), Style::new(Color::new(247, 109, 71), false, false, false, false)),
@@ -138,7 +140,8 @@ pub fn lighter() -> ResolvedTheme {
 #[rustfmt::skip]
 pub fn oceanic() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(37, 54, 59)),
+        ("_fg".to_owned(), Style::color_only(176, 190, 197)),
+        ("_bg".to_owned(), Style::color_only(37, 54, 59)),
         ("attribute".to_owned(), Style::new(Color::new(130, 170, 255), false, false, false, false)),
         ("boolean".to_owned(), Style::new(Color::new(247, 140, 108), false, false, false, false)),
         ("character".to_owned(), Style::new(Color::new(247, 140, 108), false, false, false, false)),
@@ -202,7 +205,8 @@ pub fn oceanic() -> ResolvedTheme {
 #[rustfmt::skip]
 pub fn palenight() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(41, 45, 62)),
+        ("_fg".to_owned(), Style::color_only(166, 172, 205)),
+        ("_bg".to_owned(), Style::color_only(41, 45, 62)),
         ("attribute".to_owned(), Style::new(Color::new(130, 170, 255), false, false, false, false)),
         ("boolean".to_owned(), Style::new(Color::new(247, 140, 108), false, false, false, false)),
         ("character".to_owned(), Style::new(Color::new(247, 140, 108), false, false, false, false)),
@@ -266,7 +270,8 @@ pub fn palenight() -> ResolvedTheme {
 #[rustfmt::skip]
 pub fn deep_ocean() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(15, 17, 26)),
+        ("_fg".to_owned(), Style::color_only(166, 172, 205)),
+        ("_bg".to_owned(), Style::color_only(15, 17, 26)),
         ("attribute".to_owned(), Style::new(Color::new(130, 170, 255), false, false, false, false)),
         ("boolean".to_owned(), Style::new(Color::new(247, 140, 108), false, false, false, false)),
         ("character".to_owned(), Style::new(Color::new(247, 140, 108), false, false, false, false)),

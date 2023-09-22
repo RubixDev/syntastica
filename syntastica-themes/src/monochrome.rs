@@ -10,7 +10,8 @@ use syntastica_core::{
 #[rustfmt::skip]
 pub fn monochrome() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(14, 14, 14)),
+        ("_fg".to_owned(), Style::color_only(238, 238, 238)),
+        ("_bg".to_owned(), Style::color_only(14, 14, 14)),
         ("boolean".to_owned(), Style::new(Color::new(238, 238, 238), false, false, false, true)),
         ("character".to_owned(), Style::new(Color::new(238, 238, 238), false, false, false, false)),
         ("character.special".to_owned(), Style::new(Color::new(212, 212, 212), false, false, false, false)),

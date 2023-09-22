@@ -10,7 +10,8 @@ use syntastica_core::{
 #[rustfmt::skip]
 pub fn omni() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(25, 22, 34)),
+        ("_fg".to_owned(), Style::color_only(225, 225, 230)),
+        ("_bg".to_owned(), Style::color_only(25, 22, 34)),
         ("boolean".to_owned(), Style::new(Color::new(231, 222, 121), false, false, false, false)),
         ("character".to_owned(), Style::new(Color::new(103, 228, 128), false, false, false, true)),
         ("comment".to_owned(), Style::new(Color::new(90, 75, 129), false, false, true, false)),

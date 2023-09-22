@@ -10,6 +10,7 @@ use syntastica_core::{
 #[rustfmt::skip]
 pub fn falcon() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
+        ("_fg".to_owned(), Style::color_only(180, 180, 185)),
         ("annotation".to_owned(), Style::new(Color::new(207, 193, 178), false, false, false, false)),
         ("attribute".to_owned(), Style::new(Color::new(207, 193, 178), false, false, false, false)),
         ("boolean".to_owned(), Style::new(Color::new(180, 180, 185), false, false, true, false)),

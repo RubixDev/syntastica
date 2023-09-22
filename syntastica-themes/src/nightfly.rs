@@ -10,7 +10,8 @@ use syntastica_core::{
 #[rustfmt::skip]
 pub fn nightfly() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(1, 22, 39)),
+        ("_fg".to_owned(), Style::color_only(195, 204, 220)),
+        ("_bg".to_owned(), Style::color_only(1, 22, 39)),
         ("annotation".to_owned(), Style::new(Color::new(199, 146, 234), false, false, false, false)),
         ("attribute".to_owned(), Style::new(Color::new(130, 170, 255), false, false, false, false)),
         ("boolean".to_owned(), Style::new(Color::new(255, 88, 116), false, false, false, false)),

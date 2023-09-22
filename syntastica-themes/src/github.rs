@@ -10,7 +10,8 @@ use syntastica_core::{
 #[rustfmt::skip]
 pub fn dark() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(48, 54, 61)),
+        ("_fg".to_owned(), Style::color_only(230, 237, 243)),
+        ("_bg".to_owned(), Style::color_only(48, 54, 61)),
         ("attribute".to_owned(), Style::new(Color::new(121, 192, 255), false, false, false, false)),
         ("boolean".to_owned(), Style::new(Color::new(121, 192, 255), false, false, false, false)),
         ("character".to_owned(), Style::new(Color::new(165, 214, 255), false, false, false, false)),
@@ -123,7 +124,8 @@ pub fn dark() -> ResolvedTheme {
 #[rustfmt::skip]
 pub fn dark_colorblind() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(13, 17, 23)),
+        ("_fg".to_owned(), Style::color_only(201, 209, 217)),
+        ("_bg".to_owned(), Style::color_only(13, 17, 23)),
         ("attribute".to_owned(), Style::new(Color::new(121, 192, 255), false, false, false, false)),
         ("boolean".to_owned(), Style::new(Color::new(121, 192, 255), false, false, false, false)),
         ("character".to_owned(), Style::new(Color::new(165, 214, 255), false, false, false, false)),
@@ -236,7 +238,8 @@ pub fn dark_colorblind() -> ResolvedTheme {
 #[rustfmt::skip]
 pub fn light() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(255, 255, 255)),
+        ("_fg".to_owned(), Style::color_only(31, 35, 40)),
+        ("_bg".to_owned(), Style::color_only(255, 255, 255)),
         ("attribute".to_owned(), Style::new(Color::new(5, 80, 174), false, false, false, false)),
         ("boolean".to_owned(), Style::new(Color::new(5, 80, 174), false, false, false, false)),
         ("character".to_owned(), Style::new(Color::new(10, 48, 105), false, false, false, false)),
@@ -349,7 +352,8 @@ pub fn light() -> ResolvedTheme {
 #[rustfmt::skip]
 pub fn dimmed() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(34, 39, 46)),
+        ("_fg".to_owned(), Style::color_only(173, 186, 199)),
+        ("_bg".to_owned(), Style::color_only(34, 39, 46)),
         ("attribute".to_owned(), Style::new(Color::new(108, 182, 255), false, false, false, false)),
         ("boolean".to_owned(), Style::new(Color::new(108, 182, 255), false, false, false, false)),
         ("character".to_owned(), Style::new(Color::new(150, 208, 255), false, false, false, false)),
@@ -462,7 +466,8 @@ pub fn dimmed() -> ResolvedTheme {
 #[rustfmt::skip]
 pub fn dark_dimmed() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(34, 39, 46)),
+        ("_fg".to_owned(), Style::color_only(173, 186, 199)),
+        ("_bg".to_owned(), Style::color_only(34, 39, 46)),
         ("attribute".to_owned(), Style::new(Color::new(108, 182, 255), false, false, false, false)),
         ("boolean".to_owned(), Style::new(Color::new(108, 182, 255), false, false, false, false)),
         ("character".to_owned(), Style::new(Color::new(150, 208, 255), false, false, false, false)),
@@ -575,7 +580,8 @@ pub fn dark_dimmed() -> ResolvedTheme {
 #[rustfmt::skip]
 pub fn dark_default() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(10, 12, 16)),
+        ("_fg".to_owned(), Style::color_only(240, 243, 246)),
+        ("_bg".to_owned(), Style::color_only(10, 12, 16)),
         ("attribute".to_owned(), Style::new(Color::new(145, 203, 255), false, false, false, false)),
         ("boolean".to_owned(), Style::new(Color::new(145, 203, 255), false, false, false, false)),
         ("character".to_owned(), Style::new(Color::new(173, 220, 255), false, false, false, false)),
@@ -688,7 +694,8 @@ pub fn dark_default() -> ResolvedTheme {
 #[rustfmt::skip]
 pub fn light_default() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(255, 255, 255)),
+        ("_fg".to_owned(), Style::color_only(1, 4, 9)),
+        ("_bg".to_owned(), Style::color_only(255, 255, 255)),
         ("attribute".to_owned(), Style::new(Color::new(2, 59, 149), false, false, false, false)),
         ("boolean".to_owned(), Style::new(Color::new(2, 59, 149), false, false, false, false)),
         ("character".to_owned(), Style::new(Color::new(3, 37, 99), false, false, false, false)),
@@ -801,7 +808,8 @@ pub fn light_default() -> ResolvedTheme {
 #[rustfmt::skip]
 pub fn dark_tritanopia() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(13, 17, 23)),
+        ("_fg".to_owned(), Style::color_only(201, 209, 217)),
+        ("_bg".to_owned(), Style::color_only(13, 17, 23)),
         ("attribute".to_owned(), Style::new(Color::new(121, 192, 255), false, false, false, false)),
         ("boolean".to_owned(), Style::new(Color::new(121, 192, 255), false, false, false, false)),
         ("character".to_owned(), Style::new(Color::new(165, 214, 255), false, false, false, false)),
@@ -914,7 +922,8 @@ pub fn dark_tritanopia() -> ResolvedTheme {
 #[rustfmt::skip]
 pub fn light_colorblind() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(255, 255, 255)),
+        ("_fg".to_owned(), Style::color_only(27, 31, 36)),
+        ("_bg".to_owned(), Style::color_only(255, 255, 255)),
         ("attribute".to_owned(), Style::new(Color::new(5, 80, 174), false, false, false, false)),
         ("boolean".to_owned(), Style::new(Color::new(5, 80, 174), false, false, false, false)),
         ("character".to_owned(), Style::new(Color::new(10, 48, 105), false, false, false, false)),
@@ -1027,7 +1036,8 @@ pub fn light_colorblind() -> ResolvedTheme {
 #[rustfmt::skip]
 pub fn light_tritanopia() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(255, 255, 255)),
+        ("_fg".to_owned(), Style::color_only(27, 31, 36)),
+        ("_bg".to_owned(), Style::color_only(255, 255, 255)),
         ("attribute".to_owned(), Style::new(Color::new(5, 80, 174), false, false, false, false)),
         ("boolean".to_owned(), Style::new(Color::new(5, 80, 174), false, false, false, false)),
         ("character".to_owned(), Style::new(Color::new(10, 48, 105), false, false, false, false)),
@@ -1140,7 +1150,8 @@ pub fn light_tritanopia() -> ResolvedTheme {
 #[rustfmt::skip]
 pub fn dark_high_contrast() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(10, 12, 16)),
+        ("_fg".to_owned(), Style::color_only(240, 243, 246)),
+        ("_bg".to_owned(), Style::color_only(10, 12, 16)),
         ("attribute".to_owned(), Style::new(Color::new(145, 203, 255), false, false, false, false)),
         ("boolean".to_owned(), Style::new(Color::new(145, 203, 255), false, false, false, false)),
         ("character".to_owned(), Style::new(Color::new(173, 220, 255), false, false, false, false)),
@@ -1253,7 +1264,8 @@ pub fn dark_high_contrast() -> ResolvedTheme {
 #[rustfmt::skip]
 pub fn light_high_contrast() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(255, 255, 255)),
+        ("_fg".to_owned(), Style::color_only(1, 4, 9)),
+        ("_bg".to_owned(), Style::color_only(255, 255, 255)),
         ("attribute".to_owned(), Style::new(Color::new(2, 59, 149), false, false, false, false)),
         ("boolean".to_owned(), Style::new(Color::new(2, 59, 149), false, false, false, false)),
         ("character".to_owned(), Style::new(Color::new(3, 37, 99), false, false, false, false)),

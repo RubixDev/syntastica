@@ -10,7 +10,8 @@ use syntastica_core::{
 #[rustfmt::skip]
 pub fn cool() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(36, 43, 56)),
+        ("_fg".to_owned(), Style::color_only(165, 176, 197)),
+        ("_bg".to_owned(), Style::color_only(36, 43, 56)),
         ("annotation".to_owned(), Style::new(Color::new(165, 176, 197), false, false, false, false)),
         ("attribute".to_owned(), Style::new(Color::new(77, 189, 203), false, false, false, false)),
         ("attribute.typescript".to_owned(), Style::new(Color::new(90, 176, 246), false, false, false, false)),
@@ -90,7 +91,8 @@ pub fn cool() -> ResolvedTheme {
 #[rustfmt::skip]
 pub fn dark() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(40, 44, 52)),
+        ("_fg".to_owned(), Style::color_only(171, 178, 191)),
+        ("_bg".to_owned(), Style::color_only(40, 44, 52)),
         ("annotation".to_owned(), Style::new(Color::new(171, 178, 191), false, false, false, false)),
         ("attribute".to_owned(), Style::new(Color::new(86, 182, 194), false, false, false, false)),
         ("attribute.typescript".to_owned(), Style::new(Color::new(97, 175, 239), false, false, false, false)),
@@ -170,7 +172,8 @@ pub fn dark() -> ResolvedTheme {
 #[rustfmt::skip]
 pub fn darker() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(31, 35, 41)),
+        ("_fg".to_owned(), Style::color_only(160, 168, 183)),
+        ("_bg".to_owned(), Style::color_only(31, 35, 41)),
         ("annotation".to_owned(), Style::new(Color::new(160, 168, 183), false, false, false, false)),
         ("attribute".to_owned(), Style::new(Color::new(72, 176, 189), false, false, false, false)),
         ("attribute.typescript".to_owned(), Style::new(Color::new(79, 166, 237), false, false, false, false)),
@@ -250,7 +253,8 @@ pub fn darker() -> ResolvedTheme {
 #[rustfmt::skip]
 pub fn deep() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(26, 33, 46)),
+        ("_fg".to_owned(), Style::color_only(147, 164, 195)),
+        ("_bg".to_owned(), Style::color_only(26, 33, 46)),
         ("annotation".to_owned(), Style::new(Color::new(147, 164, 195), false, false, false, false)),
         ("attribute".to_owned(), Style::new(Color::new(52, 191, 208), false, false, false, false)),
         ("attribute.typescript".to_owned(), Style::new(Color::new(65, 167, 252), false, false, false, false)),
@@ -330,7 +334,8 @@ pub fn deep() -> ResolvedTheme {
 #[rustfmt::skip]
 pub fn light() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(250, 250, 250)),
+        ("_fg".to_owned(), Style::color_only(56, 58, 66)),
+        ("_bg".to_owned(), Style::color_only(250, 250, 250)),
         ("annotation".to_owned(), Style::new(Color::new(56, 58, 66), false, false, false, false)),
         ("attribute".to_owned(), Style::new(Color::new(1, 132, 188), false, false, false, false)),
         ("attribute.typescript".to_owned(), Style::new(Color::new(64, 120, 242), false, false, false, false)),
@@ -410,7 +415,8 @@ pub fn light() -> ResolvedTheme {
 #[rustfmt::skip]
 pub fn warm() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(44, 45, 48)),
+        ("_fg".to_owned(), Style::color_only(177, 180, 185)),
+        ("_bg".to_owned(), Style::color_only(44, 45, 48)),
         ("annotation".to_owned(), Style::new(Color::new(177, 180, 185), false, false, false, false)),
         ("attribute".to_owned(), Style::new(Color::new(95, 175, 185), false, false, false, false)),
         ("attribute.typescript".to_owned(), Style::new(Color::new(104, 174, 232), false, false, false, false)),
@@ -490,7 +496,8 @@ pub fn warm() -> ResolvedTheme {
 #[rustfmt::skip]
 pub fn warmer() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(35, 35, 38)),
+        ("_fg".to_owned(), Style::color_only(167, 170, 176)),
+        ("_bg".to_owned(), Style::color_only(35, 35, 38)),
         ("annotation".to_owned(), Style::new(Color::new(167, 170, 176), false, false, false, false)),
         ("attribute".to_owned(), Style::new(Color::new(81, 168, 179), false, false, false, false)),
         ("attribute.typescript".to_owned(), Style::new(Color::new(87, 165, 229), false, false, false, false)),

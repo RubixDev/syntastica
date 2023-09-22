@@ -21,7 +21,7 @@ fn main() {
 }
 
 fn example(highlights: &Highlights, theme: ResolvedTheme, name: &str) {
-    let bg_color = theme.get("bg0").copied().map(|style| style.color());
+    let bg_color = theme.get("_bg").copied().map(|style| style.color());
     println!(
         "\n\x1b[1m{name}:\x1b[0m\n{0}\n{1}{0}",
         "-".repeat(50),

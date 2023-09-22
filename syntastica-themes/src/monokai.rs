@@ -10,7 +10,8 @@ use syntastica_core::{
 #[rustfmt::skip]
 pub fn monokai() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(38, 41, 44)),
+        ("_fg".to_owned(), Style::color_only(248, 248, 240)),
+        ("_bg".to_owned(), Style::color_only(38, 41, 44)),
         ("annotation".to_owned(), Style::new(Color::new(166, 226, 46), false, false, false, false)),
         ("attribute".to_owned(), Style::new(Color::new(166, 226, 46), false, false, false, false)),
         ("boolean".to_owned(), Style::new(Color::new(174, 129, 255), false, false, false, false)),
@@ -112,7 +113,8 @@ pub fn monokai() -> ResolvedTheme {
 #[rustfmt::skip]
 pub fn ristretto() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(44, 37, 37)),
+        ("_fg".to_owned(), Style::color_only(255, 241, 243)),
+        ("_bg".to_owned(), Style::color_only(44, 37, 37)),
         ("annotation".to_owned(), Style::new(Color::new(173, 218, 120), false, false, false, false)),
         ("attribute".to_owned(), Style::new(Color::new(173, 218, 120), false, false, false, false)),
         ("boolean".to_owned(), Style::new(Color::new(168, 169, 235), false, false, false, false)),
@@ -214,7 +216,8 @@ pub fn ristretto() -> ResolvedTheme {
 #[rustfmt::skip]
 pub fn soda() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(38, 41, 44)),
+        ("_fg".to_owned(), Style::color_only(246, 246, 236)),
+        ("_bg".to_owned(), Style::color_only(38, 41, 44)),
         ("annotation".to_owned(), Style::new(Color::new(151, 224, 35), false, false, false, false)),
         ("attribute".to_owned(), Style::new(Color::new(151, 224, 35), false, false, false, false)),
         ("boolean".to_owned(), Style::new(Color::new(156, 100, 254), false, false, false, false)),
@@ -316,7 +319,8 @@ pub fn soda() -> ResolvedTheme {
 #[rustfmt::skip]
 pub fn pro() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(38, 41, 44)),
+        ("_fg".to_owned(), Style::color_only(255, 241, 243)),
+        ("_bg".to_owned(), Style::color_only(38, 41, 44)),
         ("annotation".to_owned(), Style::new(Color::new(169, 220, 118), false, false, false, false)),
         ("attribute".to_owned(), Style::new(Color::new(169, 220, 118), false, false, false, false)),
         ("boolean".to_owned(), Style::new(Color::new(171, 157, 242), false, false, false, false)),

@@ -10,7 +10,8 @@ use syntastica_core::{
 #[rustfmt::skip]
 pub fn everblush() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(20, 27, 30)),
+        ("_fg".to_owned(), Style::color_only(218, 218, 218)),
+        ("_bg".to_owned(), Style::color_only(20, 27, 30)),
         ("attribute".to_owned(), Style::new(Color::new(103, 176, 232), false, false, false, false)),
         ("boolean".to_owned(), Style::new(Color::new(108, 191, 191), false, false, false, false)),
         ("character".to_owned(), Style::new(Color::new(103, 176, 232), false, false, false, false)),
@@ -62,7 +63,7 @@ pub fn everblush() -> ResolvedTheme {
         ("text.danger".to_owned(), Style::new(Color::new(45, 52, 55), false, false, false, false)),
         ("text.emphasis".to_owned(), Style::new(Color::new(179, 185, 184), false, false, true, false)),
         ("text.environment.name".to_owned(), Style::new(Color::new(229, 199, 107), false, false, false, false)),
-        ("text.environtment".to_owned(), Style::new(Color::new(196, 127, 213), false, false, false, false)),
+        ("text.environment".to_owned(), Style::new(Color::new(196, 127, 213), false, false, false, false)),
         ("text.literal".to_owned(), Style::new(Color::new(140, 207, 126), false, false, true, false)),
         ("text.math".to_owned(), Style::new(Color::new(108, 191, 191), false, false, false, false)),
         ("text.note".to_owned(), Style::new(Color::new(45, 52, 55), false, false, false, false)),

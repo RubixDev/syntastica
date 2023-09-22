@@ -31,10 +31,16 @@ local all_highlights = vim.api.nvim_get_hl(0, {})
 
 print('    ResolvedTheme::new(BTreeMap::from([')
 
--- set the `bg0` key to the themes background color (if present)
+-- set the `_bg` and `_fg` keys to the themes normal foreground and background color (if present)
 local normal = vim.api.nvim_get_hl(0, { name = 'Normal' })
+if normal.fg ~= nil then
+    local line = '        ("_fg".to_owned(), Style::color_only('
+    local r, g, b = parse_color(normal.fg)
+    line = line .. r .. ', ' .. g .. ', ' .. b .. ')),'
+    print(line)
+end
 if normal.bg ~= nil then
-    local line = '        ("bg0".to_owned(), Style::color_only('
+    local line = '        ("_bg".to_owned(), Style::color_only('
     local r, g, b = parse_color(normal.bg)
     line = line .. r .. ', ' .. g .. ', ' .. b .. ')),'
     print(line)

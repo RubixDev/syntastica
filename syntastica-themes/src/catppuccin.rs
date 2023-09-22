@@ -10,7 +10,8 @@ use syntastica_core::{
 #[rustfmt::skip]
 pub fn latte() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(239, 241, 245)),
+        ("_fg".to_owned(), Style::color_only(76, 79, 105)),
+        ("_bg".to_owned(), Style::color_only(239, 241, 245)),
         ("attribute".to_owned(), Style::new(Color::new(254, 100, 11), false, false, false, false)),
         ("boolean".to_owned(), Style::new(Color::new(254, 100, 11), false, false, false, false)),
         ("character".to_owned(), Style::new(Color::new(23, 146, 153), false, false, false, false)),
@@ -121,7 +122,8 @@ pub fn latte() -> ResolvedTheme {
 #[rustfmt::skip]
 pub fn mocha() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(30, 30, 46)),
+        ("_fg".to_owned(), Style::color_only(205, 214, 244)),
+        ("_bg".to_owned(), Style::color_only(30, 30, 46)),
         ("attribute".to_owned(), Style::new(Color::new(250, 179, 135), false, false, false, false)),
         ("boolean".to_owned(), Style::new(Color::new(250, 179, 135), false, false, false, false)),
         ("character".to_owned(), Style::new(Color::new(148, 226, 213), false, false, false, false)),
@@ -232,7 +234,8 @@ pub fn mocha() -> ResolvedTheme {
 #[rustfmt::skip]
 pub fn frappe() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(48, 52, 70)),
+        ("_fg".to_owned(), Style::color_only(198, 208, 245)),
+        ("_bg".to_owned(), Style::color_only(48, 52, 70)),
         ("attribute".to_owned(), Style::new(Color::new(239, 159, 118), false, false, false, false)),
         ("boolean".to_owned(), Style::new(Color::new(239, 159, 118), false, false, false, false)),
         ("character".to_owned(), Style::new(Color::new(129, 200, 190), false, false, false, false)),
@@ -343,7 +346,8 @@ pub fn frappe() -> ResolvedTheme {
 #[rustfmt::skip]
 pub fn macchiato() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(36, 39, 58)),
+        ("_fg".to_owned(), Style::color_only(202, 211, 245)),
+        ("_bg".to_owned(), Style::color_only(36, 39, 58)),
         ("attribute".to_owned(), Style::new(Color::new(245, 169, 127), false, false, false, false)),
         ("boolean".to_owned(), Style::new(Color::new(245, 169, 127), false, false, false, false)),
         ("character".to_owned(), Style::new(Color::new(139, 213, 202), false, false, false, false)),

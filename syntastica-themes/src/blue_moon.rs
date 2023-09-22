@@ -10,7 +10,8 @@ use syntastica_core::{
 #[rustfmt::skip]
 pub fn blue_moon() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(27, 30, 43)),
+        ("_fg".to_owned(), Style::color_only(251, 251, 251)),
+        ("_bg".to_owned(), Style::color_only(27, 30, 43)),
         ("boolean".to_owned(), Style::new(Color::new(180, 180, 180), false, false, false, false)),
         ("character".to_owned(), Style::new(Color::new(180, 196, 180), false, false, false, true)),
         ("comment".to_owned(), Style::new(Color::new(103, 110, 150), false, false, true, false)),

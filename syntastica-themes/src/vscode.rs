@@ -10,7 +10,8 @@ use syntastica_core::{
 #[rustfmt::skip]
 pub fn dark() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(30, 30, 30)),
+        ("_fg".to_owned(), Style::color_only(212, 212, 212)),
+        ("_bg".to_owned(), Style::color_only(30, 30, 30)),
         ("annotation".to_owned(), Style::new(Color::new(220, 220, 170), false, false, false, false)),
         ("attribute".to_owned(), Style::new(Color::new(220, 220, 170), false, false, false, false)),
         ("attribute.builtin".to_owned(), Style::new(Color::new(78, 201, 176), false, false, false, false)),
@@ -93,7 +94,8 @@ pub fn dark() -> ResolvedTheme {
 #[rustfmt::skip]
 pub fn light() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(255, 255, 255)),
+        ("_fg".to_owned(), Style::color_only(52, 52, 52)),
+        ("_bg".to_owned(), Style::color_only(255, 255, 255)),
         ("annotation".to_owned(), Style::new(Color::new(121, 94, 38), false, false, false, false)),
         ("attribute".to_owned(), Style::new(Color::new(121, 94, 38), false, false, false, false)),
         ("attribute.builtin".to_owned(), Style::new(Color::new(22, 130, 93), false, false, false, false)),

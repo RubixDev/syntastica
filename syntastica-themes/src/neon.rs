@@ -10,7 +10,8 @@ use syntastica_core::{
 #[rustfmt::skip]
 pub fn default() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(43, 45, 55)),
+        ("_fg".to_owned(), Style::color_only(197, 205, 217)),
+        ("_bg".to_owned(), Style::color_only(43, 45, 55)),
         ("character".to_owned(), Style::new(Color::new(218, 133, 72), false, false, false, false)),
         ("character.special".to_owned(), Style::new(Color::new(218, 133, 72), false, false, false, false)),
         ("comment".to_owned(), Style::new(Color::new(126, 130, 148), false, false, true, false)),
@@ -60,7 +61,8 @@ pub fn default() -> ResolvedTheme {
 #[rustfmt::skip]
 pub fn doom() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(40, 44, 52)),
+        ("_fg".to_owned(), Style::color_only(187, 194, 207)),
+        ("_bg".to_owned(), Style::color_only(40, 44, 52)),
         ("character".to_owned(), Style::new(Color::new(218, 133, 72), false, false, false, false)),
         ("character.special".to_owned(), Style::new(Color::new(218, 133, 72), false, false, false, false)),
         ("comment".to_owned(), Style::new(Color::new(126, 130, 148), false, false, true, false)),
@@ -110,7 +112,8 @@ pub fn doom() -> ResolvedTheme {
 #[rustfmt::skip]
 pub fn dark() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(13, 17, 23)),
+        ("_fg".to_owned(), Style::color_only(197, 205, 217)),
+        ("_bg".to_owned(), Style::color_only(13, 17, 23)),
         ("character".to_owned(), Style::new(Color::new(218, 133, 72), false, false, false, false)),
         ("character.special".to_owned(), Style::new(Color::new(218, 133, 72), false, false, false, false)),
         ("comment".to_owned(), Style::new(Color::new(126, 130, 148), false, false, true, false)),
@@ -160,7 +163,8 @@ pub fn dark() -> ResolvedTheme {
 #[rustfmt::skip]
 pub fn light() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(211, 211, 211)),
+        ("_fg".to_owned(), Style::color_only(76, 86, 106)),
+        ("_bg".to_owned(), Style::color_only(211, 211, 211)),
         ("character".to_owned(), Style::new(Color::new(218, 133, 72), false, false, false, false)),
         ("character.special".to_owned(), Style::new(Color::new(218, 133, 72), false, false, false, false)),
         ("comment".to_owned(), Style::new(Color::new(126, 130, 148), false, false, true, false)),

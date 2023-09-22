@@ -10,7 +10,8 @@ use syntastica_core::{
 #[rustfmt::skip]
 pub fn melange() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(41, 37, 34)),
+        ("_fg".to_owned(), Style::color_only(236, 225, 215)),
+        ("_bg".to_owned(), Style::color_only(41, 37, 34)),
         ("boolean".to_owned(), Style::new(Color::new(207, 155, 194), false, false, false, false)),
         ("character".to_owned(), Style::new(Color::new(127, 145, 178), false, false, false, false)),
         ("character.special".to_owned(), Style::new(Color::new(235, 192, 109), false, false, false, false)),

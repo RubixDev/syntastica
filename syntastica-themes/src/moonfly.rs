@@ -10,7 +10,8 @@ use syntastica_core::{
 #[rustfmt::skip]
 pub fn moonfly() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(8, 8, 8)),
+        ("_fg".to_owned(), Style::color_only(198, 198, 198)),
+        ("_bg".to_owned(), Style::color_only(8, 8, 8)),
         ("annotation".to_owned(), Style::new(Color::new(207, 135, 232), false, false, false, false)),
         ("attribute".to_owned(), Style::new(Color::new(116, 178, 255), false, false, false, false)),
         ("boolean".to_owned(), Style::new(Color::new(230, 94, 114), false, false, false, false)),

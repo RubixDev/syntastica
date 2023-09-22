@@ -10,7 +10,8 @@ use syntastica_core::{
 #[rustfmt::skip]
 pub fn zephyr() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(38, 42, 51)),
+        ("_fg".to_owned(), Style::color_only(187, 194, 207)),
+        ("_bg".to_owned(), Style::color_only(38, 42, 51)),
         ("boolean".to_owned(), Style::new(Color::new(255, 135, 0), false, false, false, false)),
         ("character".to_owned(), Style::new(Color::new(175, 215, 0), false, false, false, false)),
         ("character.special".to_owned(), Style::new(Color::new(247, 187, 59), false, false, false, false)),

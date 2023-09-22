@@ -10,7 +10,8 @@ use syntastica_core::{
 #[rustfmt::skip]
 pub fn aurora() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(33, 28, 47)),
+        ("_fg".to_owned(), Style::color_only(221, 208, 244)),
+        ("_bg".to_owned(), Style::color_only(33, 28, 47)),
         ("annotation".to_owned(), Style::new(Color::new(130, 170, 240), false, false, false, false)),
         ("attribute".to_owned(), Style::new(Color::new(127, 219, 202), false, false, false, false)),
         ("boolean".to_owned(), Style::new(Color::new(255, 67, 91), false, false, false, false)),

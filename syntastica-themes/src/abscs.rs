@@ -10,7 +10,8 @@ use syntastica_core::{
 #[rustfmt::skip]
 pub fn abscs() -> ResolvedTheme {
     ResolvedTheme::new(BTreeMap::from([
-        ("bg0".to_owned(), Style::color_only(6, 6, 6)),
+        ("_fg".to_owned(), Style::color_only(255, 250, 222)),
+        ("_bg".to_owned(), Style::color_only(6, 6, 6)),
         ("boolean".to_owned(), Style::new(Color::new(1, 160, 245), false, false, false, false)),
         ("character".to_owned(), Style::new(Color::new(80, 193, 110), false, false, false, false)),
         ("character.special".to_owned(), Style::new(Color::new(157, 151, 151), false, false, false, false)),
