@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["forked_from","get_rev","is_compatible_tree_sitter","run","try_get_crates_io_version","try_get_extensions","try_get_package","url_to_content_url"],"static":["CRATES_IO_CLIENT","TREE_SITTER_VERSION","URL_REGEX"]};
+window.SIDEBAR_ITEMS = {"fn":["forked_from","get_rev","is_compatible_tree_sitter","run","try_get_crates_io_version","try_get_package","url_to_content_url"],"static":["CRATES_IO_CLIENT","TREE_SITTER_VERSION","URL_REGEX"]};
