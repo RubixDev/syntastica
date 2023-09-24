@@ -694,6 +694,22 @@ injections = true
 locals = true
 
 [[languages]]
+name = "ursa"
+group = "all"
+file-types = ["ursa"]
+[languages.parser]
+git = { url = "https://github.com/ursalang/tree-sitter-ursa", rev = "e15effeeff88df0e2c81a03f8e3098bdb6d749c4" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_ursa"
+rust-func = "language"
+package = "tree-sitter-ursa"
+crates-io = "0.0.3"
+[languages.queries]
+nvim-like = false
+injections = false
+locals = true
+
+[[languages]]
 name = "verilog"
 group = "all"
 file-types = ["verilog"]

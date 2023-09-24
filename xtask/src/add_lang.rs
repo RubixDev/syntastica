@@ -12,7 +12,6 @@ use crates_io_api::SyncClient;
 use fancy_regex::Regex;
 use once_cell::sync::Lazy;
 use semver::{Version, VersionReq};
-use serde_json::{Map, Value};
 use toml::Table;
 
 pub fn run() -> Result<()> {
@@ -36,10 +35,6 @@ pub fn run() -> Result<()> {
     };
 
     println!("info: found revision '{rev}'");
-    let file_extensions = content_url
-        .as_ref()
-        .and_then(|url| try_get_extensions(url))
-        .unwrap_or_default();
     let external_c = content_url.as_ref().map_or(false, |url| {
         reqwest::blocking::get(format!("{url}{path_in_url}/src/scanner.c"))
             .map_or(false, |response| response.status().is_success())
@@ -105,7 +100,7 @@ pub fn run() -> Result<()> {
         r###"[[languages]]
 name = "{name}"
 group = "{group}"
-file-extensions = {file_extensions:?}
+file-types = []
 [languages.parser]
 git = {{ url = "{url}", rev = "{rev}"{path} }}
 external-scanner = {{ c = {external_c}, cpp = {external_cpp} }}
@@ -190,31 +185,6 @@ pub fn url_to_content_url(url: &str, rev: &str) -> Option<String> {
         },
         _ => None,
     }
-}
-
-fn try_get_extensions(content_url: &str) -> Option<Vec<String>> {
-    let json_str = reqwest::blocking::get(format!("{content_url}/package.json"))
-        .ok()?
-        .text()
-        .ok()?;
-    let json = serde_json::from_str::<Map<String, Value>>(&json_str).ok()?;
-    let langs = json.get("tree-sitter")?.as_array()?;
-    let mut file_extensions = vec![];
-    if langs.len() > 1 {
-        eprintln!("warning: 'package.json' contains information for multiple languages, all file extensions will be combined");
-    }
-    for lang in langs {
-        let mut exts = lang
-            .get("file-types")?
-            .as_array()?
-            .iter()
-            .map(|val| val.as_str().map(ToOwned::to_owned))
-            .collect::<Option<Vec<_>>>()?;
-        eprintln!("{}: {exts:?}", lang.get("scope")?);
-        file_extensions.append(&mut exts);
-    }
-
-    Some(file_extensions)
 }
 
 fn try_get_package(content_url: &str) -> Option<String> {

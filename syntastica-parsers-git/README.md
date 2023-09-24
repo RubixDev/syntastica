@@ -92,6 +92,7 @@ it will be reused the next time the build script is run.
 - [ocaml_interface](https://github.com/tree-sitter/tree-sitter-ocaml/tree/694c57718fd85d514f8b81176038e7a4cfabcaaf)
 - [ql](https://github.com/tree-sitter/tree-sitter-ql/tree/bd087020f0d8c183080ca615d38de0ec827aeeaf)
 - [rush](https://github.com/rush-rs/tree-sitter-rush/tree/20c04a0824dabcbf8119a84979cfb1c6f6c2155f)
+- [ursa](https://github.com/ursalang/tree-sitter-ursa/tree/e15effeeff88df0e2c81a03f8e3098bdb6d749c4)
 - [verilog](https://github.com/tree-sitter/tree-sitter-verilog/tree/902031343056bc0b11f3e47b33f036a9cf59f58d)
 - [wat](https://github.com/wasm-lsp/tree-sitter-wasm/tree/2ca28a9f9d709847bf7a3de0942a84e912f59088)
 

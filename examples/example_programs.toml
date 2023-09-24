@@ -968,3 +968,42 @@ license.workspace = true
 repository.workspace = true
 description = "Modern and easy syntax highlighting using tree-sitter"
 '''
+
+ursa = '''
+print("hello, woods!")
+
+let fac = null
+fn fac(x) {
+  if x == 0 {1} else {x * fac(x - 1)}
+}
+fac(6)
+
+let sum = fn(l) {
+  let tot = 0
+  let i = 0
+  loop {
+    if i == l.length { return tot }
+    tot = tot + l[i]
+    i = i + 1
+  }
+}
+sum([10, 30, 50, 5, 5])
+
+let newAccums = fn() {
+  let tot = 0
+  [
+    fn(x) {
+      tot = tot + x
+    },
+    fn(x) {
+      tot = tot + x
+    },
+  ]
+}
+let accums = newAccums()
+let accums2 = newAccums()
+[
+  [accums[0](1), accums[0](1), accums2[0](1)],
+  [accums[1](1), accums[1](1), accums2[1](1)],
+]
+'''

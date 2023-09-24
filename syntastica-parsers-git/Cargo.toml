@@ -103,6 +103,7 @@ all = [
     "ocaml_interface",
     "ql",
     "rush",
+    "ursa",
     "verilog",
     "wat",
 ]
@@ -161,6 +162,7 @@ scss = []
 toml = []
 tsx = []
 typescript = []
+ursa = []
 verilog = []
 wat = []
 yaml = []

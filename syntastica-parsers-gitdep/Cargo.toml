@@ -95,6 +95,7 @@ all = [
     "ocaml_interface",
     "ql",
     "rush",
+    "ursa",
     "verilog",
 ]
 
@@ -136,6 +137,7 @@ rust = ["dep:tree-sitter-rust"]
 scala = ["dep:tree-sitter-scala"]
 scss = ["dep:tree-sitter-scss"]
 toml = ["dep:tree-sitter-toml"]
+ursa = ["dep:tree-sitter-ursa"]
 verilog = ["dep:tree-sitter-verilog"]
 yaml = ["dep:tree-sitter-yaml"]
 
@@ -298,6 +300,11 @@ rev = "c478c6868648eff49eb04a4df90d703dc45b312a"
 optional = true
 git = "https://github.com/Mathspy/tree-sitter-toml"
 rev = "ae4cdb5d27bf876a432b6c30b6a88f56c9b3e761"
+
+[dependencies.tree-sitter-ursa]
+optional = true
+git = "https://github.com/ursalang/tree-sitter-ursa"
+rev = "e15effeeff88df0e2c81a03f8e3098bdb6d749c4"
 
 [dependencies.tree-sitter-verilog]
 optional = true

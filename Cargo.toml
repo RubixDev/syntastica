@@ -52,7 +52,7 @@ once_cell = "1.18.0"
 rustc_version = "0.4.0"
 serde = "1.0.188"
 strum = "0.25.0"
-tft = { version = "0.1.0", default-features = false }
+tft = { version = "0.1.1", default-features = false }
 thiserror = "1.0.48"
 toml = "0.8.0"
 

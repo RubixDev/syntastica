@@ -82,6 +82,7 @@ all = [
     "ocaml",
     "ocaml_interface",
     "rush",
+    "ursa",
 ]
 
 ## Meant to be enabled when building docs
@@ -113,6 +114,7 @@ rush = ["dep:tree-sitter-rush"]
 rust = ["dep:tree-sitter-rust"]
 scala = ["dep:tree-sitter-scala"]
 toml = ["dep:tree-sitter-toml"]
+ursa = ["dep:tree-sitter-ursa"]
 
 [dependencies.tree-sitter-asm]
 optional = true
@@ -205,3 +207,7 @@ version = "=0.20.1"
 [dependencies.tree-sitter-toml]
 optional = true
 version = "=0.20.0"
+
+[dependencies.tree-sitter-ursa]
+optional = true
+version = "=0.0.3"
