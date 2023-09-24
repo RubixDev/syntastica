@@ -62,6 +62,11 @@ impl Renderer for TypstRenderer {
         let mut options = format!("fill:rgb({r},{g},{b}),");
         let mut front = String::new();
         let mut paren_count = 0;
+        if let Some(color) = style.bg() {
+            let (r, g, b) = color.into_components();
+            front += &format!("highlight(fill:rgb({r},{g},{b}),");
+            paren_count += 1;
+        }
         if style.underline() {
             front += "underline(";
             paren_count += 1;
