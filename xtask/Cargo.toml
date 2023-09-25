@@ -8,6 +8,7 @@ edition = "2021"
 [dependencies]
 syntastica-core = { workspace = true, features = ["runtime-c"] }
 syntastica-query-preprocessor.workspace = true
+syntastica-themes.workspace = true
 
 anyhow = "1.0.75"
 crates_io_api = "0.8.1"

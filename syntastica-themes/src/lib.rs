@@ -3,6 +3,7 @@
     feature = "docs",
     cfg_attr(doc, doc = ::document_features::document_features!(feature_label = r#"<span class="stab portability"><code>{feature}</code></span>"#))
 )]
+#![doc = include_str!("../theme_list.md")]
 #![cfg_attr(all(doc, CHANNEL_NIGHTLY), feature(doc_auto_cfg))]
 #![warn(rust_2018_idioms)]
 // #![deny(missing_docs)]

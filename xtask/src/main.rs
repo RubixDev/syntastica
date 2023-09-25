@@ -13,6 +13,7 @@ mod add_lang;
 mod codegen;
 mod fetch_queries;
 mod set_version;
+mod theme_svgs;
 mod update_langs;
 
 mod schema {
@@ -58,6 +59,7 @@ Usage: Run with `cargo xtask <task>`, eg. `cargo xtask codegen`.
         add-lang <group> <name> <url> [path]: Add boilerplate code for a new language called <name> with sources at <url>/[path] in the feature group <group>
         update-langs                          Search for new versions of languages
         fetch-queries                         Fetch latest upstream versions of forked queries
+        theme-svgs                            Create SVGs for all themes using Typst and the `custom_renderer` example
             "###
             .trim(),
         ),
@@ -66,6 +68,7 @@ Usage: Run with `cargo xtask <task>`, eg. `cargo xtask codegen`.
         "add-lang" => add_lang::run()?,
         "update-langs" => update_langs::run()?,
         "fetch-queries" => fetch_queries::run()?,
+        "theme-svgs" => theme_svgs::run()?,
         task => eprintln!(
             "unknown task '{task}', run `cargo xtask --help` to see a list of available tasks"
         ),

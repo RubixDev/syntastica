@@ -1,33 +1,31 @@
-use std::{borrow::Cow, collections::HashMap, error::Error};
+//! This example contains a custom renderer which outputs code that can be pasted into Typst
+//! documents. It is used by the `theme-svgs` xtask to create SVGs of all themes with the Rust
+//! example program.
 
-use syntastica::{renderer::Renderer, Processor};
+use std::{borrow::Cow, collections::HashMap, env, error::Error};
+
+use syntastica::renderer::Renderer;
 use syntastica_core::style::Style;
 use syntastica_parsers_git::{Lang, LanguageSetImpl};
 
 fn main() -> Result<(), Box<dyn Error>> {
     let examples: HashMap<String, String> =
         toml::from_str(include_str!("./example_programs.toml"))?;
-
-    let language_set = LanguageSetImpl::new();
-    language_set.preload(&[Lang::Rust, Lang::Regex, Lang::C])?;
-    let mut processor = Processor::new(&language_set);
-    let theme = syntastica_themes::one::light();
+    let theme_name = env::args()
+        .nth(1)
+        .unwrap_or_else(|| "one::light".to_string());
+    let theme = syntastica_themes::from_str(&theme_name)
+        .ok_or_else(|| format!("unknown theme `{theme_name}`"))?;
 
     println!(
         "{}",
-        syntastica::render(
-            &processor.process(&examples["rust"], Lang::Rust)?,
+        syntastica::highlight(
+            &examples["rust"],
+            Lang::Rust,
+            &LanguageSetImpl::new(),
             &mut TypstRenderer,
-            &theme
-        ),
-    );
-    println!(
-        "{}",
-        syntastica::render(
-            &processor.process(&examples["c"], Lang::C)?,
-            &mut TypstRenderer,
-            &theme
-        ),
+            theme
+        )?,
     );
 
     Ok(())
