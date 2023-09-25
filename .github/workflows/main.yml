@@ -112,15 +112,11 @@ jobs:
       - name: Restore Cache
         uses: Swatinem/rust-cache@v2
 
-      - name: Generate Code
-        run: cargo xtask codegen
-
-      - name: Prepare CI
-        run: |
-          bash _prepare_ci.sh
-
       - name: Create SVGs
         run: cargo xtask theme-svgs
+
+      - name: Generate Code
+        run: cargo xtask codegen
 
       - name: Commit changes
         uses: EndBug/add-and-commit@v9
