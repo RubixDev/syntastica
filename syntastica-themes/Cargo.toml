@@ -4,6 +4,7 @@ version.workspace = true
 authors.workspace = true
 documentation = "https://rubixdev.github.io/syntastica/syntastica_themes/"
 edition.workspace = true
+exclude = ["./assets/theme-svgs"]
 license.workspace = true
 repository.workspace = true
 description = "A collection of themes for syntastica"
