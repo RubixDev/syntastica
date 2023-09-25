@@ -159,7 +159,7 @@ fn process(
         func(&mut new_queries);
     }
     new_queries = ungroup_root_level_captures(new_queries);
-    let new_queries = format!("{new_queries:#}");
+    let new_queries = format!("{new_queries}");
 
     Ok(new_queries)
 }

@@ -7,6 +7,7 @@ edition.workspace = true
 license.workspace = true
 repository.workspace = true
 description = "Collection of tree-sitter queries for syntastica"
+include = ["LICENSE", "README.md", "src", "generated_queries"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
