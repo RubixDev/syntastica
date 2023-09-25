@@ -137,9 +137,16 @@ jobs:
           path: syntastica-queries/generated_queries
           retention-days: 10
 
+      - name: Upload Theme List as Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: theme-list-md
+          path: syntastica-themes/theme_list.md
+          retention-days: 1
+
   # build the gh-pages site
   pages:
-    needs: [build-js, tests]
+    needs: [build-js, tests, codegen]
     if: github.repository == 'RubixDev/syntastica'
     continue-on-error: true
     runs-on: ubuntu-latest
@@ -156,6 +163,12 @@ jobs:
         with:
           name: syntastica-js
           path: syntastica-js/pkg
+
+      - name: Download theme_list.md
+        uses: actions/download-artifact@v3
+        with:
+          name: theme-list-md
+          path: syntastica-themes/
 
       - name: Install Rust Toolchain
         uses: dtolnay/rust-toolchain@nightly
