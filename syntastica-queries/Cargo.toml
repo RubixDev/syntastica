@@ -4,10 +4,10 @@ version.workspace = true
 authors.workspace = true
 documentation = "https://rubixdev.github.io/syntastica/syntastica_queries/"
 edition.workspace = true
+include = ["LICENSE", "README.md", "src", "generated_queries"]
 license.workspace = true
 repository.workspace = true
 description = "Collection of tree-sitter queries for syntastica"
-include = ["LICENSE", "README.md", "src", "generated_queries"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
