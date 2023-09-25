@@ -24,25 +24,16 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Install Toolchain
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          override: true
+        uses: dtolay/rust-toolchain@stable
 
       - name: Restore Cache
         uses: Swatinem/rust-cache@v2
 
       - name: Run Codegen
-        uses: actions-rs/cargo@v1
-        with:
-          command: xtask
-          args: codegen
+        run: cargo xtask codegen
 
       - name: Run Tests
-        uses: actions-rs/cargo@v1
-        with:
-          command: test
-          args: --workspace --all-features
+        run: cargo test --workspace --all-features
 
   # build syntastica-js
   build-js:
@@ -57,9 +48,8 @@ jobs:
           bash _prepare_ci.sh
 
       - name: Install Toolchain
-        uses: actions-rs/toolchain@v1
+        uses: dtolay/rust-toolchain@stable
         with:
-          toolchain: stable
           target: wasm32-unknown-emscripten
 
       - name: Setup NodeJS
@@ -76,10 +66,7 @@ jobs:
         uses: Swatinem/rust-cache@v2
 
       - name: Run Codegen
-        uses: actions-rs/cargo@v1
-        with:
-          command: xtask
-          args: codegen
+        run: cargo xtask codegen
 
       - name: Prepare CI
         run: |
@@ -112,18 +99,24 @@ jobs:
           bash _prepare_ci.sh
 
       - name: Install Toolchain
-        uses: actions-rs/toolchain@v1
+        uses: dtolay/rust-toolchain@stable
+
+      - name: Install Jetbrains Mono
+        run: sudo apt update && sudo apt install -y fonts-jetbrains-mono
+
+      - name: Install Typst
+        uses: yusancky/setup-typst@v2
         with:
-          toolchain: stable
+          version: 'v0.8.0'
 
       - name: Restore Cache
         uses: Swatinem/rust-cache@v2
 
       - name: Generate Code
-        uses: actions-rs/cargo@v1
-        with:
-          command: xtask
-          args: codegen
+        run: cargo xtask codegen
+
+      - name: Create SVGs
+        run: cargo xtask theme-svgs
 
       - name: Commit changes
         uses: EndBug/add-and-commit@v9
@@ -131,7 +124,8 @@ jobs:
           add:
             syntastica-queries/generated_queries syntastica-queries/src/lib.rs
             syntastica-parsers/Cargo.toml syntastica-parsers-gitdep/Cargo.toml
-            syntastica-parsers*/README.md syntastica-js/src/index.ts syntastica-themes/src
+            syntastica-parsers*/README.md syntastica-js/src/index.ts
+            syntastica-themes/assets/theme-svgs syntastica-themes/theme_list.md
           committer_name: github-actions[bot]
           committer_email: 41898282+github-actions[bot]@users.noreply.github.com
           message: 'chore: run codegen'
@@ -190,16 +184,10 @@ jobs:
           cache-on-failure: true
 
       - name: Run Codegen
-        uses: actions-rs/cargo@v1
-        with:
-          command: xtask
-          args: codegen
+        run: cargo xtask codegen
 
       - name: Build Rust Documentation
-        uses: actions-rs/cargo@v1
-        with:
-          command: doc
-          args: --workspace --all-features --no-deps
+        run: cargo doc --workspace --all-features --no-deps
 
       - name: Build TypeScript Documentation
         run: |
