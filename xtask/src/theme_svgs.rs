@@ -68,7 +68,7 @@ pub fn run() -> Result<()> {
             r#"
 ### `{theme_name}`
 
-<img alt="{theme_name}" width="400" src="https://github.com/RubixDev/syntastica/raw/main/{ASSET_PATH}/{theme_name}.svg"></img>
+<img alt="{theme_name}" width="100%" src="https://github.com/RubixDev/syntastica/raw/main/{ASSET_PATH}/{theme_name}.svg"></img>
 "#
         )
     }
