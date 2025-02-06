@@ -1,26 +1,29 @@
 ;; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/typescript/highlights.scm
 ;; Licensed under the Apache License 2.0
 ; inherits: ecma
-"require" @include
+"require" @keyword.import
 
 (import_require_clause
-  source: (string) @text.uri
+  source: (string) @string.special.url
 )
 
 [
   "declare"
-  "enum"
-  "export"
   "implements"
-  "interface"
   "type"
-  "namespace"
   "override"
   "module"
   "asserts"
   "infer"
   "is"
+  "using"
 ] @keyword
+
+[
+  "namespace"
+  "interface"
+  "enum"
+] @keyword.type
 
 [
   "keyof"
@@ -28,10 +31,6 @@
 ] @keyword.operator
 
 (as_expression
-  "as" @keyword.operator
-)
-
-(export_statement
   "as" @keyword.operator
 )
 
@@ -45,7 +44,7 @@
   "protected"
   "public"
   "readonly"
-] @type.qualifier
+] @keyword.modifier
 
 ; types
 (type_identifier) @type
@@ -56,10 +55,8 @@
   "type"
   (import_clause
     (named_imports
-      (
-        (import_specifier
-          name: (identifier) @type
-        )
+      (import_specifier
+        name: (identifier) @type
       )
     )
   )
@@ -71,7 +68,7 @@
   "!" @operator
 )
 
-;; punctuation
+; punctuation
 (type_arguments
   [
     "<"
@@ -115,6 +112,10 @@
 
 (omitting_type_annotation
   "-?:" @punctuation.delimiter
+)
+
+(adding_type_annotation
+  "+?:" @punctuation.delimiter
 )
 
 (opting_type_annotation
@@ -169,84 +170,81 @@
   [
     "?"
     ":"
-  ] @conditional.ternary
+  ] @keyword.conditional.ternary
 )
 
-; Variables
-(undefined) @variable.builtin
-
-;;; Parameters
+; Parameters
 (required_parameter
-  (identifier) @parameter
+  pattern: (identifier) @variable.parameter
 )
 
 (optional_parameter
-  (identifier) @parameter
+  pattern: (identifier) @variable.parameter
 )
 
 (required_parameter
   (rest_pattern
-    (identifier) @parameter
+    (identifier) @variable.parameter
   )
 )
 
-;; ({ a }) => null
+; ({ a }) => null
 (required_parameter
   (object_pattern
-    (shorthand_property_identifier_pattern) @parameter
+    (shorthand_property_identifier_pattern) @variable.parameter
   )
 )
 
-;; ({ a = b }) => null
+; ({ a = b }) => null
 (required_parameter
   (object_pattern
     (object_assignment_pattern
-      (shorthand_property_identifier_pattern) @parameter
+      (shorthand_property_identifier_pattern) @variable.parameter
     )
   )
 )
 
-;; ({ a: b }) => null
+; ({ a: b }) => null
 (required_parameter
   (object_pattern
     (pair_pattern
-      value: (identifier) @parameter
+      value: (identifier) @variable.parameter
     )
   )
 )
 
-;; ([ a ]) => null
+; ([ a ]) => null
 (required_parameter
   (array_pattern
-    (identifier) @parameter
+    (identifier) @variable.parameter
   )
 )
 
-;; a => null
+; a => null
 (arrow_function
-  parameter: (identifier) @parameter
+  parameter: (identifier) @variable.parameter
 )
 
-;; global declaration
+; global declaration
 (ambient_declaration
-  "global" @namespace
+  "global" @module
 )
 
-;; function signatures
+; function signatures
 (ambient_declaration
   (function_signature
     name: (identifier) @function
   )
 )
 
-;; method signatures
+; method signatures
 (method_signature
-  name: (_) @method
+  name: (_) @function.method
 )
 
-;; property signatures
+; property signatures
 (property_signature
-  name: (property_identifier) @method
+  name: (property_identifier) @function.method
   type: (type_annotation
     [
       (union_type

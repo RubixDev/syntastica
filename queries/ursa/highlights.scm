@@ -16,13 +16,9 @@
 
 ; Function definitions
 ;---------------------
-(named_fn
-  (identifier) @function
-)
-
 (let
   (identifier) @function
-  (lambda)
+  (fn)
 )
 
 ; Function and calls
@@ -49,11 +45,15 @@
   (null)
 ] @constant.builtin
 
-(comment) @comment
-
 (string) @string
 
 (number) @number
+
+; Comments
+;---------
+(line_comment) @comment
+
+(block_comment) @comment
 
 ; Tokens
 ;-------
@@ -89,13 +89,18 @@
 ] @punctuation.bracket
 
 [
+  "and"
   "break"
   (continue)
   "else"
+  "for"
   "fn"
   "if"
+  "in"
   "let"
   "loop"
+  "not"
+  "or"
   "return"
   "use"
 ] @keyword

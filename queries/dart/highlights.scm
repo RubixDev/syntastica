@@ -1,15 +1,15 @@
 ;; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/dart/highlights.scm
 ;; Licensed under the Apache License 2.0
+(identifier) @variable
+
 (dotted_identifier_list) @string
 
 ; Methods
 ; --------------------
-(super) @function
-
 ; TODO: add method/call_expression to grammar and
 ; distinguish method call from variable access
 (function_expression_body
-  (identifier) @function
+  (identifier) @function.call
 )
 
 ; ((identifier)(selector (argument_part)) @function)
@@ -17,23 +17,20 @@
 ; specifically identify a node as a function call
 (
   (
-    (identifier) @function
-    (#lua-match? @function "^_?[%l]")
+    (identifier) @function.call
+    (#lua-match? @function.call "^_?[%l]")
   )
   .
   (selector
     .
     (argument_part)
   )
-) @function
+) @function.call
 
 ; Annotations
 ; --------------------
 (annotation
-  name: (identifier) @attribute
-)
-
-(marker_annotation
+  "@" @attribute
   name: (identifier) @attribute
 )
 
@@ -53,13 +50,12 @@
 (escape_sequence) @string.escape
 
 [
-  "@"
   "=>"
   ".."
   "??"
   "=="
+  "!"
   "?"
-  ":"
   "&&"
   "%"
   "<"
@@ -68,6 +64,20 @@
   ">="
   "<="
   "||"
+  ">>>="
+  ">>="
+  "<<="
+  "&="
+  "|="
+  "??="
+  "%="
+  "+="
+  "-="
+  "*="
+  "/="
+  "^="
+  "~/="
+  (shift_operator)
   (multiplicative_operator)
   (increment_operator)
   (is_operator)
@@ -91,6 +101,9 @@
   ";"
   "."
   ","
+  ":"
+  "?."
+  "?"
 ] @punctuation.delimiter
 
 ; Types
@@ -108,15 +121,15 @@
 )
 
 (function_signature
-  name: (identifier) @method
+  name: (identifier) @function.method
 )
 
 (getter_signature
-  (identifier) @method
+  (identifier) @function.method
 )
 
 (setter_signature
-  name: (identifier) @method
+  name: (identifier) @function.method
 )
 
 (enum_declaration
@@ -143,6 +156,13 @@
   (type_identifier) @type.definition
 )
 
+(type_arguments
+  [
+    "<"
+    ">"
+  ] @punctuation.bracket
+)
+
 ; Variables
 ; --------------------
 ; var keyword
@@ -154,9 +174,7 @@
 )
 
 ; catch Classes or IClasses not CLASSES
-("Function"
-  @type
-)
+"Function" @type
 
 ; properties
 (unconditional_assignable_selector
@@ -167,22 +185,17 @@
   (identifier) @property
 )
 
-; assignments
-(assignment_expression
-  left: (assignable_expression) @variable
-)
-
 (this) @variable.builtin
 
 ; Parameters
 ; --------------------
 (formal_parameter
-  name: (identifier) @parameter
+  (identifier) @variable.parameter
 )
 
 (named_argument
   (label
-    (identifier) @parameter
+    (identifier) @variable.parameter
   )
 )
 
@@ -197,7 +210,7 @@
   ; (hex_floating_point_literal)
 ] @number
 
-(symbol_literal) @symbol
+(symbol_literal) @string.special.symbol
 
 (string_literal) @string
 
@@ -220,7 +233,7 @@
   "as"
   "show"
   "hide"
-] @include
+] @keyword.import
 
 ; Reserved words (cannot be used as identifiers)
 [
@@ -234,10 +247,7 @@
   (case_builtin)
   "late"
   "required"
-  "extension"
   "on"
-  "class"
-  "enum"
   "extends"
   "in"
   "is"
@@ -246,7 +256,13 @@
   "with"
 ] @keyword
 
-["return"] @keyword.return
+[
+  "class"
+  "enum"
+  "extension"
+] @keyword.type
+
+"return" @keyword.return
 
 ; Built in identifiers:
 ; alone these are marked as keywords
@@ -277,10 +293,12 @@
   (final_builtin)
   "abstract"
   "covariant"
-  "dynamic"
   "external"
   "static"
-] @type.qualifier
+  "final"
+  "base"
+  "sealed"
+] @keyword.modifier
 
 ; when used as an identifier:
 (
@@ -315,7 +333,14 @@
   "else"
   "switch"
   "default"
-] @conditional
+] @keyword.conditional
+
+(conditional_expression
+  [
+    "?"
+    ":"
+  ] @keyword.conditional.ternary
+)
 
 [
   "try"
@@ -323,14 +348,11 @@
   "catch"
   "finally"
   (break_statement)
-] @exception
+] @keyword.exception
 
 [
   "do"
   "while"
   "continue"
   "for"
-] @repeat
-
-; Error
-(ERROR) @error
+] @keyword.repeat

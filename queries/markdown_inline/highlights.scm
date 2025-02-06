@@ -1,74 +1,17 @@
 ;; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/markdown_inline/highlights.scm
 ;; Licensed under the Apache License 2.0
-[
-  (code_span)
-  (link_title)
-] @text.literal
+(code_span) @markup.raw
 
-[
-  (emphasis_delimiter)
-  (code_span_delimiter)
-] @punctuation.delimiter
+(emphasis) @markup.italic
 
-(emphasis) @text.emphasis
+(strong_emphasis) @markup.strong
 
-(strong_emphasis) @text.strong
-
-(strikethrough) @text.strike
-
-[
-  (link_destination)
-  (uri_autolink)
-] @text.uri
-
-[
-  (link_label)
-  (link_text)
-  (image_description)
-] @text.reference
+(strikethrough) @markup.strikethrough
 
 [
   (backslash_escape)
   (hard_line_break)
 ] @string.escape
-
-(image
-  "!" @punctuation.special
-)
-
-(image
-  [
-    "["
-    "]"
-    "("
-    ")"
-  ] @punctuation.bracket
-)
-
-(inline_link
-  [
-    "["
-    "]"
-    "("
-    ")"
-  ] @punctuation.bracket
-)
-
-(shortcut_link
-  [
-    "["
-    "]"
-  ] @punctuation.bracket
-)
-
-; Conceal codeblock and text style markers
-(
-  [
-    (code_span_delimiter)
-    (emphasis_delimiter)
-  ] @conceal
-  (#set! conceal "")
-)
 
 ; Conceal inline links
 (inline_link
@@ -78,8 +21,26 @@
     "("
     (link_destination)
     ")"
-  ] @conceal
-  (#set! conceal "")
+  ] @markup.link
+)
+
+[
+  (link_label)
+  (link_text)
+  (link_title)
+  (image_description)
+] @markup.link.label
+
+(
+  (inline_link
+    (link_destination) @_url
+  ) @_label
+)
+
+(
+  (image
+    (link_destination) @_url
+  ) @_label
 )
 
 ; Conceal image links
@@ -91,8 +52,7 @@
     "("
     (link_destination)
     ")"
-  ] @conceal
-  (#set! conceal "")
+  ] @markup.link
 )
 
 ; Conceal full reference links
@@ -101,8 +61,7 @@
     "["
     "]"
     (link_label)
-  ] @conceal
-  (#set! conceal "")
+  ] @markup.link
 )
 
 ; Conceal collapsed reference links
@@ -110,8 +69,7 @@
   [
     "["
     "]"
-  ] @conceal
-  (#set! conceal "")
+  ] @markup.link
 )
 
 ; Conceal shortcut links
@@ -119,6 +77,47 @@
   [
     "["
     "]"
-  ] @conceal
-  (#set! conceal "")
+  ] @markup.link
+)
+
+[
+  (link_destination)
+  (uri_autolink)
+  (email_autolink)
+] @markup.link.url
+
+(
+  (uri_autolink) @_url
+  (#offset! @_url 0 1 0 -1)
+)
+
+; Replace common HTML entities.
+(
+  (entity_reference) @character.special
+  (#eq? @character.special "&nbsp;")
+)
+
+(
+  (entity_reference) @character.special
+  (#eq? @character.special "&lt;")
+)
+
+(
+  (entity_reference) @character.special
+  (#eq? @character.special "&gt;")
+)
+
+(
+  (entity_reference) @character.special
+  (#eq? @character.special "&amp;")
+)
+
+(
+  (entity_reference) @character.special
+  (#eq? @character.special "&quot;")
+)
+
+(
+  (entity_reference) @character.special
+  (#any-of? @character.special "&ensp;" "&emsp;")
 )

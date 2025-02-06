@@ -48,6 +48,13 @@ pub fn run() -> Result<()> {
                     &toml,
                     |_, start, end| format!("{start}{crates_io}{end}"),
                 )
+            } else if let Some(old_crates_io) = &lang.parser.crates_io {
+                // no longer compatible, remove crates-io version
+                regex_replace!(
+                    r#"^(?:\s*#\s*)?(\s*crates-io\s*=\s*")[^"]*("\s*)$"#m,
+                    &toml,
+                    |_, start, end| format!("# {start}{old_crates_io}{end}"),
+                )
             } else {
                 toml
             };

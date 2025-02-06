@@ -19,18 +19,18 @@ docs = ["dep:document-features", "dep:rustc_version"]
 syntastica-core = { workspace = true, features = ["runtime-c"] }
 
 tree-sitter.workspace = true
-tree-sitter-loader = "0.20.0"
-tree-sitter-tags = "0.20.2"
+tree-sitter-loader = "0.25.2"
+tree-sitter-tags = "0.25.2"
 
-anyhow = "1.0.75"
+anyhow = "1.0.95"
 cc.workspace = true
-dirs = "5.0.1"
+dirs = "6.0.0"
 document-features = { workspace = true, optional = true }
-libloading = "0.8.0"
+libloading = "0.8.6"
 once_cell.workspace = true
-regex = "1.9.5"
+regex = "1.11.1"
 serde = { workspace = true, features = ["derive"] }
-serde_json = "1.0.107"
+serde_json = "1.0.138"
 
 [build-dependencies]
 rustc_version = { workspace = true, optional = true }

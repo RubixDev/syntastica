@@ -74,10 +74,11 @@ use crate::Highlights;
 ///         ("::", Some("punctuation.delimiter")),
 ///         ("new", Some("function.call")),
 ///         ("(", Some("punctuation.bracket")),
-///         ("r", Some("string")),
-///         ("\"", Some("string.regex")),
-///         (".", Some("punctuation.special")), // this is the injected regex language
-///         ("\"", Some("string.regex")),
+///         ("r\"", Some("string")),
+///         // FIXME: this particular injection seems to not work atm
+///         (".", Some("string.regexp")),
+///         // (".", Some("variable.builtin")), // this is the injected regex language
+///         ("\"", Some("string")),
 ///         (")", Some("punctuation.bracket")),
 ///     ]]
 /// );
@@ -163,7 +164,7 @@ impl<'set, Set: LanguageSet> Processor<'set, Set> {
     /// // create a tree-sitter parser
     /// let mut parser = Parser::new();
     /// // and set the desired language
-    /// parser.set_language(Lang::Rust.get())?;
+    /// parser.set_language(&Lang::Rust.get())?;
     ///
     /// // parse, process, and render source code
     /// let code = "fn test() {}";

@@ -45,17 +45,21 @@ default = []
 
 ## Include parsers for the most widely known supported languages.
 some = [
+    "bash",
     "c",
     "cpp",
     "css",
     "go",
+    "html",
     "java",
     "javascript",
     "json",
     "lua",
     "python",
     "rust",
-    "toml",
+    "tsx",
+    "typescript",
+    "yaml",
 ]
 
 ## Implies <span class="stab portability"><code>some</code></span>.
@@ -64,9 +68,12 @@ most = [
     "some",
     "asm",
     "c_sharp",
-    "comment",
+    "diff",
+    "haskell",
+    "jsdoc",
     "markdown",
     "markdown_inline",
+    "php",
     "regex",
     "ruby",
     "scala",
@@ -76,139 +83,171 @@ most = [
 ## Include parsers for all supported languages.
 all = [
     "most",
-    "ebnf",
     "ejs",
     "erb",
-    "hexdump",
+    "julia",
     "ocaml",
     "ocaml_interface",
-    "rush",
-    "ursa",
+    "ql",
 ]
 
 ## Meant to be enabled when building docs
 docs = ["dep:document-features", "dep:rustc_version"]
 
 asm = ["dep:tree-sitter-asm"]
+bash = ["dep:tree-sitter-bash"]
 c = ["dep:tree-sitter-c"]
 c_sharp = ["dep:tree-sitter-c-sharp"]
-comment = ["dep:tree-sitter-comment"]
+comment = []
 cpp = ["dep:tree-sitter-cpp"]
 css = ["dep:tree-sitter-css"]
-ebnf = ["dep:tree-sitter-ebnf"]
+dart = []
+diff = ["dep:tree-sitter-diff"]
+ebnf = []
 ejs = ["dep:tree-sitter-embedded-template"]
 erb = ["dep:tree-sitter-embedded-template"]
 go = ["dep:tree-sitter-go"]
-hexdump = ["dep:tree-sitter-hexdump"]
+haskell = ["dep:tree-sitter-haskell"]
+hexdump = []
+html = ["dep:tree-sitter-html"]
 java = ["dep:tree-sitter-java"]
 javascript = ["dep:tree-sitter-javascript"]
+jsdoc = ["dep:tree-sitter-jsdoc"]
 json = ["dep:tree-sitter-json"]
+json5 = []
+jsonc = []
+julia = ["dep:tree-sitter-julia"]
+llvm = []
 lua = ["dep:tree-sitter-lua"]
 markdown = ["dep:tree-sitter-md"]
 markdown_inline = ["dep:tree-sitter-md"]
 ocaml = ["dep:tree-sitter-ocaml"]
 ocaml_interface = ["dep:tree-sitter-ocaml"]
+php = ["dep:tree-sitter-php"]
 python = ["dep:tree-sitter-python"]
+ql = ["dep:tree-sitter-ql"]
 regex = ["dep:tree-sitter-regex"]
 ruby = ["dep:tree-sitter-ruby"]
-rush = ["dep:tree-sitter-rush"]
+rush = []
 rust = ["dep:tree-sitter-rust"]
 scala = ["dep:tree-sitter-scala"]
-toml = ["dep:tree-sitter-toml"]
-ursa = ["dep:tree-sitter-ursa"]
+scss = []
+toml = []
+tsx = ["dep:tree-sitter-typescript"]
+typescript = ["dep:tree-sitter-typescript"]
+ursa = []
+verilog = []
+wat = []
+yaml = ["dep:tree-sitter-yaml"]
 
 [dependencies.tree-sitter-asm]
 optional = true
-version = "=0.1.0"
+version = "=0.24.0"
+
+[dependencies.tree-sitter-bash]
+optional = true
+version = "=0.23.3"
 
 [dependencies.tree-sitter-c]
 optional = true
-version = "=0.20.4"
+version = "=0.23.4"
 
 [dependencies.tree-sitter-c-sharp]
 optional = true
-version = "=0.20.0"
-
-[dependencies.tree-sitter-comment]
-optional = true
-version = "=0.1.0"
+version = "=0.23.1"
 
 [dependencies.tree-sitter-cpp]
 optional = true
-version = "=0.20.2"
+version = "=0.23.4"
 
 [dependencies.tree-sitter-css]
 optional = true
-version = "=0.19.0"
+version = "=0.23.2"
 
-[dependencies.tree-sitter-ebnf]
+[dependencies.tree-sitter-diff]
 optional = true
 version = "=0.1.0"
 
 [dependencies.tree-sitter-embedded-template]
 optional = true
-version = "=0.20.0"
+version = "=0.23.2"
 
 [dependencies.tree-sitter-go]
 optional = true
-version = "=0.20.0"
+version = "=0.23.4"
 
-[dependencies.tree-sitter-hexdump]
+[dependencies.tree-sitter-haskell]
 optional = true
-version = "=0.1.0"
+version = "=0.23.1"
+
+[dependencies.tree-sitter-html]
+optional = true
+version = "=0.23.2"
 
 [dependencies.tree-sitter-java]
 optional = true
-version = "=0.20.0"
+version = "=0.23.5"
 
 [dependencies.tree-sitter-javascript]
 optional = true
-version = "=0.20.0"
+version = "=0.23.1"
+
+[dependencies.tree-sitter-jsdoc]
+optional = true
+version = "=0.23.2"
 
 [dependencies.tree-sitter-json]
 optional = true
-version = "=0.19.0"
+version = "=0.24.8"
+
+[dependencies.tree-sitter-julia]
+optional = true
+version = "=0.23.1"
 
 [dependencies.tree-sitter-lua]
 optional = true
-version = "=0.0.18"
+version = "=0.2.0"
 
 [dependencies.tree-sitter-md]
 optional = true
-version = "=0.1.5"
+version = "=0.3.2"
 
 [dependencies.tree-sitter-ocaml]
 optional = true
-version = "=0.20.4"
+version = "=0.24.0"
+
+[dependencies.tree-sitter-php]
+optional = true
+version = "=0.23.11"
 
 [dependencies.tree-sitter-python]
 optional = true
-version = "=0.20.3"
+version = "=0.23.6"
+
+[dependencies.tree-sitter-ql]
+optional = true
+version = "=0.23.1"
 
 [dependencies.tree-sitter-regex]
 optional = true
-version = "=0.20.0"
+version = "=0.24.3"
 
 [dependencies.tree-sitter-ruby]
 optional = true
-version = "=0.20.0"
-
-[dependencies.tree-sitter-rush]
-optional = true
-version = "=0.1.0"
+version = "=0.23.1"
 
 [dependencies.tree-sitter-rust]
 optional = true
-version = "=0.20.3"
+version = "=0.23.2"
 
 [dependencies.tree-sitter-scala]
 optional = true
-version = "=0.20.1"
+version = "=0.23.4"
 
-[dependencies.tree-sitter-toml]
+[dependencies.tree-sitter-typescript]
 optional = true
-version = "=0.20.0"
+version = "=0.23.2"
 
-[dependencies.tree-sitter-ursa]
+[dependencies.tree-sitter-yaml]
 optional = true
-version = "=0.0.3"
+version = "=0.7.0"

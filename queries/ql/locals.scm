@@ -1,62 +1,62 @@
 ;; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/ql/locals.scm
 ;; Licensed under the Apache License 2.0
 ; SCOPES
-(module) @scope
+(module) @local.scope
 
-(dataclass) @scope
+(dataclass) @local.scope
 
-(datatype) @scope
+(datatype) @local.scope
 
-;; TODO does not work
-;(classMember (body)  @scope)
+; TODO does not work
+;(classMember (body)  @local.scope)
 (memberPredicate
-  (body) @scope
+  (body) @local.scope
 )
 
 (classlessPredicate
-  (body) @scope
+  (body) @local.scope
 )
 
 (quantified
-  (conjunction) @scope
+  (conjunction) @local.scope
 )
 
-(select) @scope
+(select) @local.scope
 
 ; DEFINITIONS
 ; module
 (module
-  name: (moduleName) @definition.namespace
+  name: (moduleName) @local.definition.namespace
 )
 
 ; classes
 (dataclass
-  name: (className) @definition.type
+  name: (className) @local.definition.type
 )
 
 (datatype
-  name: (className) @definition.type
+  name: (className) @local.definition.type
 )
 
 ; predicates
 (charpred
-  (className) @definition.method
+  (className) @local.definition.method
 )
 
 (memberPredicate
-  name: (predicateName) @definition.method
+  name: (predicateName) @local.definition.method
 )
 
 (classlessPredicate
-  name: (predicateName) @definition.function
+  name: (predicateName) @local.definition.function
 )
 
 ; variables
 (varDecl
   (varName
-    (simpleId) @definition.var
+    (simpleId) @local.definition.var
   )
 )
 
 ; REFERENCES
-(simpleId) @reference
+(simpleId) @local.reference

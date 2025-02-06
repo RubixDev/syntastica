@@ -1,15 +1,15 @@
 ;; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/ebnf/highlights.scm
 ;; Licensed under the Apache License 2.0
-;;;; Simple tokens ;;;;
-(terminal) @string.grammar
+; Simple tokens ;;;;
+(terminal) @string
 
-(special_sequence) @string.special.grammar
+(special_sequence) @string.special
 
 (integer) @number
 
 (comment) @comment
 
-;;;; Identifiers ;;;;
+; Identifiers ;;;;
 ; Allow different highlighting for specific casings
 (
   (identifier) @type
@@ -17,8 +17,8 @@
 )
 
 (
-  (identifier) @symbol
-  (#lua-match? @symbol "^%l")
+  (identifier) @string.special.symbol
+  (#lua-match? @string.special.symbol "^%l")
 )
 
 (
@@ -26,7 +26,7 @@
   (#lua-match? @constant "^%u[%u%d_]+$")
 )
 
-;;; Punctuation ;;;;
+; Punctuation ;;;;
 [
   ";"
   ","

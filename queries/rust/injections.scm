@@ -1,5 +1,46 @@
-;; Forked from https://github.com/helix-editor/helix/blob/master/runtime/queries/rust/injections.scm
-;; Licensed under the Mozilla Public License 2.0
+;; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/rust/injections.scm
+;; Licensed under the Apache License 2.0
+(macro_invocation
+  macro: [
+    (scoped_identifier
+      name: (_) @_macro_name
+    )
+    (identifier) @_macro_name
+  ]
+  (token_tree) @injection.content
+  (#not-eq? @_macro_name "slint")
+  (#set! injection.language "rust")
+  (#set! injection.include-children)
+)
+
+(macro_invocation
+  macro: [
+    (scoped_identifier
+      name: (_) @_macro_name
+    )
+    (identifier) @_macro_name
+  ]
+  (token_tree) @injection.content
+  (#eq? @_macro_name "slint")
+  (#offset! @injection.content 0 1 0 -1)
+  (#set! injection.language "slint")
+  (#set! injection.include-children)
+)
+
+(macro_definition
+  (macro_rule
+    left: (token_tree_pattern) @injection.content
+    (#set! injection.language "rust")
+  )
+)
+
+(macro_definition
+  (macro_rule
+    right: (token_tree) @injection.content
+    (#set! injection.language "rust")
+  )
+)
+
 (
   [
     (line_comment)
@@ -10,29 +51,23 @@
 
 (
   (macro_invocation
+    macro: (identifier) @injection.language
     (token_tree) @injection.content
   )
-  (#set! injection.language "rust")
-  (#set! injection.include-children)
-)
-
-(
-  (macro_rule
-    (token_tree) @injection.content
-  )
-  (#set! injection.language "rust")
-  (#set! injection.include-children)
+  (#any-of? @injection.language "html" "json")
 )
 
 (call_expression
   function: (scoped_identifier
     path: (identifier) @_regex
-    (#eq? @_regex "Regex")
+    (#any-of? @_regex "Regex" "ByteRegexBuilder")
     name: (identifier) @_new
     (#eq? @_new "new")
   )
   arguments: (arguments
-    (raw_string_literal) @injection.content
+    (raw_string_literal
+      (string_content) @injection.content
+    )
   )
   (#set! injection.language "regex")
 )
@@ -41,16 +76,61 @@
   function: (scoped_identifier
     path: (scoped_identifier
       (identifier) @_regex
-      (#eq? @_regex "Regex")
+      (#any-of? @_regex "Regex" "ByteRegexBuilder")
       .
     )
     name: (identifier) @_new
     (#eq? @_new "new")
   )
   arguments: (arguments
-    (raw_string_literal) @injection.content
+    (raw_string_literal
+      (string_content) @injection.content
+    )
   )
   (#set! injection.language "regex")
+)
+
+(call_expression
+  function: (scoped_identifier
+    path: (identifier) @_regex
+    (#any-of? @_regex "RegexSet" "RegexSetBuilder")
+    name: (identifier) @_new
+    (#eq? @_new "new")
+  )
+  arguments: (arguments
+    (array_expression
+      (raw_string_literal
+        (string_content) @injection.content
+      )
+    )
+  )
+  (#set! injection.language "regex")
+)
+
+(call_expression
+  function: (scoped_identifier
+    path: (scoped_identifier
+      (identifier) @_regex
+      (#any-of? @_regex "RegexSet" "RegexSetBuilder")
+      .
+    )
+    name: (identifier) @_new
+    (#eq? @_new "new")
+  )
+  arguments: (arguments
+    (array_expression
+      (raw_string_literal
+        (string_content) @injection.content
+      )
+    )
+  )
+  (#set! injection.language "regex")
+)
+
+(
+  (block_comment) @injection.content
+  (#match? @injection.content "/\\*!([a-zA-Z]+:)?re2c")
+  (#set! injection.language "re2c")
 )
 
 ; Highlight SQL in `sqlx::query!()`, `sqlx::query_scalar!()`, and `sqlx::query_scalar_unchecked!()`
@@ -107,7 +187,9 @@
       (block_comment)
     ]*
     .
-    (raw_string_literal) @injection.content
+    (raw_string_literal
+      (string_content) @injection.content
+    )
   )
   (#set! injection.language "regex")
 )

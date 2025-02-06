@@ -4,8 +4,8 @@
   (stream)
   (document)
   (block_node)
-] @scope
+] @local.scope
 
-(anchor_name) @definition
+(anchor_name) @local.definition
 
-(alias_name) @reference
+(alias_name) @local.reference

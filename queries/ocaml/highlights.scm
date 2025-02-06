@@ -5,7 +5,7 @@
 [
   (module_name)
   (module_type_name)
-] @namespace
+] @module
 
 ; Types
 ;------
@@ -50,7 +50,12 @@
   (type_variable)
 ] @variable
 
-(value_pattern) @parameter
+(value_pattern) @variable.parameter
+
+(
+  (value_pattern) @character.special
+  (#eq? @character.special "_")
+)
 
 ; Functions
 ;----------
@@ -75,13 +80,13 @@
   (value_name) @function
 )
 
-(method_name) @method
+(method_name) @function.method
 
 ; Application
 ;------------
 (infix_expression
   left: (value_path
-    (value_name) @function
+    (value_name) @function.call
   )
   operator: (concat_operator) @_operator
   (#eq? @_operator "@@")
@@ -90,14 +95,14 @@
 (infix_expression
   operator: (rel_operator) @_operator
   right: (value_path
-    (value_name) @function
+    (value_name) @function.call
   )
   (#eq? @_operator "|>")
 )
 
 (application_expression
   function: (value_path
-    (value_name) @function
+    (value_name) @function.call
   )
 )
 
@@ -106,20 +111,23 @@
   (#any-of? @function.builtin "raise" "raise_notrace" "failwith" "invalid_arg")
 )
 
-; Properties
-;-----------
+; Fields
+;-------
 [
-  (label_name)
   (field_name)
   (instance_variable_name)
-] @property
+] @variable.member
+
+; Labels
+; ------
+(label_name) @label
 
 ; Constants
 ;----------
 ; Don't let normal parens take priority over this
 (
   (unit) @constant.builtin
-  (#set! "priority" 105)
+  (#set! priority 105)
 )
 
 (boolean) @boolean
@@ -152,7 +160,6 @@
   "as"
   "assert"
   "begin"
-  "class"
   "constraint"
   "end"
   "external"
@@ -164,15 +171,19 @@
   "method"
   "module"
   "new"
-  "object"
   "of"
   "sig"
-  "struct"
-  "type"
   "val"
   "when"
   "with"
 ] @keyword
+
+[
+  "object"
+  "class"
+  "struct"
+  "type"
+] @keyword.type
 
 [
   "lazy"
@@ -181,7 +192,7 @@
   "rec"
   "private"
   "virtual"
-] @type.qualifier
+] @keyword.modifier
 
 [
   "fun"
@@ -193,17 +204,17 @@
   "if"
   "then"
   "else"
-] @conditional
+] @keyword.conditional
 
 [
   "exception"
   "try"
-] @exception
+] @keyword.exception
 
 [
   "include"
   "open"
-] @include
+] @keyword.import
 
 [
   "for"
@@ -212,7 +223,7 @@
   "while"
   "do"
   "done"
-] @repeat
+] @keyword.repeat
 
 ; Punctuation
 ;------------
@@ -309,6 +320,10 @@
   ".."
 ] @punctuation.delimiter
 
+(range_pattern
+  ".." @character.special
+)
+
 ; Operators
 ;----------
 [
@@ -349,7 +364,7 @@
 
 ; Attributes
 ;-----------
-(attribute_id) @property
+(attribute_id) @attribute
 
 ; Comments
 ;---------
@@ -357,7 +372,6 @@
   (comment)
   (line_number_directive)
   (directive)
-  (shebang)
 ] @comment
 
-(ERROR) @error
+(shebang) @keyword.directive

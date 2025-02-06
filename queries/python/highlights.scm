@@ -6,7 +6,7 @@
 ; Reset highlighting in f-string interpolations
 (interpolation) @none
 
-;; Identifier naming conventions
+; Identifier naming conventions
 (
   (identifier) @type
   (#lua-match? @type "^[A-Z].*[a-z]")
@@ -26,7 +26,7 @@
   (identifier) @constant.builtin
   (#any-of?
     @constant.builtin
-    ;; https://docs.python.org/3/library/constants.html
+    ; https://docs.python.org/3/library/constants.html
     "NotImplemented"
     "Ellipsis"
     "quit"
@@ -37,11 +37,14 @@
   )
 )
 
+"_" @character.special
+
+; match wildcard
 (
   (attribute
-    attribute: (identifier) @field
+    attribute: (identifier) @variable.member
   )
-  (#lua-match? @field "^[%l_].*$")
+  (#lua-match? @variable.member "^[%l_].*$")
 )
 
 (
@@ -71,7 +74,7 @@
 
 (call
   function: (attribute
-    attribute: (identifier) @method.call
+    attribute: (identifier) @function.method.call
   )
 )
 
@@ -91,12 +94,12 @@
   (#lua-match? @constructor "^%u")
 )
 
-;; Decorators
+; Decorators
 (
   (decorator
     "@" @attribute
   )
-  (#set! "priority" 101)
+  (#set! priority 101)
 )
 
 (decorator
@@ -127,10 +130,10 @@
   (decorator
     (identifier) @attribute.builtin
   )
-  (#any-of? @attribute.builtin "classmethod" "property")
+  (#any-of? @attribute.builtin "classmethod" "property" "staticmethod")
 )
 
-;; Builtin functions
+; Builtin functions
 (
   (call
     function: (identifier) @function.builtin
@@ -209,7 +212,7 @@
   )
 )
 
-;; Function definitions
+; Function definitions
 (function_definition
   name: (identifier) @function
 )
@@ -236,56 +239,88 @@
   (#eq? @_isinstance "isinstance")
 )
 
-;; Normal parameters
+; Normal parameters
 (parameters
-  (identifier) @parameter
+  (identifier) @variable.parameter
 )
 
-;; Lambda parameters
+; Lambda parameters
 (lambda_parameters
-  (identifier) @parameter
+  (identifier) @variable.parameter
 )
 
 (lambda_parameters
   (tuple_pattern
-    (identifier) @parameter
+    (identifier) @variable.parameter
   )
 )
 
 ; Default parameters
 (keyword_argument
-  name: (identifier) @parameter
+  name: (identifier) @variable.parameter
 )
 
 ; Naming parameters on call-site
 (default_parameter
-  name: (identifier) @parameter
+  name: (identifier) @variable.parameter
 )
 
 (typed_parameter
-  (identifier) @parameter
+  (identifier) @variable.parameter
 )
 
 (typed_default_parameter
-  (identifier) @parameter
+  name: (identifier) @variable.parameter
 )
 
 ; Variadic parameters *args, **kwargs
 (parameters
   (list_splat_pattern
     ; *args
-    (identifier) @parameter
+    (identifier) @variable.parameter
   )
 )
 
 (parameters
   (dictionary_splat_pattern
     ; **kwargs
-    (identifier) @parameter
+    (identifier) @variable.parameter
   )
 )
 
-;; Literals
+; Typed variadic parameters
+(parameters
+  (typed_parameter
+    (list_splat_pattern
+      ; *args: type
+      (identifier) @variable.parameter
+    )
+  )
+)
+
+(parameters
+  (typed_parameter
+    (dictionary_splat_pattern
+      ; *kwargs: type
+      (identifier) @variable.parameter
+    )
+  )
+)
+
+; Lambda parameters
+(lambda_parameters
+  (list_splat_pattern
+    (identifier) @variable.parameter
+  )
+)
+
+(lambda_parameters
+  (dictionary_splat_pattern
+    (identifier) @variable.parameter
+  )
+)
+
+; Literals
 (none) @constant.builtin
 
 [
@@ -305,24 +340,29 @@
 
 (integer) @number
 
-(float) @float
+(float) @number.float
 
 (comment) @comment
 
 (
   (module
     .
-    (comment) @preproc
+    (comment) @keyword.directive
   )
-  (#lua-match? @preproc "^#!/")
+  (#lua-match? @keyword.directive "^#!/")
 )
 
 (string) @string
 
-(escape_sequence) @string.escape
+[
+  (escape_sequence)
+  (escape_interpolation)
+] @string.escape
 
 ; doc-strings
 (module
+  .
+  (comment)*
   .
   (expression_statement
     (string) @string.documentation
@@ -395,9 +435,7 @@
   "is"
   "not"
   "or"
-  ; crates.io skip
   "is not"
-  ; crates.io skip
   "not in"
   "del"
 ] @keyword.operator
@@ -409,7 +447,6 @@
 
 [
   "assert"
-  "class"
   "exec"
   "global"
   "nonlocal"
@@ -418,6 +455,11 @@
   "with"
   "as"
 ] @keyword
+
+[
+  "type"
+  "class"
+] @keyword.type
 
 [
   "async"
@@ -434,18 +476,51 @@
 )
 
 (future_import_statement
-  "from" @include
-  "__future__" @constant.builtin
+  "from" @keyword.import
+  "__future__" @module.builtin
 )
 
 (import_from_statement
-  "from" @include
+  "from" @keyword.import
 )
 
-"import" @include
+"import" @keyword.import
 
 (aliased_import
-  "as" @include
+  "as" @keyword.import
+)
+
+(wildcard_import
+  "*" @character.special
+)
+
+(import_statement
+  name: (dotted_name
+    (identifier) @module
+  )
+)
+
+(import_statement
+  name: (aliased_import
+    name: (dotted_name
+      (identifier) @module
+    )
+    alias: (identifier) @module
+  )
+)
+
+(import_from_statement
+  module_name: (dotted_name
+    (identifier) @module
+  )
+)
+
+(import_from_statement
+  module_name: (relative_import
+    (dotted_name
+      (identifier) @module
+    )
+  )
 )
 
 [
@@ -454,32 +529,30 @@
   "else"
   "match"
   "case"
-] @conditional
+] @keyword.conditional
 
 [
   "for"
   "while"
   "break"
   "continue"
-] @repeat
+] @keyword.repeat
 
 [
   "try"
-  ; crates.io skip
   "except"
-  ; crates.io skip
   "except*"
   "raise"
   "finally"
-] @exception
+] @keyword.exception
 
 (raise_statement
-  "from" @exception
+  "from" @keyword.exception
 )
 
 (try_statement
   (else_clause
-    "else" @exception
+    "else" @keyword.exception
   )
 )
 
@@ -507,7 +580,7 @@
   (ellipsis)
 ] @punctuation.delimiter
 
-;; Class definitions
+; Class definitions
 (class_definition
   name: (identifier) @type
 )
@@ -515,7 +588,7 @@
 (class_definition
   body: (block
     (function_definition
-      name: (identifier) @method
+      name: (identifier) @function.method
     )
   )
 )
@@ -531,12 +604,12 @@
     body: (block
       (expression_statement
         (assignment
-          left: (identifier) @field
+          left: (identifier) @variable.member
         )
       )
     )
   )
-  (#lua-match? @field "^%l.*$")
+  (#lua-match? @variable.member "^[%l_].*$")
 )
 
 (
@@ -545,13 +618,13 @@
       (expression_statement
         (assignment
           left: (_
-            (identifier) @field
+            (identifier) @variable.member
           )
         )
       )
     )
   )
-  (#lua-match? @field "^%l.*$")
+  (#lua-match? @variable.member "^[%l_].*$")
 )
 
 (
@@ -569,7 +642,7 @@
   (identifier) @type.builtin
   (#any-of?
     @type.builtin
-    ;; https://docs.python.org/3/library/exceptions.html
+    ; https://docs.python.org/3/library/exceptions.html
     "BaseException"
     "Exception"
     "ArithmeticError"
@@ -637,7 +710,7 @@
     "UnicodeWarning"
     "BytesWarning"
     "ResourceWarning"
-    ;; https://docs.python.org/3/library/stdtypes.html
+    ; https://docs.python.org/3/library/stdtypes.html
     "bool"
     "int"
     "float"
@@ -657,5 +730,16 @@
   )
 )
 
-;; Error
-(ERROR) @error
+; Regex from the `re` module
+(call
+  function: (attribute
+    object: (identifier) @_re
+  )
+  arguments: (argument_list
+    .
+    (string
+      (string_content) @string.regexp
+    )
+  )
+  (#eq? @_re "re")
+)

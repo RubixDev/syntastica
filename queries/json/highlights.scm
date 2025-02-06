@@ -10,7 +10,7 @@
 (number) @number
 
 (pair
-  key: (string) @label
+  key: (string) @property
 )
 
 (pair
@@ -20,8 +20,6 @@
 (array
   (string) @string
 )
-
-(ERROR) @error
 
 [
   ","
@@ -35,17 +33,4 @@
   "}"
 ] @punctuation.bracket
 
-(
-  ("\""
-    @conceal
-  )
-  (#set! conceal "")
-)
-
 (escape_sequence) @string.escape
-
-(
-  (escape_sequence) @conceal
-  (#eq? @conceal "\\\"")
-  (#set! conceal "\"")
-)

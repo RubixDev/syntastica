@@ -2,7 +2,10 @@
 ;; Licensed under the MIT license
 ; General
 (label
-  (ident) @label
+  [
+    (ident)
+    (word)
+  ] @label
 )
 
 (reg) @variable.builtin
@@ -12,14 +15,23 @@
 )
 
 (instruction
-  kind: (_) @function.call
+  kind: (_) @function.builtin
+)
+
+(const
+  name: (word) @constant
 )
 
 ; Comments
-(line_comment) @comment
+[
+  (line_comment)
+  (block_comment)
+] @comment
 
 ; Literals
 (int) @number
+
+(float) @number.float
 
 (string) @string
 
@@ -31,6 +43,8 @@
   "qword"
   "ptr"
   "rel"
+  "label"
+  "const"
 ] @keyword
 
 ; Operators & Punctuation
@@ -38,6 +52,11 @@
   "+"
   "-"
   "*"
+  "/"
+  "%"
+  "|"
+  "^"
+  "&"
 ] @operator
 
 [

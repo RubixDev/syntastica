@@ -5,8 +5,9 @@
   (start_tag
     (tag_name) @_py_script
   )
-  (text) @python
+  (text) @injection.content
   (#any-of? @_py_script "py-script" "py-repl")
+  (#set! injection.language "python")
 )
 
 (script_element
@@ -18,16 +19,18 @@
       )
     )
   )
-  (raw_text) @python
+  (raw_text) @injection.content
   (#eq? @_attr "type")
   ; not adding type="py" here as it's handled by html_tags
   (#any-of? @_type "pyscript" "py-script")
+  (#set! injection.language "python")
 )
 
 (element
   (start_tag
     (tag_name) @_py_config
   )
-  (text) @toml
+  (text) @injection.content
   (#eq? @_py_config "py-config")
+  (#set! injection.language "toml")
 )

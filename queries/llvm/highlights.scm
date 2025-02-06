@@ -20,7 +20,7 @@
   (local_var) @type.definition
 )
 
-(argument) @parameter
+(argument) @variable.parameter
 
 (_
   inst_name:
@@ -110,7 +110,7 @@
   (dso_local)
   (linkage_aux)
   (visibility)
-] @type.qualifier
+] @keyword.modifier
 
 [
   "thread_local"
@@ -119,7 +119,7 @@
   "localexec"
   (unnamed_addr)
   (dll_storage_class)
-] @storageclass
+] @keyword.modifier
 
 (attribute_name) @attribute
 
@@ -146,7 +146,7 @@
   "ret" @keyword.return
 )
 
-(float) @float
+(float) @number.float
 
 [
   (struct_value)
@@ -191,5 +191,3 @@
   "none"
   "zeroinitializer"
 ] @constant.builtin
-
-(ERROR) @error

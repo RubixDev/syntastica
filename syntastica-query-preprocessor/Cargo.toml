@@ -9,6 +9,6 @@ repository.workspace = true
 description = "The tree-sitter query pre-processor used by syntastica"
 
 [dependencies]
-lazy-regex = "3.0.2"
+lazy-regex = "3.4.1"
 lua-pattern = { version = "0.1.2", features = ["to-regex"] }
 rsexpr = { version = "0.2.5", features = ["comments"] }

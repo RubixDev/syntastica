@@ -3,17 +3,15 @@
 (comment_directive) @comment
 
 [
+  "<%#"
   "<%"
   "<%_"
-  ; crates.io skip
   "<%|"
   "<%="
-  ; crates.io skip
   "<%=="
-  ; crates.io skip
   "<%|="
-  ; crates.io skip
   "<%|=="
+  "<%_"
   "<%-"
   "<%#"
   "<%graphql"

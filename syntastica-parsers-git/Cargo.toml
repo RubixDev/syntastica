@@ -80,7 +80,6 @@ most = [
     "jsdoc",
     "json5",
     "jsonc",
-    "latex",
     "markdown",
     "markdown_inline",
     "php",
@@ -144,7 +143,6 @@ json = []
 json5 = []
 jsonc = []
 julia = []
-latex = []
 llvm = []
 lua = []
 markdown = []

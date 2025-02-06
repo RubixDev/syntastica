@@ -4,56 +4,44 @@
 ; Variables
 (identifier) @variable
 
+(underscore_pattern) @character.special
+
 ; Methods
 (method_declaration
-  name: (identifier) @method
+  name: (identifier) @function.method
 )
 
 (method_invocation
-  name: (identifier) @method.call
+  name: (identifier) @function.method.call
 )
 
 (super) @function.builtin
 
 ; Parameters
 (formal_parameter
-  name: (identifier) @parameter
-)
-
-(catch_formal_parameter
-  name: (identifier) @parameter
+  name: (identifier) @variable.parameter
 )
 
 (spread_parameter
   (variable_declarator
-    name: (identifier) @parameter
+    name: (identifier) @variable.parameter
   )
 )
 
 ; int... foo
-;; Lambda parameter
+; Lambda parameter
 (inferred_parameters
-  (identifier) @parameter
+  (identifier) @variable.parameter
 )
 
 ; (x,y) -> ...
 (lambda_expression
-  parameters: (identifier) @parameter
+  parameters: (identifier) @variable.parameter
 )
 
 ; x -> ...
-; Annotations
-(annotation
-  name: (identifier) @attribute
-)
-
-(marker_annotation
-  name: (identifier) @attribute
-)
-
 ; Operators
 [
-  "@"
   "+"
   ":"
   "++"
@@ -116,7 +104,16 @@
   name: (identifier) @type
 )
 
+(compact_constructor_declaration
+  name: (identifier) @type
+)
+
 (type_identifier) @type
+
+(
+  (type_identifier) @type.builtin
+  (#eq? @type.builtin "var")
+)
 
 (
   (method_invocation
@@ -140,22 +137,20 @@
   (#lua-match? @type "^[A-Z]")
 )
 
-(
-  (scoped_identifier
-    scope: (identifier) @type
-  )
+(scoped_identifier
+  (identifier) @type
   (#lua-match? @type "^[A-Z]")
 )
 
 ; Fields
 (field_declaration
   declarator: (variable_declarator
-    name: (identifier) @field
+    name: (identifier) @variable.member
   )
 )
 
 (field_access
-  field: (identifier) @field
+  field: (identifier) @variable.member
 )
 
 [
@@ -173,10 +168,20 @@
 
 (this) @variable.builtin
 
+; Annotations
+(annotation
+  "@" @attribute
+  name: (identifier) @attribute
+)
+
+(marker_annotation
+  "@" @attribute
+  name: (identifier) @attribute
+)
+
 ; Literals
 (string_literal) @string
 
-; crates.io skip
 (escape_sequence) @string.escape
 
 (character_literal) @character
@@ -191,7 +196,7 @@
 [
   (decimal_floating_point_literal)
   (hex_floating_point_literal)
-] @float
+] @number.float
 
 [
   (true)
@@ -203,19 +208,22 @@
 ; Keywords
 [
   "assert"
-  "class"
-  "record"
   "default"
-  "enum"
   "extends"
   "implements"
   "instanceof"
-  "interface"
   "@interface"
   "permits"
   "to"
   "with"
 ] @keyword
+
+[
+  "record"
+  "class"
+  "enum"
+  "interface"
+] @keyword.type
 
 (synchronized_statement
   "synchronized" @keyword
@@ -234,23 +242,23 @@
   "static"
   "strictfp"
   "transitive"
-] @type.qualifier
+] @keyword.modifier
 
 (modifiers
-  "synchronized" @type.qualifier
+  "synchronized" @keyword.modifier
 )
 
 [
   "transient"
   "volatile"
-] @storageclass
+] @keyword.modifier
 
 [
   "return"
   "yield"
 ] @keyword.return
 
-["new"] @keyword.operator
+"new" @keyword.operator
 
 ; Conditionals
 [
@@ -258,13 +266,14 @@
   "else"
   "switch"
   "case"
-] @conditional
+  "when"
+] @keyword.conditional
 
 (ternary_expression
   [
     "?"
     ":"
-  ] @conditional.ternary
+  ] @keyword.conditional.ternary
 )
 
 ; Loops
@@ -274,7 +283,7 @@
   "do"
   "continue"
   "break"
-] @repeat
+] @keyword.repeat
 
 ; Includes
 [
@@ -286,7 +295,13 @@
   "provides"
   "requires"
   "uses"
-] @include
+] @keyword.import
+
+(import_declaration
+  (asterisk
+    "*" @character.special
+  )
+)
 
 ; Punctuation
 [
@@ -325,6 +340,13 @@
   ] @punctuation.bracket
 )
 
+(string_interpolation
+  [
+    "\\{"
+    "}"
+  ] @punctuation.special
+)
+
 ; Exceptions
 [
   "throw"
@@ -332,7 +354,7 @@
   "finally"
   "try"
   "catch"
-] @exception
+] @keyword.exception
 
 ; Labels
 (labeled_statement

@@ -25,13 +25,13 @@
   name: (identifier) @type
 )
 
-;; variables
+; variables
 (class_parameter
-  name: (identifier) @parameter
+  name: (identifier) @variable.parameter
 )
 
 (self_type
-  (identifier) @parameter
+  (identifier) @variable.parameter
 )
 
 (interpolation
@@ -42,14 +42,14 @@
   (block) @none
 )
 
-;; types
+; types
 (type_definition
   name: (type_identifier) @type.definition
 )
 
 (type_identifier) @type
 
-;; val/var definitions/declarations
+; val/var definitions/declarations
 (val_definition
   pattern: (identifier) @variable
 )
@@ -68,22 +68,20 @@
 
 ; method definition
 (function_declaration
-  name: (identifier) @method
+  name: (identifier) @function.method
 )
 
 (function_definition
-  name: (identifier) @method
+  name: (identifier) @function.method
 )
 
 ; imports/exports
 (import_declaration
-  path: (identifier) @namespace
+  path: (identifier) @module
 )
 
-(
-  (stable_identifier
-    (identifier) @namespace
-  )
+(stable_identifier
+  (identifier) @module
 )
 
 (
@@ -101,13 +99,11 @@
 )
 
 (export_declaration
-  path: (identifier) @namespace
+  path: (identifier) @module
 )
 
-(
-  (stable_identifier
-    (identifier) @namespace
-  )
+(stable_identifier
+  (identifier) @module
 )
 
 (
@@ -142,7 +138,7 @@
 
 (call_expression
   function: (field_expression
-    field: (identifier) @method.call
+    field: (identifier) @function.method.call
   )
 )
 
@@ -167,16 +163,20 @@
 )
 
 (parameter
-  name: (identifier) @parameter
+  name: (identifier) @variable.parameter
 )
 
 (binding
-  name: (identifier) @parameter
+  name: (identifier) @variable.parameter
+)
+
+(lambda_expression
+  parameters: (identifier) @variable.parameter
 )
 
 ; expressions
 (field_expression
-  field: (identifier) @property
+  field: (identifier) @variable.member
 )
 
 (field_expression
@@ -205,42 +205,37 @@
 
 (integer_literal) @number
 
-(floating_point_literal) @float
+(floating_point_literal) @number.float
 
 [
-  (symbol_literal)
   (string)
-  (character_literal)
   (interpolated_string_expression)
 ] @string
+
+(character_literal) @character
 
 (interpolation
   "$" @punctuation.special
 )
 
-;; keywords
-(opaque_modifier) @type.qualifier
+; keywords
+(opaque_modifier) @keyword.modifier
 
 (infix_modifier) @keyword
 
-(transparent_modifier) @type.qualifier
+(transparent_modifier) @keyword.modifier
 
-(open_modifier) @type.qualifier
+(open_modifier) @keyword.modifier
 
 [
   "case"
-  "class"
-  "enum"
   "extends"
   "derives"
   "finally"
-  ;; `forSome` existential types not implemented yet
-  ;; `macro` not implemented yet
+  ; `forSome` existential types not implemented yet
+  ; `macro` not implemented yet
   "object"
   "override"
-  "package"
-  "trait"
-  "type"
   "val"
   "var"
   "with"
@@ -253,23 +248,39 @@
 ] @keyword
 
 [
+  "enum"
+  "class"
+  "trait"
+  "type"
+] @keyword.type
+
+[
   "abstract"
   "final"
   "lazy"
   "sealed"
   "private"
   "protected"
-] @type.qualifier
+] @keyword.modifier
 
-(inline_modifier) @storageclass
+(inline_modifier) @keyword.modifier
 
 (null_literal) @constant.builtin
 
-(wildcard) @parameter
+(wildcard
+  "_"
+) @character.special
+
+(namespace_wildcard
+  [
+    "*"
+    "_"
+  ] @character.special
+)
 
 (annotation) @attribute
 
-;; special keywords
+; special keywords
 "new" @keyword.operator
 
 [
@@ -277,7 +288,7 @@
   "if"
   "match"
   "then"
-] @conditional
+] @keyword.conditional
 
 [
   "("
@@ -291,6 +302,7 @@
 [
   "."
   ","
+  ":"
 ] @punctuation.delimiter
 
 [
@@ -298,12 +310,15 @@
   "for"
   "while"
   "yield"
-] @repeat
+] @keyword.repeat
 
 "def" @keyword.function
 
 [
   "=>"
+  "?=>"
+  "="
+  "!"
   "<-"
   "@"
 ] @operator
@@ -311,13 +326,14 @@
 [
   "import"
   "export"
-] @include
+  "package"
+] @keyword.import
 
 [
   "try"
   "catch"
   "throw"
-] @exception
+] @keyword.exception
 
 "return" @keyword.return
 
@@ -331,10 +347,16 @@
   (#lua-match? @comment.documentation "^/[*][*][^*].*[*]/$")
 )
 
-;; `case` is a conditional keyword in case_block
+; `case` is a conditional keyword in case_block
 (case_block
   (case_clause
-    ("case") @conditional
+    "case" @keyword.conditional
+  )
+)
+
+(case_block
+  (case_clause
+    "=>" @punctuation.delimiter
   )
 )
 
@@ -355,7 +377,7 @@
   (#lua-match? @function.builtin "^super$")
 )
 
-;; Scala CLI using directives
-(using_directive_key) @parameter
+; Scala CLI using directives
+(using_directive_key) @variable.parameter
 
 (using_directive_value) @string

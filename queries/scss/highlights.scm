@@ -16,7 +16,7 @@
 
 "@return" @keyword.return
 
-"@include" @include
+"@include" @keyword.import
 
 [
   "@while"
@@ -25,7 +25,7 @@
   "from"
   "through"
   "in"
-] @repeat
+] @keyword.repeat
 
 (single_line_comment) @comment
 
@@ -42,7 +42,7 @@
 
 (mixin_statement
   (parameters
-    (parameter) @parameter
+    (parameter) @variable.parameter
   )
 )
 
@@ -52,7 +52,7 @@
 
 (function_statement
   (parameters
-    (parameter) @parameter
+    (parameter) @variable.parameter
   )
 )
 
@@ -65,31 +65,31 @@
 (variable_name) @variable
 
 (each_statement
-  (key) @parameter
+  (key) @variable.parameter
 )
 
 (each_statement
-  (value) @parameter
+  (value) @variable.parameter
 )
 
 (each_statement
-  (variable_value) @parameter
+  (variable_value) @variable.parameter
 )
 
 (for_statement
-  (variable) @parameter
+  (variable) @variable.parameter
 )
 
 (for_statement
   (_
-    (variable_value) @parameter
+    (variable_value) @variable.parameter
   )
 )
 
-(argument) @parameter
+(argument) @variable.parameter
 
 (arguments
-  (variable_value) @parameter
+  (variable_value) @variable.parameter
 )
 
 [

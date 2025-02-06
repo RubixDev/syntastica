@@ -10,7 +10,7 @@
 
 (
   (block_scalar) @string
-  (#set! "priority" 99)
+  (#set! priority 99)
 )
 
 (string_scalar) @string
@@ -23,33 +23,32 @@
 
 (comment) @comment
 
-(anchor_name) @type
-
-(alias_name) @type
+[
+  (anchor_name)
+  (alias_name)
+] @label
 
 (tag) @type
-
-(ERROR) @error
 
 [
   (yaml_directive)
   (tag_directive)
   (reserved_directive)
-] @preproc
+] @keyword.directive
 
 (block_mapping_pair
   key: (flow_node
     [
       (double_quote_scalar)
       (single_quote_scalar)
-    ] @field
+    ] @property
   )
 )
 
 (block_mapping_pair
   key: (flow_node
     (plain_scalar
-      (string_scalar) @field
+      (string_scalar) @property
     )
   )
 )
@@ -60,7 +59,7 @@
       [
         (double_quote_scalar)
         (single_quote_scalar)
-      ] @field
+      ] @property
     )
   )
 )
@@ -69,7 +68,7 @@
   (_
     key: (flow_node
       (plain_scalar
-        (string_scalar) @field
+        (string_scalar) @property
       )
     )
   )

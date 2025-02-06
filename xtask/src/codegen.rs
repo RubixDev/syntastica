@@ -148,7 +148,7 @@ fn parsers_toml_feature(group: Group, collection: ParserCollection) -> String {
         feature_str += &format!("    \"{group}\",\n");
     }
     for lang in crate::LANGUAGE_CONFIG.languages.iter().filter(|lang| {
-        (collection == ParserCollection::Git || lang.parser.rust_func.is_some())
+        (collection == ParserCollection::Git || lang.parser.rust_const.is_some())
             && lang.group == group
             && (collection != ParserCollection::Dep || lang.parser.crates_io.is_some())
     }) {
@@ -161,22 +161,13 @@ fn parsers_toml_feature(group: Group, collection: ParserCollection) -> String {
 
 fn parsers_toml_lang_features(collection: ParserCollection) -> String {
     let mut out = String::new();
-    for lang in crate::LANGUAGE_CONFIG
-        .languages
-        .iter()
-        .filter(|lang| match collection {
-            ParserCollection::Git => true,
-            ParserCollection::GitDep => {
-                lang.parser.rust_func.is_some() && lang.parser.rust_func.is_some()
-            }
-            ParserCollection::Dep => {
-                lang.parser.rust_func.is_some() && lang.parser.crates_io.is_some()
-            }
-        })
-    {
+    for lang in &crate::LANGUAGE_CONFIG.languages {
         out += &lang.name;
         out += " = [";
-        if collection != ParserCollection::Git {
+        if lang.parser.rust_const.is_some()
+            && (collection == ParserCollection::GitDep
+                || (collection == ParserCollection::Dep && lang.parser.crates_io.is_some()))
+        {
             out += "\"dep:";
             out += &lang.parser.package;
             out += "\"";
@@ -191,7 +182,7 @@ fn parsers_toml_deps(toml: &mut String, git: bool) {
     for lang in crate::LANGUAGE_CONFIG
         .languages
         .iter()
-        .filter(|lang| lang.parser.rust_func.is_some() && (git || lang.parser.crates_io.is_some()))
+        .filter(|lang| lang.parser.rust_const.is_some() && (git || lang.parser.crates_io.is_some()))
     {
         let package = &lang.parser.package;
         let url = &lang.parser.git.url;

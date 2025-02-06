@@ -5,10 +5,7 @@ use fancy_regex::{Captures, Regex};
 use once_cell::sync::Lazy;
 
 static MAIN_VERSION_REGEX: Lazy<Regex> = Lazy::new(|| {
-    Regex::new(
-        r#"(\[package\][\s\S]*?name[ \t]*=[ \t]*"(.*?)"[\s\S]*?version[ \t]*=[ \t]*")(.*?)(")"#,
-    )
-    .unwrap()
+    Regex::new(r#"(\[workspace\][\s\S]*?package\.version[ \t]*=[ \t]*")(.*?)(")"#).unwrap()
 });
 static DEP_VERSION_REGEX: Lazy<Regex> = Lazy::new(|| {
     Regex::new(r#"(?m)^([ \t]*([a-z_-]+)[ \t]*=[ \t]*\{[ \t]*version[ \t]*=[ \t]*")(.*?)(")"#)
@@ -27,12 +24,8 @@ pub fn run() -> Result<()> {
 
         let cargo_toml = MAIN_VERSION_REGEX
             .replace(&cargo_toml, |captures: &Captures| {
-                if !captures[2].starts_with("syntastica") {
-                    println!("skipping package {}", &captures[2]);
-                    return format!("{}{}{}", &captures[1], &captures[3], &captures[4]);
-                }
-                println!("{} -> {new_version} ({})", &captures[3], &captures[2]);
-                format!("{}{new_version}{}", &captures[1], &captures[4])
+                println!("{} -> {new_version} (workspace)", &captures[2]);
+                format!("{}{new_version}{}", &captures[1], &captures[3])
             })
             .into_owned();
 

@@ -1,6 +1,14 @@
 ;; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/c_sharp/highlights.scm
 ;; Licensed under the Apache License 2.0
-(identifier) @variable
+[
+  (identifier)
+  (preproc_arg)
+] @variable
+
+(
+  (preproc_arg) @constant.macro
+  (#lua-match? @constant.macro "^[_A-Z][_A-Z0-9]*$")
+)
 
 (
   (identifier) @keyword
@@ -9,14 +17,39 @@
 )
 
 (method_declaration
-  name: (identifier) @method
+  name: (identifier) @function.method
 )
 
 (local_function_statement
-  name: (identifier) @method
+  name: (identifier) @function.method
 )
 
 (method_declaration
+  returns: [
+    (identifier) @type
+    (generic_name
+      (identifier) @type
+    )
+  ]
+)
+
+(event_declaration
+  type: (identifier) @type
+)
+
+(event_declaration
+  name: (identifier) @variable.member
+)
+
+(event_field_declaration
+  (variable_declaration
+    (variable_declarator
+      name: (identifier) @variable.member
+    )
+  )
+)
+
+(declaration_pattern
   type: (identifier) @type
 )
 
@@ -26,16 +59,20 @@
 
 (interpolation) @none
 
+(member_access_expression
+  name: (identifier) @variable.member
+)
+
 (invocation_expression
   (member_access_expression
-    name: (identifier) @method.call
+    name: (identifier) @function.method.call
   )
 )
 
 (invocation_expression
   function: (conditional_access_expression
     (member_binding_expression
-      name: (identifier) @method.call
+      name: (identifier) @function.method.call
     )
   )
 )
@@ -44,36 +81,59 @@
   name: [
     (qualified_name)
     (identifier)
-  ] @namespace
+  ] @module
 )
 
 (qualified_name
   (identifier) @type
 )
 
+(namespace_declaration
+  name: (identifier) @module
+)
+
+(file_scoped_namespace_declaration
+  name: (identifier) @module
+)
+
+(qualified_name
+  (identifier) @module
+  (#not-has-ancestor? @module method_declaration)
+  (#not-has-ancestor? @module record_declaration)
+  (#has-ancestor? @module namespace_declaration file_scoped_namespace_declaration)
+)
+
 (invocation_expression
-  (identifier) @method.call
+  (identifier) @function.method.call
 )
 
 (field_declaration
   (variable_declaration
     (variable_declarator
-      (identifier) @field
+      (identifier) @variable.member
     )
   )
 )
 
 (initializer_expression
   (assignment_expression
-    left: (identifier) @field
+    left: (identifier) @variable.member
   )
 )
 
-(parameter_list
-  (parameter
-    name: (identifier) @parameter
-  )
+(parameter
+  name: (identifier) @variable.parameter
 )
+
+(parameter_list
+  name: (identifier) @variable.parameter
+)
+
+(bracketed_parameter_list
+  name: (identifier) @variable.parameter
+)
+
+(implicit_parameter) @variable.parameter
 
 (parameter_list
   (parameter
@@ -83,23 +143,37 @@
 
 (integer_literal) @number
 
-(real_literal) @float
+(real_literal) @number.float
 
 (null_literal) @constant.builtin
+
+(calling_convention
+  [
+    (identifier)
+    "Cdecl"
+    "Stdcall"
+    "Thiscall"
+    "Fastcall"
+  ] @attribute.builtin
+)
 
 (character_literal) @character
 
 [
   (string_literal)
+  (raw_string_literal)
   (verbatim_string_literal)
   (interpolated_string_expression)
 ] @string
 
-(boolean_literal) @boolean
+(escape_sequence) @string.escape
 
 [
-  (predefined_type)
-] @type.builtin
+  "true"
+  "false"
+] @boolean
+
+(predefined_type) @type.builtin
 
 (implicit_type) @keyword
 
@@ -125,9 +199,7 @@
 )
 
 (using_directive
-  (name_equals
-    (identifier) @type.definition
-  )
+  (type) @type.definition
 )
 
 (property_declaration
@@ -139,7 +211,19 @@
 )
 
 (nullable_type
-  (identifier) @type
+  type: (identifier) @type
+)
+
+(array_type
+  type: (identifier) @type
+)
+
+(ref_type
+  type: (identifier) @type
+)
+
+(pointer_type
+  type: (identifier) @type
 )
 
 (catch_declaration
@@ -158,18 +242,60 @@
   name: (identifier) @type
 )
 
+(struct_declaration
+  name: (identifier) @type
+)
+
 (enum_declaration
   name: (identifier) @type
 )
+
+(enum_member_declaration
+  name: (identifier) @variable.member
+)
+
+(operator_declaration
+  type: (identifier) @type
+)
+
+(conversion_operator_declaration
+  type: (identifier) @type
+)
+
+(explicit_interface_specifier
+  [
+    (identifier) @type
+    (generic_name
+      (identifier) @type
+    )
+  ]
+)
+
+(explicit_interface_specifier
+  (identifier) @type
+)
+
+(primary_constructor_base_type
+  type: (identifier) @type
+)
+
+[
+  "assembly"
+  "module"
+  "this"
+  "base"
+] @variable.builtin
 
 (constructor_declaration
   name: (identifier) @constructor
 )
 
+(destructor_declaration
+  name: (identifier) @constructor
+)
+
 (constructor_initializer
-  [
-    "base" @constructor
-  ]
+  "base" @constructor
 )
 
 (variable_declaration
@@ -181,7 +307,7 @@
 )
 
 ; Generic Types.
-(type_of_expression
+(typeof_expression
   (generic_name
     (identifier) @type
   )
@@ -199,10 +325,15 @@
   )
 )
 
-(type_constraint
-  (generic_name
+(type_parameter_constraint
+  [
     (identifier) @type
-  )
+    (type
+      (generic_name
+        (identifier) @type
+      )
+    )
+  ]
 )
 
 (object_creation_expression
@@ -227,14 +358,14 @@
 (invocation_expression
   function: (generic_name
     .
-    (identifier) @method.call
+    (identifier) @function.method.call
   )
 )
 
 (invocation_expression
   (member_access_expression
     (generic_name
-      (identifier) @method
+      (identifier) @function.method
     )
   )
 )
@@ -251,16 +382,30 @@
   (type_parameter) @type
 )
 
+(type_parameter
+  name: (identifier) @type
+)
+
 (type_parameter_constraints_clause
-  target: (identifier) @type
+  "where"
+  .
+  (identifier) @type
 )
 
 (attribute
   name: (identifier) @attribute
 )
 
-(for_each_statement
+(foreach_statement
   type: (identifier) @type
+)
+
+(goto_statement
+  (identifier) @label
+)
+
+(labeled_statement
+  (identifier) @label
 )
 
 (tuple_element
@@ -275,50 +420,56 @@
   )
 )
 
+(cast_expression
+  type: (identifier) @type
+)
+
+(lambda_expression
+  type: (identifier) @type
+)
+
 (as_expression
   right: (identifier) @type
 )
 
-(type_of_expression
+(typeof_expression
   (identifier) @type
 )
 
-(name_colon
-  (identifier) @parameter
-)
-
-(warning_directive) @text.warning
-
-(error_directive) @exception
-
-(define_directive
-  (identifier) @constant
-) @constant.macro
-
-(undef_directive
-  (identifier) @constant
-) @constant.macro
-
-(line_directive) @constant.macro
-
-(line_directive
-  (preproc_integer_literal) @constant
-  (preproc_string_literal)? @string
-)
-
-(pragma_directive
-  (identifier) @constant
-) @constant.macro
-
-(pragma_directive
-  (preproc_string_literal) @string
-) @constant.macro
+(preproc_error) @keyword.exception
 
 [
-  (nullable_directive)
-  (region_directive)
-  (endregion_directive)
+  "#define"
+  "#undef"
+] @keyword.directive.define
+
+[
+  "#if"
+  "#elif"
+  "#else"
+  "#endif"
+  "#region"
+  "#endregion"
+  "#line"
+  "#pragma"
+  "#nullable"
+  "#error"
+  (shebang_directive)
+] @keyword.directive
+
+[
+  (preproc_line)
+  (preproc_pragma)
+  (preproc_nullable)
 ] @constant.macro
+
+(preproc_pragma
+  (identifier) @constant
+)
+
+(preproc_if
+  (identifier) @constant
+)
 
 [
   "if"
@@ -326,19 +477,8 @@
   "switch"
   "break"
   "case"
-  (if_directive)
-  (elif_directive)
-  (else_directive)
-  (endif_directive)
-] @conditional
-
-(if_directive
-  (identifier) @constant
-)
-
-(elif_directive
-  (identifier) @constant
-)
+  "when"
+] @keyword.conditional
 
 [
   "while"
@@ -347,14 +487,14 @@
   "continue"
   "goto"
   "foreach"
-] @repeat
+] @keyword.repeat
 
 [
   "try"
   "catch"
   "throw"
   "finally"
-] @exception
+] @keyword.exception
 
 [
   "+"
@@ -389,15 +529,22 @@
   "|="
   "~"
   ">>"
-  ; crates.io skip
   ">>>"
   "<<"
   "<<="
   ">>="
-  ; crates.io skip
   ">>>="
   "=>"
+  "??"
+  "??="
+  ".."
 ] @operator
+
+(list_pattern
+  ".." @character.special
+)
+
+(discard) @character.special
 
 [
   ";"
@@ -410,7 +557,7 @@
   [
     "?"
     ":"
-  ] @conditional.ternary
+  ] @keyword.conditional.ternary
 )
 
 [
@@ -422,6 +569,8 @@
   ")"
 ] @punctuation.bracket
 
+(interpolation_brace) @punctuation.special
+
 (type_argument_list
   [
     "<"
@@ -430,19 +579,14 @@
 )
 
 [
-  (this_expression)
-  (base_expression)
-] @variable.builtin
-
-[
   "using"
   "as"
-] @include
+] @keyword.import
 
 (alias_qualified_name
   (identifier
     "global"
-  ) @include
+  ) @keyword.import
 )
 
 [
@@ -455,6 +599,9 @@
   "or"
   "not"
   "stackalloc"
+  "__makeref"
+  "__reftype"
+  "__refvalue"
   "in"
   "out"
   "ref"
@@ -468,24 +615,35 @@
   "implicit"
   "explicit"
   "override"
-  "class"
-  "delegate"
-  "enum"
-  "interface"
-  "namespace"
-  "struct"
   "get"
   "set"
   "init"
   "where"
-  "record"
-  "event"
   "add"
   "remove"
   "checked"
   "unchecked"
   "fixed"
+  "alias"
+  "file"
+  "unsafe"
 ] @keyword
+
+(attribute_target_specifier
+  .
+  _ @keyword
+)
+
+[
+  "enum"
+  "record"
+  "class"
+  "struct"
+  "interface"
+  "namespace"
+  "event"
+  "delegate"
+] @keyword.type
 
 [
   "async"
@@ -499,9 +657,9 @@
   "static"
   "volatile"
   "required"
-] @storageclass
-
-[
+  "managed"
+  "unmanaged"
+  "notnull"
   "abstract"
   "private"
   "protected"
@@ -510,9 +668,12 @@
   "partial"
   "sealed"
   "virtual"
-] @type.qualifier
+  "global"
+] @keyword.modifier
 
-(parameter_modifier) @operator
+(scoped_type
+  "scoped" @keyword.modifier
+)
 
 (query_expression
   (_

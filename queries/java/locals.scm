@@ -1,135 +1,135 @@
 ;; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/java/locals.scm
 ;; Licensed under the Apache License 2.0
-;; SCOPES
+; SCOPES
 ; declarations
-(program) @scope
+(program) @local.scope
 
 (class_declaration
-  body: (_) @scope
+  body: (_) @local.scope
 )
 
 (record_declaration
-  body: (_) @scope
+  body: (_) @local.scope
 )
 
 (enum_declaration
-  body: (_) @scope
+  body: (_) @local.scope
 )
 
-(lambda_expression) @scope
+(lambda_expression) @local.scope
 
-(enhanced_for_statement) @scope
+(enhanced_for_statement) @local.scope
 
 ; block
-(block) @scope
+(block) @local.scope
 
 ; if/else
-(if_statement) @scope
+(if_statement) @local.scope
 
 ; if+else
 (if_statement
-  consequence: (_) @scope
+  consequence: (_) @local.scope
 )
 
 ; if body in case there are no braces
 (if_statement
-  alternative: (_) @scope
+  alternative: (_) @local.scope
 )
 
 ; else body in case there are no braces
 ; try/catch
-(try_statement) @scope
+(try_statement) @local.scope
 
 ; covers try+catch, individual try and catch are covered by (block)
-(catch_clause) @scope
+(catch_clause) @local.scope
 
 ; needed because `Exception` variable
 ; loops
-(for_statement) @scope
+(for_statement) @local.scope
 
 ; whole for_statement because loop iterator variable
 (for_statement
   ; "for" body in case there are no braces
-  body: (_) @scope
+  body: (_) @local.scope
 )
 
 (do_statement
-  body: (_) @scope
+  body: (_) @local.scope
 )
 
 (while_statement
-  body: (_) @scope
+  body: (_) @local.scope
 )
 
 ; Functions
-(constructor_declaration) @scope
+(constructor_declaration) @local.scope
 
-(method_declaration) @scope
+(method_declaration) @local.scope
 
-;; DEFINITIONS
+; DEFINITIONS
 (package_declaration
-  (identifier) @definition.namespace
+  (identifier) @local.definition.namespace
 )
 
 (class_declaration
-  name: (identifier) @definition.type
+  name: (identifier) @local.definition.type
 )
 
 (record_declaration
-  name: (identifier) @definition.type
+  name: (identifier) @local.definition.type
 )
 
 (enum_declaration
-  name: (identifier) @definition.enum
+  name: (identifier) @local.definition.enum
 )
 
 (method_declaration
-  name: (identifier) @definition.method
+  name: (identifier) @local.definition.method
 )
 
 (local_variable_declaration
   declarator: (variable_declarator
-    name: (identifier) @definition.var
+    name: (identifier) @local.definition.var
   )
 )
 
 (enhanced_for_statement
   ; for (var item : items) {
-  name: (identifier) @definition.var
+  name: (identifier) @local.definition.var
 )
 
 (formal_parameter
-  name: (identifier) @definition.parameter
+  name: (identifier) @local.definition.parameter
 )
 
 (catch_formal_parameter
-  name: (identifier) @definition.parameter
+  name: (identifier) @local.definition.parameter
 )
 
 (inferred_parameters
-  (identifier) @definition.parameter
+  (identifier) @local.definition.parameter
 )
 
 ; (x,y) -> ...
 (lambda_expression
-  parameters: (identifier) @definition.parameter
+  parameters: (identifier) @local.definition.parameter
 )
 
 ; x -> ...
 (
   (scoped_identifier
-    (identifier) @definition.import
+    (identifier) @local.definition.import
   )
-  (#has-ancestor? @definition.import import_declaration)
+  (#has-ancestor? @local.definition.import import_declaration)
 )
 
 (field_declaration
   declarator: (variable_declarator
-    name: (identifier) @definition.field
+    name: (identifier) @local.definition.field
   )
 )
 
-;; REFERENCES
-(identifier) @reference
+; REFERENCES
+(identifier) @local.reference
 
-(type_identifier) @reference
+(type_identifier) @local.reference

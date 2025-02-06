@@ -62,7 +62,7 @@ pub struct Parser {
     pub git: ParserGit,
     pub external_scanner: ParserExternal,
     pub ffi_func: String,
-    pub rust_func: Option<String>,
+    pub rust_const: Option<String>,
     pub package: String,
     pub crates_io: Option<String>,
 }

@@ -5,9 +5,9 @@
   (nat)
 ] @number
 
-(float) @float
+(float) @number.float
 
-(identifier) @symbol
+(identifier) @string.special.symbol
 
 (string) @string
 

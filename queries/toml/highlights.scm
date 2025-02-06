@@ -1,53 +1,41 @@
 ;; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/toml/highlights.scm
 ;; Licensed under the Apache License 2.0
-; Properties
-;-----------
-(bare_key) @type
+(bare_key) @property
 
-(quoted_key) @string
+[
+  (string)
+  (quoted_key)
+] @string
 
-(pair
-  (bare_key)
-) @property
-
-; Literals
-;---------
 (boolean) @boolean
 
 (comment) @comment
 
-(string) @string
+(escape_sequence) @string.escape
 
 (integer) @number
 
-(float) @float
+(float) @number.float
 
-(offset_date_time) @string.special
-
-(local_date_time) @string.special
-
-(local_date) @string.special
-
-(local_time) @string.special
-
-; Punctuation
-;------------
-"." @punctuation.delimiter
-
-"," @punctuation.delimiter
+[
+  (local_date)
+  (local_date_time)
+  (local_time)
+  (offset_date_time)
+] @string.special
 
 "=" @operator
 
-"[" @punctuation.bracket
+[
+  "."
+  ","
+] @punctuation.delimiter
 
-"]" @punctuation.bracket
-
-"[[" @punctuation.bracket
-
-"]]" @punctuation.bracket
-
-"{" @punctuation.bracket
-
-"}" @punctuation.bracket
-
-(ERROR) @error
+[
+  "["
+  "]"
+  "[["
+  "]]"
+  "{"
+  "}"
+] @punctuation.bracket

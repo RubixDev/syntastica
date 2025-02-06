@@ -53,16 +53,19 @@ the conversion from `lua-match` to `match` may fail and panic.
 
 Additional behavior differs for the kind of queries:
 
-- For highlight queries, the order of the queries is reversed. This is needed
+- ~~For highlight queries, the order of the queries is reversed. This is needed
   because Neovim prioritizes queries lower down in the file over earlier ones,
   whereas the official
   [tree-sitter Rust bindings](https://crates.io/crates/tree-sitter) do the
-  opposite.
+  opposite.~~ This is no longer the case, as `tree-sitter-highlight` and as such
+  `syntastica-highlight` now also prioritize later queries over previous ones.
 - For injection queries, Neovim used to use `@<lang_name>`, `@content`,
   `@language`, and `@combined` captures. These will be replaced with the new
   (and official) syntax using `#set! injection.language "<lang_name>"`,
   `@injection.content`, `@injection.language`, and `#set! injection.combined`
   respectively.
-- For locals queries, Neovim uses `@scope`, `@reference`, and various
-  `@definition.<kind>` captures. These will be replaced by the official
-  `@local.scope`, `@local.reference`, and `@local.definition` captures.
+- For locals queries, Neovim used to use `@scope`, `@reference`, and various
+  `@definition.<kind>` captures. These will be replaced by the new and official
+  `@local.scope`, `@local.reference`, and `@local.definition` captures. Neovim
+  now also uses captures in the form `@local.definition.<kind>`. These will also
+  be trimmed to `@local.definition`.

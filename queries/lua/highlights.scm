@@ -1,6 +1,6 @@
 ;; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/lua/highlights.scm
 ;; Licensed under the Apache License 2.0
-;; Keywords
+; Keywords
 "return" @keyword.return
 
 [
@@ -23,14 +23,14 @@
     "while"
     "do"
     "end"
-  ] @repeat
+  ] @keyword.repeat
 )
 
 (repeat_statement
   [
     "repeat"
     "until"
-  ] @repeat
+  ] @keyword.repeat
 )
 
 (if_statement
@@ -40,7 +40,7 @@
     "else"
     "then"
     "end"
-  ] @conditional
+  ] @keyword.conditional
 )
 
 (elseif_statement
@@ -48,14 +48,14 @@
     "elseif"
     "then"
     "end"
-  ] @conditional
+  ] @keyword.conditional
 )
 
 (else_statement
   [
     "else"
     "end"
-  ] @conditional
+  ] @keyword.conditional
 )
 
 (for_statement
@@ -63,7 +63,7 @@
     "for"
     "do"
     "end"
-  ] @repeat
+  ] @keyword.repeat
 )
 
 (function_declaration
@@ -80,7 +80,7 @@
   ] @keyword.function
 )
 
-;; Operators
+; Operators
 [
   "and"
   "not"
@@ -111,7 +111,7 @@
   ".."
 ] @operator
 
-;; Punctuations
+; Punctuations
 [
   ";"
   ":"
@@ -120,7 +120,7 @@
   "."
 ] @punctuation.delimiter
 
-;; Brackets
+; Brackets
 [
   "("
   ")"
@@ -130,7 +130,7 @@
   "}"
 ] @punctuation.bracket
 
-;; Variables
+; Variables
 (identifier) @variable
 
 (
@@ -144,9 +144,9 @@
 )
 
 (
-  (identifier) @namespace.builtin
+  (identifier) @module.builtin
   (#any-of?
-    @namespace.builtin
+    @module.builtin
     "_G"
     "debug"
     "io"
@@ -166,18 +166,14 @@
 )
 
 (variable_list
-  attribute: (attribute
-    (
-      [
-        "<"
-        ">"
-      ] @punctuation.bracket
-      (identifier) @attribute
-    )
+  (attribute
+    "<" @punctuation.bracket
+    (identifier) @attribute
+    ">" @punctuation.bracket
   )
 )
 
-;; Labels
+; Labels
 (label_statement
   (identifier) @label
 )
@@ -186,13 +182,11 @@
   (identifier) @label
 )
 
-;; Constants
+; Constants
 (
   (identifier) @constant
   (#lua-match? @constant "^[A-Z][A-Z_0-9]*$")
 )
-
-(vararg_expression) @constant
 
 (nil) @constant.builtin
 
@@ -201,13 +195,13 @@
   (true)
 ] @boolean
 
-;; Tables
+; Tables
 (field
-  name: (identifier) @field
+  name: (identifier) @property
 )
 
 (dot_index_expression
-  field: (identifier) @field
+  field: (identifier) @variable.member
 )
 
 (table_constructor
@@ -217,10 +211,12 @@
   ] @constructor
 )
 
-;; Functions
+; Functions
 (parameters
-  (identifier) @parameter
+  (identifier) @variable.parameter
 )
+
+(vararg_expression) @variable.parameter.builtin
 
 (function_declaration
   name: [
@@ -233,7 +229,7 @@
 
 (function_declaration
   name: (method_index_expression
-    method: (identifier) @method
+    method: (identifier) @function.method
   )
 )
 
@@ -267,7 +263,7 @@
       field: (identifier) @function.call
     )
     (method_index_expression
-      method: (identifier) @method.call
+      method: (identifier) @function.method.call
     )
   ]
 )
@@ -276,7 +272,7 @@
   (identifier) @function.builtin
   (#any-of?
     @function.builtin
-    ;; built-in functions in Lua 5.1
+    ; built-in functions in Lua 5.1
     "assert"
     "collectgarbage"
     "dofile"
@@ -335,7 +331,7 @@
   )
 )
 
-;; Others
+; Others
 (comment) @comment
 
 (
@@ -348,11 +344,40 @@
   (#lua-match? @comment.documentation "^[-][-](%s?)@")
 )
 
-(hash_bang_line) @preproc
+(hash_bang_line) @keyword.directive
 
 (number) @number
 
 (string) @string
 
-;; Error
-(ERROR) @error
+(escape_sequence) @string.escape
+
+; string.match("123", "%d+")
+(function_call
+  (dot_index_expression
+    field: (identifier) @_method
+    (#any-of? @_method "find" "match" "gmatch" "gsub")
+  )
+  arguments: (arguments
+    .
+    (_)
+    .
+    (string
+      content: (string_content) @string.regexp
+    )
+  )
+)
+
+;("123"):match("%d+")
+(function_call
+  (method_index_expression
+    method: (identifier) @_method
+    (#any-of? @_method "find" "match" "gmatch" "gsub")
+  )
+  arguments: (arguments
+    .
+    (string
+      content: (string_content) @string.regexp
+    )
+  )
+)

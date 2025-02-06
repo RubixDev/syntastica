@@ -129,16 +129,16 @@ fn parsers_rust(crate_name: &str, crates_io: bool, query_suffix: &str) -> TokenS
         let feat = lang.group.to_string();
         let name = format_ident!("{}", lang.name);
         let name_str = &lang.name;
-        let (doc, body) = match &lang.parser.rust_func {
-            Some(func) if (!crates_io || lang.parser.crates_io.is_some()) => {
-                let func = format_ident!("{func}");
+        let (doc, body) = match &lang.parser.rust_const {
+            Some(ident) if (!crates_io || lang.parser.crates_io.is_some()) => {
+                let ident = format_ident!("{ident}");
                 let package = format_ident!("{}", lang.parser.package.replace('-', "_"));
                 (
                     format!(
                         "Get the parser for [{}]({}/tree/{}).",
                         lang.name, lang.parser.git.url, lang.parser.git.rev,
                     ),
-                    quote! { #package::#func() }
+                    quote! { ::syntastica_core::language_set::Language::new(#package::#ident) }
                 )
             },
             _ => (
@@ -158,7 +158,7 @@ fn parsers_rust(crate_name: &str, crates_io: bool, query_suffix: &str) -> TokenS
     parsers(
         crate_name,
         functions,
-        |lang| lang.parser.rust_func.is_some() && (!crates_io || lang.parser.crates_io.is_some()),
+        |lang| lang.parser.rust_const.is_some() && (!crates_io || lang.parser.crates_io.is_some()),
         None,
         query_suffix,
     )
@@ -327,6 +327,7 @@ fn parsers(
             let lang = FUNCS[idx]();
             let mut conf = HighlightConfiguration::new(
                 lang,
+                LANGUAGE_NAMES[idx],
                 QUERIES[idx][0],
                 QUERIES[idx][1],
                 QUERIES[idx][2],
@@ -498,9 +499,9 @@ pub fn queries_test(_: TokenStream) -> TokenStream {
                 #[test]
                 fn #name() {
                     let lang = ::syntastica_parsers_git::#name();
-                    validate_query(lang, ::syntastica_queries::#highlights, "highlights");
-                    validate_query(lang, ::syntastica_queries::#injections, "injections");
-                    validate_query(lang, ::syntastica_queries::#locals, "locals");
+                    validate_query(&lang, ::syntastica_queries::#highlights, "highlights");
+                    validate_query(&lang, ::syntastica_queries::#injections, "injections");
+                    validate_query(&lang, ::syntastica_queries::#locals, "locals");
                 }
             }
         })
@@ -513,7 +514,7 @@ pub fn queries_test_crates_io(_: TokenStream) -> TokenStream {
     LANGUAGE_CONFIG
         .languages
         .iter()
-        .filter(|lang| lang.parser.rust_func.is_some() && lang.parser.crates_io.is_some())
+        .filter(|lang| lang.parser.rust_const.is_some() && lang.parser.crates_io.is_some())
         .map(|lang| {
             let name = format_ident!("{}", lang.name);
             let highlights = format_ident!("{}_HIGHLIGHTS_CRATES_IO", lang.name.to_uppercase());
@@ -523,9 +524,9 @@ pub fn queries_test_crates_io(_: TokenStream) -> TokenStream {
                 #[test]
                 fn #name() {
                     let lang = ::syntastica_parsers::#name();
-                    validate_query(lang, ::syntastica_queries::#highlights, "highlights");
-                    validate_query(lang, ::syntastica_queries::#injections, "injections");
-                    validate_query(lang, ::syntastica_queries::#locals, "locals");
+                    validate_query(&lang, ::syntastica_queries::#highlights, "highlights");
+                    validate_query(&lang, ::syntastica_queries::#injections, "injections");
+                    validate_query(&lang, ::syntastica_queries::#locals, "locals");
                 }
             }
         })

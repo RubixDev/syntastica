@@ -1,15 +1,15 @@
 ;; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/ruby/highlights.scm
 ;; Licensed under the Apache License 2.0
 ; Variables
-(identifier) @variable
-
-(global_variable) @variable.global
+[
+  (identifier)
+  (global_variable)
+] @variable
 
 ; Keywords
 [
   "alias"
   "begin"
-  "class"
   "do"
   "end"
   "ensure"
@@ -17,6 +17,8 @@
   "rescue"
   "then"
 ] @keyword
+
+"class" @keyword.type
 
 [
   "return"
@@ -47,10 +49,10 @@
   "unless"
   "when"
   "then"
-] @conditional
+] @keyword.conditional
 
 (if
-  "end" @conditional
+  "end" @keyword.conditional
 )
 
 [
@@ -61,24 +63,19 @@
   "redo"
   "retry"
   "next"
-] @repeat
+] @keyword.repeat
 
-(constant) @type
+(constant) @constant
 
 (
-  (identifier) @type.qualifier
-  (#any-of? @type.qualifier "private" "protected" "public")
+  (identifier) @keyword.modifier
+  (#any-of? @keyword.modifier "private" "protected" "public")
 )
 
 [
   "rescue"
   "ensure"
-] @exception
-
-(
-  (identifier) @exception
-  (#any-of? @exception "fail" "raise")
-)
+] @keyword.exception
 
 ; Function calls
 "defined?" @function
@@ -93,9 +90,9 @@
 
 (program
   (call
-    (identifier) @include
+    (identifier) @keyword.import
   )
-  (#any-of? @include "require" "require_relative" "load")
+  (#any-of? @keyword.import "require" "require_relative" "load")
 )
 
 ; Function definitions
@@ -137,16 +134,44 @@
 [
   (class_variable)
   (instance_variable)
-] @label
+] @variable.member
 
 (
   (identifier) @constant.builtin
-  (#match? @constant.builtin "^__(callee|dir|id|method|send|ENCODING|FILE|LINE)__$")
+  (#any-of?
+    @constant.builtin
+    "__callee__"
+    "__dir__"
+    "__id__"
+    "__method__"
+    "__send__"
+    "__ENCODING__"
+    "__FILE__"
+    "__LINE__"
+  )
+)
+
+(
+  (identifier) @function.builtin
+  (#any-of? @function.builtin "attr_reader" "attr_writer" "attr_accessor" "module_function")
+)
+
+(
+  (call
+    !receiver
+    method: (identifier) @function.builtin
+  )
+  (#any-of? @function.builtin "include" "extend" "prepend" "refine" "using")
+)
+
+(
+  (identifier) @keyword.exception
+  (#any-of? @keyword.exception "raise" "fail" "catch" "throw")
 )
 
 (
   (constant) @type
-  (#match? @type "^[A-Z\\d_]+$")
+  (#not-lua-match? @type "^[A-Z0-9_]+$")
 )
 
 [
@@ -155,39 +180,39 @@
 ] @variable.builtin
 
 (method_parameters
-  (identifier) @parameter
+  (identifier) @variable.parameter
 )
 
 (lambda_parameters
-  (identifier) @parameter
+  (identifier) @variable.parameter
 )
 
 (block_parameters
-  (identifier) @parameter
+  (identifier) @variable.parameter
 )
 
 (splat_parameter
-  (identifier) @parameter
+  (identifier) @variable.parameter
 )
 
 (hash_splat_parameter
-  (identifier) @parameter
+  (identifier) @variable.parameter
 )
 
 (optional_parameter
-  (identifier) @parameter
+  (identifier) @variable.parameter
 )
 
 (destructured_parameter
-  (identifier) @parameter
+  (identifier) @variable.parameter
 )
 
 (block_parameter
-  (identifier) @parameter
+  (identifier) @variable.parameter
 )
 
 (keyword_parameter
-  (identifier) @parameter
+  (identifier) @variable.parameter
 )
 
 (
@@ -197,36 +222,33 @@
 
 ; Literals
 [
-  (string)
-  (bare_string)
-  (subshell)
-  (heredoc_body)
+  (string_content)
+  (heredoc_content)
+  "\""
+  "`"
 ] @string
 
 [
   (heredoc_beginning)
   (heredoc_end)
-] @constant
+] @label
 
 [
   (bare_symbol)
   (simple_symbol)
   (delimited_symbol)
   (hash_key_symbol)
-] @symbol
+] @string.special.symbol
 
-(pair
-  key: (hash_key_symbol)
-  ":" @constant
+(regex
+  (string_content) @string.regexp
 )
-
-(regex) @string.regex
 
 (escape_sequence) @string.escape
 
 (integer) @number
 
-(float) @float
+(float) @number.float
 
 [
   (true)
@@ -236,6 +258,14 @@
 (nil) @constant.builtin
 
 (comment) @comment
+
+(
+  (program
+    .
+    (comment) @keyword.directive
+  )
+  (#lua-match? @keyword.directive "^#!/")
+)
 
 (program
   (comment)+ @comment.documentation
@@ -307,7 +337,17 @@
   ","
   ";"
   "."
+  "&."
+  "::"
 ] @punctuation.delimiter
+
+(regex
+  "/" @punctuation.bracket
+)
+
+(pair
+  ":" @punctuation.delimiter
+)
 
 [
   "("
@@ -320,9 +360,11 @@
   "%i("
 ] @punctuation.bracket
 
+(block_parameters
+  "|" @punctuation.bracket
+)
+
 (interpolation
   "#{" @punctuation.special
   "}" @punctuation.special
-) @none
-
-(ERROR) @error
+)

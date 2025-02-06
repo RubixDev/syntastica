@@ -3,13 +3,11 @@
 [
   "as"
   "by"
-  "class"
   "extends"
   "from"
   "implies"
   "in"
   "module"
-  "newtype"
   "order"
   "select"
   "where"
@@ -17,6 +15,11 @@
   (result)
   (specialId)
 ] @keyword
+
+[
+  "newtype"
+  "class"
+] @keyword.type
 
 [
   "and"
@@ -40,23 +43,23 @@
   "strictsum"
 ] @function.builtin
 
-"import" @include
+"import" @keyword.import
 
 [
   "if"
   "then"
   "else"
-] @conditional
+] @keyword.conditional
 
 [
   "forall"
   "forex"
-] @repeat
+] @keyword.repeat
 
 [
   "asc"
   "desc"
-] @type.qualifier
+] @keyword.modifier
 
 [
   (true)
@@ -108,11 +111,11 @@
 ] @punctuation.delimiter
 
 (moduleExpr
-  (simpleId) @namespace
+  (simpleId) @module
 )
 
 (module
-  name: (moduleName) @namespace
+  name: (moduleName) @module
 )
 
 (dataclass
@@ -135,7 +138,7 @@
 
 (integer) @number
 
-(float) @float
+(float) @number.float
 
 (string) @string
 

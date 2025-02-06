@@ -33,7 +33,7 @@ pub static LANGUAGE_CONFIG: Lazy<schema::LanguageConfig> = Lazy::new(|| {
 
 fn main() {
     if let Err(err) = try_main() {
-        eprintln!("error running task: {err}");
+        eprintln!("error running task:\n{err:?}");
         process::exit(1);
     }
 }
@@ -53,7 +53,6 @@ Usage: Run with `cargo xtask <task>`, eg. `cargo xtask codegen`.
         codegen parsers-git:                  Generate parts of the `Cargo.toml` for syntastica-parsers-git
         codegen parser-lists:                 Generate the parser lists in all three syntastica-parsers READMEs
         codegen js-lists:                     Generate the language and theme lists in the JavaScript bindings
-        codegen themes:                       Generate some themes for syntastica-themes
         codegen theme-list:                   Generate the `THEMES` list and `from_str` function for syntastica-themes
         set-version <version>:                Set the version of all syntastica crates
         add-lang <group> <name> <url> [path]: Add boilerplate code for a new language called <name> with sources at <url>/[path] in the feature group <group>

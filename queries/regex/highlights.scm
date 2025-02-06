@@ -1,11 +1,12 @@
-;; Forked from https://github.com/tree-sitter/tree-sitter-regex/blob/master/queries/highlights.scm
-;; Licensed under the MIT License
+;; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/regex/highlights.scm
+;; Licensed under the Apache License 2.0
 [
   "("
   ")"
   "(?"
   "(?:"
   "(?<"
+  "<"
   ">"
   "["
   "]"
@@ -15,8 +16,15 @@
 
 (group_name) @property
 
+; These are escaped special characters that lost their special meaning
+; -> no special highlighting
+(identity_escape) @string.regexp
+
+(class_character) @constant
+
+(decimal_digits) @number
+
 [
-  (identity_escape)
   (control_letter_escape)
   (character_class_escape)
   (control_escape)
@@ -25,37 +33,21 @@
 ] @string.escape
 
 [
-  (any_character)
-  (start_assertion)
-  (end_assertion)
-] @punctuation.special
-
-[
   "*"
   "+"
   "?"
-  (lazy)
   "|"
   "="
   "!"
+  "-"
+  "\\k"
+  (lazy)
 ] @operator
 
-(count_quantifier
-  [
-    (decimal_digits) @number
-    "," @punctuation.delimiter
-  ]
-)
+[
+  (start_assertion)
+  (end_assertion)
+  ","
+] @punctuation.delimiter
 
-(character_class
-  [
-    "^" @operator
-    (class_range
-      "-" @operator
-    )
-  ]
-)
-
-(class_character) @constant.character
-
-(pattern_character) @string.regex
+(any_character) @variable.builtin

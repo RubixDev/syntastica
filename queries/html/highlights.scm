@@ -4,3 +4,5 @@
 (doctype) @constant
 
 "<!" @tag.delimiter
+
+(entity) @character.special

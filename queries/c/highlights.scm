@@ -1,9 +1,9 @@
 ;; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/c/highlights.scm
 ;; Licensed under the Apache License 2.0
-; Lower priority to prefer @parameter when identifier appears in parameter_declaration.
+; Lower priority to prefer @variable.parameter when identifier appears in parameter_declaration.
 (
   (identifier) @variable
-  (#set! "priority" 95)
+  (#set! priority 95)
 )
 
 (preproc_def
@@ -12,19 +12,27 @@
 
 [
   "default"
-  "enum"
-  "struct"
-  "typedef"
-  "union"
   "goto"
   "asm"
   "__asm__"
 ] @keyword
 
 [
+  "enum"
+  "struct"
+  "union"
+  "typedef"
+] @keyword.type
+
+[
   "sizeof"
   "offsetof"
 ] @keyword.operator
+
+(alignof_expression
+  .
+  _ @keyword.operator
+)
 
 "return" @keyword.return
 
@@ -34,14 +42,14 @@
   "do"
   "continue"
   "break"
-] @repeat
+] @keyword.repeat
 
 [
   "if"
   "else"
   "case"
   "switch"
-] @conditional
+] @keyword.conditional
 
 [
   "#if"
@@ -53,11 +61,11 @@
   "#elifdef"
   "#elifndef"
   (preproc_directive)
-] @preproc
+] @keyword.directive
 
-"#define" @define
+"#define" @keyword.directive.define
 
-"#include" @include
+"#include" @keyword.import
 
 [
   ";"
@@ -115,10 +123,10 @@
   "++"
 ] @operator
 
-;; Make sure the comma operator is given a highlight group after the comma
-;; punctuator so the operator is highlighted properly.
+; Make sure the comma operator is given a highlight group after the comma
+; punctuator so the operator is highlighted properly.
 (comma_expression
-  [","] @operator
+  "," @operator
 )
 
 [
@@ -130,7 +138,7 @@
   [
     "?"
     ":"
-  ] @conditional.ternary
+  ] @keyword.conditional.ternary
 )
 
 (string_literal) @string
@@ -145,18 +153,11 @@
 
 (char_literal) @character
 
-(
-  (preproc_arg) @function.macro
-  (#set! "priority" 90)
-)
-
 (preproc_defined) @function.macro
 
 (
-  (
-    (field_expression
-      (field_identifier) @property
-    )
+  (field_expression
+    (field_identifier) @property
   ) @_parent
   (#not-has-parent? @_parent template_method function_declarator call_expression)
 )
@@ -164,29 +165,34 @@
 (field_designator) @property
 
 (
-  (
-    (field_identifier) @property
-  )
+  (field_identifier) @property
   (#has-ancestor? @property field_declaration)
   (#not-has-ancestor? @property function_declarator)
 )
 
 (statement_identifier) @label
 
+(declaration
+  type: (type_identifier) @_type
+  declarator: (identifier) @label
+  (#eq? @_type "__label__")
+)
+
 [
   (type_identifier)
   (type_descriptor)
 ] @type
 
-(storage_class_specifier) @storageclass
+(storage_class_specifier) @keyword.modifier
 
 [
   (type_qualifier)
   (gnu_asm_qualifier)
-] @type.qualifier
+  "__extension__"
+] @keyword.modifier
 
 (linkage_specification
-  "extern" @storageclass
+  "extern" @keyword.modifier
 )
 
 (type_definition
@@ -221,23 +227,125 @@
 
 (
   (identifier) @constant.builtin
-  (#any-of? @constant.builtin "stderr" "stdin" "stdout")
+  (#any-of?
+    @constant.builtin
+    "stderr"
+    "stdin"
+    "stdout"
+    "__FILE__"
+    "__LINE__"
+    "__DATE__"
+    "__TIME__"
+    "__STDC__"
+    "__STDC_VERSION__"
+    "__STDC_HOSTED__"
+    "__cplusplus"
+    "__OBJC__"
+    "__ASSEMBLER__"
+    "__BASE_FILE__"
+    "__FILE_NAME__"
+    "__INCLUDE_LEVEL__"
+    "__TIMESTAMP__"
+    "__clang__"
+    "__clang_major__"
+    "__clang_minor__"
+    "__clang_patchlevel__"
+    "__clang_version__"
+    "__clang_literal_encoding__"
+    "__clang_wide_literal_encoding__"
+    "__FUNCTION__"
+    "__func__"
+    "__PRETTY_FUNCTION__"
+    "__VA_ARGS__"
+    "__VA_OPT__"
+  )
 )
 
 (preproc_def
   (preproc_arg) @constant.builtin
-  (#any-of? @constant.builtin "stderr" "stdin" "stdout")
+  (#any-of?
+    @constant.builtin
+    "stderr"
+    "stdin"
+    "stdout"
+    "__FILE__"
+    "__LINE__"
+    "__DATE__"
+    "__TIME__"
+    "__STDC__"
+    "__STDC_VERSION__"
+    "__STDC_HOSTED__"
+    "__cplusplus"
+    "__OBJC__"
+    "__ASSEMBLER__"
+    "__BASE_FILE__"
+    "__FILE_NAME__"
+    "__INCLUDE_LEVEL__"
+    "__TIMESTAMP__"
+    "__clang__"
+    "__clang_major__"
+    "__clang_minor__"
+    "__clang_patchlevel__"
+    "__clang_version__"
+    "__clang_literal_encoding__"
+    "__clang_wide_literal_encoding__"
+    "__FUNCTION__"
+    "__func__"
+    "__PRETTY_FUNCTION__"
+    "__VA_ARGS__"
+    "__VA_OPT__"
+  )
 )
 
-;; Preproc def / undef
+(attribute_specifier
+  (argument_list
+    (identifier) @variable.builtin
+  )
+)
+
+(attribute_specifier
+  (argument_list
+    (call_expression
+      function: (identifier) @variable.builtin
+    )
+  )
+)
+
+(
+  (call_expression
+    function: (identifier) @function.builtin
+  )
+  (#lua-match? @function.builtin "^__builtin_")
+)
+
+(
+  (call_expression
+    function: (identifier) @function.builtin
+  )
+  (#has-ancestor? @function.builtin attribute_specifier)
+)
+
+; Preproc def / undef
 (preproc_def
-  name: (_) @constant
+  name: (_) @constant.macro
 )
 
 (preproc_call
   directive: (preproc_directive) @_u
-  argument: (_) @constant
+  argument: (_) @constant.macro
   (#eq? @_u "#undef")
+)
+
+(preproc_ifdef
+  name: (identifier) @constant.macro
+)
+
+(preproc_elifdef
+  name: (identifier) @constant.macro
+)
+
+(preproc_defined
+  (identifier) @constant.macro
 )
 
 (call_expression
@@ -273,21 +381,43 @@
   (#lua-match? @comment.documentation "^/[*][*][^*].*[*]/$")
 )
 
-;; Parameters
+; Parameters
 (parameter_declaration
-  declarator: (identifier) @parameter
+  declarator: (identifier) @variable.parameter
 )
 
 (parameter_declaration
-  declarator: (array_declarator) @parameter
+  declarator: (array_declarator) @variable.parameter
 )
 
 (parameter_declaration
-  declarator: (pointer_declarator) @parameter
+  declarator: (pointer_declarator) @variable.parameter
 )
 
+; K&R functions
+; To enable support for K&R functions,
+; add the following lines to your own query config and uncomment them.
+; They are commented out as they'll conflict with C++
+; Note that you'll need to have `; extends` at the top of your query file.
+;
+; (parameter_list (identifier) @variable.parameter)
+;
+; (function_definition
+;   declarator: _
+;   (declaration
+;     declarator: (identifier) @variable.parameter))
+;
+; (function_definition
+;   declarator: _
+;   (declaration
+;     declarator: (array_declarator) @variable.parameter))
+;
+; (function_definition
+;   declarator: _
+;   (declaration
+;     declarator: (pointer_declarator) @variable.parameter))
 (preproc_params
-  (identifier) @parameter
+  (identifier) @variable.parameter
 )
 
 [
@@ -303,5 +433,3 @@
   (ms_pointer_modifier)
   (attribute_declaration)
 ] @attribute
-
-(ERROR) @error

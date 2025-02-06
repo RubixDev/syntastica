@@ -2,7 +2,7 @@
 ;; Licensed under the Apache License 2.0
 (
   (tag
-    (name) @text.todo
+    (name) @comment.todo
     ("("
       @punctuation.bracket
       (user) @constant
@@ -10,17 +10,17 @@
     )?
     ":" @punctuation.delimiter
   )
-  (#any-of? @text.todo "TODO" "WIP")
+  (#any-of? @comment.todo "TODO" "WIP")
 )
 
 ("text"
-  @text.todo
-  (#any-of? @text.todo "TODO" "WIP")
+  @comment.todo
+  (#any-of? @comment.todo "TODO" "WIP")
 )
 
 (
   (tag
-    (name) @text.note
+    (name) @comment.note
     ("("
       @punctuation.bracket
       (user) @constant
@@ -29,7 +29,7 @@
     ":" @punctuation.delimiter
   )
   (#any-of?
-    @text.note
+    @comment.note
     "NOTE"
     "XXX"
     "INFO"
@@ -40,9 +40,9 @@
 )
 
 ("text"
-  @text.note
+  @comment.note
   (#any-of?
-    @text.note
+    @comment.note
     "NOTE"
     "XXX"
     "INFO"
@@ -54,7 +54,7 @@
 
 (
   (tag
-    (name) @text.warning
+    (name) @comment.warning
     ("("
       @punctuation.bracket
       (user) @constant
@@ -62,17 +62,17 @@
     )?
     ":" @punctuation.delimiter
   )
-  (#any-of? @text.warning "HACK" "WARNING" "WARN" "FIX")
+  (#any-of? @comment.warning "HACK" "WARNING" "WARN" "FIX")
 )
 
 ("text"
-  @text.warning
-  (#any-of? @text.warning "HACK" "WARNING" "WARN" "FIX")
+  @comment.warning
+  (#any-of? @comment.warning "HACK" "WARNING" "WARN" "FIX")
 )
 
 (
   (tag
-    (name) @text.danger
+    (name) @comment.error
     ("("
       @punctuation.bracket
       (user) @constant
@@ -80,12 +80,12 @@
     )?
     ":" @punctuation.delimiter
   )
-  (#any-of? @text.danger "FIXME" "BUG" "ERROR")
+  (#any-of? @comment.error "FIXME" "BUG" "ERROR")
 )
 
 ("text"
-  @text.danger
-  (#any-of? @text.danger "FIXME" "BUG" "ERROR")
+  @comment.error
+  (#any-of? @comment.error "FIXME" "BUG" "ERROR")
 )
 
 ; Issue number (#123)
@@ -94,6 +94,4 @@
   (#lua-match? @number "^#[0-9]+$")
 )
 
-(
-  (uri) @text.uri
-)
+(uri) @string.special.url

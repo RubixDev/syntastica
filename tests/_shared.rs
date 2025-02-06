@@ -1,6 +1,7 @@
+use syntastica::theme::THEME_KEYS;
 use tree_sitter::{Language, Query};
 
-pub fn validate_query(lang: Language, query: &str, kind: &str) {
+pub fn validate_query(lang: &Language, query: &str, kind: &str) {
     match Query::new(lang, query) {
         Ok(query) => {
             for predicate in
@@ -27,6 +28,29 @@ pub fn validate_query(lang: Language, query: &str, kind: &str) {
                     panic!("{kind} queries use unsupported predicate '{predicate_name}'");
                 }
             }
+            for name in query.capture_names() {
+                if !name.starts_with('_')
+                    && !THEME_KEYS.contains(name)
+                    && ![
+                        "injection.content",
+                        "injection.language",
+                        "content",
+                        "language",
+                        "combined",
+                        "local.scope",
+                        "local.reference",
+                        "local.definition",
+                        "scope",
+                        "reference",
+                        "definition",
+                    ]
+                    .contains(name)
+                    && !name.starts_with("local.definition.")
+                    && !name.starts_with("definition.")
+                {
+                    panic!("{kind} queries use unsupported capture name '{name}'");
+                }
+            }
         }
         Err(err) => {
             eprintln!("invalid {kind} queries: {err}");
@@ -39,7 +63,12 @@ pub fn validate_query(lang: Language, query: &str, kind: &str) {
                 .take(21);
             for (row, line) in context {
                 match row == err.row {
-                    true => eprintln!("--> {line}"),
+                    true => eprintln!(
+                        "--> {}\x1b[1;31m{}\x1b[0m{}",
+                        &line[..err.column],
+                        &line[err.column..(err.column + 10).min(line.len())],
+                        &line[(err.column + 10).min(line.len())..]
+                    ),
                     false => eprintln!("    {line}"),
                 }
             }

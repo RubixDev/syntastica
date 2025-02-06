@@ -80,10 +80,6 @@
 
 <img alt="github::dark_tritanopia" width="100%" src="https://github.com/RubixDev/syntastica/raw/main/syntastica-themes/assets/theme-svgs/github::dark_tritanopia.svg"></img>
 
-### `github::dimmed`
-
-<img alt="github::dimmed" width="100%" src="https://github.com/RubixDev/syntastica/raw/main/syntastica-themes/assets/theme-svgs/github::dimmed.svg"></img>
-
 ### `github::light`
 
 <img alt="github::light" width="100%" src="https://github.com/RubixDev/syntastica/raw/main/syntastica-themes/assets/theme-svgs/github::light.svg"></img>
@@ -111,26 +107,6 @@
 ### `gruvbox::light`
 
 <img alt="gruvbox::light" width="100%" src="https://github.com/RubixDev/syntastica/raw/main/syntastica-themes/assets/theme-svgs/gruvbox::light.svg"></img>
-
-### `material::darker`
-
-<img alt="material::darker" width="100%" src="https://github.com/RubixDev/syntastica/raw/main/syntastica-themes/assets/theme-svgs/material::darker.svg"></img>
-
-### `material::deep_ocean`
-
-<img alt="material::deep_ocean" width="100%" src="https://github.com/RubixDev/syntastica/raw/main/syntastica-themes/assets/theme-svgs/material::deep_ocean.svg"></img>
-
-### `material::lighter`
-
-<img alt="material::lighter" width="100%" src="https://github.com/RubixDev/syntastica/raw/main/syntastica-themes/assets/theme-svgs/material::lighter.svg"></img>
-
-### `material::oceanic`
-
-<img alt="material::oceanic" width="100%" src="https://github.com/RubixDev/syntastica/raw/main/syntastica-themes/assets/theme-svgs/material::oceanic.svg"></img>
-
-### `material::palenight`
-
-<img alt="material::palenight" width="100%" src="https://github.com/RubixDev/syntastica/raw/main/syntastica-themes/assets/theme-svgs/material::palenight.svg"></img>
 
 ### `melange::melange`
 

@@ -163,13 +163,6 @@ pub const JULIA_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_queries/
 pub const JULIA_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/julia/injections_crates_io.scm");
 pub const JULIA_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/julia/locals_crates_io.scm");
 
-pub const LATEX_HIGHLIGHTS: &str = include_str!("../generated_queries/latex/highlights.scm");
-pub const LATEX_INJECTIONS: &str = include_str!("../generated_queries/latex/injections.scm");
-pub const LATEX_LOCALS: &str = include_str!("../generated_queries/latex/locals.scm");
-pub const LATEX_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_queries/latex/highlights_crates_io.scm");
-pub const LATEX_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/latex/injections_crates_io.scm");
-pub const LATEX_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/latex/locals_crates_io.scm");
-
 pub const LLVM_HIGHLIGHTS: &str = include_str!("../generated_queries/llvm/highlights.scm");
 pub const LLVM_INJECTIONS: &str = include_str!("../generated_queries/llvm/injections.scm");
 pub const LLVM_LOCALS: &str = include_str!("../generated_queries/llvm/locals.scm");

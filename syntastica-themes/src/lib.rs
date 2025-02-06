@@ -22,7 +22,6 @@ pub mod everforest;
 pub mod falcon;
 pub mod github;
 pub mod gruvbox;
-pub mod material;
 pub mod melange;
 pub mod minimal;
 pub mod monochrome;
@@ -81,7 +80,6 @@ pub fn from_str(theme_name: impl AsRef<str>) -> Option<ResolvedTheme> {
         "github::dark_dimmed" => Some(github::dark_dimmed()),
         "github::dark_high_contrast" => Some(github::dark_high_contrast()),
         "github::dark_tritanopia" => Some(github::dark_tritanopia()),
-        "github::dimmed" => Some(github::dimmed()),
         "github::light" => Some(github::light()),
         "github::light_colorblind" => Some(github::light_colorblind()),
         "github::light_default" => Some(github::light_default()),
@@ -89,11 +87,6 @@ pub fn from_str(theme_name: impl AsRef<str>) -> Option<ResolvedTheme> {
         "github::light_tritanopia" => Some(github::light_tritanopia()),
         "gruvbox::dark" => Some(gruvbox::dark()),
         "gruvbox::light" => Some(gruvbox::light()),
-        "material::darker" => Some(material::darker()),
-        "material::deep_ocean" => Some(material::deep_ocean()),
-        "material::lighter" => Some(material::lighter()),
-        "material::oceanic" => Some(material::oceanic()),
-        "material::palenight" => Some(material::palenight()),
         "melange::melange" => Some(melange::melange()),
         "minimal::minimal" => Some(minimal::minimal()),
         "monochrome::monochrome" => Some(monochrome::monochrome()),
@@ -156,7 +149,6 @@ pub const THEMES: &[&str] = &[
     "github::dark_dimmed",
     "github::dark_high_contrast",
     "github::dark_tritanopia",
-    "github::dimmed",
     "github::light",
     "github::light_colorblind",
     "github::light_default",
@@ -164,11 +156,6 @@ pub const THEMES: &[&str] = &[
     "github::light_tritanopia",
     "gruvbox::dark",
     "gruvbox::light",
-    "material::darker",
-    "material::deep_ocean",
-    "material::lighter",
-    "material::oceanic",
-    "material::palenight",
     "melange::melange",
     "minimal::minimal",
     "monochrome::monochrome",

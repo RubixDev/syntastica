@@ -25,5 +25,6 @@ runtime-c2rust = ["dep:tree-sitter-c2rust"]
 tree-sitter = { workspace = true, optional = true }
 tree-sitter-c2rust = { workspace = true, optional = true }
 
-regex = "1.9.5"
+regex = "1.11.1"
 thiserror.workspace = true
+streaming-iterator = "0.1.9"

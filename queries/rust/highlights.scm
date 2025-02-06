@@ -1,6 +1,8 @@
 ;; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/rust/highlights.scm
 ;; Licensed under the Apache License 2.0
 ; Identifier conventions
+(shebang) @keyword.directive
+
 (identifier) @variable
 
 (
@@ -23,19 +25,23 @@
 
 (primitive_type) @type.builtin
 
-(field_identifier) @field
+(field_identifier) @variable.member
+
+(shorthand_field_identifier) @variable.member
 
 (shorthand_field_initializer
-  (identifier) @field
+  (identifier) @variable.member
 )
 
 (mod_item
-  name: (identifier) @namespace
+  name: (identifier) @module
 )
 
 (self) @variable.builtin
 
-(loop_label
+"_" @character.special
+
+(label
   [
     "'"
     (identifier)
@@ -52,11 +58,25 @@
 )
 
 (parameter
-  (identifier) @parameter
+  [
+    (identifier)
+    "_"
+  ] @variable.parameter
+)
+
+(parameter
+  (ref_pattern
+    [
+      (mut_pattern
+        (identifier) @variable.parameter
+      )
+      (identifier) @variable.parameter
+    ]
+  )
 )
 
 (closure_parameters
-  (_) @parameter
+  (_) @variable.parameter
 )
 
 ; Function calls
@@ -105,17 +125,17 @@
 
 ; Assume that uppercase names in paths are types
 (scoped_identifier
-  path: (identifier) @namespace
+  path: (identifier) @module
 )
 
 (scoped_identifier
   (scoped_identifier
-    name: (identifier) @namespace
+    name: (identifier) @module
   )
 )
 
 (scoped_type_identifier
-  path: (identifier) @namespace
+  path: (identifier) @module
 )
 
 (scoped_type_identifier
@@ -125,7 +145,7 @@
 
 (scoped_type_identifier
   (scoped_identifier
-    name: (identifier) @namespace
+    name: (identifier) @module
   )
 )
 
@@ -171,21 +191,21 @@
 [
   (crate)
   (super)
-] @namespace
+] @module
 
 (scoped_use_list
-  path: (identifier) @namespace
+  path: (identifier) @module
 )
 
 (scoped_use_list
   path: (scoped_identifier
-    (identifier) @namespace
+    (identifier) @module
   )
 )
 
 (use_list
   (scoped_identifier
-    (identifier) @namespace
+    (identifier) @module
     .
     (_)
   )
@@ -252,6 +272,12 @@
   )
 )
 
+(inner_attribute_item
+  (attribute
+    (identifier) @function.macro
+  )
+)
+
 (attribute
   (scoped_identifier
     (identifier) @function.macro
@@ -277,41 +303,11 @@
 )
 
 ; Literals
-[
-  (line_comment)
-  (block_comment)
-] @comment
-
-(
-  (line_comment) @comment.documentation
-  (#lua-match? @comment.documentation "^///[^/]")
-)
-
-(
-  (line_comment) @comment.documentation
-  (#lua-match? @comment.documentation "^///$")
-)
-
-(
-  (line_comment) @comment.documentation
-  (#lua-match? @comment.documentation "^//!")
-)
-
-(
-  (block_comment) @comment.documentation
-  (#lua-match? @comment.documentation "^/[*][*][^*].*[*]/$")
-)
-
-(
-  (block_comment) @comment.documentation
-  (#lua-match? @comment.documentation "^/[*][!]")
-)
-
 (boolean_literal) @boolean
 
 (integer_literal) @number
 
-(float_literal) @float
+(float_literal) @number.float
 
 [
   (raw_string_literal)
@@ -326,49 +322,59 @@
 [
   "use"
   "mod"
-] @include
+] @keyword.import
 
 (use_as_clause
-  "as" @include
+  "as" @keyword.import
 )
 
 [
   "default"
-  "enum"
   "impl"
   "let"
   "move"
-  "pub"
-  "struct"
-  "trait"
-  "type"
-  "union"
   "unsafe"
   "where"
 ] @keyword
 
 [
+  "enum"
+  "struct"
+  "union"
+  "trait"
+  "type"
+] @keyword.type
+
+[
   "async"
   "await"
+  "gen"
 ] @keyword.coroutine
+
+"try" @keyword.exception
 
 [
   "ref"
+  "pub"
+  "raw"
   (mutable_specifier)
-] @type.qualifier
-
-[
   "const"
   "static"
   "dyn"
   "extern"
-] @storageclass
+] @keyword.modifier
 
 (lifetime
-  [
-    "'"
-    (identifier)
-  ] @storageclass.lifetime
+  "'" @keyword.modifier
+)
+
+(lifetime
+  (identifier) @attribute
+)
+
+(lifetime
+  (identifier) @attribute.builtin
+  (#any-of? @attribute.builtin "static" "_")
 )
 
 "fn" @keyword.function
@@ -387,11 +393,11 @@
 )
 
 (use_list
-  (self) @namespace
+  (self) @module
 )
 
 (scoped_use_list
-  (self) @namespace
+  (self) @module
 )
 
 (scoped_identifier
@@ -399,7 +405,7 @@
     (crate)
     (super)
     (self)
-  ] @namespace
+  ] @module
 )
 
 (visibility_modifier
@@ -407,14 +413,14 @@
     (crate)
     (super)
     (self)
-  ] @namespace
+  ] @module
 )
 
 [
   "if"
   "else"
   "match"
-] @conditional
+] @keyword.conditional
 
 [
   "break"
@@ -422,12 +428,12 @@
   "in"
   "loop"
   "while"
-] @repeat
+] @keyword.repeat
 
 "for" @keyword
 
 (for_expression
-  "for" @repeat
+  "for" @keyword.repeat
 )
 
 ; Operators
@@ -447,6 +453,7 @@
   "-="
   ".."
   "..="
+  "..."
   "/"
   "/="
   "<"
@@ -467,6 +474,22 @@
   "|="
   "||"
 ] @operator
+
+(use_wildcard
+  "*" @character.special
+)
+
+(remaining_field_pattern
+  ".." @character.special
+)
+
+(range_pattern
+  [
+    ".."
+    "..="
+    "..."
+  ] @character.special
+)
 
 ; Punctuation
 [
@@ -535,24 +558,106 @@
   "!" @function.macro
 )
 
-(empty_type
+(never_type
   "!" @type.builtin
 )
 
 (macro_invocation
-  macro: (identifier) @exception
-  "!" @exception
-  (#eq? @exception "panic")
+  macro: (identifier) @_identifier @keyword.exception
+  "!" @keyword.exception
+  (#eq? @_identifier "panic")
 )
 
 (macro_invocation
-  macro: (identifier) @exception
-  "!" @exception
-  (#contains? @exception "assert")
+  macro: (identifier) @_identifier @keyword.exception
+  "!" @keyword.exception
+  (#contains? @_identifier "assert")
 )
 
 (macro_invocation
-  macro: (identifier) @debug
-  "!" @debug
-  (#eq? @debug "dbg")
+  macro: (identifier) @_identifier @keyword.debug
+  "!" @keyword.debug
+  (#eq? @_identifier "dbg")
+)
+
+; Comments
+[
+  (line_comment)
+  (block_comment)
+  (outer_doc_comment_marker)
+  (inner_doc_comment_marker)
+] @comment
+
+(line_comment
+  (doc_comment)
+) @comment.documentation
+
+(block_comment
+  (doc_comment)
+) @comment.documentation
+
+(call_expression
+  function: (scoped_identifier
+    path: (identifier) @_regex
+    (#any-of? @_regex "Regex" "ByteRegexBuilder")
+    name: (identifier) @_new
+    (#eq? @_new "new")
+  )
+  arguments: (arguments
+    (raw_string_literal
+      (string_content) @string.regexp
+    )
+  )
+)
+
+(call_expression
+  function: (scoped_identifier
+    path: (scoped_identifier
+      (identifier) @_regex
+      (#any-of? @_regex "Regex" "ByteRegexBuilder")
+      .
+    )
+    name: (identifier) @_new
+    (#eq? @_new "new")
+  )
+  arguments: (arguments
+    (raw_string_literal
+      (string_content) @string.regexp
+    )
+  )
+)
+
+(call_expression
+  function: (scoped_identifier
+    path: (identifier) @_regex
+    (#any-of? @_regex "RegexSet" "RegexSetBuilder")
+    name: (identifier) @_new
+    (#eq? @_new "new")
+  )
+  arguments: (arguments
+    (array_expression
+      (raw_string_literal
+        (string_content) @string.regexp
+      )
+    )
+  )
+)
+
+(call_expression
+  function: (scoped_identifier
+    path: (scoped_identifier
+      (identifier) @_regex
+      (#any-of? @_regex "RegexSet" "RegexSetBuilder")
+      .
+    )
+    name: (identifier) @_new
+    (#eq? @_new "new")
+  )
+  arguments: (arguments
+    (array_expression
+      (raw_string_literal
+        (string_content) @string.regexp
+      )
+    )
+  )
 )

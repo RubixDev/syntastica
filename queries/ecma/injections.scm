@@ -4,66 +4,91 @@
   (
     (comment) @_jsdoc_comment
     (#lua-match? @_jsdoc_comment "^/[*][*][^*].*[*]/$")
-  ) @jsdoc
+  ) @injection.content
+  (#set! injection.language "jsdoc")
 )
 
-(comment) @comment
-
-; html(`...`), html`...`, sql(...) etc
-(call_expression
-  function: (
-    (identifier) @language
-  )
-  arguments: [
-    (arguments
-      (template_string) @content
-    )
-    (template_string) @content
-  ]
-  (#offset! @content 0 1 0 -1)
-  (#not-eq? @language "svg")
-)
-
-; svg`...` or svg(`...`), which uses the html parser, so is not included in the previous query
-(call_expression
-  function: (
-    (identifier) @_name
-    (#eq? @_name "svg")
-  )
-  arguments: [
-    (arguments
-      (template_string) @html
-    )
-    (template_string) @html
-  ]
-  (#offset! @html 0 1 0 -1)
-)
-
-(call_expression
-  function: (
-    (identifier) @_name
-    (#eq? @_name "gql")
-  )
-  arguments: (
-    (template_string) @graphql
-    (#offset! @graphql 0 1 0 -1)
-  )
-)
-
-(call_expression
-  function: (
-    (identifier) @_name
-    (#eq? @_name "hbs")
-  )
-  arguments: (
-    (template_string) @glimmer
-    (#offset! @glimmer 0 1 0 -1)
-  )
-)
-
-; crates.io skip
 (
-  (glimmer_template) @glimmer
+  (comment) @injection.content
+  (#set! injection.language "comment")
+)
+
+; html(`...`), html`...`, sql(`...`), etc.
+(call_expression
+  function: (identifier) @injection.language
+  arguments: [
+    (arguments
+      (template_string) @injection.content
+    )
+    (template_string) @injection.content
+  ]
+  (#lua-match? @injection.language "^[a-zA-Z][a-zA-Z0-9]*$")
+  (#offset! @injection.content 0 1 0 -1)
+  (#set! injection.include-children)
+  ; Languages excluded from auto-injection due to special rules
+  ; - svg uses the html parser
+  ; - css uses the styled parser
+  (#not-any-of? @injection.language "svg" "css")
+)
+
+; svg`...` or svg(`...`)
+(call_expression
+  function: (identifier) @_name
+  (#eq? @_name "svg")
+  arguments: [
+    (arguments
+      (template_string) @injection.content
+    )
+    (template_string) @injection.content
+  ]
+  (#offset! @injection.content 0 1 0 -1)
+  (#set! injection.include-children)
+  (#set! injection.language "html")
+)
+
+; Vercel PostgreSQL
+; foo.sql`...` or foo.sql(`...`)
+(call_expression
+  function: (member_expression
+    property: (property_identifier) @injection.language
+  )
+  arguments: [
+    (arguments
+      (template_string) @injection.content
+    )
+    (template_string) @injection.content
+  ]
+  (#eq? @injection.language "sql")
+  (#offset! @injection.content 0 1 0 -1)
+  (#set! injection.include-children)
+)
+
+(call_expression
+  function: (identifier) @_name
+  (#eq? @_name "gql")
+  arguments: (template_string) @injection.content
+  (#offset! @injection.content 0 1 0 -1)
+  (#set! injection.include-children)
+  (#set! injection.language "graphql")
+)
+
+(call_expression
+  function: (identifier) @_name
+  (#eq? @_name "hbs")
+  arguments: (template_string) @injection.content
+  (#offset! @injection.content 0 1 0 -1)
+  (#set! injection.include-children)
+  (#set! injection.language "glimmer")
+)
+
+; css`<css>`, keyframes`<css>`
+(call_expression
+  function: (identifier) @_name
+  (#any-of? @_name "css" "keyframes")
+  arguments: (template_string) @injection.content
+  (#offset! @injection.content 0 1 0 -1)
+  (#set! injection.include-children)
+  (#set! injection.language "styled")
 )
 
 ; styled.div`<css>`
@@ -73,8 +98,10 @@
     (#eq? @_name "styled")
   )
   arguments: (
-    (template_string) @css
-    (#offset! @css 0 1 0 -1)
+    (template_string) @injection.content
+    (#offset! @injection.content 0 1 0 -1)
+    (#set! injection.include-children)
+    (#set! injection.language "styled")
   )
 )
 
@@ -85,8 +112,10 @@
     (#eq? @_name "styled")
   )
   arguments: (
-    (template_string) @css
-    (#offset! @css 0 1 0 -1)
+    (template_string) @injection.content
+    (#offset! @injection.content 0 1 0 -1)
+    (#set! injection.include-children)
+    (#set! injection.language "styled")
   )
 )
 
@@ -101,8 +130,10 @@
     )
   )
   arguments: (
-    (template_string) @css
-    (#offset! @css 0 1 0 -1)
+    (template_string) @injection.content
+    (#offset! @injection.content 0 1 0 -1)
+    (#set! injection.include-children)
+    (#set! injection.language "styled")
   )
 )
 
@@ -117,38 +148,137 @@
     )
   )
   arguments: (
-    (template_string) @css
-    (#offset! @css 0 1 0 -1)
+    (template_string) @injection.content
+    (#offset! @injection.content 0 1 0 -1)
+    (#set! injection.include-children)
+    (#set! injection.language "styled")
   )
 )
 
-(regex_pattern) @regex
+(
+  (regex_pattern) @injection.content
+  (#set! injection.language "regex")
+)
 
 ; ((comment) @_gql_comment
 ;   (#eq? @_gql_comment "/* GraphQL */")
-;   (template_string) @graphql)
+;   (template_string) @injection.content
+;   (#set! injection.language "graphql"))
 (
-  (template_string) @graphql
-  (#lua-match? @graphql "^`#graphql")
-  (#offset! @graphql 0 1 0 -1)
+  (template_string) @injection.content
+  (#lua-match? @injection.content "^`#graphql")
+  (#offset! @injection.content 0 1 0 -1)
+  (#set! injection.include-children)
+  (#set! injection.language "graphql")
 )
 
 ; el.innerHTML = `<html>`
 (assignment_expression
   left: (member_expression
     property: (property_identifier) @_prop
-    (#any-of? @_prop "innerHTML" "outerHTML")
+    (#any-of? @_prop "outerHTML" "innerHTML")
   )
-  right: (template_string) @html
-  (#offset! @html 0 1 0 -1)
+  right: (template_string) @injection.content
+  (#offset! @injection.content 0 1 0 -1)
+  (#set! injection.include-children)
+  (#set! injection.language "html")
 )
 
 ; el.innerHTML = '<html>'
 (assignment_expression
   left: (member_expression
     property: (property_identifier) @_prop
-    (#any-of? @_prop "innerHTML" "outerHTML")
+    (#any-of? @_prop "outerHTML" "innerHTML")
   )
-  right: (string) @html
-  (#offset! @html 0 1 0 -1)
+  right: (string
+    (string_fragment) @injection.content
+  )
+  (#set! injection.language "html")
+)
+
+;---- Angular injections -----
+; @Component({
+;   template: `<html>`
+; })
+(decorator
+  (call_expression
+    function: (
+      (identifier) @_name
+      (#eq? @_name "Component")
+    )
+    arguments: (arguments
+      (object
+        (pair
+          key: (
+            (property_identifier) @_prop
+            (#eq? @_prop "template")
+          )
+          value: (
+            (template_string) @injection.content
+            (#offset! @injection.content 0 1 0 -1)
+            (#set! injection.include-children)
+            (#set! injection.language "angular")
+          )
+        )
+      )
+    )
+  )
+)
+
+; @Component({
+;   styles: [`<css>`]
+; })
+(decorator
+  (call_expression
+    function: (
+      (identifier) @_name
+      (#eq? @_name "Component")
+    )
+    arguments: (arguments
+      (object
+        (pair
+          key: (
+            (property_identifier) @_prop
+            (#eq? @_prop "styles")
+          )
+          value: (array
+            (
+              (template_string) @injection.content
+              (#offset! @injection.content 0 1 0 -1)
+              (#set! injection.include-children)
+              (#set! injection.language "css")
+            )
+          )
+        )
+      )
+    )
+  )
+)
+
+; @Component({
+;   styles: `<css>`
+; })
+(decorator
+  (call_expression
+    function: (
+      (identifier) @_name
+      (#eq? @_name "Component")
+    )
+    arguments: (arguments
+      (object
+        (pair
+          key: (
+            (property_identifier) @_prop
+            (#eq? @_prop "styles")
+          )
+          value: (
+            (template_string) @injection.content
+            (#set! injection.include-children)
+            (#offset! @injection.content 0 1 0 -1)
+            (#set! injection.language "css")
+          )
+        )
+      )
+    )
+  )
 )

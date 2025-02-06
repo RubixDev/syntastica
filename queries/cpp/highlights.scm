@@ -2,38 +2,36 @@
 ;; Licensed under the Apache License 2.0
 ; inherits: c
 (
-  (identifier) @field
-  (#lua-match? @field "^m?_.*$")
+  (identifier) @variable.member
+  (#lua-match? @variable.member "^m_.*$")
 )
 
 (parameter_declaration
-  declarator: (reference_declarator) @parameter
+  declarator: (reference_declarator) @variable.parameter
 )
 
 ; function(Foo ...foo)
 (variadic_parameter_declaration
   declarator: (variadic_declarator
-    (_) @parameter
+    (_) @variable.parameter
   )
 )
 
 ; int foo = 0
 (optional_parameter_declaration
-  declarator: (_) @parameter
+  declarator: (_) @variable.parameter
 )
 
-;(field_expression) @parameter ;; How to highlight this?
+;(field_expression) @variable.parameter ;; How to highlight this?
 (
-  (
-    (field_expression
-      (field_identifier) @method
-    )
+  (field_expression
+    (field_identifier) @function.method
   ) @_parent
   (#has-parent? @_parent template_method function_declarator)
 )
 
 (field_declaration
-  (field_identifier) @field
+  (field_identifier) @variable.member
 )
 
 (field_initializer
@@ -41,7 +39,7 @@
 )
 
 (function_declarator
-  declarator: (field_identifier) @method
+  declarator: (field_identifier) @function.method
 )
 
 (concept_definition
@@ -54,11 +52,11 @@
 
 (auto) @type.builtin
 
-(namespace_identifier) @namespace
+(namespace_identifier) @module
 
 (
   (namespace_identifier) @type
-  (#lua-match? @type "^%u")
+  (#lua-match? @type "^[%u]")
 )
 
 (case_statement
@@ -76,11 +74,11 @@
   [
     (qualified_identifier)
     (identifier)
-  ] @namespace
+  ] @module
 )
 
 (destructor_name
-  (identifier) @method
+  (identifier) @function.method
 )
 
 ; functions
@@ -224,13 +222,13 @@
 ; methods
 (function_declarator
   (template_method
-    (field_identifier) @method
+    (field_identifier) @function.method
   )
 )
 
 (call_expression
   (field_expression
-    (field_identifier) @method.call
+    (field_identifier) @function.method.call
   )
 )
 
@@ -269,7 +267,7 @@
   (#lua-match? @constructor "^%u")
 )
 
-;; constructing a type in an initializer list: Constructor ():  **SuperType (1)**
+; constructing a type in an initializer list: Constructor ():  **SuperType (1)**
 (
   (field_initializer
     (field_identifier) @constructor
@@ -298,36 +296,39 @@
   "catch"
   "noexcept"
   "throw"
-] @exception
+] @keyword.exception
 
 [
-  "class"
   "decltype"
   "explicit"
   "friend"
-  "namespace"
   "override"
-  "template"
-  "typename"
   "using"
-  "concept"
   "requires"
+  "constexpr"
 ] @keyword
 
-["co_await"] @keyword.coroutine
+[
+  "class"
+  "namespace"
+  "template"
+  "typename"
+  "concept"
+] @keyword.type
 
 [
+  "co_await"
   "co_yield"
   "co_return"
-] @keyword.coroutine.return
+] @keyword.coroutine
 
 [
   "public"
   "private"
   "protected"
-  "virtual"
   "final"
-] @type.qualifier
+  "virtual"
+] @keyword.modifier
 
 [
   "new"

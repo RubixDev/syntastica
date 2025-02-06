@@ -69,6 +69,7 @@ class SubTheme:
         system_command = ["nvim", "--headless", "-c", self.activate_command, "-c", "lua require('nvim_extract')", "+qa"]
         output = subprocess.run(system_command, capture_output=True, text=True).stderr
         if "Error" in output:
+            print(output)
             raise Exception(f"Could not get colorscheme '{self}' from nvim, make sure you have nvim with the theme installed and are in the same directory as the lua script")
         return output
 
@@ -222,7 +223,6 @@ if __name__ == "__main__":
     # use('rockerBOO/boo-colorscheme-nvim')
     # use('yonlu/omni.vim')
     # use('ray-x/aurora')
-    # use('ray-x/starry.nvim')
     # use('shaunsingh/moonlight.nvim')
     # use('fenetikm/falcon')
     # use('savq/melange-nvim')
@@ -324,10 +324,6 @@ if __name__ == "__main__":
             SubTheme(
                 "light",
                 "colorscheme github_light"
-                ),
-            SubTheme(
-                "dimmed",
-                "colorscheme github_dimmed"
                 ),
             SubTheme(
                 "dark_dimmed",
@@ -451,29 +447,30 @@ if __name__ == "__main__":
                 ),
             ]
         ),
-        Theme("material", "https://github.com/marko-cerovac/material.nvim", [
-            SubTheme(
-                "darker",
-                "let g:material_style='darker' | colorscheme material"
-                ),
-            SubTheme(
-                "lighter",
-                "let g:material_style='lighter' | colorscheme material"
-                ),
-            SubTheme(
-                "oceanic",
-                "let g:material_style='oceanic' | colorscheme material"
-                ),
-            SubTheme(
-                "palenight",
-                "let g:material_style='palenight' | colorscheme material"
-                ),
-            SubTheme(
-                "deep_ocean",
-                "let g:material_style='deep ocean' | colorscheme material"
-                ),
-            ]
-        ),
+        # TODO: somehow doesn't work
+        # Theme("material", "https://github.com/marko-cerovac/material.nvim", [
+        #     SubTheme(
+        #         "darker",
+        #         "let g:material_style='darker' | colorscheme material"
+        #         ),
+        #     SubTheme(
+        #         "lighter",
+        #         "let g:material_style='lighter' | colorscheme material"
+        #         ),
+        #     SubTheme(
+        #         "oceanic",
+        #         "let g:material_style='oceanic' | colorscheme material"
+        #         ),
+        #     SubTheme(
+        #         "palenight",
+        #         "let g:material_style='palenight' | colorscheme material"
+        #         ),
+        #     SubTheme(
+        #         "deep_ocean",
+        #         "let g:material_style='deep ocean' | colorscheme material"
+        #         ),
+        #     ]
+        # ),
         Theme("nightfly", "https://github.com/bluz71/vim-nightfly-colors", [
             SubTheme(
                 "nightfly",

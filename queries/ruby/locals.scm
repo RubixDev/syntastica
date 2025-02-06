@@ -20,92 +20,92 @@
 ;; LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 ;; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 ;; SOFTWARE.
-;;; DECLARATIONS AND SCOPES
-(method) @scope
+; DECLARATIONS AND SCOPES
+(method) @local.scope
 
-(class) @scope
+(class) @local.scope
 
 [
   (block)
   (do_block)
-] @scope
+] @local.scope
 
-(identifier) @reference
+(identifier) @local.reference
 
-(constant) @reference
+(constant) @local.reference
 
-(instance_variable) @reference
+(instance_variable) @local.reference
 
 (module
-  name: (constant) @definition.namespace
+  name: (constant) @local.definition.namespace
 )
 
 (class
-  name: (constant) @definition.type
+  name: (constant) @local.definition.type
 )
 
 (method
   name: [
     (identifier)
     (constant)
-  ] @definition.function
+  ] @local.definition.function
 )
 
 (singleton_method
   name: [
     (identifier)
     (constant)
-  ] @definition.function
+  ] @local.definition.function
 )
 
 (method_parameters
-  (identifier) @definition.var
+  (identifier) @local.definition.var
 )
 
 (lambda_parameters
-  (identifier) @definition.var
+  (identifier) @local.definition.var
 )
 
 (block_parameters
-  (identifier) @definition.var
+  (identifier) @local.definition.var
 )
 
 (splat_parameter
-  (identifier) @definition.var
+  (identifier) @local.definition.var
 )
 
 (hash_splat_parameter
-  (identifier) @definition.var
+  (identifier) @local.definition.var
 )
 
 (optional_parameter
-  name: (identifier) @definition.var
+  name: (identifier) @local.definition.var
 )
 
 (destructured_parameter
-  (identifier) @definition.var
+  (identifier) @local.definition.var
 )
 
 (block_parameter
-  name: (identifier) @definition.var
+  name: (identifier) @local.definition.var
 )
 
 (keyword_parameter
-  name: (identifier) @definition.var
+  name: (identifier) @local.definition.var
 )
 
 (assignment
-  left: (_) @definition.var
+  left: (_) @local.definition.var
 )
 
 (left_assignment_list
-  (identifier) @definition.var
+  (identifier) @local.definition.var
 )
 
 (rest_assignment
-  (identifier) @definition.var
+  (identifier) @local.definition.var
 )
 
 (destructured_left_assignment
-  (identifier) @definition.var
+  (identifier) @local.definition.var
 )

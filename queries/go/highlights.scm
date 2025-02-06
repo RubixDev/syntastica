@@ -11,22 +11,17 @@
 
 (identifier) @variable
 
-(package_identifier) @namespace
+(package_identifier) @module
 
 (parameter_declaration
-  (identifier) @parameter
+  (identifier) @variable.parameter
 )
 
 (variadic_parameter_declaration
-  (identifier) @parameter
+  (identifier) @variable.parameter
 )
 
 (label_name) @label
-
-(
-  (identifier) @constant
-  (#eq? @constant "_")
-)
 
 (const_spec
   name: (identifier) @constant
@@ -39,7 +34,7 @@
 
 (call_expression
   function: (selector_expression
-    field: (field_identifier) @method.call
+    field: (field_identifier) @function.method.call
   )
 )
 
@@ -49,11 +44,11 @@
 )
 
 (method_declaration
-  name: (field_identifier) @method
+  name: (field_identifier) @function.method
 )
 
-(method_spec
-  name: (field_identifier) @method
+(method_elem
+  name: (field_identifier) @function.method
 )
 
 ; Constructors
@@ -111,7 +106,6 @@
   "|"
   "|="
   "||"
-  ; crates.io skip
   "~"
 ] @operator
 
@@ -123,14 +117,17 @@
   "default"
   "defer"
   "goto"
-  "interface"
   "range"
   "select"
-  "struct"
-  "type"
   "var"
   "fallthrough"
 ] @keyword
+
+[
+  "type"
+  "struct"
+  "interface"
+] @keyword.type
 
 "func" @keyword.function
 
@@ -138,21 +135,21 @@
 
 "go" @keyword.coroutine
 
-"for" @repeat
+"for" @keyword.repeat
 
 [
   "import"
   "package"
-] @include
+] @keyword.import
 
 [
   "else"
   "case"
   "switch"
   "if"
-] @conditional
+] @keyword.conditional
 
-;; Builtin types
+; Builtin types
 [
   "chan"
   "map"
@@ -187,7 +184,7 @@
   )
 )
 
-;; Builtin functions
+; Builtin functions
 (
   (identifier) @function.builtin
   (#any-of?
@@ -202,6 +199,8 @@
     "imag"
     "len"
     "make"
+    "max"
+    "min"
     "new"
     "panic"
     "print"
@@ -243,7 +242,7 @@
 
 (int_literal) @number
 
-(float_literal) @float
+(float_literal) @number.float
 
 (imaginary_literal) @number
 
@@ -260,18 +259,18 @@
 (keyed_element
   .
   (literal_element
-    (identifier) @field
+    (identifier) @variable.member
   )
 )
 
 (field_declaration
-  name: (field_identifier) @field
+  name: (field_identifier) @variable.member
 )
 
 ; Comments
 (comment) @comment
 
-;; Doc Comments
+; Doc Comments
 (source_file
   .
   (comment)+ @comment.documentation
@@ -301,5 +300,28 @@
   (var_declaration)
 )
 
-; Errors
-(ERROR) @error
+; Regex
+(call_expression
+  (selector_expression) @_function
+  (#any-of?
+    @_function
+    "regexp.Match"
+    "regexp.MatchReader"
+    "regexp.MatchString"
+    "regexp.Compile"
+    "regexp.CompilePOSIX"
+    "regexp.MustCompile"
+    "regexp.MustCompilePOSIX"
+  )
+  (argument_list
+    .
+    [
+      (raw_string_literal
+        (raw_string_literal_content) @string.regexp
+      )
+      (interpreted_string_literal
+        (interpreted_string_literal_content) @string.regexp
+      )
+    ]
+  )
+)

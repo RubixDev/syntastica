@@ -2,24 +2,26 @@
 ;; Licensed under the Apache License 2.0
 (tag_name) @tag
 
-(erroneous_end_tag_name) @error
-
+; (erroneous_end_tag_name) @error ; we do not lint syntax errors
 (comment) @comment
 
 (attribute_name) @tag.attribute
 
-(attribute
-  (quoted_attribute_value) @string
+(
+  (attribute
+    (quoted_attribute_value) @string
+  )
+  (#set! priority 99)
 )
 
-(text) @text
+(text) @none
 
 (
   (element
     (start_tag
       (tag_name) @_tag
     )
-    (text) @text.title
+    (text) @markup.heading
   )
   (#eq? @_tag "title")
 )
@@ -29,7 +31,7 @@
     (start_tag
       (tag_name) @_tag
     )
-    (text) @text.title.1
+    (text) @markup.heading.1
   )
   (#eq? @_tag "h1")
 )
@@ -39,7 +41,7 @@
     (start_tag
       (tag_name) @_tag
     )
-    (text) @text.title.2
+    (text) @markup.heading.2
   )
   (#eq? @_tag "h2")
 )
@@ -49,7 +51,7 @@
     (start_tag
       (tag_name) @_tag
     )
-    (text) @text.title.3
+    (text) @markup.heading.3
   )
   (#eq? @_tag "h3")
 )
@@ -59,7 +61,7 @@
     (start_tag
       (tag_name) @_tag
     )
-    (text) @text.title.4
+    (text) @markup.heading.4
   )
   (#eq? @_tag "h4")
 )
@@ -69,7 +71,7 @@
     (start_tag
       (tag_name) @_tag
     )
-    (text) @text.title.5
+    (text) @markup.heading.5
   )
   (#eq? @_tag "h5")
 )
@@ -79,7 +81,7 @@
     (start_tag
       (tag_name) @_tag
     )
-    (text) @text.title.6
+    (text) @markup.heading.6
   )
   (#eq? @_tag "h6")
 )
@@ -89,7 +91,7 @@
     (start_tag
       (tag_name) @_tag
     )
-    (text) @text.strong
+    (text) @markup.strong
   )
   (#any-of? @_tag "strong" "b")
 )
@@ -99,7 +101,7 @@
     (start_tag
       (tag_name) @_tag
     )
-    (text) @text.emphasis
+    (text) @markup.italic
   )
   (#any-of? @_tag "em" "i")
 )
@@ -109,7 +111,7 @@
     (start_tag
       (tag_name) @_tag
     )
-    (text) @text.strike
+    (text) @markup.strikethrough
   )
   (#any-of? @_tag "s" "del")
 )
@@ -119,7 +121,7 @@
     (start_tag
       (tag_name) @_tag
     )
-    (text) @text.underline
+    (text) @markup.underline
   )
   (#eq? @_tag "u")
 )
@@ -129,7 +131,7 @@
     (start_tag
       (tag_name) @_tag
     )
-    (text) @text.literal
+    (text) @markup.raw
   )
   (#any-of? @_tag "code" "kbd")
 )
@@ -139,7 +141,7 @@
     (start_tag
       (tag_name) @_tag
     )
-    (text) @text.uri
+    (text) @markup.link.label
   )
   (#eq? @_tag "a")
 )
@@ -148,7 +150,7 @@
   (attribute
     (attribute_name) @_attr
     (quoted_attribute_value
-      (attribute_value) @text.uri
+      (attribute_value) @string.special.url
     )
   )
   (#any-of? @_attr "href" "src")

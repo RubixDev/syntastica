@@ -159,7 +159,7 @@ fn process(
         func(&mut new_queries);
     }
     new_queries = ungroup_root_level_captures(new_queries);
-    let new_queries = format!("{new_queries}");
+    let new_queries = format!("{new_queries:}");
 
     Ok(new_queries)
 }
@@ -204,7 +204,7 @@ fn group_root_level_captures(queries: OwnedSexprs) -> OwnedSexprs {
     let mut iter = queries.into_iter().peekable();
 
     while let Some(sexpr) = iter.next() {
-        // groups start with `List`, `Group`, `String`, or `Comment` nodes
+        // groups start with `List`, `Group`, or `String` nodes
         if let OwnedSexpr::List(_) | OwnedSexpr::Group(_) | OwnedSexpr::String(_) = sexpr {
             let mut group = OwnedSexprs::from(vec![sexpr]);
             // and include all following `Atom` nodes
@@ -231,18 +231,18 @@ fn ungroup_root_level_captures(queries: OwnedSexprs) -> OwnedSexprs {
         match query {
             // remove empty groups
             OwnedSexpr::List(list) if list.is_empty() => {}
+            // list doesn't start with an atom, and contains at most one list or group or starts
+            // with a string
             OwnedSexpr::List(list)
-                if list
-                    .first()
-                    .map_or(false, |sexpr| !matches!(sexpr, OwnedSexpr::Atom(_)))
-                    && list
-                        .iter()
-                        .filter(|sexpr| matches!(sexpr, OwnedSexpr::List(_) | OwnedSexpr::Group(_)))
-                        .count()
-                        <= 1 - list
-                            .first()
-                            .map_or(false, |sexpr| matches!(sexpr, OwnedSexpr::String(_)))
-                            as usize =>
+                if list.first().map_or(false, |sexpr| {
+                    matches!(
+                        sexpr,
+                        OwnedSexpr::List(_) | OwnedSexpr::Group(_) | OwnedSexpr::String(_)
+                    )
+                }) && list
+                    .iter()
+                    .skip(1)
+                    .all(|sexpr| matches!(sexpr, OwnedSexpr::Atom(_))) =>
             {
                 new_queries.extend(list);
             }
@@ -291,10 +291,11 @@ fn replace_locals_captures(tree: &mut OwnedSexpr) {
             b"@scope" => *atom = b"@local.scope".to_vec(),
             b"@reference" => *atom = b"@local.reference".to_vec(),
             other => {
-                if let Some("@definition") = std::str::from_utf8(other)
-                    .ok()
-                    .and_then(|str| str.split('.').next())
-                {
+                if std::str::from_utf8(other).is_ok_and(|str| {
+                    str == "@definition"
+                        || str.starts_with("@definition.")
+                        || str.starts_with("@local.definition.")
+                }) {
                     *atom = b"@local.definition".to_vec()
                 }
             }
@@ -377,7 +378,6 @@ fn replace_injection_captures(
 }
 
 fn _process_highlights(queries: &mut OwnedSexprs) {
-    queries.reverse();
     for query in queries {
         replace_predicates(query);
     }
@@ -404,14 +404,24 @@ fn replace_predicates(tree: &mut OwnedSexpr) {
                         list[0] = match_predicate;
                         list[2] = OwnedSexpr::String(
                             format!(
-                                    "^({})$",
-                                    list[2..]
-                                        .iter()
-                                        .map(|arg| std::str::from_utf8(arg.unwrap_string_ref())
-                                            .unwrap())
-                                        .collect::<Vec<_>>()
-                                        .join("|")
-                                )
+                                "^({})$",
+                                list[2..]
+                                    .iter()
+                                    .map(|arg| std::str::from_utf8(arg.unwrap_string_ref())
+                                        .unwrap()
+                                        .chars()
+                                        .fold(String::new(), |mut out, char| {
+                                            const SPECIAL_CHARS: &str = "\\.()[]{}|*+?^$/";
+
+                                            match SPECIAL_CHARS.contains(char) {
+                                                true => _ = write!(out, "\\{char}"),
+                                                false => _ = write!(out, "{char}"),
+                                            }
+                                            out
+                                        }))
+                                    .collect::<Vec<_>>()
+                                    .join("|")
+                            )
                             .into_bytes(),
                         );
                         list.truncate(3);
