@@ -5,13 +5,13 @@ use std::{
 };
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    println!("cargo:rerun-if-env-changed=SYNTASTICA_PARSERS_CLONE_DIR");
-    println!("cargo:rerun-if-env-changed=SYNTASTICA_PARSERS_CACHE_DIR");
+    println!("cargo::rerun-if-env-changed=SYNTASTICA_PARSERS_CLONE_DIR");
+    println!("cargo::rerun-if-env-changed=SYNTASTICA_PARSERS_CACHE_DIR");
     if let Ok(dir) = env::var("SYNTASTICA_PARSERS_CLONE_DIR") {
-        println!("cargo:rerun-if-changed={dir}")
+        println!("cargo::rerun-if-changed={dir}")
     }
     if let Ok(dir) = env::var("SYNTASTICA_PARSERS_CACHE_DIR") {
-        println!("cargo:rerun-if-changed={dir}")
+        println!("cargo::rerun-if-changed={dir}")
     }
 
     if !(cfg!(feature = "docs") && env::var("DOCS_RS").is_ok()) {
@@ -27,9 +27,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             rustc_version::Channel::Beta => "CHANNEL_BETA",
             rustc_version::Channel::Stable => "CHANNEL_STABLE",
         };
-        println!("cargo:rustc-cfg={channel}");
+        println!("cargo::rustc-cfg={channel}");
     }
-    println!("cargo:rerun-if-changed=build.rs");
+    println!("cargo::rerun-if-changed=build.rs");
 
     Ok(())
 }
@@ -90,13 +90,13 @@ fn compile_parser(
                     .join(&cpp_lib_filename)
                     .is_file())
         {
-            println!("cargo:rustc-link-lib=static={c_lib_name}");
+            println!("cargo::rustc-link-lib=static={c_lib_name}");
             if external_cpp {
-                println!("cargo:rustc-link-lib=static={cpp_lib_name}");
-                println!("cargo:rustc-link-lib=stdc++");
+                println!("cargo::rustc-link-lib=static={cpp_lib_name}");
+                println!("cargo::rustc-link-lib=stdc++");
             }
             println!(
-                "cargo:rustc-link-search=native={}",
+                "cargo::rustc-link-search=native={}",
                 Path::new(&dir).join(&target).canonicalize()?.display()
             );
             return Ok(());
@@ -138,13 +138,13 @@ fn compile_parser(
     if external_c {
         let scanner_path = src_dir.join("scanner.c");
         c_config.file(&scanner_path);
-        println!("cargo:rerun-if-changed={}", scanner_path.to_str().unwrap());
+        println!("cargo::rerun-if-changed={}", scanner_path.to_str().unwrap());
     }
 
     #[cfg(feature = "runtime-c2rust")]
     tree_sitter_wasm_build_tool::add_wasm_headers(&mut c_config).unwrap();
 
-    println!("cargo:rerun-if-changed={}", parser_path.to_str().unwrap());
+    println!("cargo::rerun-if-changed={}", parser_path.to_str().unwrap());
     c_config.compile(&c_lib_name);
     println!("finished building parser for {name}");
 
@@ -168,7 +168,7 @@ fn compile_parser(
             .flag_if_supported("-w");
         let scanner_path = src_dir.join("scanner.cc");
         cpp_config.file(&scanner_path);
-        println!("cargo:rerun-if-changed={}", scanner_path.to_str().unwrap());
+        println!("cargo::rerun-if-changed={}", scanner_path.to_str().unwrap());
         cpp_config.compile(&cpp_lib_name);
         println!("finished building cpp scanner for {name}");
 

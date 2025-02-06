@@ -2,7 +2,7 @@
 #![warn(rust_2018_idioms)]
 #![deny(missing_docs)]
 
-use std::fs;
+use std::{fmt::Write as _, fs};
 
 use lazy_regex::regex_replace_all;
 use rsexpr::{OwnedSexpr, OwnedSexprs};
@@ -190,10 +190,10 @@ fn read_queries(base_dir: &str, lang_name: &str, filename: &str) -> String {
         r";+\s*inherits\s*:?\s*([a-z_,()-]+)\s*",
         &queries,
         |_, langs: &str| {
-            langs
-                .split(',')
-                .map(|lang| format!("\n{}\n", read_queries(base_dir, lang.trim(), filename)))
-                .collect::<String>()
+            langs.split(',').fold(String::new(), |mut out, lang| {
+                _ = write!(out, "\n{}\n", read_queries(base_dir, lang.trim(), filename));
+                out
+            })
         }
     )
     .into_owned()
@@ -291,12 +291,11 @@ fn replace_locals_captures(tree: &mut OwnedSexpr) {
             b"@scope" => *atom = b"@local.scope".to_vec(),
             b"@reference" => *atom = b"@local.reference".to_vec(),
             other => {
-                match std::str::from_utf8(other)
+                if let Some("@definition") = std::str::from_utf8(other)
                     .ok()
                     .and_then(|str| str.split('.').next())
                 {
-                    Some("@definition") => *atom = b"@local.definition".to_vec(),
-                    Some(_) | None => {}
+                    *atom = b"@local.definition".to_vec()
                 }
             }
         },

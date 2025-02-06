@@ -9,8 +9,6 @@ license.workspace = true
 repository.workspace = true
 description = "A crate to easily allow tree-sitter parsers to compile to Rust's `wasm32-unknown-unknown` target"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
 cc.workspace = true
 

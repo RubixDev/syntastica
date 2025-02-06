@@ -8,12 +8,12 @@ fn main() {
             rustc_version::Channel::Beta => "CHANNEL_BETA",
             rustc_version::Channel::Stable => "CHANNEL_STABLE",
         };
-        println!("cargo:rustc-cfg={channel}");
+        println!("cargo::rustc-cfg={channel}");
     }
 
-    println!("cargo:rerun-if-changed=build.rs");
+    println!("cargo::rerun-if-changed=build.rs");
     println!(
-        "cargo:rustc-env=BUILD_TARGET={}",
+        "cargo::rustc-env=BUILD_TARGET={}",
         std::env::var("TARGET").unwrap()
     );
 }

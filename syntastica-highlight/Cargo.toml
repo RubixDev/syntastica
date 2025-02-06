@@ -8,8 +8,6 @@ license = "MIT"
 repository.workspace = true
 description = "Stripped-down and slightly modified fork of tree-sitter-highlight for use by syntastica"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [features]
 #! ## Features
 default = ["runtime-c"]

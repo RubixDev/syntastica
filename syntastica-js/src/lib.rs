@@ -1,5 +1,6 @@
 #![doc = include_str!("../README.md")]
 #![warn(rust_2018_idioms, missing_docs)]
+#![allow(static_mut_refs)]
 
 use std::{
     ffi::{c_char, CStr, CString},

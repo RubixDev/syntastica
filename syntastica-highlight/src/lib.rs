@@ -9,7 +9,7 @@ use tree_sitter as ts_runtime;
 use tree_sitter_c2rust as ts_runtime;
 
 use std::sync::atomic::{AtomicUsize, Ordering};
-use std::{iter, mem, ops, str, usize};
+use std::{iter, mem, ops, str};
 use thiserror::Error;
 use ts_runtime::{
     Language, Node, Parser, Point, Query, QueryCaptures, QueryCursor, QueryError, QueryMatch,
@@ -432,9 +432,9 @@ impl<'a> HighlightIterLayer<'a> {
                 // The `captures` iterator borrows the `Tree` and the `QueryCursor`, which
                 // prevents them from being moved. But both of these values are really just
                 // pointers, so it's actually ok to move them.
-                let tree_ref = unsafe { mem::transmute::<_, &'static Tree>(&tree) };
+                let tree_ref = unsafe { mem::transmute::<&Tree, &'static Tree>(&tree) };
                 let cursor_ref =
-                    unsafe { mem::transmute::<_, &'static mut QueryCursor>(&mut cursor) };
+                    unsafe { mem::transmute::<&mut QueryCursor, &'static mut QueryCursor>(&mut cursor) };
                 let captures = cursor_ref
                     .captures(&config.query, tree_ref.root_node(), source)
                     .peekable();
@@ -472,7 +472,7 @@ impl<'a> HighlightIterLayer<'a> {
         let mut cursor = QueryCursor::new();
 
         // `QueryCursor` is really just a pointer, so it's ok to move.
-        let cursor_ref = unsafe { mem::transmute::<_, &'static mut QueryCursor>(&mut cursor) };
+        let cursor_ref = unsafe { mem::transmute::<&mut QueryCursor, &'static mut QueryCursor>(&mut cursor) };
         let captures = cursor_ref.captures(&config.query, *node, source).peekable();
 
         HighlightIterLayer {

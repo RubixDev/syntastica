@@ -1,4 +1,4 @@
-use std::fmt::{self, Display, Formatter};
+use std::fmt::{self, Display, Formatter, Write as _};
 
 use crate::{OwnedSexpr, OwnedSexprs, Sexpr, Sexprs};
 
@@ -54,10 +54,10 @@ impl Display for Sexpr<'_> {
                         _ => ('[', ']'),
                     };
 
-                    let children = children
-                        .iter()
-                        .map(|child| format!("{child}"))
-                        .collect::<String>();
+                    let children = children.iter().fold(String::new(), |mut out, child| {
+                        _ = write!(out, "{child}");
+                        out
+                    });
 
                     write!(
                         f,

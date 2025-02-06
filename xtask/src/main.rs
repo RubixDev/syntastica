@@ -39,7 +39,7 @@ fn main() {
 }
 
 fn try_main() -> Result<()> {
-    match env::args().nth(1).unwrap_or(String::new()).as_str() {
+    match env::args().nth(1).unwrap_or_default().as_str() {
         "--help" | "-h" | "" => println!(
             "{}",
             r###"

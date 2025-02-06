@@ -56,6 +56,12 @@ tft = { version = "0.1.1", default-features = false }
 thiserror = "1.0.48"
 toml = "0.8.0"
 
+[workspace.lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(CHANNEL_NIGHTLY)'] }
+
+[workspace.lints.clippy]
+four_forward_slashes = "allow"
+
 # optimize wasm for small code size
 [profile.release-wasm]
 inherits = "release"
@@ -73,7 +79,8 @@ license.workspace = true
 repository.workspace = true
 description = "Modern and easy syntax highlighting using tree-sitter"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lints]
+workspace = true
 
 [features]
 #! ## Features

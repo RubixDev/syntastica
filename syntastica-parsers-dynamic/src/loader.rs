@@ -54,7 +54,7 @@ const BUILD_TARGET: &str = env!("BUILD_TARGET");
 
 pub struct LanguageConfiguration<'a> {
     pub scope: Option<String>,
-    pub content_regex: Option<Regex>,
+    pub _content_regex: Option<Regex>,
     pub _first_line_regex: Option<Regex>,
     pub injection_regex: Option<Regex>,
     pub file_types: Vec<String>,
@@ -62,7 +62,7 @@ pub struct LanguageConfiguration<'a> {
     pub highlights_filenames: Option<Vec<String>>,
     pub injections_filenames: Option<Vec<String>>,
     pub locals_filenames: Option<Vec<String>>,
-    pub tags_filenames: Option<Vec<String>>,
+    pub _tags_filenames: Option<Vec<String>>,
     language_id: usize,
     highlight_config: OnceCell<Option<&'static HighlightConfiguration>>,
     highlight_names: &'a Mutex<Vec<String>>,
@@ -257,7 +257,7 @@ impl Loader {
                 let src_path = path.join("src");
                 self.load_language_at_path(&src_path, &src_path)
             })
-            .map(|l| *l)
+            .copied()
     }
 
     pub fn load_language_at_path(&self, src_path: &Path, header_path: &Path) -> Result<Language> {
@@ -450,7 +450,7 @@ impl Loader {
 
         let initial_language_configuration_count = self.language_configurations.len();
 
-        if let Ok(package_json_contents) = fs::read_to_string(&parser_path.join("package.json")) {
+        if let Ok(package_json_contents) = fs::read_to_string(parser_path.join("package.json")) {
             let package_json = serde_json::from_str::<PackageJSON>(&package_json_contents);
             if let Ok(package_json) = package_json {
                 let language_count = self.languages_by_id.len();
@@ -481,12 +481,12 @@ impl Loader {
                         scope: config_json.scope,
                         language_id,
                         file_types: config_json.file_types.unwrap_or(Vec::new()),
-                        content_regex: Self::regex(config_json.content_regex),
+                        _content_regex: Self::regex(config_json.content_regex),
                         _first_line_regex: Self::regex(config_json.first_line_regex),
                         injection_regex: Self::regex(config_json.injection_regex),
                         injections_filenames: config_json.injections.into_vec(),
                         locals_filenames: config_json.locals.into_vec(),
-                        tags_filenames: config_json.tags.into_vec(),
+                        _tags_filenames: config_json.tags.into_vec(),
                         highlights_filenames: config_json.highlights.into_vec(),
                         highlight_config: OnceCell::new(),
                         highlight_names: &self.highlight_names,
@@ -496,12 +496,15 @@ impl Loader {
                     for file_type in &configuration.file_types {
                         self.language_configuration_ids_by_file_type
                             .entry(file_type.to_string())
-                            .or_insert(Vec::new())
+                            .or_default()
                             .push(self.language_configurations.len());
                     }
 
-                    self.language_configurations
-                        .push(unsafe { mem::transmute(configuration) });
+                    self.language_configurations.push(unsafe {
+                        mem::transmute::<LanguageConfiguration<'_>, LanguageConfiguration<'static>>(
+                            configuration,
+                        )
+                    });
                 }
             }
         }
@@ -514,19 +517,22 @@ impl Loader {
                 language_id: self.languages_by_id.len(),
                 file_types: Vec::new(),
                 scope: None,
-                content_regex: None,
+                _content_regex: None,
                 _first_line_regex: None,
                 injection_regex: None,
                 injections_filenames: None,
                 locals_filenames: None,
                 highlights_filenames: None,
-                tags_filenames: None,
+                _tags_filenames: None,
                 highlight_config: OnceCell::new(),
                 highlight_names: &self.highlight_names,
                 use_all_highlight_names: self.use_all_highlight_names,
             };
-            self.language_configurations
-                .push(unsafe { mem::transmute(configuration) });
+            self.language_configurations.push(unsafe {
+                mem::transmute::<LanguageConfiguration<'_>, LanguageConfiguration<'static>>(
+                    configuration,
+                )
+            });
             self.languages_by_id
                 .push((parser_path.to_owned(), OnceCell::new()));
         }
@@ -539,13 +545,12 @@ impl Loader {
     }
 }
 
-impl<'a> LanguageConfiguration<'a> {
+impl LanguageConfiguration<'_> {
     pub fn highlight_config(
         &self,
         language: Language,
     ) -> Result<Option<&'static HighlightConfiguration>> {
-        return self
-            .highlight_config
+        self.highlight_config
             .get_or_try_init(|| {
                 let (highlights_query, highlight_ranges) =
                     self.read_queries(&self.highlights_filenames, "highlights.scm")?;
@@ -603,7 +608,7 @@ impl<'a> LanguageConfiguration<'a> {
                     Ok(Some(result_ref))
                 }
             })
-            .copied();
+            .copied()
     }
 
     fn include_path_in_query_error(

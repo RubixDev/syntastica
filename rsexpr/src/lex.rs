@@ -17,9 +17,9 @@ pub(crate) enum Token<'src> {
     Comment(&'src [u8]),
 }
 
-const WHITESPACE: &[u8] = &[b' ', b'\t', b'\r', b'\n'];
-const LINE_BREAKS: &[u8] = &[b'\r', b'\n'];
-const NOT_IN_ATOM: &[u8] = &[b'(', b')', b'[', b']', b'"'];
+const WHITESPACE: &[u8] = b" \t\r\n";
+const LINE_BREAKS: &[u8] = b"\r\n";
+const NOT_IN_ATOM: &[u8] = b"()[]\"";
 
 pub(crate) fn lex(input: &[u8]) -> Vec<Token<'_>> {
     let mut index = 0;

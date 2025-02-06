@@ -339,7 +339,7 @@ impl From<Sexpr<'_>> for OwnedSexpr {
 // Method implementations //
 ////////////////////////////
 
-impl<'src> Sexprs<'src> {
+impl Sexprs<'_> {
     /// Create a new, empty list of [`Sexpr`]s
     pub fn new() -> Self {
         Self(vec![])

@@ -8,8 +8,6 @@ license.workspace = true
 repository.workspace = true
 description = "Use syntastica from JavaScript"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
 syntastica.workspace = true
 syntastica-parsers-git = { workspace = true, features = ["all"] }
