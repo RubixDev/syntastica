@@ -54,12 +54,17 @@ a good overview.
 ### Parser collections
 
 The main `syntastica` crate provides no tree-sitter parsers and queries by
-itself. However, the project does provide three different parser collections
-with different advantages and drawbacks each. All three collections depend on
+itself. However, the project does provide four different parser collections with
+different advantages and drawbacks each. Three of them depend on
 [`syntastica-queries`](#syntastica-queries) for the tree-sitter queries. Choose
 one, and add it as a dependency next to `syntastica` itself.
 
-All three parser collections also provide the same public API and provide
+The odd one out here is
+[`syntastica-parsers-dynamic`](https://crates.io/crates/syntastica-parsers-dynamic),
+which unlike the others doesn't actually include any parsers but instead
+provides an interface to load them during runtime.
+
+The other three parser collections all provide the same public API and have
 features for all supported languages, as well as the three feature groups
 `some`, `most`, and `all`. Take a look at the respective crate documentation for
 more information.
@@ -75,15 +80,15 @@ collections, one approach is shown in the
   get published to crates.io, and those that are, are usually very outdated.
   Thus, this collection is relatively limited.
 - <a name="syntastica-parsers-git" href="https://crates.io/crates/syntastica-parsers-git"><code>syntastica-parsers-git</code></a>
-  is probably the best choice overall. It contains all supported languages, and
-  [when WebAssembly compilation will be supported](#todo), this will be the
-  collection to use. It pulls pinned revisions of parser git repositories in the
-  build script and links to the C and C++ parser sources. As such, it does not
-  depend on the upstream parsers to have up-to-date Rust bindings. However, this
-  way of fetching the parsers requires the `git` command to be accessible and
-  internet access during compilation, which may not be desirable. Additionally,
-  compilation can take very long, because there is no clean way to cache the
-  fetched repositories between builds.
+  is probably the best choice overall. It contains all supported languages and
+  is the only choice when targeting WebAssembly. It pulls pinned revisions of
+  parser git repositories in the build script and links to the C and C++ parser
+  sources. As such, it does not depend on the upstream parsers to have
+  up-to-date Rust bindings. However, this way of fetching the parsers requires
+  the `git` command to be accessible and internet access during compilation,
+  which may not be desirable. Additionally, compilation can take very long
+  unless you manually specify a cache directory that can be reused between
+  builds. See the crate's docs for more information on that.
 - [`syntastica-parsers-gitdep`](https://github.com/RubixDev/syntastica/tree/main/syntastica-parsers-gitdep)
   is a mix of both of the above. It uses cargo git dependencies to fetch the
   parser repositories and depends on a remote Rust binding (which is why not
@@ -92,8 +97,15 @@ collections, one approach is shown in the
   crates.io (namely the parsers). This means, to use it you must also depend on
   it using a git dependency, which in turn forbids your crate to be published on
   crates.io. Unlike [`syntastica-parsers-git`](#syntastica-parsers-git) however,
-  the parsers only need to be fetched once by cargo, and following builds will
+  the parsers only need to be fetched once by cargo, and subsequent builds will
   be much faster.
+- [`syntastica-parsers-dynamic`](https://crates.io/crates/syntastica-parsers-dynamic)
+  doesn't include any parsers by itself but instead provides a
+  [`LanguageSet`](language_set::LanguageSet) implementation that can find and
+  load parsers at runtime. This allows for behavior similar to what the
+  tree-sitter CLI does, and opens up more possibilities for end-users, but also
+  places more responsibilities on them, as the appropriate queries also need to
+  be provided manually.
 
 ### Theme collection
 
