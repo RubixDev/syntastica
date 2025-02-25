@@ -9,7 +9,7 @@ const EMSCRIPTEN_FLAGS: &[&str] = &[
 ];
 
 fn main() {
-    if env::var("TARGET").map_or(false, |s| s == "wasm32-unknown-emscripten") {
+    if env::var("TARGET").is_ok_and(|s| s == "wasm32-unknown-emscripten") {
         for flag in EMSCRIPTEN_FLAGS {
             println!("cargo:rustc-link-arg={flag}");
         }

@@ -234,7 +234,7 @@ fn ungroup_root_level_captures(queries: OwnedSexprs) -> OwnedSexprs {
             // list doesn't start with an atom, and contains at most one list or group or starts
             // with a string
             OwnedSexpr::List(list)
-                if list.first().map_or(false, |sexpr| {
+                if list.first().is_some_and(|sexpr| {
                     matches!(
                         sexpr,
                         OwnedSexpr::List(_) | OwnedSexpr::Group(_) | OwnedSexpr::String(_)

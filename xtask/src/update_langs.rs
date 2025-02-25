@@ -25,14 +25,14 @@ pub fn run() -> Result<()> {
                 Some(path) => format!("/{path}"),
                 None => String::new(),
             };
-            let external_c = content_url.as_ref().map_or(false, |url| {
+            let external_c = content_url.as_ref().is_some_and(|url| {
                 reqwest::blocking::get(format!("{url}{path_in_url}/src/scanner.c"))
-                    .map_or(false, |response| response.status().is_success())
+                    .is_ok_and(|response| response.status().is_success())
             });
             println!("external C: {external_c}");
-            let external_cpp = content_url.as_ref().map_or(false, |url| {
+            let external_cpp = content_url.as_ref().is_some_and(|url| {
                 reqwest::blocking::get(format!("{url}{path_in_url}/src/scanner.cc"))
-                    .map_or(false, |response| response.status().is_success())
+                    .is_ok_and(|response| response.status().is_success())
             });
             println!("external C++: {external_cpp}");
 
