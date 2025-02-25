@@ -83,12 +83,12 @@ use crate::Highlights;
 ///     ]]
 /// );
 /// ```
-pub struct Processor<'set, Set: LanguageSet> {
+pub struct Processor<'set, Set: LanguageSet<'set>> {
     set: &'set Set,
     highlighter: Highlighter,
 }
 
-impl<'set, Set: LanguageSet> Processor<'set, Set> {
+impl<'set, Set: LanguageSet<'set>> Processor<'set, Set> {
     /// Create a new [`Processor`] given a [`LanguageSet`].
     ///
     /// See [the type documentation](Processor) for other means of instantiation and an example.
@@ -237,17 +237,17 @@ impl<'set, Set: LanguageSet> Processor<'set, Set> {
         let injection_callback = |lang_name: &str| {
             let lang_name = lang_name.to_ascii_lowercase();
             // if `lang_name` is a supported language in the set, use that
-            Set::Language::for_name(&lang_name)
+            Set::Language::for_name(&lang_name, self.set)
                 .ok()
                 // else if `for_injection` returns a name, try getting a language for that name
-                .or_else(|| Set::Language::for_injection(&lang_name))
+                .or_else(|| Set::Language::for_injection(&lang_name, self.set))
                 // else, `lang_name` might be a mimetype like `application/json`, so try both again
                 // with the text after the last `/`
                 .or_else(|| {
                     lang_name.rsplit_once('/').and_then(|(_, name)| {
-                        Set::Language::for_name(name)
+                        Set::Language::for_name(name, self.set)
                             .ok()
-                            .or_else(|| Set::Language::for_injection(name))
+                            .or_else(|| Set::Language::for_injection(name, self.set))
                     })
                 })
                 .and_then(|lang| self.set.get_language(lang).ok())

@@ -393,7 +393,7 @@ let output = syntastica::highlight(
     // the `SupportedLanguage` trait provides a `for_file_type` function
     // which returns an `Option<Lang>`
     // make sure to have the trait in scope
-    Lang::for_file_type(ft).unwrap(),
+    Lang::for_file_type(ft, &()).unwrap(),
     &language_set,
     &mut TerminalRenderer::new(None),
     syntastica_themes::gruvbox::dark(),

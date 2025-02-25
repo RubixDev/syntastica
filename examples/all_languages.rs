@@ -33,7 +33,7 @@ fn example(
     println!(
         "{}",
         syntastica::render(
-            &processor.process(code.trim(), Lang::for_name(lang_name)?)?,
+            &processor.process(code.trim(), Lang::for_name(lang_name, &())?)?,
             &mut TerminalRenderer::new(None),
             syntastica_themes::one::dark(),
         )

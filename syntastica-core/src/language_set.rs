@@ -15,7 +15,7 @@ pub use crate::ts_runtime::Language;
 /// Instances can be obtained with [`for_name`](SupportedLanguage::for_name),
 /// [`for_file_type`](SupportedLanguage::for_file_type), and
 /// [`for_injection`](SupportedLanguage::for_injection).
-pub trait SupportedLanguage: Sized {
+pub trait SupportedLanguage<'set, S>: Sized {
     /// Get the name for this language.
     ///
     /// Passing the output of this function to [`for_name`](SupportedLanguage::for_name) must
@@ -32,13 +32,13 @@ pub trait SupportedLanguage: Sized {
     /// [official parser collections](https://rubixdev.github.io/syntastica/syntastica/#parser-collections)
     /// do. However, every string that may be returned by [`name`](SupportedLanguage::name) must
     /// result in an [`Ok`] value.
-    fn for_name(name: impl AsRef<str>) -> Result<Self, crate::Error>;
+    fn for_name(name: impl AsRef<str>, set: &'set S) -> Result<Self, crate::Error>;
 
     /// Find a language based on the given [`FileType`].
     ///
     /// Implementations should return the language that supports the given file type, if there is
     /// any.
-    fn for_file_type(file_type: FileType) -> Option<Self>;
+    fn for_file_type(file_type: FileType, set: &'set S) -> Option<Self>;
 
     /// Find a language for an injection.
     ///
@@ -52,13 +52,13 @@ pub trait SupportedLanguage: Sized {
     /// The default implementation tries to detect a [`FileType`] using `name` as both a filename
     /// and a file extension, and passes that to
     /// [`for_file_type`](SupportedLanguage::for_file_type).
-    fn for_injection(name: impl AsRef<str>) -> Option<Self> {
+    fn for_injection(name: impl AsRef<str>, set: &'set S) -> Option<Self> {
         let name = name.as_ref();
         // try to detect a file type, once using the name as a full path and once using it as the
         // extension, and if one is found, pass it to `self.for_file_type`
         tft::try_detect(Path::new(name), "")
             .or_else(|| tft::try_detect(Path::new(&format!("file.{name}")), ""))
-            .and_then(|ft| Self::for_file_type(ft))
+            .and_then(|ft| Self::for_file_type(ft, set))
     }
 }
 
@@ -68,13 +68,13 @@ pub trait SupportedLanguage: Sized {
 /// implements this trait. See
 /// [the project overview](https://rubixdev.github.io/syntastica/syntastica/#parser-collections)
 /// for more information on that.
-pub trait LanguageSet {
+pub trait LanguageSet<'s>: Sized {
     /// A type identifying a language that is included in this set.
     ///
     /// The given type should usually be an enum of all included languages.
-    type Language: SupportedLanguage;
+    type Language: SupportedLanguage<'s, Self>;
 
-    /// Get the language with the given name.
+    /// Get the [`HighlightConfiguration`] for a given [language](LanguageSet::Language).
     ///
     /// **The returned [`HighlightConfiguration`] _must_ be
     /// [configured](HighlightConfiguration::configure) with

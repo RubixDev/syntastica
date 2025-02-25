@@ -66,7 +66,7 @@ pub unsafe extern "C" fn init(langs: *const *const c_char, langs_len: usize) {
                 LANG_NAMES_LIST = langs;
                 LANGS_LIST = Vec::with_capacity(LANG_NAMES_LIST.len());
                 for name in &LANG_NAMES_LIST {
-                    match Lang::for_name(name) {
+                    match Lang::for_name(name, &()) {
                         Ok(lang) => LANGS_LIST.push(lang),
                         Err(err) => {
                             eprintln!("initialization failed: {err}");
@@ -112,7 +112,7 @@ pub unsafe fn highlight(
     let theme = unsafe { string_from_ptr(theme) };
     let renderer = unsafe { string_from_ptr(renderer) };
 
-    let Ok(language) = Lang::for_name(&language) else {
+    let Ok(language) = Lang::for_name(&language, &()) else {
         eprintln!("unsupported language '{language}'");
         return std::ptr::null();
     };
@@ -157,7 +157,7 @@ pub unsafe fn process(code: *const c_char, language: *const c_char) {
     let code = unsafe { string_from_ptr(code) };
     let language = unsafe { string_from_ptr(language) };
 
-    let Ok(language) = Lang::for_name(&language) else {
+    let Ok(language) = Lang::for_name(&language, &()) else {
         eprintln!("unsupported language '{language}'");
         return;
     };

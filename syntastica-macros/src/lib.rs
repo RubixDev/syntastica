@@ -366,21 +366,21 @@ fn parsers(
         /// use syntastica_core::language_set::{SupportedLanguage, FileType};
         ///
         /// // you can get a `Lang` from its name
-        /// assert_eq!(Lang::Rust, Lang::for_name("rust").unwrap());
+        /// assert_eq!(Lang::Rust, Lang::for_name("rust", &()).unwrap());
         /// // and for a file type
-        /// assert_eq!(Some(Lang::Rust), Lang::for_file_type(FileType::Rust));
+        /// assert_eq!(Some(Lang::Rust), Lang::for_file_type(FileType::Rust, &()));
         ///
         /// // `LANGUAGES` is a list of all variants,
         /// // `LANGUAGE_NAMES` is a list of all variant names
         /// for (&lang, &name) in LANGUAGES.iter().zip(LANGUAGE_NAMES) {
-        ///     assert_eq!(lang, Lang::for_name(name).unwrap());
+        ///     assert_eq!(lang, Lang::for_name(name, &()).unwrap());
         ///
         ///     // `Lang` instances can be turned into strings
-        ///     assert_eq!(lang, Lang::for_name(lang.name()).unwrap());
-        ///     assert_eq!(lang, Lang::for_name(lang.to_string()).unwrap());
-        ///     assert_eq!(lang, Lang::for_name(lang.as_ref()).unwrap());
+        ///     assert_eq!(lang, Lang::for_name(<Lang as SupportedLanguage<'_, ()>>::name(&lang), &()).unwrap());
+        ///     assert_eq!(lang, Lang::for_name(lang.to_string(), &()).unwrap());
+        ///     assert_eq!(lang, Lang::for_name(lang.as_ref(), &()).unwrap());
         ///     let lang_name: &'static str = lang.into();
-        ///     assert_eq!(lang, Lang::for_name(lang_name).unwrap());
+        ///     assert_eq!(lang, Lang::for_name(lang_name, &()).unwrap());
         /// }
         /// ```
         #[non_exhaustive]
@@ -412,17 +412,17 @@ fn parsers(
             }
         }
 
-        impl SupportedLanguage for Lang {
+        impl<S> SupportedLanguage<'_, S> for Lang {
             fn name(&self) -> Cow<'_, str> {
                 Cow::Borrowed(self.into())
             }
 
-            fn for_name(name: impl AsRef<str>) -> Result<Self> {
+            fn for_name(name: impl AsRef<str>, _set: &S) -> Result<Self> {
                 <Self as ::std::str::FromStr>::from_str(name.as_ref())
                     .map_err(|_| Error::UnsupportedLanguage(name.as_ref().to_owned()))
             }
 
-            fn for_file_type(file_type: FileType) -> Option<Self> {
+            fn for_file_type(file_type: FileType, _set: &S) -> Option<Self> {
                 FILE_TYPE_MAP
                     .get(&file_type)
                     .map(|name| (*name).into())
@@ -437,7 +437,7 @@ fn parsers(
         /// [`preload`](LanguageSetImpl::preload) or [`preload_all`](LanguageSetImpl::preload_all).
         pub struct LanguageSetImpl([OnceCell<HighlightConfiguration>; LANG_COUNT]);
 
-        impl LanguageSet for LanguageSetImpl {
+        impl LanguageSet<'_> for LanguageSetImpl {
             #lang_set_type
 
             fn get_language(&self, language: Self::Language) -> Result<&HighlightConfiguration> {

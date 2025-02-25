@@ -8,6 +8,9 @@ license.workspace = true
 repository.workspace = true
 description = "Dynamically load tree-sitter parsers and queries at runtime for syntastica"
 
+[lints]
+workspace = true
+
 [features]
 #! ### Features
 default = []
@@ -22,15 +25,19 @@ tree-sitter.workspace = true
 tree-sitter-loader = "0.25.2"
 tree-sitter-tags = "0.25.2"
 
-anyhow = "1.0.95"
+anyhow = "1.0.96"
 cc.workspace = true
 dirs = "6.0.0"
 document-features = { workspace = true, optional = true }
+etcetera = "0.8.0"
+fs4 = "0.13.0"
+indoc = "2.0.5"
 libloading = "0.8.6"
 once_cell.workspace = true
 regex = "1.11.1"
 serde = { workspace = true, features = ["derive"] }
-serde_json = "1.0.138"
+serde_json = "1.0.139"
+tempfile = "3.17.1"
 
 [build-dependencies]
 rustc_version = { workspace = true, optional = true }
