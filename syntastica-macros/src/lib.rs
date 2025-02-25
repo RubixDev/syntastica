@@ -286,6 +286,21 @@ fn parsers(
             }
         });
     let lang_set_type = quote! { type Language = Lang; };
+    let cfg_test = quote! { #[cfg(test)] };
+    let lang_tests = LANGUAGE_CONFIG.languages.iter().filter(&filter).map(|lang| {
+        let name = format_ident!("{}", lang.name);
+        let name_str = &lang.name;
+        let variant = format_ident!("{}", lang.name.to_pascal_case());
+        let not_wasm_cfg = not_wasm_cfg(lang);
+        quote! {
+            #[test]
+            #[cfg(all(feature = #name_str #not_wasm_cfg))]
+            fn #name() {
+                assert_eq!(crate::#name(), crate::Lang::#variant.get());
+                assert!(::syntastica_core::language_set::LanguageSet::get_language(&crate::LanguageSetImpl::new(), crate::Lang::#variant).is_ok());
+            }
+        }
+    });
 
     quote_use! {
         # use std::{borrow::Cow, collections::HashMap};
@@ -480,6 +495,11 @@ fn parsers(
             fn default() -> Self {
                 Self::new()
             }
+        }
+
+        #cfg_test
+        mod tests {
+            #(#lang_tests)*
         }
     }
     .into()
