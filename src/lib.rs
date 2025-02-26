@@ -51,7 +51,7 @@ pub type ThemedHighlights<'src> = Vec<Vec<(&'src str, Option<Style>)>>;
 ///   look at [`Theme::resolve_links`](theme::Theme::resolve_links) for when this might happen.
 pub fn highlight<'s, S, T, E>(
     code: impl AsRef<str>,
-    language: S::Language,
+    language: impl Into<S::Language>,
     language_set: &'s S,
     renderer: &mut impl Renderer,
     theme: T,

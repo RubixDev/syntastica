@@ -7,7 +7,14 @@
 #![warn(rust_2018_idioms)]
 #![deny(missing_docs)]
 
-use std::{borrow::Cow, cell::RefCell, collections::HashMap, marker::PhantomData, path::PathBuf};
+use std::{
+    borrow::Cow,
+    cell::RefCell,
+    collections::HashMap,
+    fmt::{self, Debug, Formatter},
+    marker::PhantomData,
+    path::PathBuf,
+};
 
 use anyhow::Result;
 use syntastica_core::language_set::{
@@ -23,7 +30,14 @@ mod loader;
 /// Instances can only be obtained through the functions of the [`SupportedLanguage`] trait, and
 /// they are tied to a [`LanguageLoader`] through a lifetime. The loader is responsible for actually
 /// locating and initializing the languages.
+#[derive(PartialEq, Eq, Hash, Clone)]
 pub struct Lang<'loader>(Box<str>, PhantomData<&'loader ()>);
+
+impl Debug for Lang<'_> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        f.debug_tuple("Lang").field(&self.0).finish()
+    }
+}
 
 impl<'loader> SupportedLanguage<'loader, LanguageLoader> for Lang<'loader> {
     fn name(&self) -> Cow<'_, str> {
@@ -95,6 +109,8 @@ pub struct LanguageLoader {
 
 impl LanguageLoader {
     /// Create a new [`LanguageLoader`] which searches for parsers in `parser_search_dirs`.
+    ///
+    /// The directories are scanned once during creation.
     pub fn new(parser_search_dirs: Vec<PathBuf>) -> Result<Self> {
         let mut loader = Loader::new()?;
         loader.configure_highlights(syntastica_core::theme::THEME_KEYS);

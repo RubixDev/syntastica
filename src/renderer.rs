@@ -102,8 +102,8 @@ pub fn render(
 /// [`ResolvedTheme`].
 ///
 /// This may be useful if you do not want to render to a [`String`] and thus cannot use the
-/// [`Renderer`] trait for renerering, but still wish to only look up the theme styles once and
-/// then store the styled highlights.
+/// [`Renderer`] trait for rendering, but still wish to only look up the theme styles once and then
+/// store the styled highlights.
 pub fn resolve_styles<'src>(
     highlights: &Highlights<'src>,
     theme: impl Borrow<ResolvedTheme>,

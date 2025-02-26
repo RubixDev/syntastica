@@ -70,7 +70,8 @@ features for all supported languages, as well as the three feature groups
 more information.
 
 If you want to additionally use languages that are not in any of these parser
-collections, one approach is shown in the
+collections or combine multiple sets, have a look at the
+[`Union`](language_set::Union) type or the
 [custom languages example](https://github.com/RubixDev/syntastica/blob/main/examples/custom_languages.rs).
 
 - [`syntastica-parsers`](https://crates.io/crates/syntastica-parsers) is

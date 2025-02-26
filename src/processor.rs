@@ -108,7 +108,7 @@ impl<'set, Set: LanguageSet<'set>> Processor<'set, Set> {
     /// return type, and possible errors.
     pub fn process_once<'src>(
         code: &'src str,
-        language: Set::Language,
+        language: impl Into<Set::Language>,
         set: &'set Set,
     ) -> Result<Highlights<'src>> {
         Self::new(set).process(code, language)
@@ -133,9 +133,9 @@ impl<'set, Set: LanguageSet<'set>> Processor<'set, Set> {
     pub fn process<'src>(
         &mut self,
         code: &'src str,
-        language: Set::Language,
+        language: impl Into<Set::Language>,
     ) -> Result<Highlights<'src>> {
-        self.process_impl(code, language, None)
+        self.process_impl(code, language.into(), None)
     }
 
     /// Process the given `code` using the language specified by `language_name` using an already
@@ -220,10 +220,10 @@ impl<'set, Set: LanguageSet<'set>> Processor<'set, Set> {
     pub fn process_tree<'src>(
         &mut self,
         code: &'src str,
-        language: Set::Language,
+        language: impl Into<Set::Language>,
         tree: &Node<'_>,
     ) -> Result<Highlights<'src>> {
-        self.process_impl(code, language, Some(tree))
+        self.process_impl(code, language.into(), Some(tree))
     }
 
     fn process_impl<'src>(

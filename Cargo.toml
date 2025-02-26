@@ -119,7 +119,8 @@ tree-sitter.workspace = true
 once_cell.workspace = true
 tft = { workspace = true, features = ["detect"] }
 toml.workspace = true
-# tree-sitter-csv = "1.2.0"
+tree-sitter-language = "0.1.5"
+tree-sitter-xml = "0.7.0"
 
 [build-dependencies]
 rustc_version = { workspace = true, optional = true }

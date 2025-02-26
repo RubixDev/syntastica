@@ -10,6 +10,10 @@ pub use tft::FileType;
 
 pub use crate::ts_runtime::Language;
 
+mod union;
+
+pub use union::*;
+
 /// A language included in a [`LanguageSet`].
 ///
 /// Instances can be obtained with [`for_name`](SupportedLanguage::for_name),
