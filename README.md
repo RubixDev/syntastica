@@ -212,13 +212,19 @@ feature flags can be used to use the
 [c2rust transpilation of tree-sitter](https://crates.io/crates/tree-sitter-c2rust)
 instead of the
 [official C implementation](https://crates.io/crates/tree-sitter). This is only
-supported by the `syntastica-parsers-git` parser collection, and only parsers
-that don't use an external C++ scanner are available.
+supported by the `syntastica-parsers-git` parser collection as only that
+collection has enough control over the parser build process to allow for Wasm
+support.
 
 To use this approach, simply set `default-features = false` and enable the
 `runtime-c2rust` feature for _all_ `syntastica` dependencies. An example using
 this approach for use of `syntastica` in a Dioxus project can be found
 [here](https://github.com/RubixDev/syntastica/tree/main/examples/wasm/dioxus).
+
+Note that for extra safety, you should compile this with nightly Rust and the
+`-Zwasm_c_abi=spec` option set, as otherwise the `wasm32-unknown-unknown` target
+doesn't yet conform with the C ABI. In my personal testing I haven't had any
+issues on stable Rust either though.
 
 ### 2. Using Emscripten / the `syntastica-js` package
 
@@ -239,7 +245,9 @@ There are three examples using `syntastica-js`:
 - [Usage from JavaScript in NodeJS for console applications](https://github.com/RubixDev/syntastica/tree/main/examples/wasm/node)
 - [Usage from Rust in the browser using wasm-bindgen](https://github.com/RubixDev/syntastica/tree/main/examples/wasm/wasm-pack-with-npm-pkg)
 
-> **Note**
+<div class="warning">
+
+> [!WARNING]
 >
 > The `syntastica` NPM package is currently not being updated and uses an old
 > version of `syntastica`, because the current implementation always includes
@@ -247,6 +255,8 @@ There are three examples using `syntastica-js`:
 > currently supported parsers. The eventual plan is to find a way to split the
 > package into multiple binaries that can be fetched from a server on-demand,
 > and to provide multiple NPM packages for manual selection of the parsers.
+
+</div>
 
 ## Examples
 
@@ -504,3 +514,5 @@ possible replacement for [`syntect`](https://crates.io/crates/syntect). The main
 difference from `lirstings` at the start was the parser collection(s), providing
 a rigid set of parsers and queries for users. Over time `syntastica` then grew
 to the big project it is today.
+
+[!WARNING]: .

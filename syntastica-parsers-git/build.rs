@@ -67,7 +67,7 @@ fn compile_parser(
 
     // external cpp scanners are not supported on the `wasm32-unknown-unknown` target
     // plus extra cases for parsers which require additional libc features
-    if target == "wasm32-unknown-unknown" && (external_cpp || !wasm_unknown) {
+    if target == "wasm32-unknown-unknown" && !wasm_unknown {
         return Ok(());
     }
 
@@ -103,7 +103,7 @@ fn compile_parser(
         }
     }
 
-    // clone repo into `parsers/{name}`, if it does not already exists
+    // clone repo into `parsers/{name}/{rev}`, if it does not already exist
     let repo_dir = clone_dir.join(name).join(rev);
     if !repo_dir.exists() {
         println!("cloning repository for {name}");
@@ -138,13 +138,18 @@ fn compile_parser(
     if external_c {
         let scanner_path = src_dir.join("scanner.c");
         c_config.file(&scanner_path);
-        println!("cargo::rerun-if-changed={}", scanner_path.to_str().unwrap());
+        println!("cargo::rerun-if-changed={}", scanner_path.display());
     }
 
-    #[cfg(feature = "runtime-c2rust")]
-    tree_sitter_wasm_build_tool::add_wasm_headers(&mut c_config).unwrap();
+    if target == "wasm32-unknown-unknown" {
+        c_config.include(
+            // this is set by the `wasm32-unknown-unknown-openbsd-libc` crate
+            std::env::var_os("DEP_WASM32_UNKNOWN_UNKNOWN_OPENBSD_LIBC_INCLUDE")
+                .expect("failed to find wasm libc"),
+        );
+    }
 
-    println!("cargo::rerun-if-changed={}", parser_path.to_str().unwrap());
+    println!("cargo::rerun-if-changed={}", parser_path.display());
     c_config.compile(&c_lib_name);
     println!("finished building parser for {name}");
 
@@ -168,7 +173,7 @@ fn compile_parser(
             .flag_if_supported("-w");
         let scanner_path = src_dir.join("scanner.cc");
         cpp_config.file(&scanner_path);
-        println!("cargo::rerun-if-changed={}", scanner_path.to_str().unwrap());
+        println!("cargo::rerun-if-changed={}", scanner_path.display());
         cpp_config.compile(&cpp_lib_name);
         println!("finished building cpp scanner for {name}");
 

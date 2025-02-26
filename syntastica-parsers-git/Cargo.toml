@@ -20,12 +20,15 @@ document-features = { workspace = true, optional = true }
 once_cell.workspace = true
 strum = { workspace = true, features = ["derive", "phf"] }
 
+[target.wasm32-unknown-unknown.dependencies]
+# TODO: switch to official when https://github.com/trevyn/wasm32-unknown-unknown-openbsd-libc/pull/3 is merged
+wasm32-unknown-unknown-openbsd-libc = { version = "0.2.1", package = "wasm32-unknown-unknown-openbsd-libc-wctypes-fix" }
+
 [build-dependencies]
 syntastica-macros.workspace = true
 
 cc.workspace = true
 rustc_version = { workspace = true, optional = true }
-tree-sitter-wasm-build-tool = { version = "0.2.2", path = "../tree-sitter-wasm-build-tool/" }
 
 [package.metadata.docs.rs]
 all-features = true
