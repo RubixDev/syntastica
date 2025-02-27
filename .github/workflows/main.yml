@@ -111,11 +111,11 @@ jobs:
       - name: Restore Cache
         uses: Swatinem/rust-cache@v2
 
+      - name: Create SVGs
+        run: cargo xtask codegen queries && cargo xtask theme-svgs
+
       - name: Generate Code
         run: cargo xtask codegen
-
-      - name: Create SVGs
-        run: cargo xtask theme-svgs
 
       - name: Commit changes
         uses: EndBug/add-and-commit@v9
@@ -128,6 +128,22 @@ jobs:
           committer_name: github-actions[bot]
           committer_email: 41898282+github-actions[bot]@users.noreply.github.com
           message: 'chore: run codegen'
+
+      - name: Prepare Git Deployment
+        run: |
+          git checkout --orphan new-main main
+          git add --force syntastica-queries/generated_queries
+      - name: Create Git Deploy Commit
+        uses: EndBug/add-and-commit@v9
+        with:
+          committer_name: github-actions[bot]
+          committer_email: 41898282+github-actions[bot]@users.noreply.github.com
+          message: 'chore: git deploy'
+          push: false
+      - name: Push new Git Deployment
+        run: |
+          git branch -M new-main git-deploy
+          git push origin git-deploy --set-upstream --force
 
       - name: Upload Queries as Artifact
         uses: actions/upload-artifact@v4

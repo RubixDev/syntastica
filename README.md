@@ -45,6 +45,20 @@ cases:
    [`Processor`], [`render`], and
    [this example](#example-highlight-multiple-different-inputs)
 
+### Using `syntastica` as a Git Dependency
+
+Using [`syntastica-queries`](#syntastica-queries), and in turn any crate in this
+workspace which depends on [`syntastica-queries`](#syntastica-queries), as a git
+dependency with cargo is not immediately possible, because the auto-generated
+query files are not checked in. For that purpose, the `git-deploy` is updated
+with the latest state of the main branch after every push. That means you can
+depend on for example [`syntastica-parsers-git`](#syntastica-parsers-git) like
+this:
+
+```toml
+syntastica-parsers-git = { git = "https://github.com/RubixDev/syntastica", branch = "git-deploy" }
+```
+
 ## Subprojects
 
 Besides the main `syntastica` crate, many other crates for different purposes
