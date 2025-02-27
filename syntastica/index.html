@@ -34,7 +34,15 @@ renderers): see <a href="struct.Processor.html#method.process_once" title="assoc
 <a href="struct.Processor.html" title="struct syntastica::Processor"><code>Processor</code></a>, <a href="renderer/fn.render.html" title="fn syntastica::renderer::render"><code>render</code></a>, and
 <a href="#example-highlight-multiple-different-inputs">this example</a></li>
 </ol>
-<h3 id="subprojects"><a class="doc-anchor" href="#subprojects">§</a>Subprojects</h3>
+<h4 id="using-syntastica-as-a-git-dependency"><a class="doc-anchor" href="#using-syntastica-as-a-git-dependency">§</a>Using <code>syntastica</code> as a Git Dependency</h4>
+<p>Using <a href="#syntastica-queries"><code>syntastica-queries</code></a>, and in turn any crate in this
+workspace which depends on <a href="#syntastica-queries"><code>syntastica-queries</code></a>, as a git
+dependency with cargo is not immediately possible, because the auto-generated
+query files are not checked in. For that purpose, the <code>git-deploy</code> is updated
+with the latest state of the main branch after every push. That means you can
+depend on for example <a href="#syntastica-parsers-git"><code>syntastica-parsers-git</code></a> like
+this:</p>
+<div class="example-wrap"><pre class="language-toml"><code>syntastica-parsers-git = { git = &quot;https://github.com/RubixDev/syntastica&quot;, branch = &quot;git-deploy&quot; }</code></pre></div><h3 id="subprojects"><a class="doc-anchor" href="#subprojects">§</a>Subprojects</h3>
 <p>Besides the main <code>syntastica</code> crate, many other crates for different purposes
 were developed and are included in the repository. This section aims to provide
 a good overview.</p>
