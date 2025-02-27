@@ -1,0 +1,1 @@
+searchState.loadedDescShard("syntastica_queries", 0, "<code>syntastica-queries</code>")

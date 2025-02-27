@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["darker","deep_ocean","lighter","oceanic","palenight"]};

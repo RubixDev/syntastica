@@ -1,0 +1,1 @@
+searchState.loadedDescShard("tree_sitter_wasm_build_tool", 0, "<code>tree-sitter-wasm-build-tool</code>\nAdd the required C header files to the given instance of …")

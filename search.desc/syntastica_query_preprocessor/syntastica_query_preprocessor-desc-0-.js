@@ -1,0 +1,1 @@
+searchState.loadedDescShard("syntastica_query_preprocessor", 0, "<code>syntastica-query-preprocessor</code>\nPre-process highlight queries.\nPre-process highlight queries with support for …\nPre-process injection queries.\nPre-process injection queries with support for …\nPre-process locals queries.\nPre-process locals queries with support for …")

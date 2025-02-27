@@ -1,0 +1,1 @@
+searchState.loadedDescShard("syntastica_js", 0, "<code>syntastica-js</code>\nProcess and render a piece of code in the given language …\nInitialize the global <code>LanguageSet</code> and <code>Processor</code>.\nProcess a piece of code in the given language, and save …\nRender the code that was previously processed by calling …")

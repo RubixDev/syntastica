@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["FileType"],"struct":["HighlightConfiguration","Language"],"trait":["LanguageSet","SupportedLanguage"]};
+window.SIDEBAR_ITEMS = {"enum":["EitherLang","FileType"],"struct":["HighlightConfiguration","Language","Union"],"trait":["LanguageSet","SupportedLanguage"]};

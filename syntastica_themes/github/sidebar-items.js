@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["dark","dark_colorblind","dark_default","dark_dimmed","dark_high_contrast","dark_tritanopia","dimmed","light","light_colorblind","light_default","light_high_contrast","light_tritanopia"]};
+window.SIDEBAR_ITEMS = {"fn":["dark","dark_colorblind","dark_default","dark_dimmed","dark_high_contrast","dark_tritanopia","light","light_colorblind","light_default","light_high_contrast","light_tritanopia"]};

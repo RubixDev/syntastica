@@ -1,19 +1,3 @@
-var srcIndex = JSON.parse('{\
-"lua_pattern":["",[],["error.rs","lexer.rs","lib.rs","parser.rs","to_regex.rs"]],\
-"rsexpr":["",[],["display.rs","error.rs","lex.rs","lib.rs","parser.rs"]],\
-"syntastica":["",[],["lib.rs","processor.rs","renderer.rs"]],\
-"syntastica_core":["",[],["error.rs","language_set.rs","lib.rs","style.rs","theme.rs"]],\
-"syntastica_highlight":["",[],["lib.rs"]],\
-"syntastica_js":["",[],["lib.rs"]],\
-"syntastica_macros":["",[],["lib.rs","schema.rs"]],\
-"syntastica_parsers":["",[],["lib.rs"]],\
-"syntastica_parsers_dynamic":["",[],["lib.rs","loader.rs"]],\
-"syntastica_parsers_git":["",[],["lib.rs"]],\
-"syntastica_parsers_gitdep":["",[],["lib.rs"]],\
-"syntastica_queries":["",[],["lib.rs"]],\
-"syntastica_query_preprocessor":["",[],["lib.rs"]],\
-"syntastica_themes":["",[],["abscs.rs","aurora.rs","blue_moon.rs","boo.rs","catppuccin.rs","darcula.rs","dracula.rs","everblush.rs","everforest.rs","falcon.rs","github.rs","gruvbox.rs","lib.rs","material.rs","melange.rs","minimal.rs","monochrome.rs","monokai.rs","moonfly.rs","moonlight.rs","neon.rs","nightfly.rs","nord.rs","oceanicnext.rs","omni.rs","one.rs","oxocarbon.rs","solarized.rs","tokyo.rs","vscode.rs","zephyr.rs"]],\
-"tree_sitter_wasm_build_tool":["",[],["lib.rs"]],\
-"xtask":["",[["codegen",[],["js_lists.rs","parser_lists.rs","parsers_dep.rs","parsers_git.rs","parsers_gitdep.rs","queries.rs","theme_list.rs"]],["syntastica-macros",[["src",[],["schema.rs"]]]]],["add_lang.rs","codegen.rs","fetch_queries.rs","main.rs","set_version.rs","theme_svgs.rs","update_langs.rs"]]\
-}');
+var srcIndex = new Map(JSON.parse('[["lua_pattern",["",[],["error.rs","lexer.rs","lib.rs","parser.rs","to_regex.rs"]]],["rsexpr",["",[],["display.rs","error.rs","lex.rs","lib.rs","parser.rs"]]],["syntastica",["",[],["lib.rs","processor.rs","renderer.rs"]]],["syntastica_core",["",[["language_set",[],["union.rs"]]],["error.rs","language_set.rs","lib.rs","style.rs","theme.rs"]]],["syntastica_highlight",["",[],["lib.rs"]]],["syntastica_js",["",[],["lib.rs"]]],["syntastica_macros",["",[],["lib.rs","schema.rs"]]],["syntastica_parsers",["",[],["lib.rs"]]],["syntastica_parsers_dynamic",["",[],["lib.rs","loader.rs"]]],["syntastica_parsers_git",["",[],["lib.rs"]]],["syntastica_parsers_gitdep",["",[],["lib.rs"]]],["syntastica_queries",["",[],["lib.rs"]]],["syntastica_query_preprocessor",["",[],["lib.rs"]]],["syntastica_themes",["",[],["abscs.rs","aurora.rs","blue_moon.rs","boo.rs","catppuccin.rs","darcula.rs","dracula.rs","everblush.rs","everforest.rs","falcon.rs","github.rs","gruvbox.rs","lib.rs","melange.rs","minimal.rs","monochrome.rs","monokai.rs","moonfly.rs","moonlight.rs","neon.rs","nightfly.rs","nord.rs","oceanicnext.rs","omni.rs","one.rs","oxocarbon.rs","solarized.rs","tokyo.rs","vscode.rs","zephyr.rs"]]],["tree_sitter_wasm_build_tool",["",[],["lib.rs"]]],["xtask",["",[["codegen",[],["js_lists.rs","parser_lists.rs","parsers_dep.rs","parsers_git.rs","parsers_gitdep.rs","queries.rs","theme_list.rs"]],["syntastica-macros",[["src",[],["schema.rs"]]]]],["add_lang.rs","codegen.rs","fetch_queries.rs","main.rs","set_version.rs","theme_svgs.rs","update_langs.rs"]]]]'));
 createSrcSidebar();
+//{"start":36,"fragment_lengths":[82,75,63,122,44,37,53,42,62,46,49,42,53,416,51,307]}

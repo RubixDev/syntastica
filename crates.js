@@ -1,1 +1,2 @@
 window.ALL_CRATES = ["lua_pattern","rsexpr","syntastica","syntastica_core","syntastica_highlight","syntastica_js","syntastica_macros","syntastica_parsers","syntastica_parsers_dynamic","syntastica_parsers_git","syntastica_parsers_gitdep","syntastica_queries","syntastica_query_preprocessor","syntastica_themes","tree_sitter_wasm_build_tool","xtask"];
+//{"start":21,"fragment_lengths":[13,9,13,18,23,16,20,21,29,25,28,21,32,20,30,8]}

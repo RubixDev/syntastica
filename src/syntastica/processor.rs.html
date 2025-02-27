@@ -1,631 +1,316 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/processor.rs`."><title>processor.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="syntastica" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0-nightly (37390d656 2023-09-24)" data-channel="nightly" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../syntastica/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
-<a href="#2" id="2">2</a>
-<a href="#3" id="3">3</a>
-<a href="#4" id="4">4</a>
-<a href="#5" id="5">5</a>
-<a href="#6" id="6">6</a>
-<a href="#7" id="7">7</a>
-<a href="#8" id="8">8</a>
-<a href="#9" id="9">9</a>
-<a href="#10" id="10">10</a>
-<a href="#11" id="11">11</a>
-<a href="#12" id="12">12</a>
-<a href="#13" id="13">13</a>
-<a href="#14" id="14">14</a>
-<a href="#15" id="15">15</a>
-<a href="#16" id="16">16</a>
-<a href="#17" id="17">17</a>
-<a href="#18" id="18">18</a>
-<a href="#19" id="19">19</a>
-<a href="#20" id="20">20</a>
-<a href="#21" id="21">21</a>
-<a href="#22" id="22">22</a>
-<a href="#23" id="23">23</a>
-<a href="#24" id="24">24</a>
-<a href="#25" id="25">25</a>
-<a href="#26" id="26">26</a>
-<a href="#27" id="27">27</a>
-<a href="#28" id="28">28</a>
-<a href="#29" id="29">29</a>
-<a href="#30" id="30">30</a>
-<a href="#31" id="31">31</a>
-<a href="#32" id="32">32</a>
-<a href="#33" id="33">33</a>
-<a href="#34" id="34">34</a>
-<a href="#35" id="35">35</a>
-<a href="#36" id="36">36</a>
-<a href="#37" id="37">37</a>
-<a href="#38" id="38">38</a>
-<a href="#39" id="39">39</a>
-<a href="#40" id="40">40</a>
-<a href="#41" id="41">41</a>
-<a href="#42" id="42">42</a>
-<a href="#43" id="43">43</a>
-<a href="#44" id="44">44</a>
-<a href="#45" id="45">45</a>
-<a href="#46" id="46">46</a>
-<a href="#47" id="47">47</a>
-<a href="#48" id="48">48</a>
-<a href="#49" id="49">49</a>
-<a href="#50" id="50">50</a>
-<a href="#51" id="51">51</a>
-<a href="#52" id="52">52</a>
-<a href="#53" id="53">53</a>
-<a href="#54" id="54">54</a>
-<a href="#55" id="55">55</a>
-<a href="#56" id="56">56</a>
-<a href="#57" id="57">57</a>
-<a href="#58" id="58">58</a>
-<a href="#59" id="59">59</a>
-<a href="#60" id="60">60</a>
-<a href="#61" id="61">61</a>
-<a href="#62" id="62">62</a>
-<a href="#63" id="63">63</a>
-<a href="#64" id="64">64</a>
-<a href="#65" id="65">65</a>
-<a href="#66" id="66">66</a>
-<a href="#67" id="67">67</a>
-<a href="#68" id="68">68</a>
-<a href="#69" id="69">69</a>
-<a href="#70" id="70">70</a>
-<a href="#71" id="71">71</a>
-<a href="#72" id="72">72</a>
-<a href="#73" id="73">73</a>
-<a href="#74" id="74">74</a>
-<a href="#75" id="75">75</a>
-<a href="#76" id="76">76</a>
-<a href="#77" id="77">77</a>
-<a href="#78" id="78">78</a>
-<a href="#79" id="79">79</a>
-<a href="#80" id="80">80</a>
-<a href="#81" id="81">81</a>
-<a href="#82" id="82">82</a>
-<a href="#83" id="83">83</a>
-<a href="#84" id="84">84</a>
-<a href="#85" id="85">85</a>
-<a href="#86" id="86">86</a>
-<a href="#87" id="87">87</a>
-<a href="#88" id="88">88</a>
-<a href="#89" id="89">89</a>
-<a href="#90" id="90">90</a>
-<a href="#91" id="91">91</a>
-<a href="#92" id="92">92</a>
-<a href="#93" id="93">93</a>
-<a href="#94" id="94">94</a>
-<a href="#95" id="95">95</a>
-<a href="#96" id="96">96</a>
-<a href="#97" id="97">97</a>
-<a href="#98" id="98">98</a>
-<a href="#99" id="99">99</a>
-<a href="#100" id="100">100</a>
-<a href="#101" id="101">101</a>
-<a href="#102" id="102">102</a>
-<a href="#103" id="103">103</a>
-<a href="#104" id="104">104</a>
-<a href="#105" id="105">105</a>
-<a href="#106" id="106">106</a>
-<a href="#107" id="107">107</a>
-<a href="#108" id="108">108</a>
-<a href="#109" id="109">109</a>
-<a href="#110" id="110">110</a>
-<a href="#111" id="111">111</a>
-<a href="#112" id="112">112</a>
-<a href="#113" id="113">113</a>
-<a href="#114" id="114">114</a>
-<a href="#115" id="115">115</a>
-<a href="#116" id="116">116</a>
-<a href="#117" id="117">117</a>
-<a href="#118" id="118">118</a>
-<a href="#119" id="119">119</a>
-<a href="#120" id="120">120</a>
-<a href="#121" id="121">121</a>
-<a href="#122" id="122">122</a>
-<a href="#123" id="123">123</a>
-<a href="#124" id="124">124</a>
-<a href="#125" id="125">125</a>
-<a href="#126" id="126">126</a>
-<a href="#127" id="127">127</a>
-<a href="#128" id="128">128</a>
-<a href="#129" id="129">129</a>
-<a href="#130" id="130">130</a>
-<a href="#131" id="131">131</a>
-<a href="#132" id="132">132</a>
-<a href="#133" id="133">133</a>
-<a href="#134" id="134">134</a>
-<a href="#135" id="135">135</a>
-<a href="#136" id="136">136</a>
-<a href="#137" id="137">137</a>
-<a href="#138" id="138">138</a>
-<a href="#139" id="139">139</a>
-<a href="#140" id="140">140</a>
-<a href="#141" id="141">141</a>
-<a href="#142" id="142">142</a>
-<a href="#143" id="143">143</a>
-<a href="#144" id="144">144</a>
-<a href="#145" id="145">145</a>
-<a href="#146" id="146">146</a>
-<a href="#147" id="147">147</a>
-<a href="#148" id="148">148</a>
-<a href="#149" id="149">149</a>
-<a href="#150" id="150">150</a>
-<a href="#151" id="151">151</a>
-<a href="#152" id="152">152</a>
-<a href="#153" id="153">153</a>
-<a href="#154" id="154">154</a>
-<a href="#155" id="155">155</a>
-<a href="#156" id="156">156</a>
-<a href="#157" id="157">157</a>
-<a href="#158" id="158">158</a>
-<a href="#159" id="159">159</a>
-<a href="#160" id="160">160</a>
-<a href="#161" id="161">161</a>
-<a href="#162" id="162">162</a>
-<a href="#163" id="163">163</a>
-<a href="#164" id="164">164</a>
-<a href="#165" id="165">165</a>
-<a href="#166" id="166">166</a>
-<a href="#167" id="167">167</a>
-<a href="#168" id="168">168</a>
-<a href="#169" id="169">169</a>
-<a href="#170" id="170">170</a>
-<a href="#171" id="171">171</a>
-<a href="#172" id="172">172</a>
-<a href="#173" id="173">173</a>
-<a href="#174" id="174">174</a>
-<a href="#175" id="175">175</a>
-<a href="#176" id="176">176</a>
-<a href="#177" id="177">177</a>
-<a href="#178" id="178">178</a>
-<a href="#179" id="179">179</a>
-<a href="#180" id="180">180</a>
-<a href="#181" id="181">181</a>
-<a href="#182" id="182">182</a>
-<a href="#183" id="183">183</a>
-<a href="#184" id="184">184</a>
-<a href="#185" id="185">185</a>
-<a href="#186" id="186">186</a>
-<a href="#187" id="187">187</a>
-<a href="#188" id="188">188</a>
-<a href="#189" id="189">189</a>
-<a href="#190" id="190">190</a>
-<a href="#191" id="191">191</a>
-<a href="#192" id="192">192</a>
-<a href="#193" id="193">193</a>
-<a href="#194" id="194">194</a>
-<a href="#195" id="195">195</a>
-<a href="#196" id="196">196</a>
-<a href="#197" id="197">197</a>
-<a href="#198" id="198">198</a>
-<a href="#199" id="199">199</a>
-<a href="#200" id="200">200</a>
-<a href="#201" id="201">201</a>
-<a href="#202" id="202">202</a>
-<a href="#203" id="203">203</a>
-<a href="#204" id="204">204</a>
-<a href="#205" id="205">205</a>
-<a href="#206" id="206">206</a>
-<a href="#207" id="207">207</a>
-<a href="#208" id="208">208</a>
-<a href="#209" id="209">209</a>
-<a href="#210" id="210">210</a>
-<a href="#211" id="211">211</a>
-<a href="#212" id="212">212</a>
-<a href="#213" id="213">213</a>
-<a href="#214" id="214">214</a>
-<a href="#215" id="215">215</a>
-<a href="#216" id="216">216</a>
-<a href="#217" id="217">217</a>
-<a href="#218" id="218">218</a>
-<a href="#219" id="219">219</a>
-<a href="#220" id="220">220</a>
-<a href="#221" id="221">221</a>
-<a href="#222" id="222">222</a>
-<a href="#223" id="223">223</a>
-<a href="#224" id="224">224</a>
-<a href="#225" id="225">225</a>
-<a href="#226" id="226">226</a>
-<a href="#227" id="227">227</a>
-<a href="#228" id="228">228</a>
-<a href="#229" id="229">229</a>
-<a href="#230" id="230">230</a>
-<a href="#231" id="231">231</a>
-<a href="#232" id="232">232</a>
-<a href="#233" id="233">233</a>
-<a href="#234" id="234">234</a>
-<a href="#235" id="235">235</a>
-<a href="#236" id="236">236</a>
-<a href="#237" id="237">237</a>
-<a href="#238" id="238">238</a>
-<a href="#239" id="239">239</a>
-<a href="#240" id="240">240</a>
-<a href="#241" id="241">241</a>
-<a href="#242" id="242">242</a>
-<a href="#243" id="243">243</a>
-<a href="#244" id="244">244</a>
-<a href="#245" id="245">245</a>
-<a href="#246" id="246">246</a>
-<a href="#247" id="247">247</a>
-<a href="#248" id="248">248</a>
-<a href="#249" id="249">249</a>
-<a href="#250" id="250">250</a>
-<a href="#251" id="251">251</a>
-<a href="#252" id="252">252</a>
-<a href="#253" id="253">253</a>
-<a href="#254" id="254">254</a>
-<a href="#255" id="255">255</a>
-<a href="#256" id="256">256</a>
-<a href="#257" id="257">257</a>
-<a href="#258" id="258">258</a>
-<a href="#259" id="259">259</a>
-<a href="#260" id="260">260</a>
-<a href="#261" id="261">261</a>
-<a href="#262" id="262">262</a>
-<a href="#263" id="263">263</a>
-<a href="#264" id="264">264</a>
-<a href="#265" id="265">265</a>
-<a href="#266" id="266">266</a>
-<a href="#267" id="267">267</a>
-<a href="#268" id="268">268</a>
-<a href="#269" id="269">269</a>
-<a href="#270" id="270">270</a>
-<a href="#271" id="271">271</a>
-<a href="#272" id="272">272</a>
-<a href="#273" id="273">273</a>
-<a href="#274" id="274">274</a>
-<a href="#275" id="275">275</a>
-<a href="#276" id="276">276</a>
-<a href="#277" id="277">277</a>
-<a href="#278" id="278">278</a>
-<a href="#279" id="279">279</a>
-<a href="#280" id="280">280</a>
-<a href="#281" id="281">281</a>
-<a href="#282" id="282">282</a>
-<a href="#283" id="283">283</a>
-<a href="#284" id="284">284</a>
-<a href="#285" id="285">285</a>
-<a href="#286" id="286">286</a>
-<a href="#287" id="287">287</a>
-<a href="#288" id="288">288</a>
-<a href="#289" id="289">289</a>
-<a href="#290" id="290">290</a>
-<a href="#291" id="291">291</a>
-<a href="#292" id="292">292</a>
-<a href="#293" id="293">293</a>
-<a href="#294" id="294">294</a>
-<a href="#295" id="295">295</a>
-<a href="#296" id="296">296</a>
-<a href="#297" id="297">297</a>
-<a href="#298" id="298">298</a>
-<a href="#299" id="299">299</a>
-<a href="#300" id="300">300</a>
-<a href="#301" id="301">301</a>
-<a href="#302" id="302">302</a>
-<a href="#303" id="303">303</a>
-<a href="#304" id="304">304</a>
-<a href="#305" id="305">305</a>
-<a href="#306" id="306">306</a>
-<a href="#307" id="307">307</a>
-<a href="#308" id="308">308</a>
-<a href="#309" id="309">309</a>
-<a href="#310" id="310">310</a>
-<a href="#311" id="311">311</a>
-<a href="#312" id="312">312</a>
-<a href="#313" id="313">313</a>
-<a href="#314" id="314">314</a>
-<a href="#315" id="315">315</a>
-</pre></div><pre class="rust"><code><span class="kw">use </span>syntastica_core::ts_runtime::Node;
-<span class="kw">use </span>syntastica_core::{
-    language_set::{LanguageSet, SupportedLanguage},
-    theme::THEME_KEYS,
-    <span class="prelude-ty">Result</span>,
-};
-<span class="kw">use </span>syntastica_highlight::{Highlight, HighlightEvent, Highlighter};
-
-<span class="kw">use </span><span class="kw">crate</span>::Highlights;
-
-<span class="doccomment">/// A type for easy reuse of resources when highlighting multiple inputs.
-///
-/// When planning to process multiple different inputs, potentially in multiple different
-/// languages, create and store an instance of this type, so that the resusable resources will be
-/// reused.
-///
-/// Additionally, the [`Processor::process_once`] function provides a quick way to process an input
-/// once without keeping the reusable resources.
-///
-/// # Instantiation
-///
-/// A [`Processor`] can be created by calling [`Processor::new`] with an implementation of
-/// [`LanguageSet`].
-///
-/// # Examples
-///
-/// ## Example: process once
-///
-/// This example uses the [`Processor::process_once`] function to process one input without keeping
-/// a [`Processor`] instance.
-///
-/// ```
-/// use syntastica::{style::Style, Processor};
-/// use syntastica_parsers::{Lang, LanguageSetImpl};
-///
-/// let highlights = Processor::process_once(
-///     &quot;fn&quot;,       // the code to process
-///     Lang::Rust, // the code&#39;s language
-///     // any valid `LanguageSet` supporting the required language
-///     &amp;LanguageSetImpl::new(),
-/// )
-/// .unwrap();
-///
-/// assert_eq!(highlights, vec![vec![(&quot;fn&quot;, Some(&quot;keyword.function&quot;))]]);
-/// ```
-///
-/// ## Example: instantiation with `Processor::new`
-///
-/// This example uses the [`Processor::new`] function to create a [`Processor`]
-/// instance which can then be used to process multiple different inputs.
-///
-/// ```
-/// use syntastica::{style::Style, Processor};
-/// use syntastica_parsers_git::{Lang, LanguageSetImpl};
-///
-/// // get a `LanguageSet`
-/// let language_set = LanguageSetImpl::new();
-///
-/// // create a `Processor` using that `LanguageSet`
-/// let mut processor = Processor::new(&amp;language_set);
-///
-/// // process some input
-/// let highlights = processor.process(&quot;# comment&quot;, Lang::Python).unwrap();
-/// assert_eq!(highlights, vec![vec![(&quot;# comment&quot;, Some(&quot;comment&quot;))]]);
-///
-/// // process input with injections
-/// let highlights = processor
-///     .process(r#&quot;Regex::new(r&quot;.&quot;)&quot;#, Lang::Rust)
-///     .unwrap();
-/// assert_eq!(
-///     highlights,
-///     vec![vec![
-///         (&quot;Regex&quot;, Some(&quot;type&quot;)),
-///         (&quot;::&quot;, Some(&quot;punctuation.delimiter&quot;)),
-///         (&quot;new&quot;, Some(&quot;function.call&quot;)),
-///         (&quot;(&quot;, Some(&quot;punctuation.bracket&quot;)),
-///         (&quot;r&quot;, Some(&quot;string&quot;)),
-///         (&quot;\&quot;&quot;, Some(&quot;string.regex&quot;)),
-///         (&quot;.&quot;, Some(&quot;punctuation.special&quot;)), // this is the injected regex language
-///         (&quot;\&quot;&quot;, Some(&quot;string.regex&quot;)),
-///         (&quot;)&quot;, Some(&quot;punctuation.bracket&quot;)),
-///     ]]
-/// );
-/// ```
-</span><span class="kw">pub struct </span>Processor&lt;<span class="lifetime">&#39;set</span>, Set: LanguageSet&gt; {
-    set: <span class="kw-2">&amp;</span><span class="lifetime">&#39;set </span>Set,
-    highlighter: Highlighter,
-}
-
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;set</span>, Set: LanguageSet&gt; Processor&lt;<span class="lifetime">&#39;set</span>, Set&gt; {
-    <span class="doccomment">/// Create a new [`Processor`] given a [`LanguageSet`].
-    ///
-    /// See [the type documentation](Processor) for other means of instantiation and an example.
-    </span><span class="kw">pub fn </span>new(set: <span class="kw-2">&amp;</span><span class="lifetime">&#39;set </span>Set) -&gt; <span class="self">Self </span>{
-        <span class="self">Self </span>{
-            set,
-            highlighter: Highlighter::new(),
-        }
-    }
-
-    <span class="doccomment">/// Create a temporary [`Processor`] and run [`process`](Processor::process) once.
-    ///
-    /// **Only use this function if you do not plan to process multiple inputs!**
-    ///
-    /// See the documentation for [`process`](Processor::process) and
-    /// [`new`](Processor::new) for more information on the parameters,
-    /// return type, and possible errors.
-    </span><span class="kw">pub fn </span>process_once&lt;<span class="lifetime">&#39;src</span>&gt;(
-        code: <span class="kw-2">&amp;</span><span class="lifetime">&#39;src </span>str,
-        language: Set::Language,
-        set: <span class="kw-2">&amp;</span><span class="lifetime">&#39;set </span>Set,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;Highlights&lt;<span class="lifetime">&#39;src</span>&gt;&gt; {
-        <span class="self">Self</span>::new(set).process(code, language)
-    }
-
-    <span class="doccomment">/// Process the given `code` using the language specified by `language_name`.
-    ///
-    /// # Returns
-    ///
-    /// On success, the function returns [`Highlights`] which can be used by
-    /// [`render`](crate::render) for rendering to end users.
-    ///
-    /// # Errors
-    ///
-    /// The function may result in the following errors:
-    ///
-    /// - [`Error::UnsupportedLanguage`](crate::Error::UnsupportedLanguage) if the given
-    ///   `language_name` is not supported by the [`LanguageSet`] which was passed during
-    ///   instantiation of this [`Processor`].
-    /// - [`Error::Highlight`](crate::Error::Highlight) if highlighting fails (mainly because of
-    ///   tree-sitter version mismatches).
-    </span><span class="kw">pub fn </span>process&lt;<span class="lifetime">&#39;src</span>&gt;(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        code: <span class="kw-2">&amp;</span><span class="lifetime">&#39;src </span>str,
-        language: Set::Language,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;Highlights&lt;<span class="lifetime">&#39;src</span>&gt;&gt; {
-        <span class="self">self</span>.process_impl(code, language, <span class="prelude-val">None</span>)
-    }
-
-    <span class="doccomment">/// Process the given `code` using the language specified by `language_name` using an already
-    /// parsed tree.
-    ///
-    /// Unlike [`process`](Processor::process), this does not parse the input text, but instead
-    /// uses a parsed tree that is provided by the caller. This also means that **language
-    /// injections must be handled by the caller**.
-    ///
-    /// This allows for incremental parsing, useful for e.g. text editors. See the
-    /// [tree-sitter Rust documentation](https://github.com/tree-sitter/tree-sitter/tree/master/lib/binding_rust#editing)
-    /// for more information.
-    ///
-    /// # Example
-    /// ```
-    /// use syntastica::{language_set::LanguageSet, renderer::TerminalRenderer, Processor};
-    /// use syntastica_parsers::{Lang, LanguageSetImpl};
-    /// use tree_sitter::{InputEdit, Parser, Point};
-    ///
-    /// // create a LanguageSet, Processor, Renderer, and ResolvedTheme
-    /// let set = LanguageSetImpl::new();
-    /// let mut processor = Processor::new(&amp;set);
-    /// let mut renderer = TerminalRenderer::new(None);
-    /// let theme = syntastica_themes::one::dark();
-    ///
-    /// // create a tree-sitter parser
-    /// let mut parser = Parser::new();
-    /// // and set the desired language
-    /// parser.set_language(Lang::Rust.get())?;
-    ///
-    /// // parse, process, and render source code
-    /// let code = &quot;fn test() {}&quot;;
-    /// let mut tree = parser.parse(code, None).unwrap();
-    /// println!(
-    ///     &quot;{}&quot;,
-    ///     syntastica::render(
-    ///         &amp;processor.process_tree(code, Lang::Rust, &amp;tree.root_node())?,
-    ///         &amp;mut renderer,
-    ///         &amp;theme,
-    ///     )
-    /// );
-    ///
-    /// // edit the code and tree
-    /// let new_code = &quot;fn test(a: u32) {}&quot;;
-    /// tree.edit(&amp;InputEdit {
-    ///     start_byte: 8,
-    ///     old_end_byte: 8,
-    ///     new_end_byte: 14,
-    ///     start_position: Point::new(0, 8),
-    ///     old_end_position: Point::new(0, 8),
-    ///     new_end_position: Point::new(0, 14),
-    /// });
-    ///
-    /// // re-parse, process, and render the code
-    /// let new_tree = parser.parse(new_code, Some(&amp;tree)).unwrap();
-    /// println!(
-    ///     &quot;{}&quot;,
-    ///     syntastica::render(
-    ///         &amp;processor.process_tree(new_code, Lang::Rust, &amp;new_tree.root_node())?,
-    ///         &amp;mut renderer,
-    ///         &amp;theme,
-    ///     )
-    /// );
-    ///
-    /// # Ok::&lt;(), Box&lt;dyn std::error::Error&gt;&gt;(())
-    /// ```
-    ///
-    /// # Returns
-    ///
-    /// On success, the function returns [`Highlights`] which can be used by
-    /// [`render`](crate::render) for rendering to end users.
-    ///
-    /// # Errors
-    ///
-    /// The function may result in the following errors:
-    ///
-    /// - [`Error::UnsupportedLanguage`](crate::Error::UnsupportedLanguage) if the given
-    ///   `language_name` is not supported by the [`LanguageSet`] which was passed during
-    ///   instantiation of this [`Processor`].
-    /// - [`Error::Highlight`](crate::Error::Highlight) if highlighting fails (mainly because of
-    ///   tree-sitter version mismatches).
-    </span><span class="kw">pub fn </span>process_tree&lt;<span class="lifetime">&#39;src</span>&gt;(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        code: <span class="kw-2">&amp;</span><span class="lifetime">&#39;src </span>str,
-        language: Set::Language,
-        tree: <span class="kw-2">&amp;</span>Node&lt;<span class="lifetime">&#39;_</span>&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;Highlights&lt;<span class="lifetime">&#39;src</span>&gt;&gt; {
-        <span class="self">self</span>.process_impl(code, language, <span class="prelude-val">Some</span>(tree))
-    }
-
-    <span class="kw">fn </span>process_impl&lt;<span class="lifetime">&#39;src</span>&gt;(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        code: <span class="kw-2">&amp;</span><span class="lifetime">&#39;src </span>str,
-        language: Set::Language,
-        tree: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Node&lt;<span class="lifetime">&#39;_</span>&gt;&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;Highlights&lt;<span class="lifetime">&#39;src</span>&gt;&gt; {
-        <span class="kw">let </span>highlight_config = <span class="self">self</span>.set.get_language(language)<span class="question-mark">?</span>;
-
-        <span class="kw">let </span>injection_callback = |lang_name: <span class="kw-2">&amp;</span>str| {
-            <span class="kw">let </span>lang_name = lang_name.to_ascii_lowercase();
-            <span class="comment">// if `lang_name` is a supported language in the set, use that
-            </span>Set::Language::for_name(<span class="kw-2">&amp;</span>lang_name)
-                .ok()
-                <span class="comment">// else if `for_injection` returns a name, try getting a language for that name
-                </span>.or_else(|| Set::Language::for_injection(<span class="kw-2">&amp;</span>lang_name))
-                <span class="comment">// else, `lang_name` might be a mimetype like `application/json`, so try both again
-                // with the text after the last `/`
-                </span>.or_else(|| {
-                    lang_name.rsplit_once(<span class="string">&#39;/&#39;</span>).and_then(|(<span class="kw">_</span>, name)| {
-                        Set::Language::for_name(name)
-                            .ok()
-                            .or_else(|| Set::Language::for_injection(name))
-                    })
-                })
-                .and_then(|lang| <span class="self">self</span>.set.get_language(lang).ok())
-        };
-
-        <span class="kw">match </span>tree {
-            <span class="prelude-val">Some</span>(tree) =&gt; process_highlight_iter(
-                <span class="self">self</span>.highlighter.highlight_existing_tree(
-                    highlight_config,
-                    code.as_bytes(),
-                    <span class="prelude-val">None</span>,
-                    tree,
-                )<span class="question-mark">?</span>,
-                code,
-            ),
-            <span class="prelude-val">None </span>=&gt; process_highlight_iter(
-                <span class="self">self</span>.highlighter.highlight(
-                    highlight_config,
-                    code.as_bytes(),
-                    <span class="prelude-val">None</span>,
-                    injection_callback,
-                )<span class="question-mark">?</span>,
-                code,
-            ),
-        }
-    }
-}
-
-<span class="kw">fn </span>process_highlight_iter(
-    iter: <span class="kw">impl </span>Iterator&lt;Item = std::result::Result&lt;HighlightEvent, syntastica_highlight::Error&gt;&gt;,
-    code: <span class="kw-2">&amp;</span>str,
-) -&gt; <span class="prelude-ty">Result</span>&lt;Highlights&lt;<span class="lifetime">&#39;_</span>&gt;&gt; {
-    <span class="kw">let </span><span class="kw-2">mut </span>out = <span class="macro">vec!</span>[<span class="macro">vec!</span>[]];
-    <span class="kw">let </span><span class="kw-2">mut </span>style_stack = <span class="macro">vec!</span>[];
-
-    <span class="kw">for </span>event <span class="kw">in </span>iter {
-        <span class="kw">match </span>event<span class="question-mark">? </span>{
-            HighlightEvent::HighlightStart(Highlight(highlight)) =&gt; style_stack.push(highlight),
-            HighlightEvent::HighlightEnd =&gt; {
-                style_stack.pop();
-            }
-            HighlightEvent::Source { start, end } =&gt; {
-                <span class="kw">let </span>ends_with_newline = code[start..end].ends_with(<span class="string">&#39;\n&#39;</span>);
-                <span class="kw">let </span><span class="kw-2">mut </span>lines = code[start..end].lines().peekable();
-                <span class="kw">while let </span><span class="prelude-val">Some</span>(line) = lines.next() {
-                    <span class="kw">let </span>style = style_stack.last().and_then(|idx| {
-                        <span class="kw">let </span>key = THEME_KEYS[<span class="kw-2">*</span>idx];
-                        <span class="kw">match </span>key {
-                            <span class="string">&quot;none&quot; </span>=&gt; <span class="prelude-val">None</span>,
-                            <span class="kw">_ </span>=&gt; <span class="prelude-val">Some</span>(key),
-                        }
-                    });
-                    out.last_mut()
-                        .expect(<span class="string">&quot;`out` is initialized with one element and never shrinks in size&quot;</span>)
-                        .push((line, style));
-
-                    <span class="kw">if </span>lines.peek().is_some() || ends_with_newline {
-                        out.push(<span class="macro">vec!</span>[]);
-                    }
-                }
-            }
-        }
-    }
-
-    <span class="prelude-val">Ok</span>(out)
-}
-</code></pre></div></section></main></body></html>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/processor.rs`."><title>processor.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-916cea96.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="syntastica" data-themes="" data-resource-suffix="" data-rustdoc-version="1.87.0-nightly (00f245915 2025-02-26)" data-channel="nightly" data-search-js="search-f7327375.js" data-settings-js="settings-d72f25bb.js" ><script src="../../static.files/storage-d8ac8691.js"></script><script defer src="../../static.files/src-script-b8d3f215.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-a7bf3405.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">syntastica/</div>processor.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="kw">use </span>syntastica_core::ts_runtime::Node;
+<a href=#2 id=2 data-nosnippet>2</a><span class="kw">use </span>syntastica_core::{
+<a href=#3 id=3 data-nosnippet>3</a>    language_set::{LanguageSet, SupportedLanguage},
+<a href=#4 id=4 data-nosnippet>4</a>    theme::THEME_KEYS,
+<a href=#5 id=5 data-nosnippet>5</a>    <span class="prelude-ty">Result</span>,
+<a href=#6 id=6 data-nosnippet>6</a>};
+<a href=#7 id=7 data-nosnippet>7</a><span class="kw">use </span>syntastica_highlight::{Highlight, HighlightEvent, Highlighter};
+<a href=#8 id=8 data-nosnippet>8</a>
+<a href=#9 id=9 data-nosnippet>9</a><span class="kw">use </span><span class="kw">crate</span>::Highlights;
+<a href=#10 id=10 data-nosnippet>10</a>
+<a href=#11 id=11 data-nosnippet>11</a><span class="doccomment">/// A type for easy reuse of resources when highlighting multiple inputs.
+<a href=#12 id=12 data-nosnippet>12</a>///
+<a href=#13 id=13 data-nosnippet>13</a>/// When planning to process multiple different inputs, potentially in multiple different
+<a href=#14 id=14 data-nosnippet>14</a>/// languages, create and store an instance of this type, so that the resusable resources will be
+<a href=#15 id=15 data-nosnippet>15</a>/// reused.
+<a href=#16 id=16 data-nosnippet>16</a>///
+<a href=#17 id=17 data-nosnippet>17</a>/// Additionally, the [`Processor::process_once`] function provides a quick way to process an input
+<a href=#18 id=18 data-nosnippet>18</a>/// once without keeping the reusable resources.
+<a href=#19 id=19 data-nosnippet>19</a>///
+<a href=#20 id=20 data-nosnippet>20</a>/// # Instantiation
+<a href=#21 id=21 data-nosnippet>21</a>///
+<a href=#22 id=22 data-nosnippet>22</a>/// A [`Processor`] can be created by calling [`Processor::new`] with an implementation of
+<a href=#23 id=23 data-nosnippet>23</a>/// [`LanguageSet`].
+<a href=#24 id=24 data-nosnippet>24</a>///
+<a href=#25 id=25 data-nosnippet>25</a>/// # Examples
+<a href=#26 id=26 data-nosnippet>26</a>///
+<a href=#27 id=27 data-nosnippet>27</a>/// ## Example: process once
+<a href=#28 id=28 data-nosnippet>28</a>///
+<a href=#29 id=29 data-nosnippet>29</a>/// This example uses the [`Processor::process_once`] function to process one input without keeping
+<a href=#30 id=30 data-nosnippet>30</a>/// a [`Processor`] instance.
+<a href=#31 id=31 data-nosnippet>31</a>///
+<a href=#32 id=32 data-nosnippet>32</a>/// ```
+<a href=#33 id=33 data-nosnippet>33</a>/// use syntastica::{style::Style, Processor};
+<a href=#34 id=34 data-nosnippet>34</a>/// use syntastica_parsers::{Lang, LanguageSetImpl};
+<a href=#35 id=35 data-nosnippet>35</a>///
+<a href=#36 id=36 data-nosnippet>36</a>/// let highlights = Processor::process_once(
+<a href=#37 id=37 data-nosnippet>37</a>///     "fn",       // the code to process
+<a href=#38 id=38 data-nosnippet>38</a>///     Lang::Rust, // the code's language
+<a href=#39 id=39 data-nosnippet>39</a>///     // any valid `LanguageSet` supporting the required language
+<a href=#40 id=40 data-nosnippet>40</a>///     &amp;LanguageSetImpl::new(),
+<a href=#41 id=41 data-nosnippet>41</a>/// )
+<a href=#42 id=42 data-nosnippet>42</a>/// .unwrap();
+<a href=#43 id=43 data-nosnippet>43</a>///
+<a href=#44 id=44 data-nosnippet>44</a>/// assert_eq!(highlights, vec![vec![("fn", Some("keyword.function"))]]);
+<a href=#45 id=45 data-nosnippet>45</a>/// ```
+<a href=#46 id=46 data-nosnippet>46</a>///
+<a href=#47 id=47 data-nosnippet>47</a>/// ## Example: instantiation with `Processor::new`
+<a href=#48 id=48 data-nosnippet>48</a>///
+<a href=#49 id=49 data-nosnippet>49</a>/// This example uses the [`Processor::new`] function to create a [`Processor`]
+<a href=#50 id=50 data-nosnippet>50</a>/// instance which can then be used to process multiple different inputs.
+<a href=#51 id=51 data-nosnippet>51</a>///
+<a href=#52 id=52 data-nosnippet>52</a>/// ```
+<a href=#53 id=53 data-nosnippet>53</a>/// use syntastica::{style::Style, Processor};
+<a href=#54 id=54 data-nosnippet>54</a>/// use syntastica_parsers_git::{Lang, LanguageSetImpl};
+<a href=#55 id=55 data-nosnippet>55</a>///
+<a href=#56 id=56 data-nosnippet>56</a>/// // get a `LanguageSet`
+<a href=#57 id=57 data-nosnippet>57</a>/// let language_set = LanguageSetImpl::new();
+<a href=#58 id=58 data-nosnippet>58</a>///
+<a href=#59 id=59 data-nosnippet>59</a>/// // create a `Processor` using that `LanguageSet`
+<a href=#60 id=60 data-nosnippet>60</a>/// let mut processor = Processor::new(&amp;language_set);
+<a href=#61 id=61 data-nosnippet>61</a>///
+<a href=#62 id=62 data-nosnippet>62</a>/// // process some input
+<a href=#63 id=63 data-nosnippet>63</a>/// let highlights = processor.process("# comment", Lang::Python).unwrap();
+<a href=#64 id=64 data-nosnippet>64</a>/// assert_eq!(highlights, vec![vec![("# comment", Some("comment"))]]);
+<a href=#65 id=65 data-nosnippet>65</a>///
+<a href=#66 id=66 data-nosnippet>66</a>/// // process input with injections
+<a href=#67 id=67 data-nosnippet>67</a>/// let highlights = processor
+<a href=#68 id=68 data-nosnippet>68</a>///     .process(r#"Regex::new(r".")"#, Lang::Rust)
+<a href=#69 id=69 data-nosnippet>69</a>///     .unwrap();
+<a href=#70 id=70 data-nosnippet>70</a>/// assert_eq!(
+<a href=#71 id=71 data-nosnippet>71</a>///     highlights,
+<a href=#72 id=72 data-nosnippet>72</a>///     vec![vec![
+<a href=#73 id=73 data-nosnippet>73</a>///         ("Regex", Some("type")),
+<a href=#74 id=74 data-nosnippet>74</a>///         ("::", Some("punctuation.delimiter")),
+<a href=#75 id=75 data-nosnippet>75</a>///         ("new", Some("function.call")),
+<a href=#76 id=76 data-nosnippet>76</a>///         ("(", Some("punctuation.bracket")),
+<a href=#77 id=77 data-nosnippet>77</a>///         ("r\"", Some("string")),
+<a href=#78 id=78 data-nosnippet>78</a>///         // FIXME: this particular injection seems to not work atm
+<a href=#79 id=79 data-nosnippet>79</a>///         (".", Some("string.regexp")),
+<a href=#80 id=80 data-nosnippet>80</a>///         // (".", Some("variable.builtin")), // this is the injected regex language
+<a href=#81 id=81 data-nosnippet>81</a>///         ("\"", Some("string")),
+<a href=#82 id=82 data-nosnippet>82</a>///         (")", Some("punctuation.bracket")),
+<a href=#83 id=83 data-nosnippet>83</a>///     ]]
+<a href=#84 id=84 data-nosnippet>84</a>/// );
+<a href=#85 id=85 data-nosnippet>85</a>/// ```
+<a href=#86 id=86 data-nosnippet>86</a></span><span class="kw">pub struct </span>Processor&lt;<span class="lifetime">'set</span>, Set: LanguageSet&lt;<span class="lifetime">'set</span>&gt;&gt; {
+<a href=#87 id=87 data-nosnippet>87</a>    set: <span class="kw-2">&amp;</span><span class="lifetime">'set </span>Set,
+<a href=#88 id=88 data-nosnippet>88</a>    highlighter: Highlighter,
+<a href=#89 id=89 data-nosnippet>89</a>}
+<a href=#90 id=90 data-nosnippet>90</a>
+<a href=#91 id=91 data-nosnippet>91</a><span class="kw">impl</span>&lt;<span class="lifetime">'set</span>, Set: LanguageSet&lt;<span class="lifetime">'set</span>&gt;&gt; Processor&lt;<span class="lifetime">'set</span>, Set&gt; {
+<a href=#92 id=92 data-nosnippet>92</a>    <span class="doccomment">/// Create a new [`Processor`] given a [`LanguageSet`].
+<a href=#93 id=93 data-nosnippet>93</a>    ///
+<a href=#94 id=94 data-nosnippet>94</a>    /// See [the type documentation](Processor) for other means of instantiation and an example.
+<a href=#95 id=95 data-nosnippet>95</a>    </span><span class="kw">pub fn </span>new(set: <span class="kw-2">&amp;</span><span class="lifetime">'set </span>Set) -&gt; <span class="self">Self </span>{
+<a href=#96 id=96 data-nosnippet>96</a>        <span class="self">Self </span>{
+<a href=#97 id=97 data-nosnippet>97</a>            set,
+<a href=#98 id=98 data-nosnippet>98</a>            highlighter: Highlighter::new(),
+<a href=#99 id=99 data-nosnippet>99</a>        }
+<a href=#100 id=100 data-nosnippet>100</a>    }
+<a href=#101 id=101 data-nosnippet>101</a>
+<a href=#102 id=102 data-nosnippet>102</a>    <span class="doccomment">/// Create a temporary [`Processor`] and run [`process`](Processor::process) once.
+<a href=#103 id=103 data-nosnippet>103</a>    ///
+<a href=#104 id=104 data-nosnippet>104</a>    /// **Only use this function if you do not plan to process multiple inputs!**
+<a href=#105 id=105 data-nosnippet>105</a>    ///
+<a href=#106 id=106 data-nosnippet>106</a>    /// See the documentation for [`process`](Processor::process) and
+<a href=#107 id=107 data-nosnippet>107</a>    /// [`new`](Processor::new) for more information on the parameters,
+<a href=#108 id=108 data-nosnippet>108</a>    /// return type, and possible errors.
+<a href=#109 id=109 data-nosnippet>109</a>    </span><span class="kw">pub fn </span>process_once&lt;<span class="lifetime">'src</span>&gt;(
+<a href=#110 id=110 data-nosnippet>110</a>        code: <span class="kw-2">&amp;</span><span class="lifetime">'src </span>str,
+<a href=#111 id=111 data-nosnippet>111</a>        language: <span class="kw">impl </span>Into&lt;Set::Language&gt;,
+<a href=#112 id=112 data-nosnippet>112</a>        set: <span class="kw-2">&amp;</span><span class="lifetime">'set </span>Set,
+<a href=#113 id=113 data-nosnippet>113</a>    ) -&gt; <span class="prelude-ty">Result</span>&lt;Highlights&lt;<span class="lifetime">'src</span>&gt;&gt; {
+<a href=#114 id=114 data-nosnippet>114</a>        <span class="self">Self</span>::new(set).process(code, language)
+<a href=#115 id=115 data-nosnippet>115</a>    }
+<a href=#116 id=116 data-nosnippet>116</a>
+<a href=#117 id=117 data-nosnippet>117</a>    <span class="doccomment">/// Process the given `code` using the language specified by `language_name`.
+<a href=#118 id=118 data-nosnippet>118</a>    ///
+<a href=#119 id=119 data-nosnippet>119</a>    /// # Returns
+<a href=#120 id=120 data-nosnippet>120</a>    ///
+<a href=#121 id=121 data-nosnippet>121</a>    /// On success, the function returns [`Highlights`] which can be used by
+<a href=#122 id=122 data-nosnippet>122</a>    /// [`render`](crate::render) for rendering to end users.
+<a href=#123 id=123 data-nosnippet>123</a>    ///
+<a href=#124 id=124 data-nosnippet>124</a>    /// # Errors
+<a href=#125 id=125 data-nosnippet>125</a>    ///
+<a href=#126 id=126 data-nosnippet>126</a>    /// The function may result in the following errors:
+<a href=#127 id=127 data-nosnippet>127</a>    ///
+<a href=#128 id=128 data-nosnippet>128</a>    /// - [`Error::UnsupportedLanguage`](crate::Error::UnsupportedLanguage) if the given
+<a href=#129 id=129 data-nosnippet>129</a>    ///   `language_name` is not supported by the [`LanguageSet`] which was passed during
+<a href=#130 id=130 data-nosnippet>130</a>    ///   instantiation of this [`Processor`].
+<a href=#131 id=131 data-nosnippet>131</a>    /// - [`Error::Highlight`](crate::Error::Highlight) if highlighting fails (mainly because of
+<a href=#132 id=132 data-nosnippet>132</a>    ///   tree-sitter version mismatches).
+<a href=#133 id=133 data-nosnippet>133</a>    </span><span class="kw">pub fn </span>process&lt;<span class="lifetime">'src</span>&gt;(
+<a href=#134 id=134 data-nosnippet>134</a>        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+<a href=#135 id=135 data-nosnippet>135</a>        code: <span class="kw-2">&amp;</span><span class="lifetime">'src </span>str,
+<a href=#136 id=136 data-nosnippet>136</a>        language: <span class="kw">impl </span>Into&lt;Set::Language&gt;,
+<a href=#137 id=137 data-nosnippet>137</a>    ) -&gt; <span class="prelude-ty">Result</span>&lt;Highlights&lt;<span class="lifetime">'src</span>&gt;&gt; {
+<a href=#138 id=138 data-nosnippet>138</a>        <span class="self">self</span>.process_impl(code, language.into(), <span class="prelude-val">None</span>)
+<a href=#139 id=139 data-nosnippet>139</a>    }
+<a href=#140 id=140 data-nosnippet>140</a>
+<a href=#141 id=141 data-nosnippet>141</a>    <span class="doccomment">/// Process the given `code` using the language specified by `language_name` using an already
+<a href=#142 id=142 data-nosnippet>142</a>    /// parsed tree.
+<a href=#143 id=143 data-nosnippet>143</a>    ///
+<a href=#144 id=144 data-nosnippet>144</a>    /// Unlike [`process`](Processor::process), this does not parse the input text, but instead
+<a href=#145 id=145 data-nosnippet>145</a>    /// uses a parsed tree that is provided by the caller. This also means that **language
+<a href=#146 id=146 data-nosnippet>146</a>    /// injections must be handled by the caller**.
+<a href=#147 id=147 data-nosnippet>147</a>    ///
+<a href=#148 id=148 data-nosnippet>148</a>    /// This allows for incremental parsing, useful for e.g. text editors. See the
+<a href=#149 id=149 data-nosnippet>149</a>    /// [tree-sitter Rust documentation](https://github.com/tree-sitter/tree-sitter/tree/master/lib/binding_rust#editing)
+<a href=#150 id=150 data-nosnippet>150</a>    /// for more information.
+<a href=#151 id=151 data-nosnippet>151</a>    ///
+<a href=#152 id=152 data-nosnippet>152</a>    /// # Example
+<a href=#153 id=153 data-nosnippet>153</a>    /// ```
+<a href=#154 id=154 data-nosnippet>154</a>    /// use syntastica::{language_set::LanguageSet, renderer::TerminalRenderer, Processor};
+<a href=#155 id=155 data-nosnippet>155</a>    /// use syntastica_parsers::{Lang, LanguageSetImpl};
+<a href=#156 id=156 data-nosnippet>156</a>    /// use tree_sitter::{InputEdit, Parser, Point};
+<a href=#157 id=157 data-nosnippet>157</a>    ///
+<a href=#158 id=158 data-nosnippet>158</a>    /// // create a LanguageSet, Processor, Renderer, and ResolvedTheme
+<a href=#159 id=159 data-nosnippet>159</a>    /// let set = LanguageSetImpl::new();
+<a href=#160 id=160 data-nosnippet>160</a>    /// let mut processor = Processor::new(&amp;set);
+<a href=#161 id=161 data-nosnippet>161</a>    /// let mut renderer = TerminalRenderer::new(None);
+<a href=#162 id=162 data-nosnippet>162</a>    /// let theme = syntastica_themes::one::dark();
+<a href=#163 id=163 data-nosnippet>163</a>    ///
+<a href=#164 id=164 data-nosnippet>164</a>    /// // create a tree-sitter parser
+<a href=#165 id=165 data-nosnippet>165</a>    /// let mut parser = Parser::new();
+<a href=#166 id=166 data-nosnippet>166</a>    /// // and set the desired language
+<a href=#167 id=167 data-nosnippet>167</a>    /// parser.set_language(&amp;Lang::Rust.get())?;
+<a href=#168 id=168 data-nosnippet>168</a>    ///
+<a href=#169 id=169 data-nosnippet>169</a>    /// // parse, process, and render source code
+<a href=#170 id=170 data-nosnippet>170</a>    /// let code = "fn test() {}";
+<a href=#171 id=171 data-nosnippet>171</a>    /// let mut tree = parser.parse(code, None).unwrap();
+<a href=#172 id=172 data-nosnippet>172</a>    /// println!(
+<a href=#173 id=173 data-nosnippet>173</a>    ///     "{}",
+<a href=#174 id=174 data-nosnippet>174</a>    ///     syntastica::render(
+<a href=#175 id=175 data-nosnippet>175</a>    ///         &amp;processor.process_tree(code, Lang::Rust, &amp;tree.root_node())?,
+<a href=#176 id=176 data-nosnippet>176</a>    ///         &amp;mut renderer,
+<a href=#177 id=177 data-nosnippet>177</a>    ///         &amp;theme,
+<a href=#178 id=178 data-nosnippet>178</a>    ///     )
+<a href=#179 id=179 data-nosnippet>179</a>    /// );
+<a href=#180 id=180 data-nosnippet>180</a>    ///
+<a href=#181 id=181 data-nosnippet>181</a>    /// // edit the code and tree
+<a href=#182 id=182 data-nosnippet>182</a>    /// let new_code = "fn test(a: u32) {}";
+<a href=#183 id=183 data-nosnippet>183</a>    /// tree.edit(&amp;InputEdit {
+<a href=#184 id=184 data-nosnippet>184</a>    ///     start_byte: 8,
+<a href=#185 id=185 data-nosnippet>185</a>    ///     old_end_byte: 8,
+<a href=#186 id=186 data-nosnippet>186</a>    ///     new_end_byte: 14,
+<a href=#187 id=187 data-nosnippet>187</a>    ///     start_position: Point::new(0, 8),
+<a href=#188 id=188 data-nosnippet>188</a>    ///     old_end_position: Point::new(0, 8),
+<a href=#189 id=189 data-nosnippet>189</a>    ///     new_end_position: Point::new(0, 14),
+<a href=#190 id=190 data-nosnippet>190</a>    /// });
+<a href=#191 id=191 data-nosnippet>191</a>    ///
+<a href=#192 id=192 data-nosnippet>192</a>    /// // re-parse, process, and render the code
+<a href=#193 id=193 data-nosnippet>193</a>    /// let new_tree = parser.parse(new_code, Some(&amp;tree)).unwrap();
+<a href=#194 id=194 data-nosnippet>194</a>    /// println!(
+<a href=#195 id=195 data-nosnippet>195</a>    ///     "{}",
+<a href=#196 id=196 data-nosnippet>196</a>    ///     syntastica::render(
+<a href=#197 id=197 data-nosnippet>197</a>    ///         &amp;processor.process_tree(new_code, Lang::Rust, &amp;new_tree.root_node())?,
+<a href=#198 id=198 data-nosnippet>198</a>    ///         &amp;mut renderer,
+<a href=#199 id=199 data-nosnippet>199</a>    ///         &amp;theme,
+<a href=#200 id=200 data-nosnippet>200</a>    ///     )
+<a href=#201 id=201 data-nosnippet>201</a>    /// );
+<a href=#202 id=202 data-nosnippet>202</a>    ///
+<a href=#203 id=203 data-nosnippet>203</a>    /// # Ok::&lt;(), Box&lt;dyn std::error::Error&gt;&gt;(())
+<a href=#204 id=204 data-nosnippet>204</a>    /// ```
+<a href=#205 id=205 data-nosnippet>205</a>    ///
+<a href=#206 id=206 data-nosnippet>206</a>    /// # Returns
+<a href=#207 id=207 data-nosnippet>207</a>    ///
+<a href=#208 id=208 data-nosnippet>208</a>    /// On success, the function returns [`Highlights`] which can be used by
+<a href=#209 id=209 data-nosnippet>209</a>    /// [`render`](crate::render) for rendering to end users.
+<a href=#210 id=210 data-nosnippet>210</a>    ///
+<a href=#211 id=211 data-nosnippet>211</a>    /// # Errors
+<a href=#212 id=212 data-nosnippet>212</a>    ///
+<a href=#213 id=213 data-nosnippet>213</a>    /// The function may result in the following errors:
+<a href=#214 id=214 data-nosnippet>214</a>    ///
+<a href=#215 id=215 data-nosnippet>215</a>    /// - [`Error::UnsupportedLanguage`](crate::Error::UnsupportedLanguage) if the given
+<a href=#216 id=216 data-nosnippet>216</a>    ///   `language_name` is not supported by the [`LanguageSet`] which was passed during
+<a href=#217 id=217 data-nosnippet>217</a>    ///   instantiation of this [`Processor`].
+<a href=#218 id=218 data-nosnippet>218</a>    /// - [`Error::Highlight`](crate::Error::Highlight) if highlighting fails (mainly because of
+<a href=#219 id=219 data-nosnippet>219</a>    ///   tree-sitter version mismatches).
+<a href=#220 id=220 data-nosnippet>220</a>    </span><span class="kw">pub fn </span>process_tree&lt;<span class="lifetime">'src</span>&gt;(
+<a href=#221 id=221 data-nosnippet>221</a>        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+<a href=#222 id=222 data-nosnippet>222</a>        code: <span class="kw-2">&amp;</span><span class="lifetime">'src </span>str,
+<a href=#223 id=223 data-nosnippet>223</a>        language: <span class="kw">impl </span>Into&lt;Set::Language&gt;,
+<a href=#224 id=224 data-nosnippet>224</a>        tree: <span class="kw-2">&amp;</span>Node&lt;<span class="lifetime">'_</span>&gt;,
+<a href=#225 id=225 data-nosnippet>225</a>    ) -&gt; <span class="prelude-ty">Result</span>&lt;Highlights&lt;<span class="lifetime">'src</span>&gt;&gt; {
+<a href=#226 id=226 data-nosnippet>226</a>        <span class="self">self</span>.process_impl(code, language.into(), <span class="prelude-val">Some</span>(tree))
+<a href=#227 id=227 data-nosnippet>227</a>    }
+<a href=#228 id=228 data-nosnippet>228</a>
+<a href=#229 id=229 data-nosnippet>229</a>    <span class="kw">fn </span>process_impl&lt;<span class="lifetime">'src</span>&gt;(
+<a href=#230 id=230 data-nosnippet>230</a>        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+<a href=#231 id=231 data-nosnippet>231</a>        code: <span class="kw-2">&amp;</span><span class="lifetime">'src </span>str,
+<a href=#232 id=232 data-nosnippet>232</a>        language: Set::Language,
+<a href=#233 id=233 data-nosnippet>233</a>        tree: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Node&lt;<span class="lifetime">'_</span>&gt;&gt;,
+<a href=#234 id=234 data-nosnippet>234</a>    ) -&gt; <span class="prelude-ty">Result</span>&lt;Highlights&lt;<span class="lifetime">'src</span>&gt;&gt; {
+<a href=#235 id=235 data-nosnippet>235</a>        <span class="kw">let </span>highlight_config = <span class="self">self</span>.set.get_language(language)<span class="question-mark">?</span>;
+<a href=#236 id=236 data-nosnippet>236</a>
+<a href=#237 id=237 data-nosnippet>237</a>        <span class="kw">let </span>injection_callback = |lang_name: <span class="kw-2">&amp;</span>str| {
+<a href=#238 id=238 data-nosnippet>238</a>            <span class="kw">let </span>lang_name = lang_name.to_ascii_lowercase();
+<a href=#239 id=239 data-nosnippet>239</a>            <span class="comment">// if `lang_name` is a supported language in the set, use that
+<a href=#240 id=240 data-nosnippet>240</a>            </span>Set::Language::for_name(<span class="kw-2">&amp;</span>lang_name, <span class="self">self</span>.set)
+<a href=#241 id=241 data-nosnippet>241</a>                .ok()
+<a href=#242 id=242 data-nosnippet>242</a>                <span class="comment">// else if `for_injection` returns a name, try getting a language for that name
+<a href=#243 id=243 data-nosnippet>243</a>                </span>.or_else(|| Set::Language::for_injection(<span class="kw-2">&amp;</span>lang_name, <span class="self">self</span>.set))
+<a href=#244 id=244 data-nosnippet>244</a>                <span class="comment">// else, `lang_name` might be a mimetype like `application/json`, so try both again
+<a href=#245 id=245 data-nosnippet>245</a>                // with the text after the last `/`
+<a href=#246 id=246 data-nosnippet>246</a>                </span>.or_else(|| {
+<a href=#247 id=247 data-nosnippet>247</a>                    lang_name.rsplit_once(<span class="string">'/'</span>).and_then(|(<span class="kw">_</span>, name)| {
+<a href=#248 id=248 data-nosnippet>248</a>                        Set::Language::for_name(name, <span class="self">self</span>.set)
+<a href=#249 id=249 data-nosnippet>249</a>                            .ok()
+<a href=#250 id=250 data-nosnippet>250</a>                            .or_else(|| Set::Language::for_injection(name, <span class="self">self</span>.set))
+<a href=#251 id=251 data-nosnippet>251</a>                    })
+<a href=#252 id=252 data-nosnippet>252</a>                })
+<a href=#253 id=253 data-nosnippet>253</a>                .and_then(|lang| <span class="self">self</span>.set.get_language(lang).ok())
+<a href=#254 id=254 data-nosnippet>254</a>        };
+<a href=#255 id=255 data-nosnippet>255</a>
+<a href=#256 id=256 data-nosnippet>256</a>        <span class="kw">match </span>tree {
+<a href=#257 id=257 data-nosnippet>257</a>            <span class="prelude-val">Some</span>(tree) =&gt; process_highlight_iter(
+<a href=#258 id=258 data-nosnippet>258</a>                <span class="self">self</span>.highlighter.highlight_existing_tree(
+<a href=#259 id=259 data-nosnippet>259</a>                    highlight_config,
+<a href=#260 id=260 data-nosnippet>260</a>                    code.as_bytes(),
+<a href=#261 id=261 data-nosnippet>261</a>                    <span class="prelude-val">None</span>,
+<a href=#262 id=262 data-nosnippet>262</a>                    tree,
+<a href=#263 id=263 data-nosnippet>263</a>                )<span class="question-mark">?</span>,
+<a href=#264 id=264 data-nosnippet>264</a>                code,
+<a href=#265 id=265 data-nosnippet>265</a>            ),
+<a href=#266 id=266 data-nosnippet>266</a>            <span class="prelude-val">None </span>=&gt; process_highlight_iter(
+<a href=#267 id=267 data-nosnippet>267</a>                <span class="self">self</span>.highlighter.highlight(
+<a href=#268 id=268 data-nosnippet>268</a>                    highlight_config,
+<a href=#269 id=269 data-nosnippet>269</a>                    code.as_bytes(),
+<a href=#270 id=270 data-nosnippet>270</a>                    <span class="prelude-val">None</span>,
+<a href=#271 id=271 data-nosnippet>271</a>                    injection_callback,
+<a href=#272 id=272 data-nosnippet>272</a>                )<span class="question-mark">?</span>,
+<a href=#273 id=273 data-nosnippet>273</a>                code,
+<a href=#274 id=274 data-nosnippet>274</a>            ),
+<a href=#275 id=275 data-nosnippet>275</a>        }
+<a href=#276 id=276 data-nosnippet>276</a>    }
+<a href=#277 id=277 data-nosnippet>277</a>}
+<a href=#278 id=278 data-nosnippet>278</a>
+<a href=#279 id=279 data-nosnippet>279</a><span class="kw">fn </span>process_highlight_iter(
+<a href=#280 id=280 data-nosnippet>280</a>    iter: <span class="kw">impl </span>Iterator&lt;Item = std::result::Result&lt;HighlightEvent, syntastica_highlight::Error&gt;&gt;,
+<a href=#281 id=281 data-nosnippet>281</a>    code: <span class="kw-2">&amp;</span>str,
+<a href=#282 id=282 data-nosnippet>282</a>) -&gt; <span class="prelude-ty">Result</span>&lt;Highlights&lt;<span class="lifetime">'_</span>&gt;&gt; {
+<a href=#283 id=283 data-nosnippet>283</a>    <span class="kw">let </span><span class="kw-2">mut </span>out = <span class="macro">vec!</span>[<span class="macro">vec!</span>[]];
+<a href=#284 id=284 data-nosnippet>284</a>    <span class="kw">let </span><span class="kw-2">mut </span>style_stack = <span class="macro">vec!</span>[];
+<a href=#285 id=285 data-nosnippet>285</a>
+<a href=#286 id=286 data-nosnippet>286</a>    <span class="kw">for </span>event <span class="kw">in </span>iter {
+<a href=#287 id=287 data-nosnippet>287</a>        <span class="kw">match </span>event<span class="question-mark">? </span>{
+<a href=#288 id=288 data-nosnippet>288</a>            HighlightEvent::HighlightStart(Highlight(highlight)) =&gt; style_stack.push(highlight),
+<a href=#289 id=289 data-nosnippet>289</a>            HighlightEvent::HighlightEnd =&gt; {
+<a href=#290 id=290 data-nosnippet>290</a>                style_stack.pop();
+<a href=#291 id=291 data-nosnippet>291</a>            }
+<a href=#292 id=292 data-nosnippet>292</a>            HighlightEvent::Source { start, end } =&gt; {
+<a href=#293 id=293 data-nosnippet>293</a>                <span class="kw">let </span>ends_with_newline = code[start..end].ends_with(<span class="string">'\n'</span>);
+<a href=#294 id=294 data-nosnippet>294</a>                <span class="kw">let </span><span class="kw-2">mut </span>lines = code[start..end].lines().peekable();
+<a href=#295 id=295 data-nosnippet>295</a>                <span class="kw">while let </span><span class="prelude-val">Some</span>(line) = lines.next() {
+<a href=#296 id=296 data-nosnippet>296</a>                    <span class="kw">let </span>style = style_stack.last().and_then(|idx| {
+<a href=#297 id=297 data-nosnippet>297</a>                        <span class="kw">let </span>key = THEME_KEYS[<span class="kw-2">*</span>idx];
+<a href=#298 id=298 data-nosnippet>298</a>                        <span class="kw">match </span>key {
+<a href=#299 id=299 data-nosnippet>299</a>                            <span class="string">"none" </span>=&gt; <span class="prelude-val">None</span>,
+<a href=#300 id=300 data-nosnippet>300</a>                            <span class="kw">_ </span>=&gt; <span class="prelude-val">Some</span>(key),
+<a href=#301 id=301 data-nosnippet>301</a>                        }
+<a href=#302 id=302 data-nosnippet>302</a>                    });
+<a href=#303 id=303 data-nosnippet>303</a>                    out.last_mut()
+<a href=#304 id=304 data-nosnippet>304</a>                        .expect(<span class="string">"`out` is initialized with one element and never shrinks in size"</span>)
+<a href=#305 id=305 data-nosnippet>305</a>                        .push((line, style));
+<a href=#306 id=306 data-nosnippet>306</a>
+<a href=#307 id=307 data-nosnippet>307</a>                    <span class="kw">if </span>lines.peek().is_some() || ends_with_newline {
+<a href=#308 id=308 data-nosnippet>308</a>                        out.push(<span class="macro">vec!</span>[]);
+<a href=#309 id=309 data-nosnippet>309</a>                    }
+<a href=#310 id=310 data-nosnippet>310</a>                }
+<a href=#311 id=311 data-nosnippet>311</a>            }
+<a href=#312 id=312 data-nosnippet>312</a>        }
+<a href=#313 id=313 data-nosnippet>313</a>    }
+<a href=#314 id=314 data-nosnippet>314</a>
+<a href=#315 id=315 data-nosnippet>315</a>    <span class="prelude-val">Ok</span>(out)
+<a href=#316 id=316 data-nosnippet>316</a>}</code></pre></div></section></main></body></html>

@@ -1,6 +1,0 @@
-(function() {var implementors = {
-"syntastica_parsers":[["impl LanguageSet for <a class=\"struct\" href=\"syntastica_parsers/struct.LanguageSetImpl.html\" title=\"struct syntastica_parsers::LanguageSetImpl\">LanguageSetImpl</a>"]],
-"syntastica_parsers_dynamic":[["impl LanguageSet for <a class=\"struct\" href=\"syntastica_parsers_dynamic/struct.LanguageLoader.html\" title=\"struct syntastica_parsers_dynamic::LanguageLoader\">LanguageLoader</a>"]],
-"syntastica_parsers_git":[["impl LanguageSet for <a class=\"struct\" href=\"syntastica_parsers_git/struct.LanguageSetImpl.html\" title=\"struct syntastica_parsers_git::LanguageSetImpl\">LanguageSetImpl</a>"]],
-"syntastica_parsers_gitdep":[["impl LanguageSet for <a class=\"struct\" href=\"syntastica_parsers_gitdep/struct.LanguageSetImpl.html\" title=\"struct syntastica_parsers_gitdep::LanguageSetImpl\">LanguageSetImpl</a>"]]
-};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
