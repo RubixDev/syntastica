@@ -369,7 +369,7 @@ locals = true
 
 [[languages]]
 name = "latex"
-group = "most"
+group = "all"
 file-types = ["tex"]
 [languages.parser]
 git = { url = "https://github.com/latex-lsp/tree-sitter-latex", rev = "7b06f6ed394308e7407a1703d2724128c45fc9d7" }
