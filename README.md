@@ -247,7 +247,7 @@ There are three examples using `syntastica-js`:
 
 <div class="warning">
 
-> [!WARNING]
+> ⚠️ **Warning**
 >
 > The `syntastica` NPM package is currently not being updated and uses an old
 > version of `syntastica`, because the current implementation always includes
@@ -514,5 +514,3 @@ possible replacement for [`syntect`](https://crates.io/crates/syntect). The main
 difference from `lirstings` at the start was the parser collection(s), providing
 a rigid set of parsers and queries for users. Over time `syntastica` then grew
 to the big project it is today.
-
-[!WARNING]: .
