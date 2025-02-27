@@ -388,6 +388,7 @@ locals = false
 name = "llvm"
 group = "all"
 file-types = ["llvm"]
+wasm = false
 [languages.parser]
 git = { url = "https://github.com/benwilliamgraham/tree-sitter-llvm", rev = "c14cb839003348692158b845db9edda201374548" }
 external-scanner = { c = false, cpp = false }
