@@ -54,6 +54,7 @@ fn compile_parser(
     path: Option<&str>,
     wasm: bool,
     wasm_unknown: bool,
+    generate: bool,
 ) -> Result<(), Box<dyn std::error::Error>> {
     let target = env::var("TARGET")?;
 
@@ -66,8 +67,7 @@ fn compile_parser(
         return Ok(());
     }
 
-    // external cpp scanners are not supported on the `wasm32-unknown-unknown` target
-    // plus extra cases for parsers which require additional libc features
+    // some external scanners are not supported on the `wasm32-unknown-unknown` target
     if target == "wasm32-unknown-unknown" && !wasm_unknown {
         return Ok(());
     }
@@ -123,9 +123,21 @@ fn compile_parser(
     if let Some(path) = path {
         src_dir = src_dir.join(path);
     }
-    src_dir = src_dir.join("src");
+
+    if generate && !src_dir.join("src/parser.c").is_file() {
+        println!("generating parser for {name}");
+        tree_sitter_generate::generate_parser_in_directory(
+            &src_dir,
+            None,
+            None,
+            tree_sitter_generate::ABI_VERSION_MAX,
+            None,
+            env::var("SYNTASTICA_PARSERS_JS_RUNTIME").ok().as_deref(),
+        )?;
+    }
 
     println!("building parser for {name}");
+    src_dir = src_dir.join("src");
     let mut c_config = cc::Build::new();
     c_config.include(&src_dir);
     c_config

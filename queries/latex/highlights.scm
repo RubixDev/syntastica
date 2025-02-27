@@ -168,7 +168,6 @@
       (_) @markup.link.url
     )
   ) @_hyperlink
-  (#set! @_hyperlink url @markup.link.url)
 )
 
 (glossary_entry_definition

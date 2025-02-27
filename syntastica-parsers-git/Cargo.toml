@@ -29,6 +29,7 @@ syntastica-macros.workspace = true
 
 cc.workspace = true
 rustc_version = { workspace = true, optional = true }
+tree-sitter-generate = "0.25.1"
 
 [package.metadata.docs.rs]
 all-features = true
@@ -83,6 +84,7 @@ most = [
     "jsdoc",
     "json5",
     "jsonc",
+    "latex",
     "markdown",
     "markdown_inline",
     "php",
@@ -146,6 +148,7 @@ json = []
 json5 = []
 jsonc = []
 julia = []
+latex = []
 llvm = []
 lua = []
 markdown = []

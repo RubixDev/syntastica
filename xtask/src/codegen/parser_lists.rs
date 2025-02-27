@@ -19,7 +19,10 @@ pub fn write() -> Result<()> {
 
     let readme_path = crate::WORKSPACE_DIR.join("syntastica-parsers-gitdep/README.md");
     let mut readme = read(&readme_path)?;
-    readme += &parser_list(|lang| lang.parser.rust_const.is_some(), git_url);
+    readme += &parser_list(
+        |lang| lang.parser.rust_const.is_some() && !lang.parser.generate,
+        git_url,
+    );
     fs::write(&readme_path, readme)?;
 
     let readme_path = crate::WORKSPACE_DIR.join("syntastica-parsers/README.md");

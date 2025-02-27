@@ -84,6 +84,8 @@ mod wasm_c_bridge {
     #[no_mangle]
     extern "C" fn free(_ptr: *mut u8) {
         // surely a bit of memory leakage isn't _that_ bad... :)
+        // TODO: perhaps improve with sth like this:
+        //  <https://github.com/ezrosent/allocators-rs/blob/master/malloc-bind/src/lib.rs>
     }
 
     #[no_mangle]

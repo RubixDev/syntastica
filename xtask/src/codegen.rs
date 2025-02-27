@@ -142,16 +142,16 @@ enum ParserCollection {
     Dep,
 }
 
-fn parsers_toml_feature(group: Group, collection: ParserCollection) -> String {
+fn parsers_toml_feature(group: Group) -> String {
     let mut feature_str = format!("{group} = [\n");
     if let Some(group) = group.next_smaller() {
         feature_str += &format!("    \"{group}\",\n");
     }
-    for lang in crate::LANGUAGE_CONFIG.languages.iter().filter(|lang| {
-        (collection == ParserCollection::Git || lang.parser.rust_const.is_some())
-            && lang.group == group
-            && (collection != ParserCollection::Dep || lang.parser.crates_io.is_some())
-    }) {
+    for lang in crate::LANGUAGE_CONFIG
+        .languages
+        .iter()
+        .filter(|lang| lang.group == group)
+    {
         feature_str += "    \"";
         feature_str += &lang.name;
         feature_str += "\",\n";
@@ -165,7 +165,7 @@ fn parsers_toml_lang_features(collection: ParserCollection) -> String {
         out += &lang.name;
         out += " = [";
         if lang.parser.rust_const.is_some()
-            && (collection == ParserCollection::GitDep
+            && ((collection == ParserCollection::GitDep && !lang.parser.generate)
                 || (collection == ParserCollection::Dep && lang.parser.crates_io.is_some()))
         {
             out += "\"dep:";
@@ -179,11 +179,10 @@ fn parsers_toml_lang_features(collection: ParserCollection) -> String {
 
 fn parsers_toml_deps(toml: &mut String, git: bool) {
     let mut added_packages = vec![];
-    for lang in crate::LANGUAGE_CONFIG
-        .languages
-        .iter()
-        .filter(|lang| lang.parser.rust_const.is_some() && (git || lang.parser.crates_io.is_some()))
-    {
+    for lang in crate::LANGUAGE_CONFIG.languages.iter().filter(|lang| {
+        lang.parser.rust_const.is_some()
+            && ((git && !lang.parser.generate) || lang.parser.crates_io.is_some())
+    }) {
         let package = &lang.parser.package;
         let url = &lang.parser.git.url;
         let rev = &lang.parser.git.rev;

@@ -32,9 +32,10 @@ pub fn parsers_git(_: TokenStream) -> TokenStream {
             };
             let wasm = lang.wasm;
             let wasm_unknown = lang.wasm_unknown;
+            let generate = lang.parser.generate;
             quote! {
                 #[cfg(feature = #name)]
-                compile_parser(#name, #url, #rev, #external_c, #external_cpp, #path, #wasm, #wasm_unknown)?;
+                compile_parser(#name, #url, #rev, #external_c, #external_cpp, #path, #wasm, #wasm_unknown, #generate)?;
             }
         })
         .collect::<proc_macro2::TokenStream>()
@@ -130,7 +131,7 @@ fn parsers_rust(crate_name: &str, crates_io: bool, query_suffix: &str) -> TokenS
         let name = format_ident!("{}", lang.name);
         let name_str = &lang.name;
         let (doc, body) = match &lang.parser.rust_const {
-            Some(ident) if (!crates_io || lang.parser.crates_io.is_some()) => {
+            Some(ident) if (!crates_io && !lang.parser.generate) || lang.parser.crates_io.is_some() => {
                 let ident = format_ident!("{ident}");
                 let package = format_ident!("{}", lang.parser.package.replace('-', "_"));
                 (
@@ -158,7 +159,10 @@ fn parsers_rust(crate_name: &str, crates_io: bool, query_suffix: &str) -> TokenS
     parsers(
         crate_name,
         functions,
-        |lang| lang.parser.rust_const.is_some() && (!crates_io || lang.parser.crates_io.is_some()),
+        |lang| {
+            lang.parser.rust_const.is_some()
+                && ((!crates_io && !lang.parser.generate) || lang.parser.crates_io.is_some())
+        },
         None,
         query_suffix,
     )

@@ -14,11 +14,11 @@ pub fn write() -> Result<()> {
     toml += super::TOML_AUTOGEN_HEADER;
 
     toml += super::TOML_FEATURES_HEAD;
-    toml += &super::parsers_toml_feature(Group::Some, super::ParserCollection::Dep);
+    toml += &super::parsers_toml_feature(Group::Some);
     toml += super::TOML_FEATURES_MOST;
-    toml += &super::parsers_toml_feature(Group::Most, super::ParserCollection::Dep);
+    toml += &super::parsers_toml_feature(Group::Most);
     toml += super::TOML_FEATURES_ALL;
-    toml += &super::parsers_toml_feature(Group::All, super::ParserCollection::Dep);
+    toml += &super::parsers_toml_feature(Group::All);
 
     toml += super::TOML_FEATURES_DOCS;
 

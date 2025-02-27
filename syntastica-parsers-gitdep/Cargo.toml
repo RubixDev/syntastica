@@ -60,6 +60,7 @@ some = [
     "lua",
     "python",
     "rust",
+    "toml",
     "tsx",
     "typescript",
     "yaml",
@@ -71,28 +72,40 @@ most = [
     "some",
     "asm",
     "c_sharp",
+    "comment",
+    "dart",
     "diff",
     "haskell",
     "jsdoc",
+    "json5",
+    "jsonc",
+    "latex",
     "markdown",
     "markdown_inline",
     "php",
     "regex",
     "ruby",
     "scala",
+    "scss",
 ]
 
 ## Implies <span class="stab portability"><code>most</code></span>.
 ## Include parsers for all supported languages.
 all = [
     "most",
+    "ebnf",
     "ejs",
     "erb",
+    "hexdump",
     "julia",
+    "llvm",
     "ocaml",
     "ocaml_interface",
     "ql",
+    "rush",
+    "ursa",
     "verilog",
+    "wat",
 ]
 
 ## Meant to be enabled when building docs
@@ -121,6 +134,7 @@ json = ["dep:tree-sitter-json"]
 json5 = []
 jsonc = []
 julia = ["dep:tree-sitter-julia"]
+latex = []
 llvm = []
 lua = ["dep:tree-sitter-lua"]
 markdown = ["dep:tree-sitter-md"]

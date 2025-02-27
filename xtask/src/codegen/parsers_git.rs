@@ -28,11 +28,11 @@ default = ["runtime-c"]
 ## Include parsers for the most widely known supported languages.
 "###;
 
-    toml += &super::parsers_toml_feature(Group::Some, super::ParserCollection::Git);
+    toml += &super::parsers_toml_feature(Group::Some);
     toml += super::TOML_FEATURES_MOST;
-    toml += &super::parsers_toml_feature(Group::Most, super::ParserCollection::Git);
+    toml += &super::parsers_toml_feature(Group::Most);
     toml += super::TOML_FEATURES_ALL;
-    toml += &super::parsers_toml_feature(Group::All, super::ParserCollection::Git);
+    toml += &super::parsers_toml_feature(Group::All);
 
     toml += r###"
 ## Use the standard tree-sitter C runtime. See `syntastica`'s

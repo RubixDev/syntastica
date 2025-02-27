@@ -367,23 +367,22 @@ nvim-like = true
 injections = true
 locals = true
 
-# disabled for now, because parser.c is no longer checked in and has to be manually generated
-# [[languages]]
-# name = "latex"
-# group = "most"
-# file-types = ["tex"]
-# wasm-unknown = false
-# [languages.parser]
-# git = { url = "https://github.com/latex-lsp/tree-sitter-latex", rev = "7b06f6ed394308e7407a1703d2724128c45fc9d7" }
-# external-scanner = { c = true, cpp = false }
-# ffi-func = "tree_sitter_latex"
+[[languages]]
+name = "latex"
+group = "most"
+file-types = ["tex"]
+[languages.parser]
+git = { url = "https://github.com/latex-lsp/tree-sitter-latex", rev = "7b06f6ed394308e7407a1703d2724128c45fc9d7" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_latex"
 # rust-const = "LANGUAGE"
-# package = "tree-sitter-latex"
-# # crates-io = ""
-# [languages.queries]
-# nvim-like = true
-# injections = true
-# locals = false
+package = "tree-sitter-latex"
+# crates-io = ""
+generate = true
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
 
 [[languages]]
 name = "llvm"

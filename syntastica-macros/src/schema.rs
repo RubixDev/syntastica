@@ -65,6 +65,8 @@ pub struct Parser {
     pub rust_const: Option<String>,
     pub package: String,
     pub crates_io: Option<String>,
+    #[serde(default)]
+    pub generate: bool,
 }
 
 #[derive(Clone, Debug, Deserialize, PartialEq, Eq)]

@@ -49,6 +49,7 @@ for more information on all parser collections.
 - [jsdoc](https://github.com/tree-sitter/tree-sitter-jsdoc/tree/a417db5dbdd869fccb6a8b75ec04459e1d4ccd2c)
 - [json5](https://github.com/Joakker/tree-sitter-json5/tree/ab0ba8229d639ec4f3fa5f674c9133477f4b77bd) (not supported by this collection)
 - [jsonc](https://gitlab.com/WhyNotHugo/tree-sitter-jsonc/tree/02b01653c8a1c198ae7287d566efa86a135b30d5) (not supported by this collection)
+- [latex](https://github.com/latex-lsp/tree-sitter-latex/tree/7b06f6ed394308e7407a1703d2724128c45fc9d7) (not supported by this collection)
 - [markdown](https://github.com/MDeiml/tree-sitter-markdown/tree/192407ab5a24bfc24f13332979b5e7967518754a)
 - [markdown_inline](https://github.com/MDeiml/tree-sitter-markdown/tree/192407ab5a24bfc24f13332979b5e7967518754a)
 - [php](https://github.com/tree-sitter/tree-sitter-php/tree/f3a19ab3217a6e838870fc7142fa492d1fd7a7c9)
