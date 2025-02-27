@@ -11,7 +11,6 @@ env:
   CARGO_INCREMENTAL: 0
   CARGO_NET_RETRY: 10
   CARGO_TERM_COLOR: always
-  CARGO_REGISTRIES_CRATES_IO_PROTOCOL: sparse
   RUSTUP_MAX_RETRIES: 10
 
 jobs:
@@ -21,7 +20,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Toolchain
         uses: dtolnay/rust-toolchain@stable
@@ -41,7 +40,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Prepare CI
         run: |
@@ -53,12 +52,12 @@ jobs:
           target: wasm32-unknown-emscripten
 
       - name: Setup NodeJS
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 23
 
       - name: Setup Emscripten
-        uses: mymindstorm/setup-emsdk@v11
+        uses: mymindstorm/setup-emsdk@v14
         with:
           actions-cache-folder: 'emsdk-cache'
 
@@ -79,7 +78,7 @@ jobs:
           npm run build
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: syntastica-js
           path: syntastica-js/pkg
@@ -92,7 +91,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Prepare CI
         run: |
@@ -105,18 +104,18 @@ jobs:
         run: sudo apt update && sudo apt install -y fonts-jetbrains-mono
 
       - name: Install Typst
-        uses: yusancky/setup-typst@v2
+        uses: typst-community/setup-typst@v4
         with:
-          version: 'v0.8.0'
+          typst-version: 'v0.13.0'
 
       - name: Restore Cache
         uses: Swatinem/rust-cache@v2
 
-      - name: Create SVGs
-        run: cargo xtask codegen queries && cargo xtask theme-svgs
-
       - name: Generate Code
         run: cargo xtask codegen
+
+      - name: Create SVGs
+        run: cargo xtask theme-svgs
 
       - name: Commit changes
         uses: EndBug/add-and-commit@v9
@@ -131,14 +130,14 @@ jobs:
           message: 'chore: run codegen'
 
       - name: Upload Queries as Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: queries
           path: syntastica-queries/generated_queries
           retention-days: 10
 
       - name: Upload Theme List as Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: theme-list-md
           path: syntastica-themes/theme_list.md
@@ -156,16 +155,16 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Download syntastica-js build
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: syntastica-js
           path: syntastica-js/pkg
 
       - name: Download theme_list.md
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: theme-list-md
           path: syntastica-themes/
@@ -176,9 +175,9 @@ jobs:
           targets: wasm32-unknown-unknown
 
       - name: Setup NodeJS
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 23
 
       - name: Install Dioxus CLI
         uses: taiki-e/install-action@v2
@@ -216,12 +215,13 @@ jobs:
           npm ci
           npm run build
 
-      - name: Build Dioxus Demo
-        run: |
-          cd examples/wasm/dioxus
-          # set base directory to `/syntastica/demos/dioxus/`
-          sed -i -E 's#(\[web.app\])#\1\nbase_path = "syntastica/demos/dioxus"#g' Dioxus.toml
-          dx build --release
+      # TODO: update dioxus demo
+      # - name: Build Dioxus Demo
+      #   run: |
+      #     cd examples/wasm/dioxus
+      #     # set base directory to `/syntastica/demos/dioxus/`
+      #     sed -i -E 's#(\[web.app\])#\1\nbase_path = "syntastica/demos/dioxus"#g' Dioxus.toml
+      #     dx build --release
 
       - name: Build wasm-pack + NPM Demo
         run: |
@@ -243,7 +243,7 @@ jobs:
           # copy over the vite demo
           cp -r examples/wasm/vite/dist target/doc/demos/vite
           # copy over the dioxus demo
-          cp -r examples/wasm/dioxus/dist target/doc/demos/dioxus
+          # cp -r examples/wasm/dioxus/dist target/doc/demos/dioxus
           # copy over the wasm-pack-npm demo
           cp -r examples/wasm/wasm-pack-with-npm-pkg/dist target/doc/demos/wasm-pack-npm
 
