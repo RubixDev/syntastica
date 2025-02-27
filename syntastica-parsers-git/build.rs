@@ -36,7 +36,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 #[allow(unused)]
 fn git(repo_dir: &Path) -> Command {
-    let mut cmd = Command::new("git");
+    let mut cmd = env::var_os("SYNTASTICA_PARSERS_GIT_PATH")
+        .map_or_else(|| Command::new("git"), Command::new);
     cmd.current_dir(repo_dir)
         .stdout(std::process::Stdio::inherit())
         .stderr(std::process::Stdio::inherit());
