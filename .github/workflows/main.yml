@@ -215,13 +215,12 @@ jobs:
           npm ci
           npm run build
 
-      # TODO: update dioxus demo
-      # - name: Build Dioxus Demo
-      #   run: |
-      #     cd examples/wasm/dioxus
-      #     # set base directory to `/syntastica/demos/dioxus/`
-      #     sed -i -E 's#(\[web.app\])#\1\nbase_path = "syntastica/demos/dioxus"#g' Dioxus.toml
-      #     dx build --release
+      - name: Build Dioxus Demo
+        run: |
+          cd examples/wasm/dioxus
+          # set base directory to `/syntastica/demos/dioxus/`
+          sed -i -E 's#(\[web.app\])#\1\nbase_path = "syntastica/demos/dioxus"#g' Dioxus.toml
+          dx build --release
 
       - name: Build wasm-pack + NPM Demo
         run: |
@@ -243,7 +242,7 @@ jobs:
           # copy over the vite demo
           cp -r examples/wasm/vite/dist target/doc/demos/vite
           # copy over the dioxus demo
-          # cp -r examples/wasm/dioxus/dist target/doc/demos/dioxus
+          cp -r examples/wasm/dioxus/target/dx/syntastica-dioxus-demo/release/web/public target/doc/demos/dioxus
           # copy over the wasm-pack-npm demo
           cp -r examples/wasm/wasm-pack-with-npm-pkg/dist target/doc/demos/wasm-pack-npm
 

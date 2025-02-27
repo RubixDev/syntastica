@@ -7,8 +7,7 @@ The demo can be found online
 [here](https://rubixdev.github.io/syntastica/demos/dioxus/).
 
 When targeting `wasm32-unknown-unknown` as required by wasm-pack/wasm-bindgen
-(which is used by dioxus-web), the `syntastica-parsers-git` collection must be
-used and only parsers that don't use external C++ scanners are available.
+(which is used by dioxus), the `syntastica-parsers-git` collection must be used.
 
 You can run a development server locally using the Dioxus CLI by executing this
 command:

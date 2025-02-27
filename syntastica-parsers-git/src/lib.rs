@@ -55,6 +55,24 @@ mod wasm_c_bridge {
         }
     }
 
+    /// <https://en.cppreference.com/w/c/string/wide/iswspace>
+    #[no_mangle]
+    extern "C" fn iswspace(ch: u32) -> i32 {
+        char::from_u32(ch).is_some_and(|ch| ch.is_whitespace()) as i32
+    }
+
+    /// <https://en.cppreference.com/w/c/string/wide/iswdigit>
+    #[no_mangle]
+    extern "C" fn iswdigit(ch: u32) -> i32 {
+        char::from_u32(ch).is_some_and(|ch| ch.is_digit(10)) as i32
+    }
+
+    /// <https://en.cppreference.com/w/c/string/wide/iswalpha>
+    #[no_mangle]
+    extern "C" fn iswalpha(ch: u32) -> i32 {
+        char::from_u32(ch).is_some_and(|ch| ch.is_alphabetic()) as i32
+    }
+
     /// <https://en.cppreference.com/w/c/memory/malloc>
     #[no_mangle]
     extern "C" fn malloc(size: usize) -> *mut MaybeUninit<u8> {

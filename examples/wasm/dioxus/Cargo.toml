@@ -7,14 +7,29 @@ authors = ["RubixDev <silas.groh@t-online.de>"]
 edition = "2021"
 license = "GPL-3.0-only"
 
+[features]
+default = ["web"]
+web = ["dioxus/web"]
+desktop = ["dioxus/desktop"]
+mobile = ["dioxus/mobile"]
+
 [dependencies]
 syntastica = { version = "0.5.0", path = "../../..", default-features = false, features = ["runtime-c2rust"] }
 syntastica-parsers-git = { version = "0.5.0", path = "../../../syntastica-parsers-git", default-features = false, features = ["runtime-c2rust", "rust"] }
 syntastica-themes = { version = "0.5.0", path = "../../../syntastica-themes", default-features = false, features = ["runtime-c2rust"] }
 
-dioxus = "0.4.0"
-dioxus-web = "0.4.0"
+dioxus = "0.6.0"
 
 [profile.release]
 # Tell `rustc` to optimize for small code size.
 opt-level = "s"
+
+[profile.wasm-dev]
+inherits = "dev"
+opt-level = 1
+
+[profile.server-dev]
+inherits = "dev"
+
+[profile.android-dev]
+inherits = "dev"
