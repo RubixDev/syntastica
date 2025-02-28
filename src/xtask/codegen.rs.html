@@ -181,7 +181,7 @@
 <a href=#181 id=181 data-nosnippet>181</a>    <span class="kw">let </span><span class="kw-2">mut </span>added_packages = <span class="macro">vec!</span>[];
 <a href=#182 id=182 data-nosnippet>182</a>    <span class="kw">for </span>lang <span class="kw">in </span><span class="kw">crate</span>::LANGUAGE_CONFIG.languages.iter().filter(|lang| {
 <a href=#183 id=183 data-nosnippet>183</a>        lang.parser.rust_const.is_some()
-<a href=#184 id=184 data-nosnippet>184</a>            &amp;&amp; ((git &amp;&amp; !lang.parser.generate) || lang.parser.crates_io.is_some())
+<a href=#184 id=184 data-nosnippet>184</a>            &amp;&amp; ((git &amp;&amp; !lang.parser.generate) || (!git &amp;&amp; lang.parser.crates_io.is_some()))
 <a href=#185 id=185 data-nosnippet>185</a>    }) {
 <a href=#186 id=186 data-nosnippet>186</a>        <span class="kw">let </span>package = <span class="kw-2">&amp;</span>lang.parser.package;
 <a href=#187 id=187 data-nosnippet>187</a>        <span class="kw">let </span>url = <span class="kw-2">&amp;</span>lang.parser.git.url;
