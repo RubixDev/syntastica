@@ -103,6 +103,7 @@ most = [
 all = [
     "most",
     "bibtex",
+    "dockerfile",
     "ebnf",
     "ejs",
     "erb",
@@ -141,6 +142,7 @@ cpp = []
 css = []
 dart = []
 diff = []
+dockerfile = []
 ebnf = []
 ejs = []
 erb = []

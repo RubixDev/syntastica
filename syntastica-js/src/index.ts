@@ -169,6 +169,7 @@ export const LANGUAGES = [
     'css',
     'dart',
     'diff',
+    'dockerfile',
     'ebnf',
     'ejs',
     'erb',

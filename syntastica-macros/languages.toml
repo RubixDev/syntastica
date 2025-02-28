@@ -160,6 +160,22 @@ injections = false
 locals = false
 
 [[languages]]
+name = "dockerfile"
+group = "all"
+file-types = ["dockerfile"]
+[languages.parser]
+git = { url = "https://github.com/camdencheek/tree-sitter-dockerfile", rev = "971acdd908568b4531b0ba28a445bf0bb720aba5" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_dockerfile"
+# rust-const = "LANGUAGE"
+package = "tree-sitter-dockerfile"
+# crates-io = ""
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+[[languages]]
 name = "ebnf"
 group = "all"
 file-types = ["ebnf"]

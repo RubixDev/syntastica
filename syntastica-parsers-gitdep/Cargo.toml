@@ -98,6 +98,7 @@ most = [
 all = [
     "most",
     "bibtex",
+    "dockerfile",
     "ebnf",
     "ejs",
     "erb",
@@ -127,6 +128,7 @@ cpp = ["dep:tree-sitter-cpp"]
 css = ["dep:tree-sitter-css"]
 dart = []
 diff = ["dep:tree-sitter-diff"]
+dockerfile = []
 ebnf = []
 ejs = ["dep:tree-sitter-embedded-template"]
 erb = ["dep:tree-sitter-embedded-template"]

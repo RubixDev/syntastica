@@ -72,6 +72,13 @@ pub const DIFF_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_queries/d
 pub const DIFF_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/diff/injections_crates_io.scm");
 pub const DIFF_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/diff/locals_crates_io.scm");
 
+pub const DOCKERFILE_HIGHLIGHTS: &str = include_str!("../generated_queries/dockerfile/highlights.scm");
+pub const DOCKERFILE_INJECTIONS: &str = include_str!("../generated_queries/dockerfile/injections.scm");
+pub const DOCKERFILE_LOCALS: &str = include_str!("../generated_queries/dockerfile/locals.scm");
+pub const DOCKERFILE_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_queries/dockerfile/highlights_crates_io.scm");
+pub const DOCKERFILE_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/dockerfile/injections_crates_io.scm");
+pub const DOCKERFILE_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/dockerfile/locals_crates_io.scm");
+
 pub const EBNF_HIGHLIGHTS: &str = include_str!("../generated_queries/ebnf/highlights.scm");
 pub const EBNF_INJECTIONS: &str = include_str!("../generated_queries/ebnf/injections.scm");
 pub const EBNF_LOCALS: &str = include_str!("../generated_queries/ebnf/locals.scm");
