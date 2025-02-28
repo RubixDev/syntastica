@@ -69,7 +69,9 @@
 (
   (call_expression
     (navigation_expression
-      (string_literal) @injection.content
+      (string_literal
+        (string_content) @injection.content
+      )
       (navigation_suffix
         (simple_identifier) @_method
       )

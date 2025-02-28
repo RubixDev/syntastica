@@ -515,6 +515,22 @@ injections = true
 locals = true
 
 [[languages]]
+name = "printf"
+group = "most"
+file-types = []
+[languages.parser]
+git = { url = "https://github.com/ObserverOfTime/tree-sitter-printf", rev = "df6b69967db7d74ab338a86a9ab45c0966c5ee3c" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_printf"
+rust-const = "LANGUAGE"
+package = "tree-sitter-printf"
+crates-io = "0.5.0"
+[languages.queries]
+nvim-like = true
+injections = false
+locals = false
+
+[[languages]]
 name = "python"
 group = "some"
 file-types = ["python"]

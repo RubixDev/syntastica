@@ -88,6 +88,7 @@ most = [
     "markdown",
     "markdown_inline",
     "php",
+    "printf",
     "regex",
     "ruby",
     "scala",
@@ -159,6 +160,7 @@ markdown_inline = []
 ocaml = []
 ocaml_interface = []
 php = []
+printf = []
 python = []
 ql = []
 regex = []

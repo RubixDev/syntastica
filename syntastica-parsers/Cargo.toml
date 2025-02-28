@@ -80,6 +80,7 @@ most = [
     "markdown",
     "markdown_inline",
     "php",
+    "printf",
     "regex",
     "ruby",
     "scala",
@@ -142,6 +143,7 @@ markdown_inline = ["dep:tree-sitter-md"]
 ocaml = ["dep:tree-sitter-ocaml"]
 ocaml_interface = ["dep:tree-sitter-ocaml"]
 php = ["dep:tree-sitter-php"]
+printf = ["dep:tree-sitter-printf"]
 python = ["dep:tree-sitter-python"]
 ql = ["dep:tree-sitter-ql"]
 regex = ["dep:tree-sitter-regex"]
@@ -238,6 +240,10 @@ version = "=0.24.0"
 [dependencies.tree-sitter-php]
 optional = true
 version = "=0.23.11"
+
+[dependencies.tree-sitter-printf]
+optional = true
+version = "=0.5.0"
 
 [dependencies.tree-sitter-python]
 optional = true

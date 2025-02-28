@@ -191,6 +191,7 @@ export const LANGUAGES = [
     'ocaml',
     'ocaml_interface',
     'php',
+    'printf',
     'python',
     'ql',
     'regex',

@@ -40,6 +40,11 @@ int fib(int n) {
     }
     return fib(n - 1) + fib(n - 2);
 }
+
+int main() {
+    printf("%s = %.3f; %5d, %-5d, %05d", "pi", 3.14159, 42, 42, 42);
+    return 0;
+}
 '''
 
 cpp = '''
@@ -72,6 +77,7 @@ css = '''
 go = '''
 import (
     "math/big"
+    "fmt"
 )
 
 func fib(n uint64) *big.Int {
@@ -88,6 +94,7 @@ func fib(n uint64) *big.Int {
 
 func main() {
     regexp.Compile(`[a-fA-F0-9_]\s(.*)$`)
+    fmt.Printf("%s = %.3f; %5d, %-5d, %05d", "pi", 3.14159, 42, 42, 42)
 }
 '''
 
@@ -1016,6 +1023,7 @@ fun fib(n: Int): Int =
 fun main() {
     "[a-fA-F0-9_]\s(.*)$".toRegex()
     println("Hello, World!")
+    "%s = %.3f; %5d, %-5d, %05d".format("pi", 3.14159, 42, 42, 42)
 }
 
 abstract class Person(val name: String) {
@@ -1074,3 +1082,12 @@ ArtosFlow is a project of the Artos Institute.
 fn main() {}
 ```
 '''
+
+comment = '''
+NOTE: this is a note
+WARNING: this is a warning
+FIXME: this should be fixed
+'''
+
+regex = '[a-fA-F0-9_]\s(.*)$'
+printf = '%s = %.3f; %5d, %-5d, %05d'

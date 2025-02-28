@@ -226,6 +226,13 @@ pub const PHP_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_queries/ph
 pub const PHP_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/php/injections_crates_io.scm");
 pub const PHP_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/php/locals_crates_io.scm");
 
+pub const PRINTF_HIGHLIGHTS: &str = include_str!("../generated_queries/printf/highlights.scm");
+pub const PRINTF_INJECTIONS: &str = include_str!("../generated_queries/printf/injections.scm");
+pub const PRINTF_LOCALS: &str = include_str!("../generated_queries/printf/locals.scm");
+pub const PRINTF_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_queries/printf/highlights_crates_io.scm");
+pub const PRINTF_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/printf/injections_crates_io.scm");
+pub const PRINTF_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/printf/locals_crates_io.scm");
+
 pub const PYTHON_HIGHLIGHTS: &str = include_str!("../generated_queries/python/highlights.scm");
 pub const PYTHON_INJECTIONS: &str = include_str!("../generated_queries/python/injections.scm");
 pub const PYTHON_LOCALS: &str = include_str!("../generated_queries/python/locals.scm");

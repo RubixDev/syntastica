@@ -83,6 +83,7 @@ specifically, you don't have to worry about this.
 - [markdown](https://github.com/MDeiml/tree-sitter-markdown/tree/192407ab5a24bfc24f13332979b5e7967518754a)
 - [markdown_inline](https://github.com/MDeiml/tree-sitter-markdown/tree/192407ab5a24bfc24f13332979b5e7967518754a)
 - [php](https://github.com/tree-sitter/tree-sitter-php/tree/f7cf7348737d8cff1b13407a0bfedce02ee7b046)
+- [printf](https://github.com/ObserverOfTime/tree-sitter-printf/tree/df6b69967db7d74ab338a86a9ab45c0966c5ee3c)
 - [regex](https://github.com/tree-sitter/tree-sitter-regex/tree/b638d29335ef41215b86732dd51be34c701ef683)
 - [ruby](https://github.com/tree-sitter/tree-sitter-ruby/tree/89bd7a8e5450cb6a942418a619d30469f259e5d6)
 - [scala](https://github.com/tree-sitter/tree-sitter-scala/tree/d67fe3ba3879bd7ba74bd7f56c9a38fed241ba25)

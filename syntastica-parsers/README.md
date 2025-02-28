@@ -53,6 +53,7 @@ for more information on all parser collections.
 - [markdown](https://docs.rs/tree-sitter-md/0.3.2/)
 - [markdown_inline](https://docs.rs/tree-sitter-md/0.3.2/)
 - [php](https://docs.rs/tree-sitter-php/0.23.11/)
+- [printf](https://docs.rs/tree-sitter-printf/0.5.0/)
 - [regex](https://docs.rs/tree-sitter-regex/0.24.3/)
 - [ruby](https://docs.rs/tree-sitter-ruby/0.23.1/)
 - [scala](https://docs.rs/tree-sitter-scala/0.23.4/)
