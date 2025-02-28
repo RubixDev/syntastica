@@ -164,9 +164,8 @@ fn parsers_toml_lang_features(collection: ParserCollection) -> String {
     for lang in &crate::LANGUAGE_CONFIG.languages {
         out += &lang.name;
         out += " = [";
-        if lang.parser.rust_const.is_some()
-            && ((collection == ParserCollection::GitDep && !lang.parser.generate)
-                || (collection == ParserCollection::Dep && lang.parser.crates_io.is_some()))
+        if collection != ParserCollection::Git
+            && lang.parser.supports(collection == ParserCollection::GitDep)
         {
             out += "\"dep:";
             out += &lang.parser.package;
@@ -179,10 +178,11 @@ fn parsers_toml_lang_features(collection: ParserCollection) -> String {
 
 fn parsers_toml_deps(toml: &mut String, git: bool) {
     let mut added_packages = vec![];
-    for lang in crate::LANGUAGE_CONFIG.languages.iter().filter(|lang| {
-        lang.parser.rust_const.is_some()
-            && ((git && !lang.parser.generate) || (!git && lang.parser.crates_io.is_some()))
-    }) {
+    for lang in crate::LANGUAGE_CONFIG
+        .languages
+        .iter()
+        .filter(|lang| lang.parser.supports(git))
+    {
         let package = &lang.parser.package;
         let url = &lang.parser.git.url;
         let rev = &lang.parser.git.rev;

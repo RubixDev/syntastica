@@ -63,10 +63,28 @@ pub struct Parser {
     pub external_scanner: ParserExternal,
     pub ffi_func: String,
     pub rust_const: Option<String>,
+    pub rust_func: Option<String>,
     pub package: String,
     pub crates_io: Option<String>,
     #[serde(default)]
     pub generate: bool,
+}
+
+impl Parser {
+    pub fn supports_dep(&self) -> bool {
+        (self.rust_const.is_some() || self.rust_func.is_some()) && self.crates_io.is_some()
+    }
+
+    pub fn supports_gitdep(&self) -> bool {
+        (self.rust_const.is_some() || self.rust_func.is_some()) && !self.generate
+    }
+
+    pub fn supports(&self, git: bool) -> bool {
+        match git {
+            true => self.supports_gitdep(),
+            false => self.supports_dep(),
+        }
+    }
 }
 
 #[derive(Clone, Debug, Deserialize, PartialEq, Eq)]

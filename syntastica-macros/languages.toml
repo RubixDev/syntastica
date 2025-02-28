@@ -375,7 +375,7 @@ file-types = ["kotlin"]
 git = { url = "https://github.com/fwcd/tree-sitter-kotlin", rev = "c4ddea359a7ff4d92360b2efcd6cfce5dc25afe6" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_kotlin"
-# rust-const = "LANGUAGE"
+rust-func = "language"
 package = "tree-sitter-kotlin"
 # crates-io = ""
 [languages.queries]

@@ -130,8 +130,8 @@ fn parsers_rust(crate_name: &str, crates_io: bool, query_suffix: &str) -> TokenS
         let feat = lang.group.to_string();
         let name = format_ident!("{}", lang.name);
         let name_str = &lang.name;
-        let (doc, body) = match &lang.parser.rust_const {
-            Some(ident) if (!crates_io && !lang.parser.generate) || (crates_io && lang.parser.crates_io.is_some()) => {
+        let (doc, body) = match (&lang.parser.rust_const, &lang.parser.rust_func) {
+            (Some(ident), _) if lang.parser.supports(!crates_io) => {
                 let ident = format_ident!("{ident}");
                 let package = format_ident!("{}", lang.parser.package.replace('-', "_"));
                 (
@@ -140,6 +140,17 @@ fn parsers_rust(crate_name: &str, crates_io: bool, query_suffix: &str) -> TokenS
                         lang.name, lang.parser.git.url, lang.parser.git.rev,
                     ),
                     quote! { ::syntastica_core::language_set::Language::new(#package::#ident) }
+                )
+            },
+            (_, Some(func)) if lang.parser.supports(!crates_io) => {
+                let func = format_ident!("{func}");
+                let package = format_ident!("{}", lang.parser.package.replace('-', "_"));
+                (
+                    format!(
+                        "Get the parser for [{}]({}/tree/{}).",
+                        lang.name, lang.parser.git.url, lang.parser.git.rev,
+                    ),
+                    quote! { #package::#func() }
                 )
             },
             _ => (
@@ -159,11 +170,7 @@ fn parsers_rust(crate_name: &str, crates_io: bool, query_suffix: &str) -> TokenS
     parsers(
         crate_name,
         functions,
-        |lang| {
-            lang.parser.rust_const.is_some()
-                && ((!crates_io && !lang.parser.generate)
-                    || (crates_io && lang.parser.crates_io.is_some()))
-        },
+        |lang| lang.parser.supports(!crates_io),
         None,
         query_suffix,
     )
@@ -539,7 +546,7 @@ pub fn queries_test_crates_io(_: TokenStream) -> TokenStream {
     LANGUAGE_CONFIG
         .languages
         .iter()
-        .filter(|lang| lang.parser.rust_const.is_some() && lang.parser.crates_io.is_some())
+        .filter(|lang| lang.parser.supports_dep())
         .map(|lang| {
             let name = format_ident!("{}", lang.name);
             let highlights = format_ident!("{}_HIGHLIGHTS_CRATES_IO", lang.name.to_uppercase());
