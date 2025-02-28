@@ -73,6 +73,7 @@ for more information on all parser collections.
 - [ebnf](https://github.com/RubixDev/ebnf) (not supported by this collection)
 - [ejs](https://docs.rs/tree-sitter-embedded-template/0.23.2/)
 - [erb](https://docs.rs/tree-sitter-embedded-template/0.23.2/)
+- [fish](https://github.com/ram02z/tree-sitter-fish) (not supported by this collection)
 - [hexdump](https://github.com/rush-rs/tree-sitter-hexdump) (not supported by this collection)
 - [julia](https://docs.rs/tree-sitter-julia/0.23.1/)
 - [latex](https://github.com/latex-lsp/tree-sitter-latex) (not supported by this collection)

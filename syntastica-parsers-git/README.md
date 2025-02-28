@@ -103,6 +103,7 @@ specifically, you don't have to worry about this.
 - [ebnf](https://github.com/RubixDev/ebnf/tree/8e635b0b723c620774dfb8abf382a7f531894b40)
 - [ejs](https://github.com/tree-sitter/tree-sitter-embedded-template/tree/8495d106154741e6d35d37064f864758ece75de6)
 - [erb](https://github.com/tree-sitter/tree-sitter-embedded-template/tree/8495d106154741e6d35d37064f864758ece75de6)
+- [fish](https://github.com/ram02z/tree-sitter-fish/tree/70640c0696abde32622afc43291a385681afbd32)
 - [hexdump](https://github.com/rush-rs/tree-sitter-hexdump/tree/09eaf4fcfed00be93928d7d3d82b490cd1343b80)
 - [julia](https://github.com/tree-sitter/tree-sitter-julia/tree/12a3aede757bc7fbdfb1909507c7a6fddd31df37)
 - [latex](https://github.com/latex-lsp/tree-sitter-latex/tree/7b06f6ed394308e7407a1703d2724128c45fc9d7)

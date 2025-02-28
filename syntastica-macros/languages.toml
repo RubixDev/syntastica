@@ -240,6 +240,22 @@ injections = true
 locals = false
 
 [[languages]]
+name = "fish"
+group = "all"
+file-types = ["fish"]
+[languages.parser]
+git = { url = "https://github.com/ram02z/tree-sitter-fish", rev = "70640c0696abde32622afc43291a385681afbd32" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_fish"
+rust-func = "language"
+package = "tree-sitter-fish"
+# crates-io = ""
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+[[languages]]
 name = "go"
 group = "some"
 file-types = ["go"]

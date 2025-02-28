@@ -103,6 +103,7 @@ all = [
     "ebnf",
     "ejs",
     "erb",
+    "fish",
     "hexdump",
     "julia",
     "latex",
@@ -134,6 +135,7 @@ ebnf = []
 ejs = ["dep:tree-sitter-embedded-template"]
 elixir = ["dep:tree-sitter-elixir"]
 erb = ["dep:tree-sitter-embedded-template"]
+fish = ["dep:tree-sitter-fish"]
 go = ["dep:tree-sitter-go"]
 haskell = ["dep:tree-sitter-haskell"]
 hexdump = []
@@ -218,6 +220,11 @@ rev = "8495d106154741e6d35d37064f864758ece75de6"
 optional = true
 git = "https://github.com/elixir-lang/tree-sitter-elixir"
 rev = "86ec2ed45d6d9433b4e0b88cd3d96796bd45625f"
+
+[dependencies.tree-sitter-fish]
+optional = true
+git = "https://github.com/ram02z/tree-sitter-fish"
+rev = "70640c0696abde32622afc43291a385681afbd32"
 
 [dependencies.tree-sitter-go]
 optional = true

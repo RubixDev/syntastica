@@ -107,6 +107,13 @@ pub const ERB_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_queries/er
 pub const ERB_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/erb/injections_crates_io.scm");
 pub const ERB_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/erb/locals_crates_io.scm");
 
+pub const FISH_HIGHLIGHTS: &str = include_str!("../generated_queries/fish/highlights.scm");
+pub const FISH_INJECTIONS: &str = include_str!("../generated_queries/fish/injections.scm");
+pub const FISH_LOCALS: &str = include_str!("../generated_queries/fish/locals.scm");
+pub const FISH_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_queries/fish/highlights_crates_io.scm");
+pub const FISH_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/fish/injections_crates_io.scm");
+pub const FISH_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/fish/locals_crates_io.scm");
+
 pub const GO_HIGHLIGHTS: &str = include_str!("../generated_queries/go/highlights.scm");
 pub const GO_INJECTIONS: &str = include_str!("../generated_queries/go/injections.scm");
 pub const GO_LOCALS: &str = include_str!("../generated_queries/go/locals.scm");

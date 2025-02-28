@@ -108,6 +108,7 @@ all = [
     "ebnf",
     "ejs",
     "erb",
+    "fish",
     "hexdump",
     "julia",
     "latex",
@@ -148,6 +149,7 @@ ebnf = []
 ejs = []
 elixir = []
 erb = []
+fish = []
 go = []
 haskell = []
 hexdump = []

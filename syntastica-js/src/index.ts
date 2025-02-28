@@ -174,6 +174,7 @@ export const LANGUAGES = [
     'ejs',
     'elixir',
     'erb',
+    'fish',
     'go',
     'haskell',
     'hexdump',

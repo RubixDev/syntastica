@@ -1229,3 +1229,40 @@ defmodule HelloWorld.Endpoint do
   plug :router, HelloWorld.Router
 end
 '''
+
+fish = '''
+if false
+    echo 0.0 2 3498 e12
+else if true
+    echo 1 >>? /dev/null
+    echo 1 >&0
+    echo && echo
+    echo || echo
+    echo &
+    [ te = st ]
+    [ te != st ]
+    echo $PATH[0..2]
+    test te = st
+    test te != st
+    test 0 -o 1 -a -n 'string' -o -z $PATH
+else
+    echo {1,2}two
+    echo $PATH[1..2]
+    echo (printf 1)
+
+    echo [test 'str' "str"
+
+    $PATH
+    echo $PATH[0]
+
+    echo "$PATH[0]"
+end
+
+for var in 1 2 3
+    break
+end
+
+function fn
+    return 0
+end
+'''
