@@ -902,13 +902,13 @@ where
                     self.source,
                 );
 
-                // Explicitly remove this match so that none of its other captures will remain
-                // in the stream of captures.
-                match_.remove();
-
                 // If a language is found with the given name, then add a new language layer
                 // to the highlighted document.
                 if let (Some(language_name), Some(content_node)) = (language_name, content_node) {
+                    // Explicitly remove this match so that none of its other captures will remain
+                    // in the stream of captures.
+                    match_.remove();
+
                     if let Some(config) = (self.injection_callback)(language_name) {
                         let ranges = HighlightIterLayer::intersect_ranges(
                             &self.layers[0].ranges,
