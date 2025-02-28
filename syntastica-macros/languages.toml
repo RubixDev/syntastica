@@ -448,6 +448,23 @@ injections = true
 locals = true
 
 [[languages]]
+name = "lalrpop"
+group = "all"
+file-types = []
+[languages.parser]
+git = { url = "https://github.com/traxys/tree-sitter-lalrpop", rev = "a7f5ea297bd621d072ed4cb2cc8ba5ae64ae3c4b" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_lalrpop"
+# see https://github.com/traxys/tree-sitter-lalrpop/pull/13
+# rust-const = "LANGUAGE"
+package = "tree-sitter-LALRPOP"
+# crates-io = ""
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+[[languages]]
 name = "latex"
 group = "all"
 file-types = ["tex"]

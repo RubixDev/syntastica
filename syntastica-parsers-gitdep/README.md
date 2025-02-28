@@ -76,6 +76,7 @@ for more information on all parser collections.
 - [fish](https://github.com/ram02z/tree-sitter-fish/tree/70640c0696abde32622afc43291a385681afbd32)
 - [hexdump](https://github.com/rush-rs/tree-sitter-hexdump/tree/09eaf4fcfed00be93928d7d3d82b490cd1343b80) (not supported by this collection)
 - [julia](https://github.com/tree-sitter/tree-sitter-julia/tree/12a3aede757bc7fbdfb1909507c7a6fddd31df37)
+- [lalrpop](https://github.com/traxys/tree-sitter-lalrpop/tree/a7f5ea297bd621d072ed4cb2cc8ba5ae64ae3c4b) (not supported by this collection)
 - [latex](https://github.com/latex-lsp/tree-sitter-latex/tree/7b06f6ed394308e7407a1703d2724128c45fc9d7) (not supported by this collection)
 - [llvm](https://github.com/benwilliamgraham/tree-sitter-llvm/tree/c14cb839003348692158b845db9edda201374548) (not supported by this collection)
 - [ocaml](https://github.com/tree-sitter/tree-sitter-ocaml/tree/91e4d9106f5da8199ab5158ba65e02da3e664597)

@@ -76,6 +76,7 @@ for more information on all parser collections.
 - [fish](https://github.com/ram02z/tree-sitter-fish) (not supported by this collection)
 - [hexdump](https://github.com/rush-rs/tree-sitter-hexdump) (not supported by this collection)
 - [julia](https://docs.rs/tree-sitter-julia/0.23.1/)
+- [lalrpop](https://github.com/traxys/tree-sitter-lalrpop) (not supported by this collection)
 - [latex](https://github.com/latex-lsp/tree-sitter-latex) (not supported by this collection)
 - [llvm](https://github.com/benwilliamgraham/tree-sitter-llvm) (not supported by this collection)
 - [ocaml](https://docs.rs/tree-sitter-ocaml/0.24.0/)

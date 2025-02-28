@@ -1266,3 +1266,86 @@ function fn
     return 0
 end
 '''
+
+lalrpop = '''
+use string_cache::DefaultAtom as Atom;
+use crate::grammar::parse_tree::*;
+use crate::grammar::pattern::*;
+use std::iter::once;
+use crate::tok::{self, Tok};
+use crate::util::strip;
+use lalrpop_util::ParseError;
+
+use super::Top;
+
+grammar<'input>(text: &'input str);
+
+pub Top: Top = {
+    "StartGrammar" <Grammar> => Top::Grammar(<>),
+    "StartPattern" <Pattern> => Top::Pattern(<>),
+    "StartMatchMapping" <MatchMapping> => Top::MatchMapping(<>),
+    "StartTypeRef" <TypeRef> => Top::TypeRef(<>),
+    "StartGrammarWhereClauses" <GrammarWhereClauses> => Top::GrammarWhereClauses(<>),
+};
+
+Grammar: Grammar =
+    <module_attributes:ShebangAttribute*>
+    <uses:Use*>
+    <attributes:Attribute*>
+    <lo:@L> "grammar" <hi:@R>
+    <tps:GrammarTypeParameters?>
+    <parameters:GrammarParameters?>
+    <where_clauses:GrammarWhereClauses?>
+    ";"
+    <items:GrammarItem*> => {
+        Grammar { prefix: format!("__"), // adjusted by `parse_grammar`
+                  span: Span(lo, hi),
+                  type_parameters: tps.unwrap_or(vec![]),
+                  parameters: parameters.unwrap_or(vec![]),
+                  where_clauses: where_clauses.unwrap_or(vec![]),
+                  items: uses.into_iter().chain(items).collect(),
+                  attributes,
+                  module_attributes }
+    };
+
+GrammarTypeParameters: Vec<TypeParameter> =
+    "<" <Comma<TypeParameter>> ">";
+
+TypeParameter: TypeParameter = {
+    <l:Lifetime> => TypeParameter::Lifetime(l),
+    <l:Id> => TypeParameter::Id(l)
+};
+
+#[inline]
+ForAll: Vec<TypeParameter> = {
+    "for" "<" <Comma<TypeParameter>> ">",
+    () => vec![],
+};
+
+GrammarItem: GrammarItem = {
+    Use,
+    MatchToken,
+    ExternToken,
+    Nonterminal
+};
+
+Use: GrammarItem =
+    <u:"use"> ";" => GrammarItem::Use(strip(u).to_string());
+
+StringConstant: String =
+    <lo:@L> <s:"StringLiteral"> =>? {
+        let text = tok::apply_string_escapes(s, lo + 1)
+            .map_err(|e| ParseError::User { error: e })?;
+        Ok(text.into_owned())
+    };
+
+extern {
+    type Location = usize;
+    type Error = tok::Error;
+    enum Tok<'input> {
+        "enum" => Tok::Enum,
+        "extern" => Tok::Extern,
+        "grammar" => Tok::Grammar,
+    }
+}
+'''

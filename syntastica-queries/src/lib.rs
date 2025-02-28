@@ -198,6 +198,13 @@ pub const KOTLIN_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_queries
 pub const KOTLIN_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/kotlin/injections_crates_io.scm");
 pub const KOTLIN_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/kotlin/locals_crates_io.scm");
 
+pub const LALRPOP_HIGHLIGHTS: &str = include_str!("../generated_queries/lalrpop/highlights.scm");
+pub const LALRPOP_INJECTIONS: &str = include_str!("../generated_queries/lalrpop/injections.scm");
+pub const LALRPOP_LOCALS: &str = include_str!("../generated_queries/lalrpop/locals.scm");
+pub const LALRPOP_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_queries/lalrpop/highlights_crates_io.scm");
+pub const LALRPOP_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/lalrpop/injections_crates_io.scm");
+pub const LALRPOP_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/lalrpop/locals_crates_io.scm");
+
 pub const LATEX_HIGHLIGHTS: &str = include_str!("../generated_queries/latex/highlights.scm");
 pub const LATEX_INJECTIONS: &str = include_str!("../generated_queries/latex/injections.scm");
 pub const LATEX_LOCALS: &str = include_str!("../generated_queries/latex/locals.scm");

@@ -111,6 +111,7 @@ all = [
     "fish",
     "hexdump",
     "julia",
+    "lalrpop",
     "latex",
     "llvm",
     "ocaml",
@@ -162,6 +163,7 @@ json5 = []
 jsonc = []
 julia = []
 kotlin = []
+lalrpop = []
 latex = []
 llvm = []
 lua = []
