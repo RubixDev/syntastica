@@ -27,7 +27,7 @@ for more information on all parser collections.
 - [java](https://github.com/tree-sitter/tree-sitter-java/tree/a7db5227ec40fcfe94489559d8c9bc7c8181e25a)
 - [javascript](https://github.com/tree-sitter/tree-sitter-javascript/tree/6fbef40512dcd9f0a61ce03a4c9ae7597b36ab5c)
 - [json](https://github.com/tree-sitter/tree-sitter-json/tree/46aa487b3ade14b7b05ef92507fdaa3915a662a3)
-- [kotlin](https://github.com/fwcd/tree-sitter-kotlin/tree/c4ddea359a7ff4d92360b2efcd6cfce5dc25afe6)
+- [kotlin](https://github.com/fwcd/tree-sitter-kotlin/tree/c4ddea359a7ff4d92360b2efcd6cfce5dc25afe6) (not supported by this collection)
 - [lua](https://github.com/muniftanjim/tree-sitter-lua/tree/68d29aa745b68ae22cbbdb5dcb68c20232521ff6)
 - [python](https://github.com/tree-sitter/tree-sitter-python/tree/710796b8b877a970297106e5bbc8e2afa47f86ec)
 - [rust](https://github.com/tree-sitter/tree-sitter-rust/tree/6e883a2adea9414799300699e78c0d2f032b5c46)
@@ -57,6 +57,7 @@ for more information on all parser collections.
 - [ruby](https://github.com/tree-sitter/tree-sitter-ruby/tree/89bd7a8e5450cb6a942418a619d30469f259e5d6)
 - [scala](https://github.com/tree-sitter/tree-sitter-scala/tree/d67fe3ba3879bd7ba74bd7f56c9a38fed241ba25)
 - [scss](https://github.com/serenadeai/tree-sitter-scss/tree/c478c6868648eff49eb04a4df90d703dc45b312a) (not supported by this collection)
+- [typst](https://github.com/uben0/tree-sitter-typst/tree/46cf4ded12ee974a70bf8457263b67ad7ee0379d) (not supported by this collection)
 
 </details>
 

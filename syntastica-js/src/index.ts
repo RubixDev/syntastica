@@ -202,6 +202,7 @@ export const LANGUAGES = [
     'toml',
     'tsx',
     'typescript',
+    'typst',
     'ursa',
     'verilog',
     'wat',

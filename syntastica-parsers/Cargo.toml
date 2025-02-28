@@ -84,6 +84,7 @@ most = [
     "ruby",
     "scala",
     "scss",
+    "typst",
 ]
 
 ## Implies <span class="stab portability"><code>most</code></span>.
@@ -152,6 +153,7 @@ scss = []
 toml = []
 tsx = ["dep:tree-sitter-typescript"]
 typescript = ["dep:tree-sitter-typescript"]
+typst = []
 ursa = []
 verilog = []
 wat = []

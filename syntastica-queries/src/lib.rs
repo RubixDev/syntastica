@@ -303,6 +303,13 @@ pub const TYPESCRIPT_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_que
 pub const TYPESCRIPT_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/typescript/injections_crates_io.scm");
 pub const TYPESCRIPT_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/typescript/locals_crates_io.scm");
 
+pub const TYPST_HIGHLIGHTS: &str = include_str!("../generated_queries/typst/highlights.scm");
+pub const TYPST_INJECTIONS: &str = include_str!("../generated_queries/typst/injections.scm");
+pub const TYPST_LOCALS: &str = include_str!("../generated_queries/typst/locals.scm");
+pub const TYPST_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_queries/typst/highlights_crates_io.scm");
+pub const TYPST_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/typst/injections_crates_io.scm");
+pub const TYPST_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/typst/locals_crates_io.scm");
+
 pub const URSA_HIGHLIGHTS: &str = include_str!("../generated_queries/ursa/highlights.scm");
 pub const URSA_INJECTIONS: &str = include_str!("../generated_queries/ursa/injections.scm");
 pub const URSA_LOCALS: &str = include_str!("../generated_queries/ursa/locals.scm");
