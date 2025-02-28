@@ -58,6 +58,7 @@ for more information on all parser collections.
 - [ruby](https://github.com/tree-sitter/tree-sitter-ruby/tree/89bd7a8e5450cb6a942418a619d30469f259e5d6)
 - [scala](https://github.com/tree-sitter/tree-sitter-scala/tree/d67fe3ba3879bd7ba74bd7f56c9a38fed241ba25)
 - [scss](https://github.com/serenadeai/tree-sitter-scss/tree/c478c6868648eff49eb04a4df90d703dc45b312a) (not supported by this collection)
+- [sql](https://github.com/derekstride/tree-sitter-sql/tree/9853b887c5e4309de273922b681cc7bc09e30c78)
 - [typst](https://github.com/uben0/tree-sitter-typst/tree/46cf4ded12ee974a70bf8457263b67ad7ee0379d) (not supported by this collection)
 
 </details>

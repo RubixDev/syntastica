@@ -88,6 +88,7 @@ most = [
     "ruby",
     "scala",
     "scss",
+    "sql",
     "typst",
 ]
 
@@ -157,6 +158,7 @@ rush = ["dep:tree-sitter-rush"]
 rust = ["dep:tree-sitter-rust"]
 scala = ["dep:tree-sitter-scala"]
 scss = []
+sql = ["dep:tree-sitter-sequel"]
 toml = []
 tsx = ["dep:tree-sitter-typescript"]
 typescript = ["dep:tree-sitter-typescript"]
@@ -310,6 +312,11 @@ rev = "6e883a2adea9414799300699e78c0d2f032b5c46"
 optional = true
 git = "https://github.com/tree-sitter/tree-sitter-scala"
 rev = "d67fe3ba3879bd7ba74bd7f56c9a38fed241ba25"
+
+[dependencies.tree-sitter-sequel]
+optional = true
+git = "https://github.com/derekstride/tree-sitter-sql"
+rev = "9853b887c5e4309de273922b681cc7bc09e30c78"
 
 [dependencies.tree-sitter-typescript]
 optional = true

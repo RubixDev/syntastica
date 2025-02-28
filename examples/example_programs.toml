@@ -1118,3 +1118,24 @@ bibtex = '''
                   fields},
 }
 '''
+
+sql = '''
+-- NOTE: test
+SELECT MAX(m.id) max
+FROM my_table m
+WHERE m.id > 4
+  AND m.title LIKE '%foo%';
+
+CREATE TEMP SEQUENCE IF NOT EXISTS serial
+AS BIGINT
+INCREMENT BY 3
+MINVALUE 10
+MAXVALUE 9999
+START 101 CACHE 1000 NO CYCLE
+OWNED BY numbers.number_sequences;
+
+CREATE SCHEMA hollywood
+    CREATE TABLE films (title text, release date, awards text[])
+    CREATE VIEW winners AS
+        SELECT title, release FROM films WHERE awards IS NOT NULL;
+'''

@@ -201,6 +201,7 @@ export const LANGUAGES = [
     'rust',
     'scala',
     'scss',
+    'sql',
     'toml',
     'tsx',
     'typescript',

@@ -58,6 +58,7 @@ for more information on all parser collections.
 - [ruby](https://docs.rs/tree-sitter-ruby/0.23.1/)
 - [scala](https://docs.rs/tree-sitter-scala/0.23.4/)
 - [scss](https://github.com/serenadeai/tree-sitter-scss) (not supported by this collection)
+- [sql](https://docs.rs/tree-sitter-sequel/0.3.8/)
 - [typst](https://github.com/uben0/tree-sitter-typst) (not supported by this collection)
 
 </details>

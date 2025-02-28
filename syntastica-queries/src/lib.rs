@@ -296,6 +296,13 @@ pub const SCSS_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_queries/s
 pub const SCSS_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/scss/injections_crates_io.scm");
 pub const SCSS_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/scss/locals_crates_io.scm");
 
+pub const SQL_HIGHLIGHTS: &str = include_str!("../generated_queries/sql/highlights.scm");
+pub const SQL_INJECTIONS: &str = include_str!("../generated_queries/sql/injections.scm");
+pub const SQL_LOCALS: &str = include_str!("../generated_queries/sql/locals.scm");
+pub const SQL_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_queries/sql/highlights_crates_io.scm");
+pub const SQL_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/sql/injections_crates_io.scm");
+pub const SQL_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/sql/locals_crates_io.scm");
+
 pub const TOML_HIGHLIGHTS: &str = include_str!("../generated_queries/toml/highlights.scm");
 pub const TOML_INJECTIONS: &str = include_str!("../generated_queries/toml/injections.scm");
 pub const TOML_LOCALS: &str = include_str!("../generated_queries/toml/locals.scm");

@@ -675,6 +675,23 @@ injections = false
 locals = false
 
 [[languages]]
+name = "sql"
+group = "most"
+file-types = ["sql", "mysql"]
+[languages.parser]
+# has deployments on gh-pages branch
+git = { url = "https://github.com/derekstride/tree-sitter-sql", rev = "9853b887c5e4309de273922b681cc7bc09e30c78" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_sql"
+rust-const = "LANGUAGE"
+package = "tree-sitter-sequel"
+crates-io = "0.3.8"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+[[languages]]
 name = "toml"
 group = "some"
 file-types = ["toml"]

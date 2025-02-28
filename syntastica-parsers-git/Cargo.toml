@@ -93,6 +93,7 @@ most = [
     "ruby",
     "scala",
     "scss",
+    "sql",
     "typst",
 ]
 
@@ -171,6 +172,7 @@ rush = []
 rust = []
 scala = []
 scss = []
+sql = []
 toml = []
 tsx = []
 typescript = []
