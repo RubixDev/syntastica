@@ -65,6 +65,7 @@ for more information on all parser collections.
 <details>
 <summary>List of parsers additionally included in the <span class="stab portability"><code>all</code></span> feature</summary>
 
+- [bibtex](https://github.com/latex-lsp/tree-sitter-bibtex) (not supported by this collection)
 - [ebnf](https://github.com/RubixDev/ebnf) (not supported by this collection)
 - [ejs](https://docs.rs/tree-sitter-embedded-template/0.23.2/)
 - [erb](https://docs.rs/tree-sitter-embedded-template/0.23.2/)

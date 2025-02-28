@@ -92,6 +92,7 @@ most = [
 ## Include parsers for all supported languages.
 all = [
     "most",
+    "bibtex",
     "ebnf",
     "ejs",
     "erb",
@@ -113,6 +114,7 @@ docs = ["dep:document-features", "dep:rustc_version"]
 
 asm = ["dep:tree-sitter-asm"]
 bash = ["dep:tree-sitter-bash"]
+bibtex = []
 c = ["dep:tree-sitter-c"]
 c_sharp = ["dep:tree-sitter-c-sharp"]
 comment = []

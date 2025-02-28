@@ -100,6 +100,7 @@ most = [
 ## Include parsers for all supported languages.
 all = [
     "most",
+    "bibtex",
     "ebnf",
     "ejs",
     "erb",
@@ -130,6 +131,7 @@ docs = ["dep:document-features", "dep:rustc_version"]
 
 asm = []
 bash = []
+bibtex = []
 c = []
 c_sharp = []
 comment = []

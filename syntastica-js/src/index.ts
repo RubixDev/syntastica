@@ -161,6 +161,7 @@ export default { init, highlight, process, render }
 export const LANGUAGES = [
     'asm',
     'bash',
+    'bibtex',
     'c',
     'c_sharp',
     'comment',

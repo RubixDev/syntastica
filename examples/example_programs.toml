@@ -1091,3 +1091,30 @@ FIXME: this should be fixed
 
 regex = '[a-fA-F0-9_]\s(.*)$'
 printf = '%s = %.3f; %5d, %-5d, %05d'
+
+bibtex = '''
+@string{anch-ie = {Angew.~Chem. Int.~Ed.}}
+@string{cup     = {Cambridge University Press}}
+@string{dtv     = {Deutscher Taschenbuch-Verlag}}
+@string{hup     = {Harvard University Press}}
+@string{jams    = {J.~Amer. Math. Soc.}}
+@string{jchph   = {J.~Chem. Phys.}}
+@string{jomch   = {J.~Organomet. Chem.}}
+@string{pup     = {Princeton University Press}}
+
+@incollection{westfahl:space,
+  author       = {Westfahl, Gary},
+  title        = {The True Frontier},
+  subtitle     = {Confronting and Avoiding the Realities of Space in {American}
+                  Science Fiction Films},
+  pages        = {55-65},
+  crossref     = {westfahl:frontier},
+  langid       = {english},
+  langidopts   = {variant=american},
+  indextitle   = {True Frontier, The},
+  annotation   = {A cross-referenced article from a \texttt{collection}. This is
+                  an \texttt{incollection} entry with a \texttt{crossref}
+                  field. Note the \texttt{subtitle} and \texttt{indextitle}
+                  fields},
+}
+'''

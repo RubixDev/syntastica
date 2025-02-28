@@ -31,6 +31,22 @@ injections = true
 locals = true
 
 [[languages]]
+name = "bibtex"
+group = "all"
+file-types = ["bib"]
+[languages.parser]
+git = { url = "https://github.com/latex-lsp/tree-sitter-bibtex", rev = "ccfd77db0ed799b6c22c214fe9d2937f47bc8b34" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_bibtex"
+# rust-const = "LANGUAGE"
+package = "tree-sitter-bibtex"
+# crates-io = ""
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+[[languages]]
 name = "c"
 group = "some"
 file-types = ["c"]

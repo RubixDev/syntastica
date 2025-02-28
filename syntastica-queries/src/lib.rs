@@ -16,6 +16,13 @@ pub const BASH_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_queries/b
 pub const BASH_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/bash/injections_crates_io.scm");
 pub const BASH_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/bash/locals_crates_io.scm");
 
+pub const BIBTEX_HIGHLIGHTS: &str = include_str!("../generated_queries/bibtex/highlights.scm");
+pub const BIBTEX_INJECTIONS: &str = include_str!("../generated_queries/bibtex/injections.scm");
+pub const BIBTEX_LOCALS: &str = include_str!("../generated_queries/bibtex/locals.scm");
+pub const BIBTEX_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_queries/bibtex/highlights_crates_io.scm");
+pub const BIBTEX_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/bibtex/injections_crates_io.scm");
+pub const BIBTEX_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/bibtex/locals_crates_io.scm");
+
 pub const C_HIGHLIGHTS: &str = include_str!("../generated_queries/c/highlights.scm");
 pub const C_INJECTIONS: &str = include_str!("../generated_queries/c/injections.scm");
 pub const C_LOCALS: &str = include_str!("../generated_queries/c/locals.scm");
