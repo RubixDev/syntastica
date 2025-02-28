@@ -21,8 +21,10 @@ syntastica_macros::parsers_ffi!();
 #[allow(non_camel_case_types)]
 mod wasm_c_bridge {
     use std::{
+        alloc::{GlobalAlloc, Layout, System},
+        collections::HashMap,
         ffi::{c_void, CStr},
-        mem::MaybeUninit,
+        sync::{LazyLock, Mutex},
     };
 
     type wint_t = u32;
@@ -136,80 +138,111 @@ mod wasm_c_bridge {
         char::from_u32(ch).is_some_and(|ch| ch.is_ascii_hexdigit()) as int
     }
 
-    /// <https://en.cppreference.com/w/c/memory/malloc>
     #[no_mangle]
-    extern "C" fn malloc(size: size_t) -> *mut MaybeUninit<u8> {
-        Box::leak(Box::<[u8]>::new_uninit_slice(size)).as_mut_ptr()
-    }
-
-    /// <https://en.cppreference.com/w/c/memory/calloc>
-    #[no_mangle]
-    extern "C" fn calloc(num: size_t, size: size_t) -> *mut c_void {
-        let mut values = Box::<[u8]>::new_uninit_slice(size * num);
-        unsafe {
-            for i in 0..size * num {
-                values[i].as_mut_ptr().write(0);
-            }
-            Box::leak(values.assume_init()).as_mut_ptr() as *mut _
-        }
-    }
-
-    /// <https://en.cppreference.com/w/c/memory/realloc>
-    #[no_mangle]
-    extern "C" fn realloc(ptr: *mut c_void, new_size: size_t) -> *mut c_void {
-        free(ptr);
-        Box::leak(Box::<[u8]>::new_uninit_slice(new_size)).as_mut_ptr() as *mut _
-    }
-
-    /// <https://en.cppreference.com/w/c/memory/free>
-    #[no_mangle]
-    extern "C" fn free(_ptr: *mut c_void) {
-        // surely a bit of memory leakage isn't _that_ bad... :)
-        // TODO: perhaps improve with sth like this:
-        //  <https://github.com/ezrosent/allocators-rs/blob/master/malloc-bind/src/lib.rs>
-    }
-
-    #[no_mangle]
-    extern "C" fn __assert2(
+    unsafe extern "C" fn __assert2(
         file: *const c_char,
         line: int,
         func: *const c_char,
         error: *const c_char,
     ) {
-        let file = unsafe { CStr::from_ptr(file) }.to_string_lossy();
-        let func = unsafe { CStr::from_ptr(func) }.to_string_lossy();
-        let error = unsafe { CStr::from_ptr(error) }.to_string_lossy();
+        let file = CStr::from_ptr(file).to_string_lossy();
+        let func = CStr::from_ptr(func).to_string_lossy();
+        let error = CStr::from_ptr(error).to_string_lossy();
         panic!("assertion failed in {file} on line {line} in {func}: {error}");
     }
 
     /// <https://en.cppreference.com/w/c/string/byte/strcmp>
     #[no_mangle]
-    extern "C" fn strcmp(lhs: *const c_char, rhs: *const c_char) -> int {
-        let lhs = unsafe { CStr::from_ptr(lhs) };
-        let rhs = unsafe { CStr::from_ptr(rhs) };
+    unsafe extern "C" fn strcmp(lhs: *const c_char, rhs: *const c_char) -> int {
+        let lhs = CStr::from_ptr(lhs);
+        let rhs = CStr::from_ptr(rhs);
         lhs.cmp(rhs) as int
     }
 
     /// <https://en.cppreference.com/w/c/string/byte/strncpy>
     #[no_mangle]
-    extern "C" fn strncpy(dest: *mut c_char, src: *const c_char, count: size_t) -> *mut c_char {
+    unsafe extern "C" fn strncpy(
+        dest: *mut c_char,
+        src: *const c_char,
+        count: size_t,
+    ) -> *mut c_char {
         for i in 0..count {
-            let cp = unsafe { src.add(i).read() };
-            unsafe { dest.add(i).write(cp) }
+            let cp = src.add(i).read();
+            dest.add(i).write(cp)
         }
         dest
     }
 
     /// <https://en.cppreference.com/w/c/string/byte/memchr>
     #[no_mangle]
-    extern "C" fn memchr(ptr: *const c_void, ch: int, count: size_t) -> *mut c_void {
+    unsafe extern "C" fn memchr(ptr: *const c_void, ch: int, count: size_t) -> *mut c_void {
         let ptr = ptr as *const u8;
         let ch = ch as u8;
         for i in 0..count {
-            if unsafe { ptr.add(i).read() } == ch {
-                return unsafe { ptr.add(i) as *mut _ };
+            if ptr.add(i).read() == ch {
+                return ptr.add(i) as *mut _;
             }
         }
         std::ptr::null_mut()
+    }
+
+    static LAYOUTS: LazyLock<Mutex<HashMap<usize, Layout>>> = LazyLock::new(Default::default);
+    const MIN_ALIGN: usize = 8;
+
+    /// <https://en.cppreference.com/w/c/memory/malloc>
+    #[no_mangle]
+    unsafe extern "C" fn malloc(size: size_t) -> *mut c_void {
+        let layout = Layout::from_size_align_unchecked(size, MIN_ALIGN);
+        let ptr = System.alloc(layout);
+        if !ptr.is_null() {
+            LAYOUTS.lock().unwrap().insert(ptr as usize, layout);
+        }
+        ptr as *mut _
+    }
+
+    /// <https://en.cppreference.com/w/c/memory/calloc>
+    #[no_mangle]
+    unsafe extern "C" fn calloc(num: size_t, size: size_t) -> *mut c_void {
+        let layout = Layout::from_size_align_unchecked(num * size, MIN_ALIGN);
+        let ptr = System.alloc_zeroed(layout);
+        if !ptr.is_null() {
+            LAYOUTS.lock().unwrap().insert(ptr as usize, layout);
+        }
+        ptr as *mut _
+    }
+
+    /// <https://en.cppreference.com/w/c/memory/realloc>
+    #[no_mangle]
+    unsafe extern "C" fn realloc(ptr: *mut c_void, new_size: size_t) -> *mut c_void {
+        if ptr.is_null() {
+            return malloc(new_size);
+        }
+        let layout = *LAYOUTS
+            .lock()
+            .unwrap()
+            .get(&(ptr as usize))
+            .unwrap_unchecked();
+        let ptr = System.realloc(ptr as *mut _, layout, new_size);
+        if !ptr.is_null() {
+            LAYOUTS.lock().unwrap().insert(
+                ptr as usize,
+                Layout::from_size_align_unchecked(new_size, layout.align()),
+            );
+        }
+        ptr as *mut _
+    }
+
+    /// <https://en.cppreference.com/w/c/memory/free>
+    #[no_mangle]
+    unsafe extern "C" fn free(ptr: *mut c_void) {
+        if ptr.is_null() {
+            return;
+        }
+        let layout = LAYOUTS
+            .lock()
+            .unwrap()
+            .remove(&(ptr as usize))
+            .unwrap_unchecked();
+        System.dealloc(ptr as *mut _, layout);
     }
 }
