@@ -49,7 +49,7 @@ specifically, you don't have to worry about this.
 <summary>List of parsers included in the <span class="stab portability"><code>some</code></span> feature</summary>
 
 - [bash](https://github.com/tree-sitter/tree-sitter-bash/tree/0c46d792d54c536be5ff7eb18eb95c70fccdb232)
-- [c](https://github.com/tree-sitter/tree-sitter-c/tree/cf36b0354a2d75a42f87191cbd3166ad8af348e4)
+- [c](https://github.com/tree-sitter/tree-sitter-c/tree/2a265d69a4caf57108a73ad2ed1e6922dd2f998c)
 - [cpp](https://github.com/tree-sitter/tree-sitter-cpp/tree/e5cea0ec884c5c3d2d1e41a741a66ce13da4d945)
 - [css](https://github.com/tree-sitter/tree-sitter-css/tree/6e327db434fec0ee90f006697782e43ec855adf5)
 - [go](https://github.com/tree-sitter/tree-sitter-go/tree/5e73f476efafe5c768eda19bbe877f188ded6144)
@@ -59,7 +59,7 @@ specifically, you don't have to worry about this.
 - [json](https://github.com/tree-sitter/tree-sitter-json/tree/46aa487b3ade14b7b05ef92507fdaa3915a662a3)
 - [lua](https://github.com/muniftanjim/tree-sitter-lua/tree/68d29aa745b68ae22cbbdb5dcb68c20232521ff6)
 - [python](https://github.com/tree-sitter/tree-sitter-python/tree/710796b8b877a970297106e5bbc8e2afa47f86ec)
-- [rust](https://github.com/tree-sitter/tree-sitter-rust/tree/2eaf126458a4d6a69401089b6ba78c5e5d6c1ced)
+- [rust](https://github.com/tree-sitter/tree-sitter-rust/tree/6e883a2adea9414799300699e78c0d2f032b5c46)
 - [toml](https://github.com/Mathspy/tree-sitter-toml/tree/ae4cdb5d27bf876a432b6c30b6a88f56c9b3e761)
 - [tsx](https://github.com/tree-sitter/tree-sitter-typescript/tree/75b3874edb2dc714fb1fd77a32013d0f8699989f)
 - [typescript](https://github.com/tree-sitter/tree-sitter-typescript/tree/75b3874edb2dc714fb1fd77a32013d0f8699989f)
@@ -71,7 +71,7 @@ specifically, you don't have to worry about this.
 <summary>List of parsers additionally included in the <span class="stab portability"><code>most</code></span> feature</summary>
 
 - [asm](https://github.com/rush-rs/tree-sitter-asm/tree/5bb5b03e3c1ce5853b5282b9fba060f7c7bbf11e)
-- [c_sharp](https://github.com/tree-sitter/tree-sitter-c-sharp/tree/b27b091bfdc5f16d0ef76421ea5609c82a57dff0)
+- [c_sharp](https://github.com/tree-sitter/tree-sitter-c-sharp/tree/b5eb5742f6a7e9438bee22ce8026d6b927be2cd7)
 - [comment](https://github.com/stsewd/tree-sitter-comment/tree/3555706cef8b98d3e4c7379d7260548ff03ad363)
 - [dart](https://github.com/UserNobody14/tree-sitter-dart/tree/e81af6ab94a728ed99c30083be72d88e6d56cf9e)
 - [diff](https://github.com/the-mikedavis/tree-sitter-diff/tree/e42b8def4f75633568f1aecfe01817bf15164928)
@@ -81,7 +81,7 @@ specifically, you don't have to worry about this.
 - [jsonc](https://gitlab.com/WhyNotHugo/tree-sitter-jsonc/tree/02b01653c8a1c198ae7287d566efa86a135b30d5)
 - [markdown](https://github.com/MDeiml/tree-sitter-markdown/tree/192407ab5a24bfc24f13332979b5e7967518754a)
 - [markdown_inline](https://github.com/MDeiml/tree-sitter-markdown/tree/192407ab5a24bfc24f13332979b5e7967518754a)
-- [php](https://github.com/tree-sitter/tree-sitter-php/tree/f3a19ab3217a6e838870fc7142fa492d1fd7a7c9)
+- [php](https://github.com/tree-sitter/tree-sitter-php/tree/f7cf7348737d8cff1b13407a0bfedce02ee7b046)
 - [regex](https://github.com/tree-sitter/tree-sitter-regex/tree/b638d29335ef41215b86732dd51be34c701ef683)
 - [ruby](https://github.com/tree-sitter/tree-sitter-ruby/tree/89bd7a8e5450cb6a942418a619d30469f259e5d6)
 - [scala](https://github.com/tree-sitter/tree-sitter-scala/tree/d67fe3ba3879bd7ba74bd7f56c9a38fed241ba25)
@@ -96,15 +96,15 @@ specifically, you don't have to worry about this.
 - [ejs](https://github.com/tree-sitter/tree-sitter-embedded-template/tree/8495d106154741e6d35d37064f864758ece75de6)
 - [erb](https://github.com/tree-sitter/tree-sitter-embedded-template/tree/8495d106154741e6d35d37064f864758ece75de6)
 - [hexdump](https://github.com/rush-rs/tree-sitter-hexdump/tree/09eaf4fcfed00be93928d7d3d82b490cd1343b80)
-- [julia](https://github.com/tree-sitter/tree-sitter-julia/tree/3f9870ca1f419e480f39fc181fcfb6dad480969a)
+- [julia](https://github.com/tree-sitter/tree-sitter-julia/tree/12a3aede757bc7fbdfb1909507c7a6fddd31df37)
 - [latex](https://github.com/latex-lsp/tree-sitter-latex/tree/7b06f6ed394308e7407a1703d2724128c45fc9d7)
 - [llvm](https://github.com/benwilliamgraham/tree-sitter-llvm/tree/c14cb839003348692158b845db9edda201374548)
 - [ocaml](https://github.com/tree-sitter/tree-sitter-ocaml/tree/91e4d9106f5da8199ab5158ba65e02da3e664597)
 - [ocaml_interface](https://github.com/tree-sitter/tree-sitter-ocaml/tree/91e4d9106f5da8199ab5158ba65e02da3e664597)
 - [ql](https://github.com/tree-sitter/tree-sitter-ql/tree/1fd627a4e8bff8c24c11987474bd33112bead857)
-- [rush](https://github.com/rush-rs/tree-sitter-rush/tree/20c04a0824dabcbf8119a84979cfb1c6f6c2155f)
+- [rush](https://github.com/rush-rs/tree-sitter-rush/tree/babbc5c116ce964e89bc9ccc9df36d16c623fba9)
 - [ursa](https://github.com/ursalang/tree-sitter-ursa/tree/d023d044590d461bf586c56854b2630fef0d17cc)
-- [verilog](https://github.com/gmlarumbe/tree-sitter-systemverilog/tree/15fbf73dafaffc89050d247857beb27500ea30e8)
+- [verilog](https://github.com/gmlarumbe/tree-sitter-systemverilog/tree/3251f8cee388314ed425c5e5da2021113f0b6afb)
 - [wat](https://github.com/wasm-lsp/tree-sitter-wasm/tree/2ca28a9f9d709847bf7a3de0942a84e912f59088)
 
 </details>

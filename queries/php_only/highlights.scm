@@ -205,6 +205,10 @@
     (qualified_name
       (name) @type
     )
+    ; crates.io skip
+    (relative_name
+      (name) @type
+    )
   ]
 )
 
@@ -221,6 +225,10 @@
   [
     (name) @type
     (qualified_name
+      (name) @type
+    )
+    ; crates.io skip
+    (relative_name
       (name) @type
     )
   ]
@@ -306,6 +314,10 @@
     (qualified_name
       (name) @type
     )
+    ; crates.io skip
+    (relative_name
+      (name) @type
+    )
   ]
 )
 
@@ -313,6 +325,10 @@
   scope: [
     (name) @type
     (qualified_name
+      (name) @type
+    )
+    ; crates.io skip
+    (relative_name
       (name) @type
     )
   ]
@@ -325,6 +341,10 @@
     (qualified_name
       (name) @type
     )
+    ; crates.io skip
+    (relative_name
+      (name) @type
+    )
   ]
   (name) @constant
 )
@@ -333,6 +353,10 @@
   scope: [
     (name) @type
     (qualified_name
+      (name) @type
+    )
+    ; crates.io skip
+    (relative_name
       (name) @type
     )
   ]
@@ -358,6 +382,10 @@
     (qualified_name
       (name) @type
     )
+    ; crates.io skip
+    (relative_name
+      (name) @type
+    )
   ]
 )
 
@@ -380,13 +408,16 @@
 )
 
 (function_call_expression
-  function: (qualified_name
+  function: [
     (name) @function.call
-  )
-)
-
-(function_call_expression
-  (name) @function.call
+    (qualified_name
+      (name) @function.call
+    )
+    ; crates.io skip
+    (relative_name
+      (name) @function.call
+    )
+  ]
 )
 
 (scoped_call_expression
@@ -430,6 +461,10 @@
   [
     (name) @constructor
     (qualified_name
+      (name) @constructor
+    )
+    ; crates.io skip
+    (relative_name
       (name) @constructor
     )
   ]
@@ -491,6 +526,11 @@
 
 (namespace_name
   (name) @module
+)
+
+; crates.io skip
+(relative_name
+  "namespace" @module.builtin
 )
 
 ; Attributes

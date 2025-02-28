@@ -178,6 +178,23 @@
   )
 )
 
+(call_expression
+  function: (await_expression
+    (identifier) @function.call
+  )
+)
+
+(call_expression
+  function: (await_expression
+    (member_expression
+      property: [
+        (property_identifier)
+        (private_property_identifier)
+      ] @function.method.call
+    )
+  )
+)
+
 ; Builtins
 ;---------
 (

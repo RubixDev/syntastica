@@ -181,7 +181,7 @@ fn parsers_toml_deps(toml: &mut String, git: bool) {
     let mut added_packages = vec![];
     for lang in crate::LANGUAGE_CONFIG.languages.iter().filter(|lang| {
         lang.parser.rust_const.is_some()
-            && ((git && !lang.parser.generate) || lang.parser.crates_io.is_some())
+            && ((git && !lang.parser.generate) || (!git && lang.parser.crates_io.is_some()))
     }) {
         let package = &lang.parser.package;
         let url = &lang.parser.git.url;

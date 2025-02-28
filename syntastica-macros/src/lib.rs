@@ -131,7 +131,7 @@ fn parsers_rust(crate_name: &str, crates_io: bool, query_suffix: &str) -> TokenS
         let name = format_ident!("{}", lang.name);
         let name_str = &lang.name;
         let (doc, body) = match &lang.parser.rust_const {
-            Some(ident) if (!crates_io && !lang.parser.generate) || lang.parser.crates_io.is_some() => {
+            Some(ident) if (!crates_io && !lang.parser.generate) || (crates_io && lang.parser.crates_io.is_some()) => {
                 let ident = format_ident!("{ident}");
                 let package = format_ident!("{}", lang.parser.package.replace('-', "_"));
                 (
@@ -161,7 +161,8 @@ fn parsers_rust(crate_name: &str, crates_io: bool, query_suffix: &str) -> TokenS
         functions,
         |lang| {
             lang.parser.rust_const.is_some()
-                && ((!crates_io && !lang.parser.generate) || lang.parser.crates_io.is_some())
+                && ((!crates_io && !lang.parser.generate)
+                    || (crates_io && lang.parser.crates_io.is_some()))
         },
         None,
         query_suffix,

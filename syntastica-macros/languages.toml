@@ -35,7 +35,7 @@ name = "c"
 group = "some"
 file-types = ["c"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-c", rev = "cf36b0354a2d75a42f87191cbd3166ad8af348e4" }
+git = { url = "https://github.com/tree-sitter/tree-sitter-c", rev = "2a265d69a4caf57108a73ad2ed1e6922dd2f998c" }
 external-scanner = { c = false, cpp = false }
 ffi-func = "tree_sitter_c"
 rust-const = "LANGUAGE"
@@ -51,7 +51,7 @@ name = "c_sharp"
 group = "most"
 file-types = ["csharp"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-c-sharp", rev = "b27b091bfdc5f16d0ef76421ea5609c82a57dff0" }
+git = { url = "https://github.com/tree-sitter/tree-sitter-c-sharp", rev = "b5eb5742f6a7e9438bee22ce8026d6b927be2cd7" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_c_sharp"
 rust-const = "LANGUAGE"
@@ -356,7 +356,7 @@ name = "julia"
 group = "all"
 file-types = ["julia"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-julia", rev = "3f9870ca1f419e480f39fc181fcfb6dad480969a" }
+git = { url = "https://github.com/tree-sitter/tree-sitter-julia", rev = "12a3aede757bc7fbdfb1909507c7a6fddd31df37" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_julia"
 rust-const = "LANGUAGE"
@@ -377,6 +377,7 @@ external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_latex"
 # rust-const = "LANGUAGE"
 package = "tree-sitter-latex"
+# there is a package called "tree-sitter-latex" on crates.io, but that is a different latex parser
 # crates-io = ""
 generate = true
 [languages.queries]
@@ -486,7 +487,7 @@ name = "php"
 group = "most"
 file-types = ["php"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-php", rev = "f3a19ab3217a6e838870fc7142fa492d1fd7a7c9", path = "php" }
+git = { url = "https://github.com/tree-sitter/tree-sitter-php", rev = "f7cf7348737d8cff1b13407a0bfedce02ee7b046", path = "php" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_php"
 rust-const = "LANGUAGE_PHP"
@@ -566,12 +567,12 @@ name = "rush"
 group = "all"
 file-types = ["rush"]
 [languages.parser]
-git = { url = "https://github.com/rush-rs/tree-sitter-rush", rev = "20c04a0824dabcbf8119a84979cfb1c6f6c2155f" }
+git = { url = "https://github.com/rush-rs/tree-sitter-rush", rev = "babbc5c116ce964e89bc9ccc9df36d16c623fba9" }
 external-scanner = { c = false, cpp = false }
 ffi-func = "tree_sitter_rush"
-# rust-const = "LANGUAGE"
+rust-const = "LANGUAGE"
 package = "tree-sitter-rush"
-# crates-io = "0.1.0"
+crates-io = "0.2.0"
 [languages.queries]
 nvim-like = true
 injections = false
@@ -582,7 +583,7 @@ name = "rust"
 group = "some"
 file-types = ["rust"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-rust", rev = "2eaf126458a4d6a69401089b6ba78c5e5d6c1ced" }
+git = { url = "https://github.com/tree-sitter/tree-sitter-rust", rev = "6e883a2adea9414799300699e78c0d2f032b5c46" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_rust"
 rust-const = "LANGUAGE"
@@ -694,11 +695,12 @@ name = "verilog"
 group = "all"
 file-types = ["verilog"]
 [languages.parser]
-git = { url = "https://github.com/gmlarumbe/tree-sitter-systemverilog", rev = "15fbf73dafaffc89050d247857beb27500ea30e8" }
+git = { url = "https://github.com/gmlarumbe/tree-sitter-systemverilog", rev = "3251f8cee388314ed425c5e5da2021113f0b6afb" }
 external-scanner = { c = false, cpp = false }
 ffi-func = "tree_sitter_verilog"
 rust-const = "LANGUAGE"
 package = "tree-sitter-verilog"
+# there is a package called "tree-sitter-verilog" on crates.io, but that is a different verilog parser
 # crates-io = ""
 [languages.queries]
 nvim-like = true

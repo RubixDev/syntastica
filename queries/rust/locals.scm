@@ -76,11 +76,6 @@
   name: (type_identifier) @local.definition.type
 )
 
-(constrained_type_parameter
-  left: (type_identifier) @local.definition.type
-)
-
-; the P in  remove_file<P: AsRef<Path>>(path: P)
 (enum_item
   name: (type_identifier) @local.definition.type
 )

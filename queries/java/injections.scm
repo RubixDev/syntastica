@@ -14,6 +14,22 @@
   (#set! injection.language "doxygen")
 )
 
+; markdown-style javadocs: https://openjdk.org/jeps/467
+(
+  (line_comment) @injection.content
+  (#lua-match? @injection.content "^///%s")
+  (#offset! @injection.content 0 4 0 0)
+  (#set! injection.language "markdown_inline")
+)
+
+; markdown-style javadocs: https://openjdk.org/jeps/467
+(
+  (line_comment) @injection.content
+  (#lua-match? @injection.content "^///%s+[@]")
+  (#offset! @injection.content 0 4 0 0)
+  (#set! injection.language "doxygen")
+)
+
 (
   (method_invocation
     name: (identifier) @_method
