@@ -81,6 +81,7 @@ most = [
     "comment",
     "dart",
     "diff",
+    "elixir",
     "haskell",
     "jsdoc",
     "json5",
@@ -145,6 +146,7 @@ diff = []
 dockerfile = []
 ebnf = []
 ejs = []
+elixir = []
 erb = []
 go = []
 haskell = []

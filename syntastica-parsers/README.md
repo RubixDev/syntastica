@@ -46,6 +46,7 @@ for more information on all parser collections.
 - [comment](https://github.com/stsewd/tree-sitter-comment) (not supported by this collection)
 - [dart](https://github.com/UserNobody14/tree-sitter-dart) (not supported by this collection)
 - [diff](https://docs.rs/tree-sitter-diff/0.1.0/)
+- [elixir](https://docs.rs/tree-sitter-elixir/0.3.4/)
 - [haskell](https://docs.rs/tree-sitter-haskell/0.23.1/)
 - [jsdoc](https://docs.rs/tree-sitter-jsdoc/0.23.2/)
 - [json5](https://github.com/Joakker/tree-sitter-json5) (not supported by this collection)

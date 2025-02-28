@@ -208,6 +208,22 @@ injections = true
 locals = false
 
 [[languages]]
+name = "elixir"
+group = "most"
+file-types = ["elixir"]
+[languages.parser]
+git = { url = "https://github.com/elixir-lang/tree-sitter-elixir", rev = "86ec2ed45d6d9433b4e0b88cd3d96796bd45625f" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_elixir"
+rust-const = "LANGUAGE"
+package = "tree-sitter-elixir"
+crates-io = "0.3.4"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+[[languages]]
 name = "erb"
 group = "all"
 file-types = ["eruby"]

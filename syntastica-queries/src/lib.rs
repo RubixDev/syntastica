@@ -93,6 +93,13 @@ pub const EJS_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_queries/ej
 pub const EJS_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/ejs/injections_crates_io.scm");
 pub const EJS_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/ejs/locals_crates_io.scm");
 
+pub const ELIXIR_HIGHLIGHTS: &str = include_str!("../generated_queries/elixir/highlights.scm");
+pub const ELIXIR_INJECTIONS: &str = include_str!("../generated_queries/elixir/injections.scm");
+pub const ELIXIR_LOCALS: &str = include_str!("../generated_queries/elixir/locals.scm");
+pub const ELIXIR_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_queries/elixir/highlights_crates_io.scm");
+pub const ELIXIR_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/elixir/injections_crates_io.scm");
+pub const ELIXIR_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/elixir/locals_crates_io.scm");
+
 pub const ERB_HIGHLIGHTS: &str = include_str!("../generated_queries/erb/highlights.scm");
 pub const ERB_INJECTIONS: &str = include_str!("../generated_queries/erb/injections.scm");
 pub const ERB_LOCALS: &str = include_str!("../generated_queries/erb/locals.scm");

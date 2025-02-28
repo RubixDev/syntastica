@@ -172,6 +172,7 @@ export const LANGUAGES = [
     'dockerfile',
     'ebnf',
     'ejs',
+    'elixir',
     'erb',
     'go',
     'haskell',

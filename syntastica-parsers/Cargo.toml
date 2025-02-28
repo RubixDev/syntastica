@@ -73,6 +73,7 @@ most = [
     "comment",
     "dart",
     "diff",
+    "elixir",
     "haskell",
     "jsdoc",
     "json5",
@@ -128,6 +129,7 @@ diff = ["dep:tree-sitter-diff"]
 dockerfile = []
 ebnf = []
 ejs = ["dep:tree-sitter-embedded-template"]
+elixir = ["dep:tree-sitter-elixir"]
 erb = ["dep:tree-sitter-embedded-template"]
 go = ["dep:tree-sitter-go"]
 haskell = ["dep:tree-sitter-haskell"]
@@ -200,6 +202,10 @@ version = "=0.1.0"
 [dependencies.tree-sitter-embedded-template]
 optional = true
 version = "=0.23.2"
+
+[dependencies.tree-sitter-elixir]
+optional = true
+version = "=0.3.4"
 
 [dependencies.tree-sitter-go]
 optional = true

@@ -76,6 +76,7 @@ most = [
     "comment",
     "dart",
     "diff",
+    "elixir",
     "haskell",
     "jsdoc",
     "json5",
@@ -131,6 +132,7 @@ diff = ["dep:tree-sitter-diff"]
 dockerfile = []
 ebnf = []
 ejs = ["dep:tree-sitter-embedded-template"]
+elixir = ["dep:tree-sitter-elixir"]
 erb = ["dep:tree-sitter-embedded-template"]
 go = ["dep:tree-sitter-go"]
 haskell = ["dep:tree-sitter-haskell"]
@@ -211,6 +213,11 @@ rev = "e42b8def4f75633568f1aecfe01817bf15164928"
 optional = true
 git = "https://github.com/tree-sitter/tree-sitter-embedded-template"
 rev = "8495d106154741e6d35d37064f864758ece75de6"
+
+[dependencies.tree-sitter-elixir]
+optional = true
+git = "https://github.com/elixir-lang/tree-sitter-elixir"
+rev = "86ec2ed45d6d9433b4e0b88cd3d96796bd45625f"
 
 [dependencies.tree-sitter-go]
 optional = true

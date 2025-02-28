@@ -76,6 +76,7 @@ specifically, you don't have to worry about this.
 - [comment](https://github.com/stsewd/tree-sitter-comment/tree/3555706cef8b98d3e4c7379d7260548ff03ad363)
 - [dart](https://github.com/UserNobody14/tree-sitter-dart/tree/e81af6ab94a728ed99c30083be72d88e6d56cf9e)
 - [diff](https://github.com/the-mikedavis/tree-sitter-diff/tree/e42b8def4f75633568f1aecfe01817bf15164928)
+- [elixir](https://github.com/elixir-lang/tree-sitter-elixir/tree/86ec2ed45d6d9433b4e0b88cd3d96796bd45625f)
 - [haskell](https://github.com/tree-sitter/tree-sitter-haskell/tree/0975ef72fc3c47b530309ca93937d7d143523628)
 - [jsdoc](https://github.com/tree-sitter/tree-sitter-jsdoc/tree/a417db5dbdd869fccb6a8b75ec04459e1d4ccd2c)
 - [json5](https://github.com/Joakker/tree-sitter-json5/tree/ab0ba8229d639ec4f3fa5f674c9133477f4b77bd)
