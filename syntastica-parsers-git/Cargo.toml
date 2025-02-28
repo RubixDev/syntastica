@@ -62,6 +62,7 @@ some = [
     "java",
     "javascript",
     "json",
+    "kotlin",
     "lua",
     "python",
     "rust",
@@ -148,6 +149,7 @@ json = []
 json5 = []
 jsonc = []
 julia = []
+kotlin = []
 latex = []
 llvm = []
 lua = []

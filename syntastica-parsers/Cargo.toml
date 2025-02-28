@@ -54,6 +54,7 @@ some = [
     "java",
     "javascript",
     "json",
+    "kotlin",
     "lua",
     "python",
     "rust",
@@ -131,6 +132,7 @@ json = ["dep:tree-sitter-json"]
 json5 = []
 jsonc = []
 julia = ["dep:tree-sitter-julia"]
+kotlin = []
 latex = []
 llvm = []
 lua = ["dep:tree-sitter-lua"]

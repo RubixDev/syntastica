@@ -57,6 +57,7 @@ some = [
     "java",
     "javascript",
     "json",
+    "kotlin",
     "lua",
     "python",
     "rust",
@@ -134,6 +135,7 @@ json = ["dep:tree-sitter-json"]
 json5 = []
 jsonc = []
 julia = ["dep:tree-sitter-julia"]
+kotlin = ["dep:tree-sitter-kotlin"]
 latex = []
 llvm = []
 lua = ["dep:tree-sitter-lua"]
@@ -237,6 +239,11 @@ rev = "46aa487b3ade14b7b05ef92507fdaa3915a662a3"
 optional = true
 git = "https://github.com/tree-sitter/tree-sitter-julia"
 rev = "12a3aede757bc7fbdfb1909507c7a6fddd31df37"
+
+[dependencies.tree-sitter-kotlin]
+optional = true
+git = "https://github.com/fwcd/tree-sitter-kotlin"
+rev = "c4ddea359a7ff4d92360b2efcd6cfce5dc25afe6"
 
 [dependencies.tree-sitter-lua]
 optional = true

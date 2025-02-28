@@ -163,6 +163,13 @@ pub const JULIA_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_queries/
 pub const JULIA_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/julia/injections_crates_io.scm");
 pub const JULIA_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/julia/locals_crates_io.scm");
 
+pub const KOTLIN_HIGHLIGHTS: &str = include_str!("../generated_queries/kotlin/highlights.scm");
+pub const KOTLIN_INJECTIONS: &str = include_str!("../generated_queries/kotlin/injections.scm");
+pub const KOTLIN_LOCALS: &str = include_str!("../generated_queries/kotlin/locals.scm");
+pub const KOTLIN_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_queries/kotlin/highlights_crates_io.scm");
+pub const KOTLIN_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/kotlin/injections_crates_io.scm");
+pub const KOTLIN_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/kotlin/locals_crates_io.scm");
+
 pub const LATEX_HIGHLIGHTS: &str = include_str!("../generated_queries/latex/highlights.scm");
 pub const LATEX_INJECTIONS: &str = include_str!("../generated_queries/latex/injections.scm");
 pub const LATEX_LOCALS: &str = include_str!("../generated_queries/latex/locals.scm");

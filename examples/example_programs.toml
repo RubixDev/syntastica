@@ -1007,3 +1007,29 @@ let accums2 = newAccums()
   [accums[1](1), accums[1](1), accums2[1](1)],
 ]
 '''
+
+kotlin = '''
+fun fib(n: Int): Int =
+    if (n < 2) n else fib(n - 1) + fib(n - 2)
+
+// NOTE: test
+fun main() {
+    "[a-fA-F0-9_]\s(.*)$".toRegex()
+    println("Hello, World!")
+}
+
+abstract class Person(val name: String) {
+    abstract fun greet()
+}
+
+interface FoodConsumer {
+    fun eat()
+    fun pay(amount: Int) = println("Delicious! Here's $amount bucks!")
+}
+
+class RestaurantCustomer(name: String, val dish: String) : Person(name), FoodConsumer {
+    fun order() = println("$dish, please!")
+    override fun eat() = println("*Eats $dish*")
+    override fun greet() = println("It's me, $name.")
+}
+'''

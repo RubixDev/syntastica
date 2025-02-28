@@ -368,6 +368,22 @@ injections = true
 locals = true
 
 [[languages]]
+name = "kotlin"
+group = "some"
+file-types = []
+[languages.parser]
+git = { url = "https://github.com/fwcd/tree-sitter-kotlin", rev = "c4ddea359a7ff4d92360b2efcd6cfce5dc25afe6" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_kotlin"
+# rust-const = "LANGUAGE"
+package = "tree-sitter-kotlin"
+# crates-io = ""
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+[[languages]]
 name = "latex"
 group = "all"
 file-types = ["tex"]

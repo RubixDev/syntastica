@@ -27,6 +27,7 @@ for more information on all parser collections.
 - [java](https://docs.rs/tree-sitter-java/0.23.5/)
 - [javascript](https://docs.rs/tree-sitter-javascript/0.23.1/)
 - [json](https://docs.rs/tree-sitter-json/0.24.8/)
+- [kotlin](https://github.com/fwcd/tree-sitter-kotlin) (not supported by this collection)
 - [lua](https://docs.rs/tree-sitter-lua/0.2.0/)
 - [python](https://docs.rs/tree-sitter-python/0.23.6/)
 - [rust](https://docs.rs/tree-sitter-rust/0.23.2/)

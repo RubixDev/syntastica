@@ -71,7 +71,23 @@ pub fn run() -> Result<()> {
                 true => res.text().ok(),
                 false => None,
             })
-            .map(|s| forked_from(&name, kind, &s));
+            .map(|query| {
+                Ok::<_, anyhow::Error>(forked_from(
+                    &name,
+                    kind,
+                    &format!(
+                        "{:#}",
+                        rsexpr::from_slice_multi(&query)
+                            .map_err(|errs| anyhow!(errs
+                                .into_iter()
+                                .map(|err| err.to_string())
+                                .collect::<Vec<_>>()
+                                .join(", ")))
+                            .context("failed to parse downloaded queries")?
+                    ),
+                ))
+            })
+            .transpose()?;
         if let Some(text) = queries {
             fs::write(
                 crate::WORKSPACE_DIR.join(format!("queries/{name}/{kind}.scm")),
