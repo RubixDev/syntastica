@@ -90,6 +90,7 @@ most = [
     "scss",
     "sql",
     "typst",
+    "zig",
 ]
 
 ## Implies <span class="stab portability"><code>most</code></span>.
@@ -167,6 +168,7 @@ ursa = []
 verilog = ["dep:tree-sitter-verilog"]
 wat = []
 yaml = ["dep:tree-sitter-yaml"]
+zig = ["dep:tree-sitter-zig"]
 
 [dependencies.tree-sitter-asm]
 optional = true
@@ -332,3 +334,8 @@ rev = "3251f8cee388314ed425c5e5da2021113f0b6afb"
 optional = true
 git = "https://github.com/tree-sitter-grammars/tree-sitter-yaml"
 rev = "1805917414a9a8ba2473717fd69447277a175fae"
+
+[dependencies.tree-sitter-zig]
+optional = true
+git = "https://github.com/tree-sitter-grammars/tree-sitter-zig"
+rev = "b670c8df85a1568f498aa5c8cae42f51a90473c0"

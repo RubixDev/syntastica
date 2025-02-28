@@ -90,6 +90,7 @@ specifically, you don't have to worry about this.
 - [scss](https://github.com/serenadeai/tree-sitter-scss/tree/c478c6868648eff49eb04a4df90d703dc45b312a)
 - [sql](https://github.com/derekstride/tree-sitter-sql/tree/9853b887c5e4309de273922b681cc7bc09e30c78)
 - [typst](https://github.com/uben0/tree-sitter-typst/tree/46cf4ded12ee974a70bf8457263b67ad7ee0379d)
+- [zig](https://github.com/tree-sitter-grammars/tree-sitter-zig/tree/b670c8df85a1568f498aa5c8cae42f51a90473c0)
 
 </details>
 

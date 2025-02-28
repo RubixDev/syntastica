@@ -95,6 +95,7 @@ most = [
     "scss",
     "sql",
     "typst",
+    "zig",
 ]
 
 ## Implies <span class="stab portability"><code>most</code></span>.
@@ -181,3 +182,4 @@ ursa = []
 verilog = []
 wat = []
 yaml = []
+zig = []

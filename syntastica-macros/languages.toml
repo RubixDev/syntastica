@@ -819,3 +819,20 @@ crates-io = "0.7.0"
 nvim-like = true
 injections = true
 locals = true
+
+
+[[languages]]
+name = "zig"
+group = "most"
+file-types = ["zig"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-zig", rev = "b670c8df85a1568f498aa5c8cae42f51a90473c0" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_zig"
+rust-const = "LANGUAGE"
+package = "tree-sitter-zig"
+crates-io = "1.1.2"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true

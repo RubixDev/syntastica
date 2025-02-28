@@ -210,6 +210,7 @@ export const LANGUAGES = [
     'verilog',
     'wat',
     'yaml',
+    'zig',
 ] as const
 
 /**

@@ -358,3 +358,10 @@ pub const YAML_LOCALS: &str = include_str!("../generated_queries/yaml/locals.scm
 pub const YAML_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_queries/yaml/highlights_crates_io.scm");
 pub const YAML_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/yaml/injections_crates_io.scm");
 pub const YAML_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/yaml/locals_crates_io.scm");
+
+pub const ZIG_HIGHLIGHTS: &str = include_str!("../generated_queries/zig/highlights.scm");
+pub const ZIG_INJECTIONS: &str = include_str!("../generated_queries/zig/injections.scm");
+pub const ZIG_LOCALS: &str = include_str!("../generated_queries/zig/locals.scm");
+pub const ZIG_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_queries/zig/highlights_crates_io.scm");
+pub const ZIG_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/zig/injections_crates_io.scm");
+pub const ZIG_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/zig/locals_crates_io.scm");

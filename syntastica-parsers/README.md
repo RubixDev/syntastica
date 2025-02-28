@@ -60,6 +60,7 @@ for more information on all parser collections.
 - [scss](https://github.com/serenadeai/tree-sitter-scss) (not supported by this collection)
 - [sql](https://docs.rs/tree-sitter-sequel/0.3.8/)
 - [typst](https://github.com/uben0/tree-sitter-typst) (not supported by this collection)
+- [zig](https://docs.rs/tree-sitter-zig/1.1.2/)
 
 </details>
 
