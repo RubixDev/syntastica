@@ -678,6 +678,8 @@ locals = false
 name = "sql"
 group = "most"
 file-types = ["sql", "mysql"]
+# disable for Wasm until https://github.com/DerekStride/tree-sitter-sql/pull/306 is merged
+wasm = false
 [languages.parser]
 # has deployments on gh-pages branch
 git = { url = "https://github.com/derekstride/tree-sitter-sql", rev = "9853b887c5e4309de273922b681cc7bc09e30c78" }
