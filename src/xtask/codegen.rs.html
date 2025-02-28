@@ -164,25 +164,25 @@
 <a href=#164 id=164 data-nosnippet>164</a>    <span class="kw">for </span>lang <span class="kw">in </span><span class="kw-2">&amp;</span><span class="kw">crate</span>::LANGUAGE_CONFIG.languages {
 <a href=#165 id=165 data-nosnippet>165</a>        out += <span class="kw-2">&amp;</span>lang.name;
 <a href=#166 id=166 data-nosnippet>166</a>        out += <span class="string">" = ["</span>;
-<a href=#167 id=167 data-nosnippet>167</a>        <span class="kw">if </span>lang.parser.rust_const.is_some()
-<a href=#168 id=168 data-nosnippet>168</a>            &amp;&amp; ((collection == ParserCollection::GitDep &amp;&amp; !lang.parser.generate)
-<a href=#169 id=169 data-nosnippet>169</a>                || (collection == ParserCollection::Dep &amp;&amp; lang.parser.crates_io.is_some()))
-<a href=#170 id=170 data-nosnippet>170</a>        {
-<a href=#171 id=171 data-nosnippet>171</a>            out += <span class="string">"\"dep:"</span>;
-<a href=#172 id=172 data-nosnippet>172</a>            out += <span class="kw-2">&amp;</span>lang.parser.package;
-<a href=#173 id=173 data-nosnippet>173</a>            out += <span class="string">"\""</span>;
-<a href=#174 id=174 data-nosnippet>174</a>        }
-<a href=#175 id=175 data-nosnippet>175</a>        out += <span class="string">"]\n"</span>;
-<a href=#176 id=176 data-nosnippet>176</a>    }
-<a href=#177 id=177 data-nosnippet>177</a>    out
-<a href=#178 id=178 data-nosnippet>178</a>}
-<a href=#179 id=179 data-nosnippet>179</a>
-<a href=#180 id=180 data-nosnippet>180</a><span class="kw">fn </span>parsers_toml_deps(toml: <span class="kw-2">&amp;mut </span>String, git: bool) {
-<a href=#181 id=181 data-nosnippet>181</a>    <span class="kw">let </span><span class="kw-2">mut </span>added_packages = <span class="macro">vec!</span>[];
-<a href=#182 id=182 data-nosnippet>182</a>    <span class="kw">for </span>lang <span class="kw">in </span><span class="kw">crate</span>::LANGUAGE_CONFIG.languages.iter().filter(|lang| {
-<a href=#183 id=183 data-nosnippet>183</a>        lang.parser.rust_const.is_some()
-<a href=#184 id=184 data-nosnippet>184</a>            &amp;&amp; ((git &amp;&amp; !lang.parser.generate) || (!git &amp;&amp; lang.parser.crates_io.is_some()))
-<a href=#185 id=185 data-nosnippet>185</a>    }) {
+<a href=#167 id=167 data-nosnippet>167</a>        <span class="kw">if </span>collection != ParserCollection::Git
+<a href=#168 id=168 data-nosnippet>168</a>            &amp;&amp; lang.parser.supports(collection == ParserCollection::GitDep)
+<a href=#169 id=169 data-nosnippet>169</a>        {
+<a href=#170 id=170 data-nosnippet>170</a>            out += <span class="string">"\"dep:"</span>;
+<a href=#171 id=171 data-nosnippet>171</a>            out += <span class="kw-2">&amp;</span>lang.parser.package;
+<a href=#172 id=172 data-nosnippet>172</a>            out += <span class="string">"\""</span>;
+<a href=#173 id=173 data-nosnippet>173</a>        }
+<a href=#174 id=174 data-nosnippet>174</a>        out += <span class="string">"]\n"</span>;
+<a href=#175 id=175 data-nosnippet>175</a>    }
+<a href=#176 id=176 data-nosnippet>176</a>    out
+<a href=#177 id=177 data-nosnippet>177</a>}
+<a href=#178 id=178 data-nosnippet>178</a>
+<a href=#179 id=179 data-nosnippet>179</a><span class="kw">fn </span>parsers_toml_deps(toml: <span class="kw-2">&amp;mut </span>String, git: bool) {
+<a href=#180 id=180 data-nosnippet>180</a>    <span class="kw">let </span><span class="kw-2">mut </span>added_packages = <span class="macro">vec!</span>[];
+<a href=#181 id=181 data-nosnippet>181</a>    <span class="kw">for </span>lang <span class="kw">in </span><span class="kw">crate</span>::LANGUAGE_CONFIG
+<a href=#182 id=182 data-nosnippet>182</a>        .languages
+<a href=#183 id=183 data-nosnippet>183</a>        .iter()
+<a href=#184 id=184 data-nosnippet>184</a>        .filter(|lang| lang.parser.supports(git))
+<a href=#185 id=185 data-nosnippet>185</a>    {
 <a href=#186 id=186 data-nosnippet>186</a>        <span class="kw">let </span>package = <span class="kw-2">&amp;</span>lang.parser.package;
 <a href=#187 id=187 data-nosnippet>187</a>        <span class="kw">let </span>url = <span class="kw-2">&amp;</span>lang.parser.git.url;
 <a href=#188 id=188 data-nosnippet>188</a>        <span class="kw">let </span>rev = <span class="kw-2">&amp;</span>lang.parser.git.rev;
