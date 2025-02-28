@@ -1,0 +1,22 @@
+[package]
+name = "syntastica-macros"
+version.workspace = true
+authors.workspace = true
+documentation = "https://rubixdev.github.io/syntastica/syntastica_macros/"
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Macros for internal use in syntastica"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+heck = "0.5.0"
+once_cell.workspace = true
+proc-macro2 = "1.0.93"
+quote = "1.0.38"
+quote-use = "0.8.4"
+serde = { workspace = true, features = ["derive"] }
+tft = { workspace = true, features = ["serde"] }
+toml.workspace = true
