@@ -548,6 +548,22 @@ injections = true
 locals = false
 
 [[languages]]
+name = "nix"
+group = "most"
+file-types = ["nix"]
+[languages.parser]
+git = { url = "https://github.com/nix-community/tree-sitter-nix", rev = "48057cf966641e7a49b09700550751195c34bcb5" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_nix"
+rust-const = "LANGUAGE"
+package = "tree-sitter-nix"
+crates-io = "0.0.2"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+[[languages]]
 name = "ocaml"
 group = "all"
 file-types = ["ocaml"]

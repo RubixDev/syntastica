@@ -88,6 +88,7 @@ most = [
     "jsonc",
     "markdown",
     "markdown_inline",
+    "nix",
     "php",
     "printf",
     "regex",
@@ -169,6 +170,7 @@ llvm = []
 lua = []
 markdown = []
 markdown_inline = []
+nix = []
 ocaml = []
 ocaml_interface = []
 php = []

@@ -193,6 +193,7 @@ export const LANGUAGES = [
     'lua',
     'markdown',
     'markdown_inline',
+    'nix',
     'ocaml',
     'ocaml_interface',
     'php',

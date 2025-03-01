@@ -22,6 +22,8 @@ pub fn validate_query(lang: &Language, query: &str, kind: &str) {
                     "not-has-ancestor?",
                     "has-parent?",
                     "not-has-parent?",
+                    // TODO: support gsub predicates
+                    "gsub!",
                 ]
                 .contains(&predicate_name)
                 {

@@ -240,6 +240,13 @@ pub const MARKDOWN_INLINE_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generate
 pub const MARKDOWN_INLINE_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/markdown_inline/injections_crates_io.scm");
 pub const MARKDOWN_INLINE_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/markdown_inline/locals_crates_io.scm");
 
+pub const NIX_HIGHLIGHTS: &str = include_str!("../generated_queries/nix/highlights.scm");
+pub const NIX_INJECTIONS: &str = include_str!("../generated_queries/nix/injections.scm");
+pub const NIX_LOCALS: &str = include_str!("../generated_queries/nix/locals.scm");
+pub const NIX_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_queries/nix/highlights_crates_io.scm");
+pub const NIX_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/nix/injections_crates_io.scm");
+pub const NIX_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/nix/locals_crates_io.scm");
+
 pub const OCAML_HIGHLIGHTS: &str = include_str!("../generated_queries/ocaml/highlights.scm");
 pub const OCAML_INJECTIONS: &str = include_str!("../generated_queries/ocaml/injections.scm");
 pub const OCAML_LOCALS: &str = include_str!("../generated_queries/ocaml/locals.scm");

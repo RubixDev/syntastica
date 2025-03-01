@@ -53,6 +53,7 @@ for more information on all parser collections.
 - [jsonc](https://gitlab.com/WhyNotHugo/tree-sitter-jsonc/tree/02b01653c8a1c198ae7287d566efa86a135b30d5) (not supported by this collection)
 - [markdown](https://github.com/MDeiml/tree-sitter-markdown/tree/192407ab5a24bfc24f13332979b5e7967518754a)
 - [markdown_inline](https://github.com/MDeiml/tree-sitter-markdown/tree/192407ab5a24bfc24f13332979b5e7967518754a)
+- [nix](https://github.com/nix-community/tree-sitter-nix/tree/48057cf966641e7a49b09700550751195c34bcb5)
 - [php](https://github.com/tree-sitter/tree-sitter-php/tree/f7cf7348737d8cff1b13407a0bfedce02ee7b046)
 - [printf](https://github.com/ObserverOfTime/tree-sitter-printf/tree/df6b69967db7d74ab338a86a9ab45c0966c5ee3c)
 - [regex](https://github.com/tree-sitter/tree-sitter-regex/tree/b638d29335ef41215b86732dd51be34c701ef683)

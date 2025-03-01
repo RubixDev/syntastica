@@ -80,6 +80,7 @@ most = [
     "jsonc",
     "markdown",
     "markdown_inline",
+    "nix",
     "php",
     "printf",
     "regex",
@@ -152,6 +153,7 @@ llvm = []
 lua = ["dep:tree-sitter-lua"]
 markdown = ["dep:tree-sitter-md"]
 markdown_inline = ["dep:tree-sitter-md"]
+nix = ["dep:tree-sitter-nix"]
 ocaml = ["dep:tree-sitter-ocaml"]
 ocaml_interface = ["dep:tree-sitter-ocaml"]
 php = ["dep:tree-sitter-php"]
@@ -250,6 +252,10 @@ version = "=0.2.0"
 [dependencies.tree-sitter-md]
 optional = true
 version = "=0.3.2"
+
+[dependencies.tree-sitter-nix]
+optional = true
+version = "=0.0.2"
 
 [dependencies.tree-sitter-ocaml]
 optional = true

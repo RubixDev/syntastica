@@ -53,6 +53,7 @@ for more information on all parser collections.
 - [jsonc](https://gitlab.com/WhyNotHugo/tree-sitter-jsonc) (not supported by this collection)
 - [markdown](https://docs.rs/tree-sitter-md/0.3.2/)
 - [markdown_inline](https://docs.rs/tree-sitter-md/0.3.2/)
+- [nix](https://docs.rs/tree-sitter-nix/0.0.2/)
 - [php](https://docs.rs/tree-sitter-php/0.23.11/)
 - [printf](https://docs.rs/tree-sitter-printf/0.5.0/)
 - [regex](https://docs.rs/tree-sitter-regex/0.24.3/)
