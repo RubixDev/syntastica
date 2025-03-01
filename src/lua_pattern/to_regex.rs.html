@@ -127,7 +127,7 @@
 <a href=#127 id=127 data-nosnippet>127</a>        Class::Digits =&gt; <span class="string">r"[0-9]"</span>,
 <a href=#128 id=128 data-nosnippet>128</a>        Class::Printable =&gt; <span class="string">r"[\33-\126]"</span>,
 <a href=#129 id=129 data-nosnippet>129</a>        Class::Lowercase =&gt; <span class="string">r"[a-z]"</span>,
-<a href=#130 id=130 data-nosnippet>130</a>        Class::Punctuations =&gt; <span class="string">r##"[!"#$%&amp;'()*+,\-./:;&lt;=&gt;?@[\\\]^_`{|}~]"##</span>,
+<a href=#130 id=130 data-nosnippet>130</a>        Class::Punctuations =&gt; <span class="string">r##"[!"#$%&amp;'()*+,\-./:;&lt;=&gt;?@\[\\\]^_`{|}~]"##</span>,
 <a href=#131 id=131 data-nosnippet>131</a>        Class::Spaces =&gt; <span class="string">r"[ \t\n\v\f\r]"</span>,
 <a href=#132 id=132 data-nosnippet>132</a>        Class::Uppercase =&gt; <span class="string">r"[A-Z]"</span>,
 <a href=#133 id=133 data-nosnippet>133</a>        Class::Alphanumerics =&gt; <span class="string">r"[a-zA-Z0-9]"</span>,
@@ -255,6 +255,6 @@
 <a href=#255 id=255 data-nosnippet>255</a>            PatternObject::End,
 <a href=#256 id=256 data-nosnippet>256</a>        ];
 <a href=#257 id=257 data-nosnippet>257</a>
-<a href=#258 id=258 data-nosnippet>258</a>        <span class="macro">assert_eq!</span>(try_to_regex(<span class="kw-2">&amp;</span>input, <span class="bool-val">true</span>, <span class="bool-val">true</span>), <span class="prelude-val">Ok</span>(<span class="string">r##"^\^charsq+w*?e*r?[\s\S]\.([a-zA-Z][\0-\31][0-9][\33-\126][a-z][!"#$%&amp;'()*+,\-./:;&lt;=&gt;?@[\\\]^_`{|}~][ \t\n\v\f\r][A-Z][a-zA-Z0-9][0-9a-fA-F]\0[^a-zA-Z])[asd][^not](?&lt;=[not])(?![not])\1[\]a-z]\$$"##</span>.to_owned()));
+<a href=#258 id=258 data-nosnippet>258</a>        <span class="macro">assert_eq!</span>(try_to_regex(<span class="kw-2">&amp;</span>input, <span class="bool-val">true</span>, <span class="bool-val">true</span>), <span class="prelude-val">Ok</span>(<span class="string">r##"^\^charsq+w*?e*r?[\s\S]\.([a-zA-Z][\0-\31][0-9][\33-\126][a-z][!"#$%&amp;'()*+,\-./:;&lt;=&gt;?@\[\\\]^_`{|}~][ \t\n\v\f\r][A-Z][a-zA-Z0-9][0-9a-fA-F]\0[^a-zA-Z])[asd][^not](?&lt;=[not])(?![not])\1[\]a-z]\$$"##</span>.to_owned()));
 <a href=#259 id=259 data-nosnippet>259</a>    }
 <a href=#260 id=260 data-nosnippet>260</a>}</code></pre></div></section></main></body></html>
