@@ -1369,3 +1369,56 @@ nix = '''
   uri = https://github.com;
 }
 '''
+
+make = '''
+ifeq ($(OS),Windows_NT)
+$(error Windows is not supported)
+endif
+
+LANGUAGE_NAME := tree-sitter-rush
+HOMEPAGE_URL := https://github.com/rush-rs/tree-sitter-rush
+VERSION := 0.2.0
+
+# repository
+SRC_DIR := src
+
+TS ?= tree-sitter
+
+# install directory layout
+PREFIX ?= /usr/local
+DATADIR ?= $(PREFIX)/share
+INCLUDEDIR ?= $(PREFIX)/include
+LIBDIR ?= $(PREFIX)/lib
+PCLIBDIR ?= $(LIBDIR)/pkgconfig
+
+# OS-specific bits
+ifeq ($(shell uname),Darwin)
+	SOEXT = dylib
+	SOEXTVER_MAJOR = $(SONAME_MAJOR).$(SOEXT)
+	SOEXTVER = $(SONAME_MAJOR).$(SONAME_MINOR).$(SOEXT)
+	LINKSHARED = -dynamiclib -Wl,-install_name,$(LIBDIR)/lib$(LANGUAGE_NAME).$(SOEXTVER),-rpath,@executable_path/../Frameworks
+else
+	SOEXT = so
+	SOEXTVER_MAJOR = $(SOEXT).$(SONAME_MAJOR)
+	SOEXTVER = $(SOEXT).$(SONAME_MAJOR).$(SONAME_MINOR)
+	LINKSHARED = -shared -Wl,-soname,lib$(LANGUAGE_NAME).$(SOEXTVER)
+endif
+ifneq ($(filter $(shell uname),FreeBSD NetBSD DragonFly),)
+	PCLIBDIR := $(PREFIX)/libdata/pkgconfig
+endif
+
+all: lib$(LANGUAGE_NAME).a lib$(LANGUAGE_NAME).$(SOEXT) $(LANGUAGE_NAME).pc
+
+$(LANGUAGE_NAME).pc: bindings/c/$(LANGUAGE_NAME).pc.in
+	sed -e 's|@PROJECT_VERSION@|$(VERSION)|' \
+		-e 's|@CMAKE_INSTALL_LIBDIR@|$(LIBDIR:$(PREFIX)/%=%)|' \
+		-e 's|@CMAKE_INSTALL_INCLUDEDIR@|$(INCLUDEDIR:$(PREFIX)/%=%)|' \
+		-e 's|@PROJECT_DESCRIPTION@|$(DESCRIPTION)|' \
+		-e 's|@PROJECT_HOMEPAGE_URL@|$(HOMEPAGE_URL)|' \
+		-e 's|@CMAKE_INSTALL_PREFIX@|$(PREFIX)|' $< > $@
+
+$(PARSER): $(SRC_DIR)/grammar.json
+	$(TS) generate $^
+
+.PHONY: all install uninstall clean test
+'''

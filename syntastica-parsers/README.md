@@ -51,6 +51,7 @@ for more information on all parser collections.
 - [jsdoc](https://docs.rs/tree-sitter-jsdoc/0.23.2/)
 - [json5](https://github.com/Joakker/tree-sitter-json5) (not supported by this collection)
 - [jsonc](https://gitlab.com/WhyNotHugo/tree-sitter-jsonc) (not supported by this collection)
+- [make](https://docs.rs/tree-sitter-make/1.1.1/)
 - [markdown](https://docs.rs/tree-sitter-md/0.3.2/)
 - [markdown_inline](https://docs.rs/tree-sitter-md/0.3.2/)
 - [nix](https://docs.rs/tree-sitter-nix/0.0.2/)

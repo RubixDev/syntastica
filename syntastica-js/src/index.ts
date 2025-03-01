@@ -191,6 +191,7 @@ export const LANGUAGES = [
     'latex',
     'llvm',
     'lua',
+    'make',
     'markdown',
     'markdown_inline',
     'nix',

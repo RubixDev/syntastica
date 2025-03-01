@@ -81,6 +81,7 @@ most = [
     "jsdoc",
     "json5",
     "jsonc",
+    "make",
     "markdown",
     "markdown_inline",
     "nix",
@@ -154,6 +155,7 @@ lalrpop = []
 latex = []
 llvm = []
 lua = ["dep:tree-sitter-lua"]
+make = ["dep:tree-sitter-make"]
 markdown = ["dep:tree-sitter-md"]
 markdown_inline = ["dep:tree-sitter-md"]
 nix = ["dep:tree-sitter-nix"]
@@ -279,6 +281,11 @@ rev = "c4ddea359a7ff4d92360b2efcd6cfce5dc25afe6"
 optional = true
 git = "https://github.com/muniftanjim/tree-sitter-lua"
 rev = "68d29aa745b68ae22cbbdb5dcb68c20232521ff6"
+
+[dependencies.tree-sitter-make]
+optional = true
+git = "https://github.com/tree-sitter-grammars/tree-sitter-make"
+rev = "5e9e8f8ff3387b0edcaa90f46ddf3629f4cfeb1d"
 
 [dependencies.tree-sitter-md]
 optional = true

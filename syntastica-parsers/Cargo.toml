@@ -78,6 +78,7 @@ most = [
     "jsdoc",
     "json5",
     "jsonc",
+    "make",
     "markdown",
     "markdown_inline",
     "nix",
@@ -151,6 +152,7 @@ lalrpop = []
 latex = []
 llvm = []
 lua = ["dep:tree-sitter-lua"]
+make = ["dep:tree-sitter-make"]
 markdown = ["dep:tree-sitter-md"]
 markdown_inline = ["dep:tree-sitter-md"]
 nix = ["dep:tree-sitter-nix"]
@@ -248,6 +250,10 @@ version = "=0.23.1"
 [dependencies.tree-sitter-lua]
 optional = true
 version = "=0.2.0"
+
+[dependencies.tree-sitter-make]
+optional = true
+version = "=1.1.1"
 
 [dependencies.tree-sitter-md]
 optional = true

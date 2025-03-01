@@ -81,6 +81,7 @@ specifically, you don't have to worry about this.
 - [jsdoc](https://github.com/tree-sitter/tree-sitter-jsdoc/tree/a417db5dbdd869fccb6a8b75ec04459e1d4ccd2c)
 - [json5](https://github.com/Joakker/tree-sitter-json5/tree/ab0ba8229d639ec4f3fa5f674c9133477f4b77bd)
 - [jsonc](https://gitlab.com/WhyNotHugo/tree-sitter-jsonc/tree/02b01653c8a1c198ae7287d566efa86a135b30d5)
+- [make](https://github.com/tree-sitter-grammars/tree-sitter-make/tree/5e9e8f8ff3387b0edcaa90f46ddf3629f4cfeb1d)
 - [markdown](https://github.com/MDeiml/tree-sitter-markdown/tree/192407ab5a24bfc24f13332979b5e7967518754a)
 - [markdown_inline](https://github.com/MDeiml/tree-sitter-markdown/tree/192407ab5a24bfc24f13332979b5e7967518754a)
 - [nix](https://github.com/nix-community/tree-sitter-nix/tree/48057cf966641e7a49b09700550751195c34bcb5)

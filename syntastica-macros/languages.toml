@@ -516,6 +516,22 @@ injections = true
 locals = true
 
 [[languages]]
+name = "make"
+group = "most"
+file-types = ["make", "automake"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-make", rev = "5e9e8f8ff3387b0edcaa90f46ddf3629f4cfeb1d" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_make"
+rust-const = "LANGUAGE"
+package = "tree-sitter-make"
+crates-io = "1.1.1"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+[[languages]]
 name = "markdown"
 group = "most"
 file-types = ["markdown"]

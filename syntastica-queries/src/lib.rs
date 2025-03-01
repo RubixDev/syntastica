@@ -226,6 +226,13 @@ pub const LUA_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_queries/lu
 pub const LUA_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/lua/injections_crates_io.scm");
 pub const LUA_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/lua/locals_crates_io.scm");
 
+pub const MAKE_HIGHLIGHTS: &str = include_str!("../generated_queries/make/highlights.scm");
+pub const MAKE_INJECTIONS: &str = include_str!("../generated_queries/make/injections.scm");
+pub const MAKE_LOCALS: &str = include_str!("../generated_queries/make/locals.scm");
+pub const MAKE_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_queries/make/highlights_crates_io.scm");
+pub const MAKE_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/make/injections_crates_io.scm");
+pub const MAKE_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/make/locals_crates_io.scm");
+
 pub const MARKDOWN_HIGHLIGHTS: &str = include_str!("../generated_queries/markdown/highlights.scm");
 pub const MARKDOWN_INJECTIONS: &str = include_str!("../generated_queries/markdown/injections.scm");
 pub const MARKDOWN_LOCALS: &str = include_str!("../generated_queries/markdown/locals.scm");
