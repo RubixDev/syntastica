@@ -1367,6 +1367,7 @@ nix = '''
   assert_bool = bool: assert lib.isBool bool; bool;
   import = import ./overlays.nix { inherit pkgs; };
   uri = https://github.com;
+  test = /* rust */ "fn main() {}";
 }
 '''
 

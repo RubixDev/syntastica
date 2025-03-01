@@ -16,14 +16,14 @@ pub fn validate_query(lang: &Language, query: &str, kind: &str) {
                     "not-contains?",
                     "lua-match?",
                     "not-lua-match?",
+                    "gsub!",
+                    "replace!",
                     // TODO: check whether the following predicates are actually supported
                     "offset!",
                     "has-ancestor?",
                     "not-has-ancestor?",
                     "has-parent?",
                     "not-has-parent?",
-                    // TODO: support gsub predicates
-                    "gsub!",
                 ]
                 .contains(&predicate_name)
                 {

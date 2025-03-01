@@ -392,6 +392,26 @@ fn replace_predicates(tree: &mut OwnedSexpr) {
                     true => b"#not-match?".to_vec(),
                 });
                 match atom.as_slice() {
+                    b"#gsub!" => {
+                        list[0] = OwnedSexpr::Atom(b"#replace!".to_vec());
+                        list[2] = OwnedSexpr::String(
+                            lua_to_regex(std::str::from_utf8(list[2].unwrap_string_ref()).unwrap())
+                                .into_bytes(),
+                        );
+                        list[3] = OwnedSexpr::String(
+                            regex_replace_all!(
+                                r"%(\d)",
+                                &std::str::from_utf8(list[3].unwrap_string_ref())
+                                    .unwrap()
+                                    .replace("%%", "%")
+                                    .replace('$', "$$"),
+                                |_, i| format!("${{{i}}}")
+                            )
+                            .into_owned()
+                            .into_bytes(),
+                        );
+                        list.truncate(4);
+                    }
                     b"#lua-match?" | b"#not-lua-match?" => {
                         list[0] = match_predicate;
                         list[2] = OwnedSexpr::String(

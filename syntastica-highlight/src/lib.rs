@@ -32,6 +32,8 @@ use tree_sitter as ts_runtime;
 ))]
 use tree_sitter_c2rust as ts_runtime;
 
+use regex::Regex;
+use std::borrow::Cow;
 use std::marker::PhantomData;
 use std::mem::MaybeUninit;
 use std::sync::atomic::{AtomicUsize, Ordering};
@@ -40,7 +42,7 @@ use streaming_iterator::StreamingIterator as _;
 use thiserror::Error;
 use ts_runtime::{
     ffi, Language, Node, ParseOptions, Parser, Point, Query, QueryCapture, QueryCaptures,
-    QueryCursor, QueryError, QueryMatch, Range, TextProvider, Tree,
+    QueryCursor, QueryError, QueryMatch, QueryPredicateArg, Range, TextProvider, Tree,
 };
 
 const CANCELLATION_CHECK_INTERVAL: usize = 100;
@@ -541,7 +543,7 @@ impl<'a> HighlightIterLayer<'a> {
                     for (lang_name, content_nodes, included_children) in injections_by_pattern_index
                     {
                         if let (Some(lang_name), false) = (lang_name, content_nodes.is_empty()) {
-                            if let Some(next_config) = (injection_callback)(lang_name) {
+                            if let Some(next_config) = (injection_callback)(&lang_name) {
                                 let ranges = Self::intersect_ranges(
                                     &ranges,
                                     &content_nodes,
@@ -909,7 +911,7 @@ where
                     // in the stream of captures.
                     match_.remove();
 
-                    if let Some(config) = (self.injection_callback)(language_name) {
+                    if let Some(config) = (self.injection_callback)(&language_name) {
                         let ranges = HighlightIterLayer::intersect_ranges(
                             &self.layers[0].ranges,
                             &[content_node],
@@ -1102,7 +1104,7 @@ fn injection_for_match<'a>(
     query: &'a Query,
     query_match: &QueryMatch<'a, 'a>,
     source: &'a [u8],
-) -> (Option<&'a str>, Option<Node<'a>>, IncludedChildren) {
+) -> (Option<Cow<'a, str>>, Option<Node<'a>>, IncludedChildren) {
     let content_capture_index = config.injection_content_capture_index;
     let language_capture_index = config.injection_language_capture_index;
 
@@ -1160,6 +1162,28 @@ fn injection_for_match<'a>(
             // (syntastica addition)
             "injection.include-unnamed-children" => included_children = IncludedChildren::Unnamed,
             _ => {}
+        }
+    }
+
+    // (syntastica addition)
+    let mut language_name = language_name.map(Cow::Borrowed);
+    if let Some(language) = &mut language_name {
+        for predicate in query.general_predicates(query_match.pattern_index) {
+            if predicate.operator == "replace!".into() {
+                let [QueryPredicateArg::Capture(capture), QueryPredicateArg::String(pattern), QueryPredicateArg::String(replacement)] =
+                    &*predicate.args
+                else {
+                    // TODO: maybe don't ignore errors
+                    continue;
+                };
+                if Some(*capture) != language_capture_index {
+                    continue;
+                }
+                let Ok(re) = Regex::new(pattern) else {
+                    continue;
+                };
+                *language = re.replace_all(language, &**replacement).into_owned().into();
+            }
         }
     }
 

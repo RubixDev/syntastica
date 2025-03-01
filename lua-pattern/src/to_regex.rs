@@ -127,7 +127,7 @@ fn from_class(class: &Class) -> &'static str {
         Class::Digits => r"[0-9]",
         Class::Printable => r"[\33-\126]",
         Class::Lowercase => r"[a-z]",
-        Class::Punctuations => r##"[!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]"##,
+        Class::Punctuations => r##"[!"#$%&'()*+,\-./:;<=>?@\[\\\]^_`{|}~]"##,
         Class::Spaces => r"[ \t\n\v\f\r]",
         Class::Uppercase => r"[A-Z]",
         Class::Alphanumerics => r"[a-zA-Z0-9]",
@@ -255,6 +255,6 @@ mod tests {
             PatternObject::End,
         ];
 
-        assert_eq!(try_to_regex(&input, true, true), Ok(r##"^\^charsq+w*?e*r?[\s\S]\.([a-zA-Z][\0-\31][0-9][\33-\126][a-z][!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~][ \t\n\v\f\r][A-Z][a-zA-Z0-9][0-9a-fA-F]\0[^a-zA-Z])[asd][^not](?<=[not])(?![not])\1[\]a-z]\$$"##.to_owned()));
+        assert_eq!(try_to_regex(&input, true, true), Ok(r##"^\^charsq+w*?e*r?[\s\S]\.([a-zA-Z][\0-\31][0-9][\33-\126][a-z][!"#$%&'()*+,\-./:;<=>?@\[\\\]^_`{|}~][ \t\n\v\f\r][A-Z][a-zA-Z0-9][0-9a-fA-F]\0[^a-zA-Z])[asd][^not](?<=[not])(?![not])\1[\]a-z]\$$"##.to_owned()));
     }
 }
