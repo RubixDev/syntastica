@@ -29,7 +29,7 @@ syntastica-macros.workspace = true
 
 cc.workspace = true
 rustc_version = { workspace = true, optional = true }
-tree-sitter-generate = "0.25.1"
+tree-sitter-generate.workspace = true
 
 [package.metadata.docs.rs]
 all-features = true

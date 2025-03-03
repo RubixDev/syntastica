@@ -15,6 +15,7 @@ members = [
     "./syntastica-themes",
     "./syntastica-highlight",
     "./syntastica-js",
+    "./syntastica-js/langs/*",
 ]
 
 package.version = "0.5.0"
@@ -45,6 +46,7 @@ syntastica-themes = { version = "0.5.0", path = "./syntastica-themes" }
 
 tree-sitter = "0.25.2"
 tree-sitter-c2rust = "0.25.2"
+tree-sitter-generate = "0.25.1"
 
 cc = "1.2.12"
 document-features = "0.2.10"

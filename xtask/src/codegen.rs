@@ -5,6 +5,7 @@ use anyhow::Result;
 use crate::schema::Group;
 
 mod js_lists;
+mod js_pkgs;
 mod parser_lists;
 mod parsers_dep;
 mod parsers_git;
@@ -124,8 +125,12 @@ pub const {lang}_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/{na
         parser_lists::write()?;
     }
 
-    if is_arg("js-lists") {
+    if is_arg("js-list") {
         js_lists::write()?;
+    }
+
+    if is_arg("js-pkgs") {
+        js_pkgs::write()?;
     }
 
     if is_arg("theme-list") {

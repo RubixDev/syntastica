@@ -9,6 +9,7 @@ repository.workspace = true
 description = "Use syntastica from JavaScript"
 
 [dependencies]
+serde_json = "1.0.140"
 syntastica.workspace = true
-syntastica-parsers-git = { workspace = true, features = ["all"] }
+syntastica-macros = { workspace = true, features = ["js"] }
 syntastica-themes.workspace = true

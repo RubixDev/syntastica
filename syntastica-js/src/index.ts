@@ -8,47 +8,72 @@ const PTR_SIZE = Float32Array.BYTES_PER_ELEMENT
 export type Theme = typeof THEMES[number]
 
 /**
- * A language name to pass to {@link init}, {@link highlight}, or {@link process}.
+ * Source code with theme-independent style information attached.
+ *
+ * See {@link https://rubixdev.github.io/syntastica/syntastica/type.Highlights.html | the Rust definition}
+ * for more information.
  */
-export type Language = typeof LANGUAGES[number]
+export type Highlights = [string, string | null][][]
 
 let Module: SyntasticaModule = null as unknown as SyntasticaModule
 
 /**
- * Load the requested languages.
+ * Initialize the Wasm module.
  *
- * This function _must_ be called before any of the others. It accepts a list of languages to load. The function can
- * be called multiple times to re-initialize with a different set of languages, but this is generally not recommended.
- *
- * @param languages - An optional list of languages to load. By default, all languages will be loaded.
- * See [here](https://rubixdev.github.io/syntastica/syntastica_parsers_git/) for a list of supported languages.
+ * This function _must_ be called before any of the others
  */
-export async function init(languages?: Language[]) {
+export async function init() {
     if (Module === null) {
         Module = await initModule()
     }
+}
 
-    if (languages === undefined) {
-        Module._init(0, 0)
+function checkModule() {
+    if (Module === null) throw new Error('syntastica module is not initialized, call `init` first')
+}
+
+/**
+ * Load a language from a WebAssembly module.
+ * The module can be provided as a path to a file or as a buffer.
+ */
+export async function loadLanguage(input: string | Uint8Array): Promise<void> {
+    checkModule()
+    let bytes: Promise<Uint8Array>
+    if (input instanceof Uint8Array) {
+        bytes = Promise.resolve(input)
     } else {
-        // allocate an array
-        const list_len = languages.length
-        const list_ptr = Module._malloc(list_len * PTR_SIZE)
-
-        // store pointers to the string in the array
-        for (let i = 0; i < list_len; i++) {
-            Module.setValue(list_ptr + i * PTR_SIZE, Module.stringToNewUTF8(languages[i]), '*')
+        // @ts-expect-error
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        if (globalThis.process?.versions.node) {
+            // @ts-expect-error
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-require-imports
+            const fs: typeof import('fs/promises') = await import('fs/promises')
+            bytes = fs.readFile(input)
+        } else {
+            bytes = fetch(input)
+                .then(response =>
+                    response.arrayBuffer()
+                        .then(buffer => {
+                            if (response.ok) {
+                                return new Uint8Array(buffer)
+                            } else {
+                                const body = new TextDecoder('utf-8').decode(buffer)
+                                throw new Error(`Language.load failed with status ${response.status}.\n\n${body}`)
+                            }
+                        })
+                )
         }
-
-        // call `init`
-        Module._init(list_ptr, list_len)
-
-        // free everything
-        for (let i = 0; i < list_len; i++) {
-            Module._free(Module.getValue(list_ptr + i * PTR_SIZE, '*'))
-        }
-        Module._free(list_ptr)
     }
+
+    const mod = await Module.loadWebAssemblyModule(await bytes, { loadAsync: true })
+    const symbolNames = Object.keys(mod)
+    const langFuncName = symbolNames.find(key => key.startsWith('syntastica_lang_'))
+    if (!langFuncName) {
+        console.log(`Couldn't find language function in WASM file. Symbols:\n${JSON.stringify(symbolNames, null, 2)}`)
+        throw new Error('loadLanguage failed: no language function found in WASM file')
+    }
+    const langInfoPtr = mod[langFuncName]()
+    Module._add_language(langInfoPtr)
 }
 
 /**
@@ -60,7 +85,7 @@ export async function init(languages?: Language[]) {
  *
  * @param language - The name of the code's language.
  *
- * The language must have been loaded previously by calling {@link init}.
+ * The language must have been loaded previously by calling {@link loadLanguage}.
  *
  * @param theme - The name of the theme to use.
  *
@@ -77,23 +102,38 @@ export async function init(languages?: Language[]) {
  *
  * @returns The highlighted code as HTML code.
  *
- * See {@link https://rubixdev.github.io/syntastica-ci-test/syntastica/renderer/struct.HtmlRenderer.html | here} for
+ * See {@link https://rubixdev.github.io/syntastica/syntastica/renderer/struct.HtmlRenderer.html | here} for
  * more information on the output.
  */
-export function highlight(code: string, language: Language, theme: Theme, renderer: string = 'HTML'): string {
-    const code_ptr = Module.stringToNewUTF8(code)
-    const language_ptr = Module.stringToNewUTF8(language)
-    const theme_ptr = Module.stringToNewUTF8(theme)
-    const renderer_ptr = Module.stringToNewUTF8(renderer)
+export function highlight(code: string, language: string, theme: Theme, renderer: string = 'HTML'): string {
+    checkModule()
+    const errmsgPtr = Module._malloc(PTR_SIZE)
+    const codePtr = Module.stringToNewUTF8(code)
+    const languagePtr = Module.stringToNewUTF8(language)
+    const themePtr = Module.stringToNewUTF8(theme)
+    const rendererPtr = Module.stringToNewUTF8(renderer)
 
-    const result_ptr = Module._highlight(code_ptr, language_ptr, theme_ptr, renderer_ptr)
-    const result = Module.UTF8ToString(result_ptr)
+    const resultPtr = Module._highlight(errmsgPtr, codePtr, languagePtr, themePtr, rendererPtr)
+    if (resultPtr === 0) {
+        const errPtr = Module.getValue(errmsgPtr, 'i8*')
+        const err = Module.UTF8ToString(errPtr)
+        Module._free(errPtr)
+        Module._free(errmsgPtr)
+        Module._free(codePtr)
+        Module._free(languagePtr)
+        Module._free(themePtr)
+        Module._free(rendererPtr)
+        Module._free(resultPtr)
+        throw new Error(err)
+    }
+    const result = Module.UTF8ToString(resultPtr)
 
-    Module._free(code_ptr)
-    Module._free(language_ptr)
-    Module._free(theme_ptr)
-    Module._free(renderer_ptr)
-    Module._free(result_ptr)
+    Module._free(errmsgPtr)
+    Module._free(codePtr)
+    Module._free(languagePtr)
+    Module._free(themePtr)
+    Module._free(rendererPtr)
+    Module._free(resultPtr)
 
     return result
 }
@@ -105,20 +145,40 @@ export function highlight(code: string, language: Language, theme: Theme, render
  *
  * @param language - The name of the code's language.
  *
- * The language must have been loaded previously by calling {@link init}.
+ * The language must have been loaded previously by calling {@link loadLanguage}.
+ *
+ * @returns Highlight information about the code to be used by {@link render}.
  */
-export function process(code: string, language: Language) {
-    const code_ptr = Module.stringToNewUTF8(code)
-    const language_ptr = Module.stringToNewUTF8(language)
+export function process(code: string, language: string): Highlights {
+    checkModule()
+    const errmsgPtr = Module._malloc(PTR_SIZE)
+    const codePtr = Module.stringToNewUTF8(code)
+    const languagePtr = Module.stringToNewUTF8(language)
 
-    Module._process(code_ptr, language_ptr)
+    const resultPtr = Module._process(errmsgPtr, codePtr, languagePtr)
+    if (resultPtr === 0) {
+        const errPtr = Module.getValue(errmsgPtr, 'i8*')
+        const err = Module.UTF8ToString(errPtr)
+        Module._free(errPtr)
+        Module._free(errmsgPtr)
+        Module._free(codePtr)
+        Module._free(languagePtr)
+        Module._free(resultPtr)
+        throw new Error(err)
+    }
+    const result: Highlights = JSON.parse(Module.UTF8ToString(resultPtr))
 
-    Module._free(code_ptr)
-    Module._free(language_ptr)
+    Module._free(errmsgPtr)
+    Module._free(codePtr)
+    Module._free(languagePtr)
+
+    return result
 }
 
 /**
  * Render code that was previously processed by calling {@link process}.
+ *
+ * @param highlights - The processed highlight information to render.
  *
  * @param theme - The name of the theme to use.
  *
@@ -135,90 +195,40 @@ export function process(code: string, language: Language) {
  *
  * @returns The highlighted code in the requested format.
  */
-export function render(theme: Theme, renderer: string = 'HTML'): string {
-    const theme_ptr = Module.stringToNewUTF8(theme)
-    const renderer_ptr = Module.stringToNewUTF8(renderer)
+export function render(highlights: Highlights, theme: Theme, renderer: string = 'HTML'): string {
+    checkModule()
+    const errmsgPtr = Module._malloc(PTR_SIZE)
+    const themePtr = Module.stringToNewUTF8(theme)
+    const rendererPtr = Module.stringToNewUTF8(renderer)
+    const highlightsPtr = Module.stringToNewUTF8(JSON.stringify(highlights))
 
-    const result_ptr = Module._render(theme_ptr, renderer_ptr)
-    const result = Module.UTF8ToString(result_ptr)
+    const resultPtr = Module._render(errmsgPtr, highlightsPtr, themePtr, rendererPtr)
+    if (resultPtr === 0) {
+        const errPtr = Module.getValue(errmsgPtr, 'i8*')
+        const err = Module.UTF8ToString(errPtr)
+        Module._free(errPtr)
+        Module._free(errmsgPtr)
+        Module._free(themePtr)
+        Module._free(rendererPtr)
+        Module._free(highlightsPtr)
+        Module._free(resultPtr)
+        throw new Error(err)
+    }
+    const result = Module.UTF8ToString(resultPtr)
 
-    Module._free(theme_ptr)
-    Module._free(renderer_ptr)
-    Module._free(result_ptr)
+    Module._free(errmsgPtr)
+    Module._free(themePtr)
+    Module._free(rendererPtr)
+    Module._free(highlightsPtr)
+    Module._free(resultPtr)
 
     return result
 }
 
-export default { init, highlight, process, render }
+export default { init, loadLanguage, highlight, process, render }
 
 // DISCLAIMER: All code below this line is generated with `cargo xtask codegen js-list`
 // in the syntastica workspace. Do not edit this code manually!
-/**
- * A list of all supported languages.
- *
- * @see The {@link Language} type.
- */
-export const LANGUAGES = [
-    'asm',
-    'bash',
-    'bibtex',
-    'c',
-    'c_sharp',
-    'comment',
-    'cpp',
-    'css',
-    'dart',
-    'diff',
-    'dockerfile',
-    'ebnf',
-    'ejs',
-    'elixir',
-    'erb',
-    'fish',
-    'go',
-    'haskell',
-    'hexdump',
-    'html',
-    'java',
-    'javascript',
-    'jsdoc',
-    'json',
-    'json5',
-    'jsonc',
-    'julia',
-    'kotlin',
-    'lalrpop',
-    'latex',
-    'llvm',
-    'lua',
-    'make',
-    'markdown',
-    'markdown_inline',
-    'nix',
-    'ocaml',
-    'ocaml_interface',
-    'php',
-    'printf',
-    'python',
-    'ql',
-    'regex',
-    'ruby',
-    'rush',
-    'rust',
-    'scala',
-    'scss',
-    'sql',
-    'toml',
-    'tsx',
-    'typescript',
-    'typst',
-    'ursa',
-    'verilog',
-    'wat',
-    'yaml',
-    'zig',
-] as const
-
 /**
  * A list of all valid themes.
  *

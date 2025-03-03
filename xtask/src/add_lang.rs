@@ -10,6 +10,8 @@ use anyhow::{anyhow, Context, Result};
 use crates_io_api::SyncClient;
 use fancy_regex::Regex;
 use once_cell::sync::Lazy;
+use semver::{Version, VersionReq};
+use toml::Table;
 
 pub fn run() -> Result<()> {
     let group = env::args()
@@ -223,6 +225,22 @@ static CRATES_IO_CLIENT: Lazy<SyncClient> = Lazy::new(|| {
     .unwrap()
 });
 
+static TREE_SITTER_VERSION: Lazy<Version> = Lazy::new(|| {
+    Version::parse(
+        toml::from_str::<Table>(
+            &fs::read_to_string(crate::WORKSPACE_DIR.join("Cargo.toml")).unwrap(),
+        )
+        .unwrap()["workspace"]["dependencies"]
+            .get("tree-sitter")
+            .map(|ts_dep| match ts_dep.as_str() {
+                Some(str) => str,
+                None => ts_dep["version"].as_str().unwrap(),
+            })
+            .unwrap(),
+    )
+    .unwrap()
+});
+
 pub fn try_get_crates_io_version(package: &str) -> Option<String> {
     match CRATES_IO_CLIENT.get_crate(package) {
         Ok(info) if is_compatible_tree_sitter(package, &info.versions.first()?.num) => {
@@ -234,9 +252,12 @@ pub fn try_get_crates_io_version(package: &str) -> Option<String> {
 
 fn is_compatible_tree_sitter(package: &str, version: &str) -> bool {
     match CRATES_IO_CLIENT.crate_dependencies(package, version) {
-        Ok(deps) => deps
-            .into_iter()
-            .any(|dep| dep.crate_id == "tree-sitter-language"),
+        Ok(deps) => deps.into_iter().any(|dep| {
+            dep.crate_id == "tree-sitter-language"
+                || (dep.crate_id == "tree-sitter"
+                    && VersionReq::parse(&dep.req)
+                        .map_or(false, |req| req.matches(&TREE_SITTER_VERSION)))
+        }),
         Err(_) => false,
     }
 }

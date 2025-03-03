@@ -11,6 +11,10 @@ description = "Macros for internal use in syntastica"
 [lib]
 proc-macro = true
 
+[features]
+default = []
+js = ["dep:syn"]
+
 [dependencies]
 heck = "0.5.0"
 once_cell.workspace = true
@@ -18,5 +22,6 @@ proc-macro2 = "1.0.93"
 quote = "1.0.38"
 quote-use = "0.8.4"
 serde = { workspace = true, features = ["derive"] }
+syn = { version = "2.0.98", optional = true }
 tft = { workspace = true, features = ["serde"] }
 toml.workspace = true

@@ -6,11 +6,11 @@ const HEADER: &str = r##"
 // DISCLAIMER: All code below this line is generated with `cargo xtask codegen js-list`
 // in the syntastica workspace. Do not edit this code manually!
 /**
- * A list of all supported languages.
+ * A list of all valid themes.
  *
- * @see The {@link Language} type.
+ * @see The {@link Theme} type.
  */
-export const LANGUAGES = [
+export const THEMES = [
 "##;
 
 pub fn write() -> Result<()> {
@@ -22,22 +22,6 @@ pub fn write() -> Result<()> {
     }
     ts += HEADER;
 
-    for lang in &crate::LANGUAGE_CONFIG.languages {
-        ts += "    '";
-        ts += &lang.name;
-        ts += "',\n";
-    }
-
-    ts += &r#"
-] as const
-
-/**
- * A list of all valid themes.
- *
- * @see The {@link Theme} type.
- */
-export const THEMES = [
-"#[1..];
     for theme in super::theme_list::find_all_themes()? {
         ts += "    '";
         ts += &theme;

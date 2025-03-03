@@ -350,19 +350,6 @@ fn parsers(
         const QUERIES: &[[&str; 3]] = &[#(#queries),*];
         const FUNCS: &[fn() -> Language] = &[#(#funcs),*];
 
-        fn __get_language(idx: usize) -> Result<HighlightConfiguration> {
-            let lang = FUNCS[idx]();
-            let mut conf = HighlightConfiguration::new(
-                lang,
-                LANGUAGE_NAMES[idx],
-                QUERIES[idx][0],
-                QUERIES[idx][1],
-                QUERIES[idx][2],
-            )?;
-            conf.configure(THEME_KEYS);
-            Ok(conf)
-        }
-
         /// An enum of every supported language in the current feature set.
         ///
         /// An instance of the respective tree-stter
@@ -437,6 +424,40 @@ fn parsers(
                     _ => unreachable!("all variants are matched")
                 }
             }
+
+            /// Create an instance of the corresponding
+            /// [`HighlightConfiguration`](::syntastica_core::language_set::HighlightConfiguration).
+            pub fn get_config(&self) -> Result<HighlightConfiguration> {
+                let idx = IDX_MAP[self];
+                let lang = FUNCS[idx]();
+                let mut conf = HighlightConfiguration::new(
+                    lang,
+                    LANGUAGE_NAMES[idx],
+                    QUERIES[idx][0],
+                    QUERIES[idx][1],
+                    QUERIES[idx][2],
+                )?;
+                conf.configure(THEME_KEYS);
+                Ok(conf)
+            }
+
+            /// Get the highlights query for this language.
+            pub fn highlights_query(&self) -> &'static str {
+                let idx = IDX_MAP[self];
+                QUERIES[idx][0]
+            }
+
+            /// Get the injections query for this language.
+            pub fn injections_query(&self) -> &'static str {
+                let idx = IDX_MAP[self];
+                QUERIES[idx][1]
+            }
+
+            /// Get the locals query for this language.
+            pub fn locals_query(&self) -> &'static str {
+                let idx = IDX_MAP[self];
+                QUERIES[idx][2]
+            }
         }
 
         impl<S> SupportedLanguage<'_, S> for Lang {
@@ -469,7 +490,7 @@ fn parsers(
 
             fn get_language(&self, language: Self::Language) -> Result<&HighlightConfiguration> {
                 let idx = IDX_MAP[&language];
-                self.0[idx].get_or_try_init(|| __get_language(idx))
+                self.0[idx].get_or_try_init(|| language.get_config())
             }
         }
 
@@ -489,7 +510,7 @@ fn parsers(
                     let idx = IDX_MAP[lang];
                     let entry = &self.0[idx];
                     if entry.get().is_none() {
-                        drop(entry.set(__get_language(idx)?));
+                        drop(entry.set(lang.get_config()?));
                     }
                 }
                 Ok(())
@@ -498,7 +519,7 @@ fn parsers(
             /// Pre-load all languages in this set.
             ///
             /// To pre-load a specific set of languages, use [`preload`](LanguageSetImpl::preload).
-            pub fn preload_all(&mut self) -> Result<()> {
+            pub fn preload_all(&self) -> Result<()> {
                 self.preload(LANGUAGES)
             }
         }
@@ -564,4 +585,109 @@ pub fn queries_test_crates_io(_: TokenStream) -> TokenStream {
         })
         .collect::<proc_macro2::TokenStream>()
         .into()
+}
+
+#[cfg(feature = "js")]
+#[proc_macro]
+pub fn js_lang_info(_: TokenStream) -> TokenStream {
+    quote_use! {
+        #use core::ffi::c_char;
+        /// Information about a loaded language.
+        #[repr(C)]
+        pub struct LangInfo {
+            name: *const c_char,
+            file_types: *const *const c_char,
+            file_types_len: usize,
+            language: Language,
+            highlights_query: *const c_char,
+            injections_query: *const c_char,
+            locals_query: *const c_char,
+        }
+    }
+    .into()
+}
+
+#[cfg(feature = "js")]
+#[proc_macro]
+pub fn js_lang_lib(input: TokenStream) -> TokenStream {
+    let lang_name = syn::parse_macro_input!(input as syn::LitStr).value();
+    let lang = LANGUAGE_CONFIG
+        .languages
+        .iter()
+        .find(|lang| lang.name == lang_name)
+        .unwrap_or_else(|| panic!("language '{lang_name}' is not defined"));
+
+    let func = format_ident!("syntastica_lang_{lang_name}");
+    let ffi_func = format_ident!("{}", &lang.parser.ffi_func);
+    let name = std::ffi::CString::new(lang_name.as_str()).unwrap();
+    let file_types = lang
+        .file_types
+        .iter()
+        .map(|ft| std::ffi::CString::new(ft.as_ref()).unwrap());
+    let highlights = format_ident!("{}_HIGHLIGHTS", lang_name.to_uppercase());
+    let injections = format_ident!("{}_INJECTIONS", lang_name.to_uppercase());
+    let locals = format_ident!("{}_LOCALS", lang_name.to_uppercase());
+
+    quote_use! {
+        #use core::ffi::{c_char, c_void};
+
+        extern "C" {
+            fn malloc(size: usize) -> *mut c_void;
+            fn memcpy(dest: *mut c_void, src: *const c_void, count: usize) -> *mut c_void;
+            fn #ffi_func() -> Language;
+        }
+
+        fn str_to_cstr(str: &'static str) -> *const c_char {
+            let ptr = unsafe { malloc(str.len() + 1) };
+            unsafe { memcpy(ptr, str.as_ptr() as *const _, str.len()) };
+            unsafe { (ptr as *mut c_char).add(str.len()).write(0) }
+            ptr as *const _
+        }
+
+        #[no_mangle]
+        pub fn #func() -> *mut LangInfo {
+            let ptr = unsafe { malloc(::core::mem::size_of::<LangInfo>()) } as *mut LangInfo;
+            const NAME: *const c_char = #name.as_ptr();
+            const FILE_TYPES: &[*const c_char] = &[#(#file_types.as_ptr()),*];
+            let info = LangInfo {
+                name: NAME,
+                file_types: FILE_TYPES.as_ptr(),
+                file_types_len: FILE_TYPES.len(),
+                language: unsafe { #ffi_func() },
+                highlights_query: str_to_cstr(::syntastica_queries::#highlights),
+                injections_query: str_to_cstr(::syntastica_queries::#injections),
+                locals_query: str_to_cstr(::syntastica_queries::#locals),
+            };
+            unsafe { ptr.write(info) };
+            ptr
+        }
+    }
+    .into()
+}
+
+#[cfg(feature = "js")]
+#[proc_macro]
+pub fn js_lang_build(input: TokenStream) -> TokenStream {
+    let lang_name = syn::parse_macro_input!(input as syn::LitStr).value();
+    let lang = LANGUAGE_CONFIG
+        .languages
+        .iter()
+        .find(|lang| lang.name == lang_name)
+        .unwrap_or_else(|| panic!("language '{lang_name}' is not defined"));
+
+    let url = &lang.parser.git.url;
+    let rev = &lang.parser.git.rev;
+    let external_c = lang.parser.external_scanner.c;
+    let external_cpp = lang.parser.external_scanner.cpp;
+    let path = match &lang.parser.git.path {
+        Some(path) => quote_use! { Some(#path) },
+        None => quote_use! { None },
+    };
+    let wasm = lang.wasm;
+    let wasm_unknown = lang.wasm_unknown;
+    let generate = lang.parser.generate;
+    quote! {
+        compile_parser(#lang_name, #url, #rev, #external_c, #external_cpp, #path, #wasm, #wasm_unknown, #generate)?;
+    }
+    .into()
 }

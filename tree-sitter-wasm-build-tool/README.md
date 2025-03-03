@@ -27,7 +27,7 @@ c_config.file(&parser_path);
 tree_sitter_wasm_build_tool::add_wasm_headers(&mut c_config).unwrap();
 
 c_config.compile("parser");
-println!("cargo:rerun-if-changed={}", parser_path.to_str().unwrap());
+println!("cargo::rerun-if-changed={}", parser_path.display());
 ```
 
 The only public function is [`add_wasm_headers`]. See its documentation for some
