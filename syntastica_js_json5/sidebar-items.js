@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["syntastica_lang_json5"],"struct":["LangInfo"]};

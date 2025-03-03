@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["syntastica_lang_ursa"],"struct":["LangInfo"]};

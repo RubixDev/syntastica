@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["syntastica_lang_fish"],"struct":["LangInfo"]};

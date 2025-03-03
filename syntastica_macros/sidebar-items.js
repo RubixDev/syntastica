@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"macro":["parsers_dep","parsers_ffi","parsers_git","parsers_gitdep","queries_test","queries_test_crates_io"]};
+window.SIDEBAR_ITEMS = {"macro":["js_lang_build","js_lang_info","js_lang_lib","parsers_dep","parsers_ffi","parsers_git","parsers_gitdep","queries_test","queries_test_crates_io"]};
