@@ -27,6 +27,8 @@ jobs:
 
       - name: Restore Cache
         uses: Swatinem/rust-cache@v2
+        with:
+          cache-on-failure: true
 
       - name: Run Codegen
         run: cargo xtask codegen
@@ -63,6 +65,8 @@ jobs:
 
       - name: Restore Cache
         uses: Swatinem/rust-cache@v2
+        with:
+          cache-on-failure: true
 
       - name: Run Codegen
         run: cargo xtask codegen
@@ -120,15 +124,18 @@ jobs:
 
       - name: Restore Cache
         uses: Swatinem/rust-cache@v2
-
-      - name: Create SVGs
-        run: cargo xtask codegen queries && cargo xtask theme-svgs
+        with:
+          cache-on-failure: true
 
       - name: Generate Code
         run: cargo xtask codegen
 
+      - name: Create SVGs
+        run: cargo xtask theme-svgs
+
       - name: Update Vite Example
         run: cargo xtask update-vite-example
+        continue-on-error: true
 
       - name: Commit changes
         uses: EndBug/add-and-commit@v9
@@ -138,6 +145,7 @@ jobs:
             syntastica-parsers-gitdep/Cargo.toml syntastica-parsers*/README.md
             syntastica-js/src/index.ts syntastica-themes/assets/theme-svgs
             syntastica-themes/theme_list.md examples/wasm/vite/package*.json
+            syntastica-js/langs
           committer_name: github-actions[bot]
           committer_email: 41898282+github-actions[bot]@users.noreply.github.com
           message: 'chore: run codegen'
