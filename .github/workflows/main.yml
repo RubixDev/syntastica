@@ -71,17 +71,22 @@ jobs:
         run: |
           bash _prepare_ci.sh
 
-      - name: Build
+      - name: Build Core Package
         run: |
           cd syntastica-js
           npm ci
           npm run build
 
+      - name: Build Language Packages
+        run: cargo xtask build-js-langs
+
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: syntastica-js
-          path: syntastica-js/pkg
+          path: |
+            syntastica-js/pkg
+            syntastica-js/langs/*/*.wasm
           retention-days: 5
 
   # run and commit auto-generated code
