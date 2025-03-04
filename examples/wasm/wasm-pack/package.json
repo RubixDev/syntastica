@@ -1,5 +1,5 @@
 {
-  "name": "wasm-pack-with-npm-pkg",
+  "name": "syntastica-wasm-pack",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,11 +9,8 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "tslib": "^2.5.0",
-    "typescript": "^5.0.2",
-    "vite": "^4.3.9"
-  },
-  "dependencies": {
-    "syntastica": "^0.3.6"
+    "tslib": "^2.8.1",
+    "typescript": "^5.8.2",
+    "vite": "^4.5.9"
   }
 }

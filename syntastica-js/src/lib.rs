@@ -44,6 +44,8 @@ static PROCESSOR: LazyLock<Mutex<Processor<'static, LangSet>>> =
 
 syntastica_macros::js_lang_info!();
 
+type _Highlights = Vec<Vec<(String, Option<String>)>>;
+
 struct Lang<'set>(&'static str, PhantomData<&'set ()>);
 
 #[derive(Default)]
@@ -217,22 +219,30 @@ pub unsafe fn render(
     theme: *const c_char,
     renderer: *const c_char,
 ) -> *const c_char {
-    let highlights = Box::leak(Box::new(unsafe { string_from_ptr(highlights) }));
-    let highlights_ptr = highlights as *mut _;
+    let highlights = unsafe { string_from_ptr(highlights) };
     let theme = unsafe { string_from_ptr(theme) };
     let renderer = unsafe { string_from_ptr(renderer) };
 
-    let highlights = match serde_json::from_str::<Highlights<'_>>(highlights) {
-        Ok(highlights) => highlights,
+    let highlights = match serde_json::from_str::<_Highlights>(&highlights) {
+        Ok(highlights) => Box::leak(Box::new(highlights)),
         Err(err) => bail!(errmsg, "highlights are invalid JSON: {err}"),
     };
+    let highlights_ptr = highlights as *mut _;
+    let highlights: Highlights<'_> = highlights
+        .iter()
+        .map(|line| {
+            line.iter()
+                .map(|(code, hl)| (code.as_str(), hl.as_ref().map(|hl| hl.as_str())))
+                .collect()
+        })
+        .collect();
 
     let Some(theme) = syntastica_themes::from_str(&theme) else {
         bail!(errmsg, "invalid theme '{theme}'");
     };
 
     let res = _render(errmsg, &highlights, &renderer, theme);
-    unsafe { drop(Box::from_raw(highlights_ptr)) };
+    drop(unsafe { Box::from_raw(highlights_ptr) });
     res
 }
 

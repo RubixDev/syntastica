@@ -1,4 +1,4 @@
-# `sytnastica` Dioxus Example
+# `syntastica` Dioxus Example
 
 This folder contains an example project showcasing use of `syntastica` with
 [`Dioxus`](https://dioxuslabs.com/).

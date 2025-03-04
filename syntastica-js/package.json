@@ -21,12 +21,14 @@
     "./pkg/syntastica_js.wasm"
   ],
   "module": "pkg/index.js",
+  "main": "pkg/index.js",
   "exports": {
     ".": {
       "import": "./pkg/index.js",
       "require": "./pkg/index.js",
       "types": "./pkg/index.d.ts"
-    }
+    },
+    "./wasm": "./pkg/syntastica_js.wasm"
   },
   "type": "module",
   "repository": {

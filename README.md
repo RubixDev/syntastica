@@ -231,9 +231,11 @@ collection has enough control over the parser build process to allow for Wasm
 support.
 
 To use this approach, simply set `default-features = false` and enable the
-`runtime-c2rust` feature for _all_ `syntastica` dependencies. An example using
-this approach for use of `syntastica` in a Dioxus project can be found
-[here](https://github.com/RubixDev/syntastica/tree/main/examples/wasm/dioxus).
+`runtime-c2rust` feature for _all_ `syntastica` dependencies. There are two
+example projects using this approach:
+
+- [Basic usage with wasm-bindgen and wasm-pack](https://github.com/RubixDev/syntastica/tree/main/examples/wasm/wasm-pack)
+- [Usage in a Dioxus application](https://github.com/RubixDev/syntastica/tree/main/examples/wasm/dioxus)
 
 Note that for extra safety, you should compile this with nightly Rust and the
 `-Zwasm_c_abi=spec` option set, as otherwise the `wasm32-unknown-unknown` target
@@ -250,27 +252,14 @@ which makes it very cumbersome to use Emscripten for Rust. In the attempt to
 make using `syntastica` on the web a bit easier, the
 [`syntastica-js` crate](https://github.com/RubixDev/syntastica/tree/main/syntastica-js)
 and accompanying
-[`syntastica` NPM package](https://www.npmjs.com/package/syntastica) provide a
-JavaScript/TypeScript wrapper around an Emscripten build of `syntastica`.
+[`@syntastica/core` NPM package](https://www.npmjs.com/package/@syntastica/core)
+provide a JavaScript/TypeScript wrapper around an Emscripten build of
+`syntastica`.
 
-There are three examples using `syntastica-js`:
+There are two example projects using `syntastica-js`:
 
 - [Usage from TypeScript in the browser with Vite and Svelte](https://github.com/RubixDev/syntastica/tree/main/examples/wasm/vite)
 - [Usage from JavaScript in NodeJS for console applications](https://github.com/RubixDev/syntastica/tree/main/examples/wasm/node)
-- [Usage from Rust in the browser using wasm-bindgen](https://github.com/RubixDev/syntastica/tree/main/examples/wasm/wasm-pack-with-npm-pkg)
-
-<div class="warning">
-
-> ⚠️ **Warning**
->
-> The `syntastica` NPM package is currently not being updated and uses an old
-> version of `syntastica`, because the current implementation always includes
-> all parsers in one big binary, which would be over 60 MB big with all
-> currently supported parsers. The eventual plan is to find a way to split the
-> package into multiple binaries that can be fetched from a server on-demand,
-> and to provide multiple NPM packages for manual selection of the parsers.
-
-</div>
 
 ## Examples
 

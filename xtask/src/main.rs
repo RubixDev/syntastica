@@ -16,6 +16,7 @@ mod fetch_queries;
 mod set_version;
 mod theme_svgs;
 mod update_langs;
+mod update_vite_example;
 
 mod schema {
     include!("../../syntastica-macros/src/schema.rs");
@@ -62,6 +63,7 @@ Usage: Run with `cargo xtask <task>`, eg. `cargo xtask codegen`.
         fetch-queries                         Fetch latest upstream versions of forked queries
         theme-svgs                            Create SVGs for all themes using Typst and the `custom_renderer` example
         build-js-langs                        Build all JS language packages in the generated `syntastica-js/langs` directory
+        update-vite-example                   Update the vite example project to include all languages
             "###
             .trim(),
         ),
@@ -72,6 +74,7 @@ Usage: Run with `cargo xtask <task>`, eg. `cargo xtask codegen`.
         "fetch-queries" => fetch_queries::run()?,
         "theme-svgs" => theme_svgs::run()?,
         "build-js-langs" => build_js_langs::run()?,
+        "update-vite-example" => update_vite_example::run()?,
         task => eprintln!(
             "unknown task '{task}', run `cargo xtask --help` to see a list of available tasks"
         ),

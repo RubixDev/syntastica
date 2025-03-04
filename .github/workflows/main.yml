@@ -105,6 +105,11 @@ jobs:
       - name: Install Toolchain
         uses: dtolnay/rust-toolchain@stable
 
+      - name: Setup NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 23
+
       - name: Install Jetbrains Mono
         run: sudo apt update && sudo apt install -y fonts-jetbrains-mono
 
@@ -122,6 +127,9 @@ jobs:
       - name: Generate Code
         run: cargo xtask codegen
 
+      - name: Update Vite Example
+        run: cargo xtask update-vite-example
+
       - name: Commit changes
         uses: EndBug/add-and-commit@v9
         with:
@@ -129,7 +137,7 @@ jobs:
             syntastica-queries/src/lib.rs syntastica-parsers/Cargo.toml
             syntastica-parsers-gitdep/Cargo.toml syntastica-parsers*/README.md
             syntastica-js/src/index.ts syntastica-themes/assets/theme-svgs
-            syntastica-themes/theme_list.md
+            syntastica-themes/theme_list.md examples/wasm/vite/package*.json
           committer_name: github-actions[bot]
           committer_email: 41898282+github-actions[bot]@users.noreply.github.com
           message: 'chore: run codegen'
@@ -164,9 +172,17 @@ jobs:
           path: syntastica-themes/theme_list.md
           retention-days: 1
 
+      - name: Upload Vite Demo package.json as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: vite-demo
+          path: examples/wasm/vite/package*.json
+          retention-days: 1
+
   # build the gh-pages site
   pages:
-    needs: [build-js, tests, codegen]
+    needs:
+      - codegen
     if: github.repository == 'RubixDev/syntastica'
     continue-on-error: true
     runs-on: ubuntu-latest
@@ -178,11 +194,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Download syntastica-js build
+      - name: Download Vite Demo package.json
         uses: actions/download-artifact@v4
         with:
-          name: syntastica-js
-          path: syntastica-js/pkg
+          name: vite-demo
+          path: examples/wasm/vite/
 
       - name: Download theme_list.md
         uses: actions/download-artifact@v4
@@ -243,11 +259,11 @@ jobs:
           sed -i -E 's#(\[web.app\])#\1\nbase_path = "syntastica/demos/dioxus"#g' Dioxus.toml
           dx build --release
 
-      - name: Build wasm-pack + NPM Demo
+      - name: Build wasm-pack Demo
         run: |
-          cd examples/wasm/wasm-pack-with-npm-pkg
-          # set base directory to `/syntastica/demos/wasm-pack-npm/`
-          sed -i 's#defineConfig({#\0base:"/syntastica/demos/wasm-pack-npm/",#g' vite.config.ts
+          cd examples/wasm/wasm-pack
+          # set base directory to `/syntastica/demos/wasm-pack/`
+          sed -i 's#defineConfig({#\0base:"/syntastica/demos/wasm-pack/",#g' vite.config.ts
           wasm-pack build --target web .
           npm ci
           npm run build
@@ -264,8 +280,8 @@ jobs:
           cp -r examples/wasm/vite/dist target/doc/demos/vite
           # copy over the dioxus demo
           cp -r examples/wasm/dioxus/target/dx/syntastica-dioxus-demo/release/web/public target/doc/demos/dioxus
-          # copy over the wasm-pack-npm demo
-          cp -r examples/wasm/wasm-pack-with-npm-pkg/dist target/doc/demos/wasm-pack-npm
+          # copy over the wasm-pack demo
+          cp -r examples/wasm/wasm-pack/dist target/doc/demos/wasm-pack
 
       - name: Deploy Docs
         uses: JamesIves/github-pages-deploy-action@v4

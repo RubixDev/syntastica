@@ -15,8 +15,8 @@ npm run dev
 
 ## Notes
 
-By default, Vite complains about a supposedly invalid `main`/`module`/`exports`
-field in `syntastica`'s `package.json`, but only when running a development
-server. I could not find any error there, but if you can, please let me know.
-This issue can be circumvented by manually setting the entry point in the
-[`vite.config.ts`](./vite.config.ts) file.
+By default, `syntastica` fails to load its WebAssembly file correctly when
+running Vite's development server. To work around that, we can manually specify
+the URL to the Wasm file when initializing `syntastica` and make use of Vite's
+`?url` imports to get the correct URL. See [`App.svelte`](./src/App.svelte) for
+more info.

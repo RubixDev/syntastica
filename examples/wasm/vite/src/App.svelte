@@ -1,12 +1,50 @@
 <script lang="ts">
-    import syntastica, { LANGUAGES, THEMES, type Language, type Theme } from 'syntastica'
+    import syntastica, { THEMES, type Theme } from '@syntastica/core'
+    import wasmUrl from '@syntastica/core/wasm?url'
+    const langUrls = import.meta.glob('/node_modules/@syntastica/lang-*/*.wasm', {
+        query: 'url',
+        import: 'default',
+    })
+    const LANGUAGES = Object.keys(langUrls).map(path => path.split('/').at(-1).split('.wasm')[0])
 
-    let initDone = false
-    syntastica.init().then(() => (initDone = true))
+    let loading = true
+    const initPromise = syntastica.init({
+        // this allows us to override the url to the Wasm file,
+        // which is required for the vite dev server to load this correctly
+        locateFile: () => wasmUrl,
+    })
+    initPromise.then(() => (loading = false))
 
     let code = 'fn main() {\n    println!("Hello, World!");\n}'
-    let language: Language = 'rust'
+    let language: string = 'rust'
     let theme: Theme = 'one::dark'
+
+    let highlightedCode = ''
+    const loadedLanguages = []
+
+    $: loadLanguage(language)
+    $: code, theme, updateHighlights()
+
+    async function updateHighlights() {
+        await initPromise
+        if (!loadedLanguages.includes(language)) return
+        // in a real application, this should probably be run in a web worker to not freeze
+        // the entire UI while highlighting
+        highlightedCode = syntastica.highlight(code, language, theme)
+    }
+
+    async function loadLanguage(lang: string) {
+        if (!loadedLanguages.includes(lang)) {
+            await initPromise
+            loading = true
+            await syntastica.loadLanguage(
+                (await langUrls[`/node_modules/@syntastica/lang-${lang}/${lang}.wasm`]()) as string,
+            )
+            loading = false
+            loadedLanguages.push(lang)
+        }
+        updateHighlights()
+    }
 
     // event callback to slightly improve the default textarea editing experience
     function editorKeybinds(
@@ -73,10 +111,10 @@
 
     <textarea id="editor" bind:value={code} on:keydown={editorKeybinds} />
     <div id="preview">
-        {#if initDone}
-            {@html syntastica.highlight(code, language, theme)}
+        {#if !loading}
+            {@html highlightedCode}
         {:else}
-            Initializing syntastica...
+            loading...
         {/if}
     </div>
 </main>

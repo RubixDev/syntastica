@@ -1,10 +1,11 @@
-import initModule, { type SyntasticaModule } from '../pkg/syntastica-js.js'
+import initModule, { type SyntasticaModule } from './syntastica-js.js'
 
 const PTR_SIZE = Float32Array.BYTES_PER_ELEMENT
 
 /**
  * A theme name to pass to {@link highlight} or {@link render}.
  */
+// TODO: themes shouldn't just be strings but proper JS structures
 export type Theme = typeof THEMES[number]
 
 /**
@@ -22,9 +23,9 @@ let Module: SyntasticaModule = null as unknown as SyntasticaModule
  *
  * This function _must_ be called before any of the others
  */
-export async function init() {
+export async function init(moduleOverrides?: any) {
     if (Module === null) {
-        Module = await initModule()
+        Module = await initModule(moduleOverrides)
     }
 }
 
@@ -58,7 +59,7 @@ export async function loadLanguage(input: string | Uint8Array): Promise<void> {
                                 return new Uint8Array(buffer)
                             } else {
                                 const body = new TextDecoder('utf-8').decode(buffer)
-                                throw new Error(`Language.load failed with status ${response.status}.\n\n${body}`)
+                                throw new Error(`loadLanguage failed with status ${response.status}.\n\n${body}`)
                             }
                         })
                 )
