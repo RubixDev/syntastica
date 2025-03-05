@@ -70,6 +70,7 @@ most = [
     "some",
     "asm",
     "c_sharp",
+    "clojure",
     "cmake",
     "comment",
     "dart",
@@ -126,6 +127,7 @@ bash = ["dep:tree-sitter-bash"]
 bibtex = []
 c = ["dep:tree-sitter-c"]
 c_sharp = ["dep:tree-sitter-c-sharp"]
+clojure = []
 cmake = ["dep:tree-sitter-cmake"]
 comment = []
 cpp = ["dep:tree-sitter-cpp"]

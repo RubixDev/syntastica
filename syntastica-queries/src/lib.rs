@@ -37,6 +37,13 @@ pub const C_SHARP_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_querie
 pub const C_SHARP_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/c_sharp/injections_crates_io.scm");
 pub const C_SHARP_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/c_sharp/locals_crates_io.scm");
 
+pub const CLOJURE_HIGHLIGHTS: &str = include_str!("../generated_queries/clojure/highlights.scm");
+pub const CLOJURE_INJECTIONS: &str = include_str!("../generated_queries/clojure/injections.scm");
+pub const CLOJURE_LOCALS: &str = include_str!("../generated_queries/clojure/locals.scm");
+pub const CLOJURE_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_queries/clojure/highlights_crates_io.scm");
+pub const CLOJURE_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/clojure/injections_crates_io.scm");
+pub const CLOJURE_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/clojure/locals_crates_io.scm");
+
 pub const CMAKE_HIGHLIGHTS: &str = include_str!("../generated_queries/cmake/highlights.scm");
 pub const CMAKE_INJECTIONS: &str = include_str!("../generated_queries/cmake/injections.scm");
 pub const CMAKE_LOCALS: &str = include_str!("../generated_queries/cmake/locals.scm");
