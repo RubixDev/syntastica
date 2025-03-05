@@ -227,12 +227,18 @@ pub unsafe fn render(
         Ok(highlights) => Box::leak(Box::new(highlights)),
         Err(err) => bail!(errmsg, "highlights are invalid JSON: {err}"),
     };
-    let highlights_ptr = highlights as *mut _;
     let highlights: Highlights<'_> = highlights
         .iter()
         .map(|line| {
             line.iter()
-                .map(|(code, hl)| (code.as_str(), hl.as_ref().map(|hl| hl.as_str())))
+                .map(|(code, hl)| {
+                    (
+                        code.as_str(),
+                        hl.as_ref()
+                            .and_then(|hl| syntastica::theme::THEME_KEYS.iter().find(|k| k == &hl))
+                            .copied(),
+                    )
+                })
                 .collect()
         })
         .collect();
@@ -241,9 +247,7 @@ pub unsafe fn render(
         bail!(errmsg, "invalid theme '{theme}'");
     };
 
-    let res = _render(errmsg, &highlights, &renderer, theme);
-    drop(unsafe { Box::from_raw(highlights_ptr) });
-    res
+    _render(errmsg, &highlights, &renderer, theme)
 }
 
 fn _render(
