@@ -73,6 +73,7 @@ specifically, you don't have to worry about this.
 
 - [asm](https://github.com/rush-rs/tree-sitter-asm/tree/5bb5b03e3c1ce5853b5282b9fba060f7c7bbf11e)
 - [c_sharp](https://github.com/tree-sitter/tree-sitter-c-sharp/tree/b5eb5742f6a7e9438bee22ce8026d6b927be2cd7)
+- [cmake](https://github.com/uyha/tree-sitter-cmake/tree/cd00bbcb77fe31283ca79b0038387ec7411759ae)
 - [comment](https://github.com/stsewd/tree-sitter-comment/tree/3555706cef8b98d3e4c7379d7260548ff03ad363)
 - [dart](https://github.com/UserNobody14/tree-sitter-dart/tree/e81af6ab94a728ed99c30083be72d88e6d56cf9e)
 - [diff](https://github.com/the-mikedavis/tree-sitter-diff/tree/e42b8def4f75633568f1aecfe01817bf15164928)

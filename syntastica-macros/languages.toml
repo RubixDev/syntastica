@@ -79,6 +79,22 @@ injections = true
 locals = true
 
 [[languages]]
+name = "cmake"
+group = "most"
+file-types = ["cmake"]
+[languages.parser]
+git = { url = "https://github.com/uyha/tree-sitter-cmake", rev = "cd00bbcb77fe31283ca79b0038387ec7411759ae" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_cmake"
+rust-const = "LANGUAGE"
+package = "tree-sitter-cmake"
+crates-io = "0.6.1"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+[[languages]]
 name = "comment"
 group = "most"
 file-types = []

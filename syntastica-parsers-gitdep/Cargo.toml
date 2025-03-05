@@ -73,6 +73,7 @@ most = [
     "some",
     "asm",
     "c_sharp",
+    "cmake",
     "comment",
     "dart",
     "diff",
@@ -128,6 +129,7 @@ bash = ["dep:tree-sitter-bash"]
 bibtex = []
 c = ["dep:tree-sitter-c"]
 c_sharp = ["dep:tree-sitter-c-sharp"]
+cmake = ["dep:tree-sitter-cmake"]
 comment = []
 cpp = ["dep:tree-sitter-cpp"]
 css = ["dep:tree-sitter-css"]
@@ -201,6 +203,11 @@ rev = "2a265d69a4caf57108a73ad2ed1e6922dd2f998c"
 optional = true
 git = "https://github.com/tree-sitter/tree-sitter-c-sharp"
 rev = "b5eb5742f6a7e9438bee22ce8026d6b927be2cd7"
+
+[dependencies.tree-sitter-cmake]
+optional = true
+git = "https://github.com/uyha/tree-sitter-cmake"
+rev = "cd00bbcb77fe31283ca79b0038387ec7411759ae"
 
 [dependencies.tree-sitter-cpp]
 optional = true

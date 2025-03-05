@@ -43,6 +43,7 @@ for more information on all parser collections.
 
 - [asm](https://docs.rs/tree-sitter-asm/0.24.0/)
 - [c_sharp](https://docs.rs/tree-sitter-c-sharp/0.23.1/)
+- [cmake](https://docs.rs/tree-sitter-cmake/0.6.1/)
 - [comment](https://github.com/stsewd/tree-sitter-comment) (not supported by this collection)
 - [dart](https://github.com/UserNobody14/tree-sitter-dart) (not supported by this collection)
 - [diff](https://docs.rs/tree-sitter-diff/0.1.0/)

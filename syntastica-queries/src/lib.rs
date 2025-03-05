@@ -37,6 +37,13 @@ pub const C_SHARP_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_querie
 pub const C_SHARP_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/c_sharp/injections_crates_io.scm");
 pub const C_SHARP_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/c_sharp/locals_crates_io.scm");
 
+pub const CMAKE_HIGHLIGHTS: &str = include_str!("../generated_queries/cmake/highlights.scm");
+pub const CMAKE_INJECTIONS: &str = include_str!("../generated_queries/cmake/injections.scm");
+pub const CMAKE_LOCALS: &str = include_str!("../generated_queries/cmake/locals.scm");
+pub const CMAKE_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_queries/cmake/highlights_crates_io.scm");
+pub const CMAKE_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/cmake/injections_crates_io.scm");
+pub const CMAKE_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/cmake/locals_crates_io.scm");
+
 pub const COMMENT_HIGHLIGHTS: &str = include_str!("../generated_queries/comment/highlights.scm");
 pub const COMMENT_INJECTIONS: &str = include_str!("../generated_queries/comment/injections.scm");
 pub const COMMENT_LOCALS: &str = include_str!("../generated_queries/comment/locals.scm");

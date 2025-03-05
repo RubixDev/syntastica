@@ -78,6 +78,7 @@ most = [
     "some",
     "asm",
     "c_sharp",
+    "cmake",
     "comment",
     "dart",
     "diff",
@@ -142,6 +143,7 @@ bash = []
 bibtex = []
 c = []
 c_sharp = []
+cmake = []
 comment = []
 cpp = []
 css = []
