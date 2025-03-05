@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["add_language","highlight","process","render"],"struct":["LangInfo"]};
+window.SIDEBAR_ITEMS = {"fn":["add_language","get_builtin_theme","highlight","process","render"],"struct":["LangInfo"]};
