@@ -83,6 +83,7 @@ most = [
     "jsdoc",
     "json5",
     "jsonc",
+    "luap",
     "make",
     "markdown",
     "markdown_inline",
@@ -161,6 +162,7 @@ lalrpop = []
 latex = []
 llvm = []
 lua = ["dep:tree-sitter-lua"]
+luap = []
 make = ["dep:tree-sitter-make"]
 markdown = ["dep:tree-sitter-md"]
 markdown_inline = ["dep:tree-sitter-md"]

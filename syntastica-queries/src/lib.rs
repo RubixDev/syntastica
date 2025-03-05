@@ -247,6 +247,13 @@ pub const LUA_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_queries/lu
 pub const LUA_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/lua/injections_crates_io.scm");
 pub const LUA_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/lua/locals_crates_io.scm");
 
+pub const LUAP_HIGHLIGHTS: &str = include_str!("../generated_queries/luap/highlights.scm");
+pub const LUAP_INJECTIONS: &str = include_str!("../generated_queries/luap/injections.scm");
+pub const LUAP_LOCALS: &str = include_str!("../generated_queries/luap/locals.scm");
+pub const LUAP_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_queries/luap/highlights_crates_io.scm");
+pub const LUAP_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/luap/injections_crates_io.scm");
+pub const LUAP_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/luap/locals_crates_io.scm");
+
 pub const MAKE_HIGHLIGHTS: &str = include_str!("../generated_queries/make/highlights.scm");
 pub const MAKE_INJECTIONS: &str = include_str!("../generated_queries/make/injections.scm");
 pub const MAKE_LOCALS: &str = include_str!("../generated_queries/make/locals.scm");

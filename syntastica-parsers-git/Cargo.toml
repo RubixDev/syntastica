@@ -88,6 +88,7 @@ most = [
     "jsdoc",
     "json5",
     "jsonc",
+    "luap",
     "make",
     "markdown",
     "markdown_inline",
@@ -175,6 +176,7 @@ lalrpop = []
 latex = []
 llvm = []
 lua = []
+luap = []
 make = []
 markdown = []
 markdown_inline = []

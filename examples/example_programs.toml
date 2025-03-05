@@ -1,6 +1,10 @@
 # A collection of example programs in various different languages,
 # used by the syntastica examples. The keys specify the language name.
 
+regex = '[a-fA-F0-9_]\s(.*)$'
+printf = '%s = %.3f; %5d, %-5d, %05d'
+luap = '^^charsq+w-e*r?.%.(%a%c%d%g%l%p%s%u%w%x%z%A)[asd]%f[^not]%1%b{}[%]a-z]$$'
+
 rust = '''
 fn fib(n: usize) -> usize {
     if n < 2 {
@@ -875,6 +879,8 @@ function pfibs(n)
   else return pfibs(n - 1) + pfibs(n - 2)
   end
 end
+
+'test':gsub('^^charsq+w-e*r?.%.(%a%c%d%g%l%p%s%u%w%x%z%A)[asd]%f[^not]%1%b{}[%]a-z]$$', 'hi')
 '''
 
 markdown = '''
@@ -1088,9 +1094,6 @@ NOTE: this is a note
 WARNING: this is a warning
 FIXME: this should be fixed
 '''
-
-regex = '[a-fA-F0-9_]\s(.*)$'
-printf = '%s = %.3f; %5d, %-5d, %05d'
 
 bibtex = '''
 @string{anch-ie = {Angew.~Chem. Int.~Ed.}}

@@ -564,6 +564,22 @@ injections = true
 locals = true
 
 [[languages]]
+name = "luap"
+group = "most"
+file-types = []
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-luap", rev = "c134aaec6acf4fa95fe4aa0dc9aba3eacdbbe55a" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_luap"
+# rust-const = "LANGUAGE"
+package = "tree-sitter-luap"
+# crates-io = ""
+[languages.queries]
+nvim-like = true
+injections = false
+locals = false
+
+[[languages]]
 name = "make"
 group = "most"
 file-types = ["make", "automake"]
