@@ -486,8 +486,11 @@ versions.
 
 Versions are specified as `MAJOR.MINOR.PATCH`. As long as the `MAJOR` version
 specifier is still at `0`, changes to the `MINOR` version may also be breaking
-changes. The `PATCH` part is only incremented if the public API stays exactly
-the same.
+changes. The `PATCH` part is only incremented if the public API stays fully
+compatible, with one exception: Changes to the bundled parsers and queries in
+the parser collections do **not** count as breaking changes. This implies that
+if a parser stops being compatible with one of the collections, it is not
+considered a breaking change to remove that parser.
 
 ## Inspiration
 
