@@ -427,8 +427,11 @@ of <em>all</em> of these, except for
 versions.</p>
 <p>Versions are specified as <code>MAJOR.MINOR.PATCH</code>. As long as the <code>MAJOR</code> version
 specifier is still at <code>0</code>, changes to the <code>MINOR</code> version may also be breaking
-changes. The <code>PATCH</code> part is only incremented if the public API stays exactly
-the same.</p>
+changes. The <code>PATCH</code> part is only incremented if the public API stays fully
+compatible, with one exception: Changes to the bundled parsers and queries in
+the parser collections do <strong>not</strong> count as breaking changes. This implies that
+if a parser stops being compatible with one of the collections, it is not
+considered a breaking change to remove that parser.</p>
 <h3 id="inspiration"><a class="doc-anchor" href="#inspiration">§</a>Inspiration</h3>
 <p>The entire idea of this project started out as a way to use tree-sitter code
 highlighting in a LaTeX project. While working with
