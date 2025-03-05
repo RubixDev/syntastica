@@ -1,0 +1,28 @@
+{
+  "$schema": "https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/package.json",
+  "name": "@syntastica/lang-gleam",
+  "version": "0.5.0",
+  "description": "Gleam language support for syntastica-js",
+  "keywords": ["tree-sitter", "highlight", "parsing", "syntax"],
+  "homepage": "https://github.com/RubixDev/syntastica/tree/main/syntastica-js#readme",
+  "bugs": "https://github.com/RubixDev/syntastica/issues",
+  "license": "GPL-3.0-only",
+  "author": "RubixDev",
+  "funding": {
+    "url": "https://ko-fi.com/rubixdev",
+    "type": "ko-fi"
+  },
+  "files": ["gleam.wasm"],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RubixDev/syntastica.git",
+    "directory": "syntastica-js/langs/gleam"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "env CFLAGS=-fPIC cargo build --profile release-wasm --target wasm32-unknown-emscripten",
+    "postbuild": "cp \"${CARGO_TARGET_DIR:-../../../target}/wasm32-unknown-emscripten/release-wasm/syntastica_js_gleam.wasm\" gleam.wasm"
+  }
+}
