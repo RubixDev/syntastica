@@ -89,6 +89,7 @@ most = [
     "markdown_inline",
     "nix",
     "php",
+    "php_only",
     "printf",
     "regex",
     "ruby",
@@ -170,6 +171,7 @@ nix = ["dep:tree-sitter-nix"]
 ocaml = ["dep:tree-sitter-ocaml"]
 ocaml_interface = ["dep:tree-sitter-ocaml"]
 php = ["dep:tree-sitter-php"]
+php_only = ["dep:tree-sitter-php"]
 printf = ["dep:tree-sitter-printf"]
 python = ["dep:tree-sitter-python"]
 ql = ["dep:tree-sitter-ql"]

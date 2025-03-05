@@ -1598,3 +1598,63 @@ fn encode_frame(frame: Frame) -> bit_builder.BitBuilder {
   |> bit_builder.append(mask_data(frame))
 }
 '''
+
+php_only = '''
+<?php
+
+namespace A\B;
+
+use Baz as Baaz;
+use Foo\Baz as Baaz;
+
+use Foo\{Bar, Baz as Baaz};
+
+use function foo as fooo;
+use function Foo\foo as fooo;
+
+use function Foo\{bar, foo as fooo};
+
+use const FOO as FOOO;
+use const Foo\FOO as FOOO;
+
+// TODO: test
+use const Foo\{FOO as FOOO, BAR};
+
+use Foo\Baz\{
+  Bar as Barr,
+  Foo\Bar as Barr,
+  function foo as fooo,
+  function Foo\foo as fooo,
+  const FOO as FOOO,
+  const Foo\FOO as FOOO,
+};
+
+class Foo {
+    public function foo() {
+        Bar::foo();
+        \Bar::foo();
+        Foo\Bar::foo();
+        \Foo\Bar::foo();
+        namespace\Bar::foo();
+        namespace\Foo\Bar::foo();
+        new Bar();
+        new \Bar();
+        new Foo\Bar();
+        new \Foo\Bar();
+        new namespace\Bar();
+        new namespace\Foo\Bar();
+        BAZ;
+        \BAZ;
+        Foo\BAZ;
+        \Foo\BAZ;
+        namespace\BAZ;
+        namespace\Foo\BAZ;
+        foo();
+        \foo();
+        Foo\foo();
+        \Foo\foo();
+        namespace\foo();
+        namespace\Foo\foo();
+  }
+}
+'''

@@ -303,6 +303,13 @@ pub const PHP_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_queries/ph
 pub const PHP_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/php/injections_crates_io.scm");
 pub const PHP_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/php/locals_crates_io.scm");
 
+pub const PHP_ONLY_HIGHLIGHTS: &str = include_str!("../generated_queries/php_only/highlights.scm");
+pub const PHP_ONLY_INJECTIONS: &str = include_str!("../generated_queries/php_only/injections.scm");
+pub const PHP_ONLY_LOCALS: &str = include_str!("../generated_queries/php_only/locals.scm");
+pub const PHP_ONLY_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_queries/php_only/highlights_crates_io.scm");
+pub const PHP_ONLY_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/php_only/injections_crates_io.scm");
+pub const PHP_ONLY_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/php_only/locals_crates_io.scm");
+
 pub const PRINTF_HIGHLIGHTS: &str = include_str!("../generated_queries/printf/highlights.scm");
 pub const PRINTF_INJECTIONS: &str = include_str!("../generated_queries/printf/injections.scm");
 pub const PRINTF_LOCALS: &str = include_str!("../generated_queries/printf/locals.scm");
