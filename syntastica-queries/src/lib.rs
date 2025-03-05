@@ -380,6 +380,13 @@ pub const SQL_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_queries/sq
 pub const SQL_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/sql/injections_crates_io.scm");
 pub const SQL_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/sql/locals_crates_io.scm");
 
+pub const SWIFT_HIGHLIGHTS: &str = include_str!("../generated_queries/swift/highlights.scm");
+pub const SWIFT_INJECTIONS: &str = include_str!("../generated_queries/swift/injections.scm");
+pub const SWIFT_LOCALS: &str = include_str!("../generated_queries/swift/locals.scm");
+pub const SWIFT_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_queries/swift/highlights_crates_io.scm");
+pub const SWIFT_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/swift/injections_crates_io.scm");
+pub const SWIFT_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/swift/locals_crates_io.scm");
+
 pub const TOML_HIGHLIGHTS: &str = include_str!("../generated_queries/toml/highlights.scm");
 pub const TOML_INJECTIONS: &str = include_str!("../generated_queries/toml/injections.scm");
 pub const TOML_LOCALS: &str = include_str!("../generated_queries/toml/locals.scm");

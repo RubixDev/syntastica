@@ -101,6 +101,7 @@ most = [
     "scala",
     "scss",
     "sql",
+    "swift",
     "typst",
     "zig",
 ]
@@ -196,6 +197,7 @@ rust = []
 scala = []
 scss = []
 sql = []
+swift = []
 toml = []
 tsx = []
 typescript = []

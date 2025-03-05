@@ -96,6 +96,7 @@ most = [
     "scala",
     "scss",
     "sql",
+    "swift",
     "typst",
     "zig",
 ]
@@ -182,6 +183,7 @@ rust = ["dep:tree-sitter-rust"]
 scala = ["dep:tree-sitter-scala"]
 scss = []
 sql = ["dep:tree-sitter-sequel"]
+swift = []
 toml = []
 tsx = ["dep:tree-sitter-typescript"]
 typescript = ["dep:tree-sitter-typescript"]

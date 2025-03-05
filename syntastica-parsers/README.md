@@ -66,6 +66,7 @@ for more information on all parser collections.
 - [scala](https://docs.rs/tree-sitter-scala/0.23.4/)
 - [scss](https://github.com/serenadeai/tree-sitter-scss) (not supported by this collection)
 - [sql](https://docs.rs/tree-sitter-sequel/0.3.8/)
+- [swift](https://docs.rs/tree-sitter-swift/0.7.0/)
 - [typst](https://github.com/uben0/tree-sitter-typst) (not supported by this collection)
 - [zig](https://docs.rs/tree-sitter-zig/1.1.2/)
 

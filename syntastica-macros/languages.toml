@@ -869,6 +869,23 @@ injections = true
 locals = false
 
 [[languages]]
+name = "swift"
+group = "most"
+file-types = ["swift"]
+[languages.parser]
+git = { url = "https://github.com/alex-pinkus/tree-sitter-swift", rev = "42ad8f6b4dc9b46285893cc37b460323b54932d4" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_swift"
+rust-const = "LANGUAGE"
+package = "tree-sitter-swift"
+crates-io = "0.7.0"
+generate = true
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+[[languages]]
 name = "toml"
 group = "some"
 file-types = ["toml"]

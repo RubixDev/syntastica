@@ -1658,3 +1658,50 @@ class Foo {
   }
 }
 '''
+
+swift = '''
+import Cocoa
+
+func fibonacci(n: Int) -> Int {
+    let square_root_of_5 = sqrt(5.0)
+    let p = (1 + square_root_of_5) / 2
+    let q = 1 / p
+    return Int((pow(p,CDouble(n)) + pow(q,CDouble(n))) / square_root_of_5 + 0.5)
+}
+
+for i in 1...30 {
+    println(fibonacci(i))
+}
+
+import Foundation
+
+extension ImagePipeline {
+    /// The pipeline configuration.
+    public struct Configuration: @unchecked Sendable {
+        /// Image cache used by the pipeline.
+        public var imageCache: (any ImageCaching)? {
+            // This exists simply to ensure we don't init ImageCache.shared if the
+            // user provides their own instance.
+            get { isCustomImageCacheProvided ? customImageCache : ImageCache.shared }
+            set {
+                customImageCache = newValue
+                isCustomImageCacheProvided = true
+            }
+        }
+
+        /// Default implementation uses shared ``ImageDecoderRegistry`` to create
+        /// a decoder that matches the context.
+        public var makeImageDecoder: @Sendable (ImageDecodingContext) -> (any ImageDecoding)? = {
+            ImageDecoderRegistry.shared.decoder(for: $0)
+        }
+
+        /// Instantiates a pipeline configuration.
+        ///
+        /// - parameter dataLoader: `DataLoader()` by default.
+        // NOTE: Surgical change on next line: renamed `dataLoader` to `any` to show it is a contextual keyword
+        public init(any: any DataLoading = DataLoader()) {
+            self.dataLoader = any
+        }
+    }
+}
+'''
