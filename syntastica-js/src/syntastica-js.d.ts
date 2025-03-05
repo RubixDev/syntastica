@@ -3,6 +3,7 @@ export interface SyntasticaModule extends EmscriptenModule {
     _highlight(errmsgPtr: number, codePtr: number, langPtr: number, themePtr: number, rendererPtr: number): number
     _process(errmsgPtr: number, codePtr: number, langPtr: number): number
     _render(errmsgPtr: number, highlightsPtr: number, themePtr: number, rendererPtr: number): number
+    _get_builtin_theme(errmsgPtr: number, themePtr: number): number
 
     getValue: typeof getValue
     setValue: typeof setValue

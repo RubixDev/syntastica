@@ -1,7 +1,7 @@
 use std::env;
 
 const EMSCRIPTEN_FLAGS: &[&str] = &[
-    "-sEXPORTED_FUNCTIONS=_add_language,_highlight,_process,_render,_free,_malloc",
+    "-sEXPORTED_FUNCTIONS=_add_language,_highlight,_process,_render,_get_builtin_theme,_free,_malloc",
     "-sEXPORT_ES6=1",
     "-sMODULARIZE=1",
     "-sEXPORTED_RUNTIME_METHODS=stringToNewUTF8,UTF8ToString,getValue,loadWebAssemblyModule",

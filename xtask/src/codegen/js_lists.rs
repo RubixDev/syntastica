@@ -6,11 +6,11 @@ const HEADER: &str = r##"
 // DISCLAIMER: All code below this line is generated with `cargo xtask codegen js-list`
 // in the syntastica workspace. Do not edit this code manually!
 /**
- * A list of all valid themes.
+ * A list of all builtin themes.
  *
- * @see The {@link Theme} type.
+ * @see The {@link BuiltinTheme} type.
  */
-export const THEMES = [
+export const BUILTIN_THEMES = [
 "##;
 
 pub fn write() -> Result<()> {

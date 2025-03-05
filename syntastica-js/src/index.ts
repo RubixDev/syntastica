@@ -2,11 +2,12 @@ import initModule, { type SyntasticaModule } from './syntastica-js.js'
 
 const PTR_SIZE = Float32Array.BYTES_PER_ELEMENT
 
+let Module: SyntasticaModule = null as unknown as SyntasticaModule
+
 /**
  * A theme name to pass to {@link highlight} or {@link render}.
  */
-// TODO: themes shouldn't just be strings but proper JS structures
-export type Theme = typeof THEMES[number]
+export type BuiltinTheme = typeof BUILTIN_THEMES[number]
 
 /**
  * Source code with theme-independent style information attached.
@@ -16,7 +17,86 @@ export type Theme = typeof THEMES[number]
  */
 export type Highlights = [string, string | null][][]
 
-let Module: SyntasticaModule = null as unknown as SyntasticaModule
+/**
+ * A non-transparent color with red, green, and blue values between 0 and 255.
+ *
+ * Mirrors {@link https://rubixdev.github.io/syntastica/syntastica/style/type.Color.html | this Rust definition}.
+ */
+export interface Color {
+    red: number
+    green: number
+    blue: number
+}
+
+/**
+ * Defines how to style a region of text.
+ *
+ * Besides a main foreground {@link Color}, an optional background color and the following four booleans can be set:
+ *
+ * - underline
+ * - strikethrough
+ * - italic
+ * - bold
+ *
+ * Mirrors {@link https://rubixdev.github.io/syntastica/syntastica/style/struct.Style.html | this Rust definition}.
+ */
+export interface Style {
+    color: Color
+    bg: Color | null
+    underline: boolean
+    strikethrough: boolean
+    italic: boolean
+    bold: boolean
+}
+
+/**
+ * Defines how to style highlight captures.
+ *
+ * Mirrors {@link https://rubixdev.github.io/syntastica/syntastica/theme/struct.ResolvedTheme.html | this Rust definition}.
+ */
+export class Theme {
+    constructor(public styles: Record<string, Style>) { }
+
+    /**
+     * The default foreground color, if the theme defines one.
+     */
+    get fg(): Color | null {
+        return this.styles['_normal']?.color || null
+    }
+
+    /**
+     * The default background color, if the theme defines one.
+     */
+    get bg(): Color | null {
+        return this.styles['_normal']?.bg || null
+    }
+
+    /**
+     * Retreives the style map for a {@link BuiltinTheme}.
+     */
+    static fromBuiltin(theme: BuiltinTheme): Theme {
+        checkModule()
+        const errmsgPtr = Module._malloc(PTR_SIZE)
+        const themePtr = Module.stringToNewUTF8(theme)
+
+        const resultPtr = Module._get_builtin_theme(errmsgPtr, themePtr)
+        if (resultPtr === 0) {
+            const errPtr = Module.getValue(errmsgPtr, 'i8*')
+            const err = Module.UTF8ToString(errPtr)
+            Module._free(errPtr)
+            Module._free(errmsgPtr)
+            Module._free(themePtr)
+            Module._free(resultPtr)
+            throw new Error(err)
+        }
+        const result = JSON.parse(Module.UTF8ToString(resultPtr)) as Record<string, Style>
+
+        Module._free(errmsgPtr)
+        Module._free(themePtr)
+        Module._free(resultPtr)
+        return new Theme(result)
+    }
+}
 
 /**
  * Initialize the Wasm module.
@@ -35,6 +115,7 @@ function checkModule() {
 
 /**
  * Load a language from a WebAssembly module.
+ *
  * The module can be provided as a path to a file or as a buffer.
  */
 export async function loadLanguage(input: string | Uint8Array): Promise<void> {
@@ -92,7 +173,7 @@ export async function loadLanguage(input: string | Uint8Array): Promise<void> {
  *
  * All themes from {@link https://rubixdev.github.io/syntastica/syntastica_themes/ | the default collection}
  * are supported. The theme name is equivalent to its Rust path specifier, so for example the gruvbox dark theme
- * is named `gruvbox::dark`.
+ * is named `gruvbox::dark`. Alternatively, a {@link Theme | custom theme} can be specified.
  *
  * @param renderer - The renderer to use.
  *
@@ -106,12 +187,14 @@ export async function loadLanguage(input: string | Uint8Array): Promise<void> {
  * See {@link https://rubixdev.github.io/syntastica/syntastica/renderer/struct.HtmlRenderer.html | here} for
  * more information on the output.
  */
-export function highlight(code: string, language: string, theme: Theme, renderer: string = 'HTML'): string {
+export function highlight(code: string, language: string, theme: Theme | BuiltinTheme, renderer: string = 'HTML'): string {
     checkModule()
     const errmsgPtr = Module._malloc(PTR_SIZE)
     const codePtr = Module.stringToNewUTF8(code)
     const languagePtr = Module.stringToNewUTF8(language)
-    const themePtr = Module.stringToNewUTF8(theme)
+    const themePtr = Module.stringToNewUTF8(JSON.stringify(
+        theme instanceof Theme ? { custom: theme.styles } : { builtin: theme }
+    ))
     const rendererPtr = Module.stringToNewUTF8(renderer)
 
     const resultPtr = Module._highlight(errmsgPtr, codePtr, languagePtr, themePtr, rendererPtr)
@@ -185,7 +268,7 @@ export function process(code: string, language: string): Highlights {
  *
  * All themes from {@link https://rubixdev.github.io/syntastica/syntastica_themes/ | the default collection}
  * are supported. The theme name is equivalent to its Rust path specifier, so for example the gruvbox dark theme
- * is named `gruvbox::dark`.
+ * is named `gruvbox::dark`. Alternatively, a {@link Theme | custom theme} can be specified.
  *
  * @param renderer - The renderer to use.
  *
@@ -196,10 +279,12 @@ export function process(code: string, language: string): Highlights {
  *
  * @returns The highlighted code in the requested format.
  */
-export function render(highlights: Highlights, theme: Theme, renderer: string = 'HTML'): string {
+export function render(highlights: Highlights, theme: Theme | BuiltinTheme, renderer: string = 'HTML'): string {
     checkModule()
     const errmsgPtr = Module._malloc(PTR_SIZE)
-    const themePtr = Module.stringToNewUTF8(theme)
+    const themePtr = Module.stringToNewUTF8(JSON.stringify(
+        theme instanceof Theme ? { custom: theme.styles } : { builtin: theme }
+    ))
     const rendererPtr = Module.stringToNewUTF8(renderer)
     const highlightsPtr = Module.stringToNewUTF8(JSON.stringify(highlights))
 
@@ -226,16 +311,16 @@ export function render(highlights: Highlights, theme: Theme, renderer: string = 
     return result
 }
 
-export default { init, loadLanguage, highlight, process, render }
+export default { init, loadLanguage, highlight, process, render, Theme }
 
 // DISCLAIMER: All code below this line is generated with `cargo xtask codegen js-list`
 // in the syntastica workspace. Do not edit this code manually!
 /**
- * A list of all valid themes.
+ * A list of all builtin themes.
  *
- * @see The {@link Theme} type.
+ * @see The {@link BuiltinTheme} type.
  */
-export const THEMES = [
+export const BUILTIN_THEMES = [
     'abscs::abscs',
     'aurora::aurora',
     'blue_moon::blue_moon',

@@ -4,8 +4,8 @@
 
 use std::{
     borrow::Cow,
-    collections::HashMap,
-    ffi::{c_char, c_void, CStr, CString},
+    collections::{BTreeMap, HashMap},
+    ffi::{c_char, c_void, CStr},
     marker::PhantomData,
     str::FromStr,
     sync::{LazyLock, Mutex},
@@ -14,7 +14,7 @@ use std::{
 use syntastica::{
     language_set::{FileType, HighlightConfiguration, Language, LanguageSet, SupportedLanguage},
     renderer::{HtmlRenderer, TerminalRenderer},
-    style::Color,
+    style::{Color, Style},
     theme::ResolvedTheme,
     Highlights, Processor,
 };
@@ -45,6 +45,13 @@ static PROCESSOR: LazyLock<Mutex<Processor<'static, LangSet>>> =
 syntastica_macros::js_lang_info!();
 
 type _Highlights = Vec<Vec<(String, Option<String>)>>;
+
+#[derive(serde::Deserialize)]
+#[serde(rename_all = "camelCase")]
+enum Theme {
+    Builtin(String),
+    Custom(BTreeMap<Cow<'static, str>, Style>),
+}
 
 struct Lang<'set>(&'static str, PhantomData<&'set ()>);
 
@@ -125,10 +132,6 @@ unsafe fn string_from_ptr(ptr: *const c_char) -> String {
         .into_owned()
 }
 
-fn string_to_ptr(string: String) -> *const c_char {
-    CString::new(string).unwrap().into_raw()
-}
-
 /// Add a language to the set.
 ///
 /// # Safety
@@ -161,8 +164,13 @@ pub unsafe fn highlight(
         bail!(errmsg, "unsupported language '{language}'");
     };
 
-    let Some(theme) = syntastica_themes::from_str(&theme) else {
-        bail!(errmsg, "invalid theme '{theme}'");
+    let theme = match serde_json::from_str::<Theme>(&theme) {
+        Ok(Theme::Builtin(theme)) => match syntastica_themes::from_str(&theme) {
+            Some(theme) => theme,
+            None => bail!(errmsg, "unknown builtin theme '{theme}'"),
+        },
+        Ok(Theme::Custom(theme)) => ResolvedTheme::new(theme),
+        Err(err) => bail!(errmsg, "theme is invalid JSON: {err}"),
     };
 
     let highlights = match PROCESSOR.lock().unwrap().process(&code, language) {
@@ -243,8 +251,13 @@ pub unsafe fn render(
         })
         .collect();
 
-    let Some(theme) = syntastica_themes::from_str(&theme) else {
-        bail!(errmsg, "invalid theme '{theme}'");
+    let theme = match serde_json::from_str::<Theme>(&theme) {
+        Ok(Theme::Builtin(theme)) => match syntastica_themes::from_str(&theme) {
+            Some(theme) => theme,
+            None => bail!(errmsg, "unknown builtin theme '{theme}'"),
+        },
+        Ok(Theme::Custom(theme)) => ResolvedTheme::new(theme),
+        Err(err) => bail!(errmsg, "theme is invalid JSON: {err}"),
     };
 
     _render(errmsg, &highlights, &renderer, theme)
@@ -273,5 +286,24 @@ fn _render(
         },
     };
 
-    string_to_ptr(out)
+    alloc_string(&out)
+}
+
+/// Serialize a builtin theme to the raw style map.
+///
+/// # Safety
+///
+/// All parameters must be valid pointers.
+#[no_mangle]
+pub unsafe fn get_builtin_theme(errmsg: *mut *const c_char, theme: *const c_char) -> *const c_char {
+    let theme = unsafe { string_from_ptr(theme) };
+
+    let Some(theme) = syntastica_themes::from_str(&theme) else {
+        bail!(errmsg, "unknown builtin theme '{theme}'");
+    };
+
+    match serde_json::to_string(&theme.into_inner()) {
+        Ok(theme) => alloc_string(&theme),
+        Err(err) => bail!(errmsg, "failed serializing theme: {err}"),
+    }
 }
