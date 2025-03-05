@@ -108,6 +108,7 @@ all = [
     "ejs",
     "erb",
     "fish",
+    "gleam",
     "hexdump",
     "julia",
     "lalrpop",
@@ -143,6 +144,7 @@ ejs = ["dep:tree-sitter-embedded-template"]
 elixir = ["dep:tree-sitter-elixir"]
 erb = ["dep:tree-sitter-embedded-template"]
 fish = ["dep:tree-sitter-fish"]
+gleam = ["dep:tree-sitter-gleam"]
 go = ["dep:tree-sitter-go"]
 haskell = ["dep:tree-sitter-haskell"]
 hexdump = []
@@ -240,6 +242,11 @@ rev = "86ec2ed45d6d9433b4e0b88cd3d96796bd45625f"
 optional = true
 git = "https://github.com/ram02z/tree-sitter-fish"
 rev = "70640c0696abde32622afc43291a385681afbd32"
+
+[dependencies.tree-sitter-gleam]
+optional = true
+git = "https://github.com/gleam-lang/tree-sitter-gleam"
+rev = "af6043419f5aa0f8b6c2a26db0187aefa46c7f5f"
 
 [dependencies.tree-sitter-go]
 optional = true

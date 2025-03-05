@@ -78,6 +78,7 @@ for more information on all parser collections.
 - [ejs](https://docs.rs/tree-sitter-embedded-template/0.23.2/)
 - [erb](https://docs.rs/tree-sitter-embedded-template/0.23.2/)
 - [fish](https://github.com/ram02z/tree-sitter-fish) (not supported by this collection)
+- [gleam](https://docs.rs/tree-sitter-gleam/1.0.0/)
 - [hexdump](https://github.com/rush-rs/tree-sitter-hexdump) (not supported by this collection)
 - [julia](https://docs.rs/tree-sitter-julia/0.23.1/)
 - [lalrpop](https://github.com/traxys/tree-sitter-lalrpop) (not supported by this collection)

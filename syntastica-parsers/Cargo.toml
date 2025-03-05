@@ -105,6 +105,7 @@ all = [
     "ejs",
     "erb",
     "fish",
+    "gleam",
     "hexdump",
     "julia",
     "lalrpop",
@@ -140,6 +141,7 @@ ejs = ["dep:tree-sitter-embedded-template"]
 elixir = ["dep:tree-sitter-elixir"]
 erb = ["dep:tree-sitter-embedded-template"]
 fish = []
+gleam = ["dep:tree-sitter-gleam"]
 go = ["dep:tree-sitter-go"]
 haskell = ["dep:tree-sitter-haskell"]
 hexdump = []
@@ -222,6 +224,10 @@ version = "=0.23.2"
 [dependencies.tree-sitter-elixir]
 optional = true
 version = "=0.3.4"
+
+[dependencies.tree-sitter-gleam]
+optional = true
+version = "=1.0.0"
 
 [dependencies.tree-sitter-go]
 optional = true

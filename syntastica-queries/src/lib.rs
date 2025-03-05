@@ -128,6 +128,13 @@ pub const FISH_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_queries/f
 pub const FISH_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/fish/injections_crates_io.scm");
 pub const FISH_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/fish/locals_crates_io.scm");
 
+pub const GLEAM_HIGHLIGHTS: &str = include_str!("../generated_queries/gleam/highlights.scm");
+pub const GLEAM_INJECTIONS: &str = include_str!("../generated_queries/gleam/injections.scm");
+pub const GLEAM_LOCALS: &str = include_str!("../generated_queries/gleam/locals.scm");
+pub const GLEAM_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_queries/gleam/highlights_crates_io.scm");
+pub const GLEAM_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/gleam/injections_crates_io.scm");
+pub const GLEAM_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/gleam/locals_crates_io.scm");
+
 pub const GO_HIGHLIGHTS: &str = include_str!("../generated_queries/go/highlights.scm");
 pub const GO_INJECTIONS: &str = include_str!("../generated_queries/go/injections.scm");
 pub const GO_LOCALS: &str = include_str!("../generated_queries/go/locals.scm");

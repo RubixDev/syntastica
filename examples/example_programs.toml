@@ -1544,3 +1544,54 @@ int main(){")
  )
 (write end)
 '''
+
+gleam = '''
+import gleam/option.{Option, Some, None}
+import gleam/bit_builder
+
+pub type FrameData {
+  Text(String)
+  Binary(BitString)
+  Continuation(BitString)
+  Ping(BitString)
+  Pong(BitString)
+  Close(code: Option(Int), reason: Option(String))
+}
+
+pub type Frame {
+  Frame(reserved: BitString, mask: Option(BitString), data: FrameData, fin: Bool)
+}
+
+fn encode_frame(frame: Frame) -> bit_builder.BitBuilder {
+  let fin =
+    case frame.fin {
+      True -> <<1:size(1)>>
+      False -> <<0:size(1)>>
+    }
+
+  let opcode =
+    case frame.data {
+      Continuation(_) -> <<0x0:size(1)>>
+      Text(_) -> <<0x1:size(1)>>
+      Binary(_) -> <<0x2:size(1)>>
+      // 0x3-7 reserved for future non-control frames
+      Close(..) -> <<0x8:size(1)>>
+      Pong(_) -> <<0x9:size(1)>>
+      Pong(_) -> <<0xA:size(1)>>
+    }
+
+  let is_masked_bit =
+    case frame.mask {
+      Some(_) -> <<1:size(1)>>
+      None -> <<0:size(1)>>
+    }
+
+  bit_builder.new()
+  |> bit_builder.append(fin)
+  |> bit_builder.append(frame.reserved)
+  |> bit_builder.append(opcode)
+  |> bit_builder.append(is_masked_bit)
+  |> bit_builder.append(option.unwrap(frame.mask, <<>>))
+  |> bit_builder.append(mask_data(frame))
+}
+'''

@@ -78,6 +78,7 @@ for more information on all parser collections.
 - [ejs](https://github.com/tree-sitter/tree-sitter-embedded-template/tree/8495d106154741e6d35d37064f864758ece75de6)
 - [erb](https://github.com/tree-sitter/tree-sitter-embedded-template/tree/8495d106154741e6d35d37064f864758ece75de6)
 - [fish](https://github.com/ram02z/tree-sitter-fish/tree/70640c0696abde32622afc43291a385681afbd32)
+- [gleam](https://github.com/gleam-lang/tree-sitter-gleam/tree/af6043419f5aa0f8b6c2a26db0187aefa46c7f5f)
 - [hexdump](https://github.com/rush-rs/tree-sitter-hexdump/tree/09eaf4fcfed00be93928d7d3d82b490cd1343b80) (not supported by this collection)
 - [julia](https://github.com/tree-sitter/tree-sitter-julia/tree/12a3aede757bc7fbdfb1909507c7a6fddd31df37)
 - [lalrpop](https://github.com/traxys/tree-sitter-lalrpop/tree/a7f5ea297bd621d072ed4cb2cc8ba5ae64ae3c4b) (not supported by this collection)

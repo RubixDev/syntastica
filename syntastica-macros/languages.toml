@@ -288,6 +288,22 @@ injections = true
 locals = true
 
 [[languages]]
+name = "gleam"
+group = "all"
+file-types = ["gleam"]
+[languages.parser]
+git = { url = "https://github.com/gleam-lang/tree-sitter-gleam", rev = "af6043419f5aa0f8b6c2a26db0187aefa46c7f5f" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_gleam"
+rust-const = "LANGUAGE"
+package = "tree-sitter-gleam"
+crates-io = "1.0.0"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+[[languages]]
 name = "go"
 group = "some"
 file-types = ["go"]
