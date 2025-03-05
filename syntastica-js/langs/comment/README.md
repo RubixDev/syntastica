@@ -1,3 +1,4 @@
 # `syntastica-js-comment`
 
-Comment language support for [`syntastica-js`](https://www.npmjs.com/package/@syntastica/core).
+Comment language support for
+[`syntastica-js`](https://www.npmjs.com/package/@syntastica/core).

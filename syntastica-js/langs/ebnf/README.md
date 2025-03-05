@@ -1,3 +1,4 @@
 # `syntastica-js-ebnf`
 
-Ebnf language support for [`syntastica-js`](https://www.npmjs.com/package/@syntastica/core).
+Ebnf language support for
+[`syntastica-js`](https://www.npmjs.com/package/@syntastica/core).

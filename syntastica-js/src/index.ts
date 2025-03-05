@@ -55,7 +55,7 @@ export interface Style {
  * Mirrors {@link https://rubixdev.github.io/syntastica/syntastica/theme/struct.ResolvedTheme.html | this Rust definition}.
  */
 export class Theme {
-    constructor(public styles: Record<string, Style>) { }
+    constructor(public styles: Record<string, Style>) {}
 
     /**
      * The default foreground color, if the theme defines one.
@@ -187,14 +187,19 @@ export async function loadLanguage(input: string | Uint8Array): Promise<void> {
  * See {@link https://rubixdev.github.io/syntastica/syntastica/renderer/struct.HtmlRenderer.html | here} for
  * more information on the output.
  */
-export function highlight(code: string, language: string, theme: Theme | BuiltinTheme, renderer: string = 'HTML'): string {
+export function highlight(
+    code: string,
+    language: string,
+    theme: Theme | BuiltinTheme,
+    renderer: string = 'HTML',
+): string {
     checkModule()
     const errmsgPtr = Module._malloc(PTR_SIZE)
     const codePtr = Module.stringToNewUTF8(code)
     const languagePtr = Module.stringToNewUTF8(language)
-    const themePtr = Module.stringToNewUTF8(JSON.stringify(
-        theme instanceof Theme ? { custom: theme.styles } : { builtin: theme }
-    ))
+    const themePtr = Module.stringToNewUTF8(
+        JSON.stringify(theme instanceof Theme ? { custom: theme.styles } : { builtin: theme }),
+    )
     const rendererPtr = Module.stringToNewUTF8(renderer)
 
     const resultPtr = Module._highlight(errmsgPtr, codePtr, languagePtr, themePtr, rendererPtr)
@@ -282,9 +287,9 @@ export function process(code: string, language: string): Highlights {
 export function render(highlights: Highlights, theme: Theme | BuiltinTheme, renderer: string = 'HTML'): string {
     checkModule()
     const errmsgPtr = Module._malloc(PTR_SIZE)
-    const themePtr = Module.stringToNewUTF8(JSON.stringify(
-        theme instanceof Theme ? { custom: theme.styles } : { builtin: theme }
-    ))
+    const themePtr = Module.stringToNewUTF8(
+        JSON.stringify(theme instanceof Theme ? { custom: theme.styles } : { builtin: theme }),
+    )
     const rendererPtr = Module.stringToNewUTF8(renderer)
     const highlightsPtr = Module.stringToNewUTF8(JSON.stringify(highlights))
 

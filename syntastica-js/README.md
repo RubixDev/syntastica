@@ -16,7 +16,9 @@ await syntastica.init()
 
 // load some languages
 await syntastica.loadLanguage('node_modules/@syntastica/lang-rust/rust.wasm')
-await syntastica.loadLanguage('node_modules/@syntastica/lang-javascript/javascript.wasm')
+await syntastica.loadLanguage(
+    'node_modules/@syntastica/lang-javascript/javascript.wasm',
+)
 
 // highlight a piece of code once
 const rustInput = `fn main() {\n    println!("Hello, World!");\n}`

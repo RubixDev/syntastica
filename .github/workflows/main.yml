@@ -144,8 +144,7 @@ jobs:
             syntastica-queries/src/lib.rs syntastica-parsers/Cargo.toml
             syntastica-parsers-gitdep/Cargo.toml syntastica-parsers*/README.md
             syntastica-js/src/index.ts syntastica-themes/assets/theme-svgs
-            syntastica-themes/theme_list.md examples/wasm/vite/package*.json
-            syntastica-js/langs
+            syntastica-themes/theme_list.md examples/wasm/vite/package*.json syntastica-js/langs
           committer_name: github-actions[bot]
           committer_email: 41898282+github-actions[bot]@users.noreply.github.com
           message: 'chore: run codegen'

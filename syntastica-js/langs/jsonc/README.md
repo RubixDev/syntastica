@@ -1,3 +1,4 @@
 # `syntastica-js-jsonc`
 
-Jsonc language support for [`syntastica-js`](https://www.npmjs.com/package/@syntastica/core).
+Jsonc language support for
+[`syntastica-js`](https://www.npmjs.com/package/@syntastica/core).

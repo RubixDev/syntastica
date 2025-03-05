@@ -917,7 +917,6 @@ nvim-like = true
 injections = true
 locals = true
 
-
 [[languages]]
 name = "zig"
 group = "most"

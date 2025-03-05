@@ -1,3 +1,4 @@
 # `syntastica-js-ejs`
 
-Ejs language support for [`syntastica-js`](https://www.npmjs.com/package/@syntastica/core).
+Ejs language support for
+[`syntastica-js`](https://www.npmjs.com/package/@syntastica/core).
