@@ -1,5 +1,5 @@
 <script lang="ts">
-    import syntastica, { THEMES, type Theme } from '@syntastica/core'
+    import syntastica, { BUILTIN_THEMES, Theme, type BuiltinTheme } from '@syntastica/core'
     import wasmUrl from '@syntastica/core/wasm?url'
     const langUrls = import.meta.glob('/node_modules/@syntastica/lang-*/*.wasm', {
         query: 'url',
@@ -17,13 +17,15 @@
 
     let code = 'fn main() {\n    println!("Hello, World!");\n}'
     let language: string = 'rust'
-    let theme: Theme = 'one::dark'
+    let theme: BuiltinTheme = 'one::dark'
 
     let highlightedCode = ''
+    let themeBg = 'transparent'
     const loadedLanguages = []
 
     $: loadLanguage(language)
     $: code, theme, updateHighlights()
+    $: theme, updateThemeBg()
 
     async function updateHighlights() {
         await initPromise
@@ -31,6 +33,12 @@
         // in a real application, this should probably be run in a web worker to not freeze
         // the entire UI while highlighting
         highlightedCode = syntastica.highlight(code, language, theme)
+    }
+
+    async function updateThemeBg() {
+        await initPromise
+        const bg = Theme.fromBuiltin(theme).bg
+        themeBg = bg === null ? 'transparent' : `rgb(${bg.red}, ${bg.green}, ${bg.blue})`
     }
 
     async function loadLanguage(lang: string) {
@@ -103,14 +111,14 @@
     <div id="theme-select-container">
         <label for="theme">Theme:</label>
         <select name="theme" id="theme-select" bind:value={theme}>
-            {#each THEMES as theme}
+            {#each BUILTIN_THEMES as theme}
                 <option value={theme}>{theme}</option>
             {/each}
         </select>
     </div>
 
     <textarea id="editor" bind:value={code} on:keydown={editorKeybinds} />
-    <div id="preview">
+    <div id="preview" style:background-color={themeBg}>
         {#if !loading}
             {@html highlightedCode}
         {:else}
@@ -145,5 +153,7 @@
         text-align: left;
         overflow-x: auto;
         white-space: nowrap;
+        border-radius: 4px;
+        padding: 4px;
     }
 </style>

@@ -20,7 +20,7 @@
     "vite": "^4.5.9"
   },
   "dependencies": {
-    "@syntastica/core": "^0.4.6",
+    "@syntastica/core": "^0.4.7",
     "@syntastica/lang-asm": "^0.4.0",
     "@syntastica/lang-bash": "^0.4.0",
     "@syntastica/lang-bibtex": "^0.4.0",
