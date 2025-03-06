@@ -13,6 +13,8 @@ use once_cell::sync::Lazy;
 use semver::{Version, VersionReq};
 use toml::Table;
 
+use crate::fetch_queries::fetch_query;
+
 pub fn run() -> Result<()> {
     let group = env::args()
         .nth(2)
@@ -64,32 +66,8 @@ pub fn run() -> Result<()> {
         crate::WORKSPACE_DIR.join(format!("queries/{name}/highlights.scm")),
         "",
     )?;
-    const BASE_URL: &str =
-        "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/HEAD/queries";
     for kind in ["highlights", "injections", "locals"] {
-        let queries = reqwest::blocking::get(format!("{BASE_URL}/{name}/{kind}.scm"))
-            .ok()
-            .and_then(|res| match res.status().is_success() {
-                true => res.text().ok(),
-                false => None,
-            })
-            .map(|query| {
-                Ok::<_, anyhow::Error>(forked_from(
-                    &name,
-                    kind,
-                    &format!(
-                        "{:#}",
-                        rsexpr::from_slice_multi(&query)
-                            .map_err(|errs| anyhow!(errs
-                                .into_iter()
-                                .map(|err| err.to_string())
-                                .collect::<Vec<_>>()
-                                .join(", ")))
-                            .context("failed to parse downloaded queries")?
-                    ),
-                ))
-            })
-            .transpose()?;
+        let queries = fetch_query(&name, kind)?;
         if let Some(text) = queries {
             fs::write(
                 crate::WORKSPACE_DIR.join(format!("queries/{name}/{kind}.scm")),
@@ -256,14 +234,8 @@ fn is_compatible_tree_sitter(package: &str, version: &str) -> bool {
             dep.crate_id == "tree-sitter-language"
                 || (dep.crate_id == "tree-sitter"
                     && VersionReq::parse(&dep.req)
-                        .map_or(false, |req| req.matches(&TREE_SITTER_VERSION)))
+                        .is_ok_and(|req| req.matches(&TREE_SITTER_VERSION)))
         }),
         Err(_) => false,
     }
-}
-
-fn forked_from(name: &str, file: &str, content: &str) -> String {
-    format!(";; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/{name}/{file}.scm
-;; Licensed under the Apache License 2.0
-{content}")
 }

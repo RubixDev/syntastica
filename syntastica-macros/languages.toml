@@ -11,7 +11,7 @@ package = "tree-sitter-asm"
 crates-io = "0.24.0"
 [languages.queries]
 nvim-like = true
-injections = false
+injections = true
 locals = false
 
 [[languages]]
@@ -60,7 +60,7 @@ crates-io = "0.23.4"
 [languages.queries]
 nvim-like = true
 injections = true
-locals = false
+locals = true
 
 [[languages]]
 name = "c_sharp"
@@ -140,7 +140,7 @@ crates-io = "0.23.4"
 [languages.queries]
 nvim-like = true
 injections = true
-locals = false
+locals = true
 
 [[languages]]
 name = "css"
@@ -188,7 +188,7 @@ package = "tree-sitter-diff"
 crates-io = "0.1.0"
 [languages.queries]
 nvim-like = true
-injections = false
+injections = true
 locals = false
 
 [[languages]]
@@ -220,7 +220,7 @@ package = "tree-sitter-ebnf"
 # crates-io = "0.1.0"
 [languages.queries]
 nvim-like = true
-injections = false
+injections = true
 locals = false
 
 [[languages]]
@@ -333,7 +333,7 @@ crates-io = "0.23.1"
 [languages.queries]
 nvim-like = true
 injections = true
-locals = false
+locals = true
 
 [[languages]]
 name = "hexdump"
@@ -365,7 +365,7 @@ crates-io = "0.23.2"
 [languages.queries]
 nvim-like = true
 injections = true
-locals = false
+locals = true
 
 [[languages]]
 name = "java"
@@ -429,7 +429,7 @@ crates-io = "0.24.8"
 [languages.queries]
 nvim-like = true
 injections = false
-locals = false
+locals = true
 
 [[languages]]
 name = "json5"
@@ -461,7 +461,7 @@ package = "tree-sitter-jsonc"
 [languages.queries]
 nvim-like = true
 injections = true
-locals = false
+locals = true
 
 [[languages]]
 name = "julia"
@@ -544,7 +544,7 @@ package = "tree-sitter-llvm"
 # crates-io = ""
 [languages.queries]
 nvim-like = true
-injections = false
+injections = true
 locals = false
 
 [[languages]]
@@ -848,7 +848,7 @@ package = "tree-sitter-scss"
 # crates-io = "1.0.0"
 [languages.queries]
 nvim-like = true
-injections = false
+injections = true
 locals = false
 
 [[languages]]

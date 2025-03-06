@@ -54,5 +54,81 @@ pub fn run() -> Result<()> {
             fs::write(file.path().with_file_name(format!("new.{filename}")), query)?;
         }
     }
+
+    // look for missing queries
+    let langs_toml_path = crate::WORKSPACE_DIR.join("syntastica-macros/languages.toml");
+    let mut langs_toml = fs::read_to_string(&langs_toml_path)?;
+    for lang in &crate::LANGUAGE_CONFIG.languages {
+        let kinds = match (lang.queries.injections, lang.queries.locals) {
+            (false, false) => &["injections", "locals"][..],
+            (false, true) => &["injections"],
+            (true, false) => &["locals"],
+            (true, true) => &[],
+        };
+
+        for &kind in kinds {
+            let queries = fetch_query(&lang.name, kind)?;
+            if let Some(text) = queries {
+                fs::write(
+                    crate::WORKSPACE_DIR.join(format!("queries/{}/{kind}.scm", lang.name)),
+                    text,
+                )?;
+                println!("found new {kind} queries for {}", lang.name);
+
+                let (before, rest) = langs_toml
+                    .split_once(&format!("\nname = \"{}\"", lang.name))
+                    .expect("language should be lang config");
+                if kind == "injections" {
+                    langs_toml = format!(
+                        "{before}\nname = \"{}\"{}",
+                        lang.name,
+                        rest.replacen("\ninjections = false", "\ninjections = true", 1),
+                    );
+                } else if kind == "locals" {
+                    langs_toml = format!(
+                        "{before}\nname = \"{}\"{}",
+                        lang.name,
+                        rest.replacen("\nlocals = false", "\nlocals = true", 1),
+                    );
+                }
+            }
+        }
+    }
+    fs::write(&langs_toml_path, langs_toml)?;
+
     Ok(())
+}
+
+fn forked_from(name: &str, file: &str, content: &str) -> String {
+    format!(";; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/{name}/{file}.scm
+;; Licensed under the Apache License 2.0
+{content}")
+}
+
+pub fn fetch_query(name: &str, kind: &str) -> Result<Option<String>> {
+    const BASE_URL: &str =
+        "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/HEAD/queries";
+    reqwest::blocking::get(format!("{BASE_URL}/{name}/{kind}.scm"))
+        .ok()
+        .and_then(|res| match res.status().is_success() {
+            true => res.text().ok(),
+            false => None,
+        })
+        .map(|query| {
+            Ok::<_, anyhow::Error>(forked_from(
+                name,
+                kind,
+                &format!(
+                    "{:#}",
+                    rsexpr::from_slice_multi(&query)
+                        .map_err(|errs| anyhow!(errs
+                            .into_iter()
+                            .map(|err| err.to_string())
+                            .collect::<Vec<_>>()
+                            .join(", ")))
+                        .context("failed to parse downloaded queries")?
+                ),
+            ))
+        })
+        .transpose()
 }
