@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["run"]};
+window.SIDEBAR_ITEMS = {"fn":["fetch_query","forked_from","run"]};
