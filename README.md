@@ -1,7 +1,5 @@
 # `syntastica`
 
-<!-- TODO: msrv -->
-
 Modern and easy syntax highlighting using tree-sitter
 
 > **Note**
