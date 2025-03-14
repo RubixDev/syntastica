@@ -240,10 +240,10 @@ jobs:
           cache-on-failure: true
 
       - name: Run Codegen
-        run: cargo xtask codegen
+        run: cargo -Zgit xtask codegen
 
       - name: Build Rust Documentation
-        run: cargo doc --workspace --all-features --no-deps
+        run: cargo -Zgit doc --workspace --all-features --no-deps
 
       - name: Build TypeScript Documentation
         run: |
