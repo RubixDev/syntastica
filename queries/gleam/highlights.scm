@@ -7,6 +7,7 @@
   "panic"
   "todo"
   "use"
+  "echo"
 ] @keyword
 
 "type" @keyword.type

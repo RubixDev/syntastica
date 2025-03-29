@@ -160,7 +160,7 @@ json5 = []
 jsonc = []
 julia = ["dep:tree-sitter-julia"]
 kotlin = ["dep:tree-sitter-kotlin"]
-lalrpop = []
+lalrpop = ["dep:tree-sitter-LALRPOP"]
 latex = []
 llvm = []
 lua = ["dep:tree-sitter-lua"]
@@ -189,7 +189,7 @@ tsx = ["dep:tree-sitter-typescript"]
 typescript = ["dep:tree-sitter-typescript"]
 typst = []
 ursa = []
-verilog = ["dep:tree-sitter-verilog"]
+verilog = []
 wat = []
 yaml = ["dep:tree-sitter-yaml"]
 zig = ["dep:tree-sitter-zig"]
@@ -197,7 +197,7 @@ zig = ["dep:tree-sitter-zig"]
 [dependencies.tree-sitter-asm]
 optional = true
 git = "https://github.com/rush-rs/tree-sitter-asm"
-rev = "5bb5b03e3c1ce5853b5282b9fba060f7c7bbf11e"
+rev = "04962e15f6b464cf1d75eada59506dc25090e186"
 
 [dependencies.tree-sitter-bash]
 optional = true
@@ -217,7 +217,7 @@ rev = "b5eb5742f6a7e9438bee22ce8026d6b927be2cd7"
 [dependencies.tree-sitter-cmake]
 optional = true
 git = "https://github.com/uyha/tree-sitter-cmake"
-rev = "cd00bbcb77fe31283ca79b0038387ec7411759ae"
+rev = "fe48221d4d9842d916d66b5e71ab3c6307ec28b3"
 
 [dependencies.tree-sitter-cpp]
 optional = true
@@ -242,7 +242,7 @@ rev = "8495d106154741e6d35d37064f864758ece75de6"
 [dependencies.tree-sitter-elixir]
 optional = true
 git = "https://github.com/elixir-lang/tree-sitter-elixir"
-rev = "86ec2ed45d6d9433b4e0b88cd3d96796bd45625f"
+rev = "450a8194f5a66561135962cfc8d7545a27b61c4c"
 
 [dependencies.tree-sitter-fish]
 optional = true
@@ -252,7 +252,7 @@ rev = "70640c0696abde32622afc43291a385681afbd32"
 [dependencies.tree-sitter-gleam]
 optional = true
 git = "https://github.com/gleam-lang/tree-sitter-gleam"
-rev = "af6043419f5aa0f8b6c2a26db0187aefa46c7f5f"
+rev = "99ec4101504452c488b7c835fb65cfef75b090b7"
 
 [dependencies.tree-sitter-go]
 optional = true
@@ -299,10 +299,15 @@ optional = true
 git = "https://github.com/fwcd/tree-sitter-kotlin"
 rev = "c4ddea359a7ff4d92360b2efcd6cfce5dc25afe6"
 
+[dependencies.tree-sitter-LALRPOP]
+optional = true
+git = "https://github.com/traxys/tree-sitter-lalrpop"
+rev = "8d38e9755c05d37df8a24dadb0fc64f6588ac188"
+
 [dependencies.tree-sitter-lua]
 optional = true
 git = "https://github.com/muniftanjim/tree-sitter-lua"
-rev = "68d29aa745b68ae22cbbdb5dcb68c20232521ff6"
+rev = "db16e76558122e834ee214c8dc755b4a3edc82a9"
 
 [dependencies.tree-sitter-make]
 optional = true
@@ -312,17 +317,17 @@ rev = "5e9e8f8ff3387b0edcaa90f46ddf3629f4cfeb1d"
 [dependencies.tree-sitter-md]
 optional = true
 git = "https://github.com/MDeiml/tree-sitter-markdown"
-rev = "192407ab5a24bfc24f13332979b5e7967518754a"
+rev = "413285231ce8fa8b11e7074bbe265b48aa7277f9"
 
 [dependencies.tree-sitter-nix]
 optional = true
 git = "https://github.com/nix-community/tree-sitter-nix"
-rev = "48057cf966641e7a49b09700550751195c34bcb5"
+rev = "cfc53fd287d23ab7281440a8526c73542984669b"
 
 [dependencies.tree-sitter-ocaml]
 optional = true
 git = "https://github.com/tree-sitter/tree-sitter-ocaml"
-rev = "91e4d9106f5da8199ab5158ba65e02da3e664597"
+rev = "91708deb10cb4fe68ab3c50891426b9967dbf35a"
 
 [dependencies.tree-sitter-php]
 optional = true
@@ -362,27 +367,22 @@ rev = "babbc5c116ce964e89bc9ccc9df36d16c623fba9"
 [dependencies.tree-sitter-rust]
 optional = true
 git = "https://github.com/tree-sitter/tree-sitter-rust"
-rev = "6e883a2adea9414799300699e78c0d2f032b5c46"
+rev = "e86119bdb4968b9799f6a014ca2401c178d54b5f"
 
 [dependencies.tree-sitter-scala]
 optional = true
 git = "https://github.com/tree-sitter/tree-sitter-scala"
-rev = "d67fe3ba3879bd7ba74bd7f56c9a38fed241ba25"
+rev = "160e35520577d91576b08fb677aaee840c591dc2"
 
 [dependencies.tree-sitter-sequel]
 optional = true
 git = "https://github.com/derekstride/tree-sitter-sql"
-rev = "937641451304d12eda7c35bd0e113ffd3f556645"
+rev = "e7e8e1d10890102a4d7a46db651fd832e9b7b5dc"
 
 [dependencies.tree-sitter-typescript]
 optional = true
 git = "https://github.com/tree-sitter/tree-sitter-typescript"
 rev = "75b3874edb2dc714fb1fd77a32013d0f8699989f"
-
-[dependencies.tree-sitter-verilog]
-optional = true
-git = "https://github.com/gmlarumbe/tree-sitter-systemverilog"
-rev = "3251f8cee388314ed425c5e5da2021113f0b6afb"
 
 [dependencies.tree-sitter-yaml]
 optional = true

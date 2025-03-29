@@ -3,7 +3,7 @@ name = "asm"
 group = "most"
 file-types = ["asm", "vmasm"]
 [languages.parser]
-git = { url = "https://github.com/rush-rs/tree-sitter-asm", rev = "5bb5b03e3c1ce5853b5282b9fba060f7c7bbf11e" }
+git = { url = "https://github.com/rush-rs/tree-sitter-asm", rev = "04962e15f6b464cf1d75eada59506dc25090e186" }
 external-scanner = { c = false, cpp = false }
 ffi-func = "tree_sitter_asm"
 rust-const = "LANGUAGE"
@@ -99,7 +99,7 @@ name = "cmake"
 group = "most"
 file-types = ["cmake"]
 [languages.parser]
-git = { url = "https://github.com/uyha/tree-sitter-cmake", rev = "cd00bbcb77fe31283ca79b0038387ec7411759ae" }
+git = { url = "https://github.com/uyha/tree-sitter-cmake", rev = "fe48221d4d9842d916d66b5e71ab3c6307ec28b3" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_cmake"
 rust-const = "LANGUAGE"
@@ -163,10 +163,9 @@ name = "dart"
 group = "most"
 file-types = ["dart"]
 [languages.parser]
-git = { url = "https://github.com/UserNobody14/tree-sitter-dart", rev = "e81af6ab94a728ed99c30083be72d88e6d56cf9e" }
+git = { url = "https://github.com/UserNobody14/tree-sitter-dart", rev = "80e23c07b64494f7e21090bb3450223ef0b192f4" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_dart"
-# broken submodule config
 # rust-const = "LANGUAGE"
 package = "tree-sitter-dart"
 # crates-io = "0.0.4"
@@ -244,7 +243,7 @@ name = "elixir"
 group = "most"
 file-types = ["elixir"]
 [languages.parser]
-git = { url = "https://github.com/elixir-lang/tree-sitter-elixir", rev = "86ec2ed45d6d9433b4e0b88cd3d96796bd45625f" }
+git = { url = "https://github.com/elixir-lang/tree-sitter-elixir", rev = "450a8194f5a66561135962cfc8d7545a27b61c4c" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_elixir"
 rust-const = "LANGUAGE"
@@ -292,7 +291,7 @@ name = "gleam"
 group = "all"
 file-types = ["gleam"]
 [languages.parser]
-git = { url = "https://github.com/gleam-lang/tree-sitter-gleam", rev = "af6043419f5aa0f8b6c2a26db0187aefa46c7f5f" }
+git = { url = "https://github.com/gleam-lang/tree-sitter-gleam", rev = "99ec4101504452c488b7c835fb65cfef75b090b7" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_gleam"
 rust-const = "LANGUAGE"
@@ -500,11 +499,10 @@ name = "lalrpop"
 group = "all"
 file-types = []
 [languages.parser]
-git = { url = "https://github.com/traxys/tree-sitter-lalrpop", rev = "a7f5ea297bd621d072ed4cb2cc8ba5ae64ae3c4b" }
+git = { url = "https://github.com/traxys/tree-sitter-lalrpop", rev = "8d38e9755c05d37df8a24dadb0fc64f6588ac188" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_lalrpop"
-# see https://github.com/traxys/tree-sitter-lalrpop/pull/13
-# rust-const = "LANGUAGE"
+rust-const = "LANGUAGE"
 package = "tree-sitter-LALRPOP"
 # crates-io = ""
 [languages.queries]
@@ -552,7 +550,7 @@ name = "lua"
 group = "some"
 file-types = ["lua"]
 [languages.parser]
-git = { url = "https://github.com/muniftanjim/tree-sitter-lua", rev = "68d29aa745b68ae22cbbdb5dcb68c20232521ff6" }
+git = { url = "https://github.com/muniftanjim/tree-sitter-lua", rev = "db16e76558122e834ee214c8dc755b4a3edc82a9" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_lua"
 rust-const = "LANGUAGE"
@@ -600,7 +598,7 @@ name = "markdown"
 group = "most"
 file-types = ["markdown"]
 [languages.parser]
-git = { url = "https://github.com/MDeiml/tree-sitter-markdown", rev = "192407ab5a24bfc24f13332979b5e7967518754a", path = "tree-sitter-markdown" }
+git = { url = "https://github.com/MDeiml/tree-sitter-markdown", rev = "413285231ce8fa8b11e7074bbe265b48aa7277f9", path = "tree-sitter-markdown" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_markdown"
 rust-const = "LANGUAGE"
@@ -616,7 +614,7 @@ name = "markdown_inline"
 group = "most"
 file-types = []
 [languages.parser]
-git = { url = "https://github.com/MDeiml/tree-sitter-markdown", rev = "192407ab5a24bfc24f13332979b5e7967518754a", path = "tree-sitter-markdown-inline" }
+git = { url = "https://github.com/MDeiml/tree-sitter-markdown", rev = "413285231ce8fa8b11e7074bbe265b48aa7277f9", path = "tree-sitter-markdown-inline" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_markdown_inline"
 rust-const = "INLINE_LANGUAGE"
@@ -632,7 +630,7 @@ name = "nix"
 group = "most"
 file-types = ["nix"]
 [languages.parser]
-git = { url = "https://github.com/nix-community/tree-sitter-nix", rev = "48057cf966641e7a49b09700550751195c34bcb5" }
+git = { url = "https://github.com/nix-community/tree-sitter-nix", rev = "cfc53fd287d23ab7281440a8526c73542984669b" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_nix"
 rust-const = "LANGUAGE"
@@ -648,7 +646,7 @@ name = "ocaml"
 group = "all"
 file-types = ["ocaml"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-ocaml", rev = "91e4d9106f5da8199ab5158ba65e02da3e664597", path = "grammars/ocaml" }
+git = { url = "https://github.com/tree-sitter/tree-sitter-ocaml", rev = "91708deb10cb4fe68ab3c50891426b9967dbf35a", path = "grammars/ocaml" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_ocaml"
 rust-const = "LANGUAGE_OCAML"
@@ -664,7 +662,7 @@ name = "ocaml_interface"
 group = "all"
 file-types = ["ocamlinterface"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-ocaml", rev = "91e4d9106f5da8199ab5158ba65e02da3e664597", path = "grammars/interface" }
+git = { url = "https://github.com/tree-sitter/tree-sitter-ocaml", rev = "91708deb10cb4fe68ab3c50891426b9967dbf35a", path = "grammars/interface" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_ocaml_interface"
 rust-const = "LANGUAGE_OCAML_INTERFACE"
@@ -808,7 +806,7 @@ name = "rust"
 group = "some"
 file-types = ["rust"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-rust", rev = "6e883a2adea9414799300699e78c0d2f032b5c46" }
+git = { url = "https://github.com/tree-sitter/tree-sitter-rust", rev = "e86119bdb4968b9799f6a014ca2401c178d54b5f" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_rust"
 rust-const = "LANGUAGE"
@@ -824,7 +822,7 @@ name = "scala"
 group = "most"
 file-types = ["scala", "sbt"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-scala", rev = "d67fe3ba3879bd7ba74bd7f56c9a38fed241ba25" }
+git = { url = "https://github.com/tree-sitter/tree-sitter-scala", rev = "160e35520577d91576b08fb677aaee840c591dc2" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_scala"
 rust-const = "LANGUAGE"
@@ -845,6 +843,7 @@ external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_scss"
 # rust-const = "LANGUAGE"
 package = "tree-sitter-scss"
+# there is a package called "tree-sitter-scss" on crates.io, but that is a different scss parser
 # crates-io = "1.0.0"
 [languages.queries]
 nvim-like = true
@@ -857,7 +856,7 @@ group = "most"
 file-types = ["sql", "mysql"]
 [languages.parser]
 # has deployments on gh-pages branch
-git = { url = "https://github.com/derekstride/tree-sitter-sql", rev = "937641451304d12eda7c35bd0e113ffd3f556645" }
+git = { url = "https://github.com/derekstride/tree-sitter-sql", rev = "e7e8e1d10890102a4d7a46db651fd832e9b7b5dc" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_sql"
 rust-const = "LANGUAGE"
@@ -873,7 +872,7 @@ name = "swift"
 group = "most"
 file-types = ["swift"]
 [languages.parser]
-git = { url = "https://github.com/alex-pinkus/tree-sitter-swift", rev = "42ad8f6b4dc9b46285893cc37b460323b54932d4" }
+git = { url = "https://github.com/alex-pinkus/tree-sitter-swift", rev = "aca5a52aa3cab858944d3c02701ccf5b2d8fd0f9" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_swift"
 rust-const = "LANGUAGE"
@@ -970,11 +969,12 @@ name = "verilog"
 group = "all"
 file-types = ["verilog"]
 [languages.parser]
-git = { url = "https://github.com/gmlarumbe/tree-sitter-systemverilog", rev = "3251f8cee388314ed425c5e5da2021113f0b6afb" }
+git = { url = "https://github.com/gmlarumbe/tree-sitter-systemverilog", rev = "ba3c1e305caf948f718293c86c6018a82ed5043e" }
 external-scanner = { c = false, cpp = false }
 ffi-func = "tree_sitter_verilog"
-rust-const = "LANGUAGE"
-package = "tree-sitter-verilog"
+# wrong func name in bindings
+# rust-const = "LANGUAGE"
+package = "tree-sitter-systemverilog"
 # there is a package called "tree-sitter-verilog" on crates.io, but that is a different verilog parser
 # crates-io = ""
 [languages.queries]
