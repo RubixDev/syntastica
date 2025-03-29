@@ -1,7 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/package.json",
   "name": "@syntastica/lang-comment",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Comment language support for syntastica-js",
   "keywords": ["tree-sitter", "highlight", "parsing", "syntax"],
   "homepage": "https://github.com/RubixDev/syntastica/tree/main/syntastica-js#readme",
