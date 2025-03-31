@@ -111,7 +111,7 @@ include!("../../../syntastica-parsers-git/build_helper.rs");
   "keywords": ["tree-sitter", "highlight", "parsing", "syntax"],
   "homepage": "https://github.com/RubixDev/syntastica/tree/main/syntastica-js#readme",
   "bugs": "https://github.com/RubixDev/syntastica/issues",
-  "license": "GPL-3.0-only",
+  "license": "MPL-2.0",
   "author": "RubixDev",
   "funding": {{
     "url": "https://ko-fi.com/rubixdev",

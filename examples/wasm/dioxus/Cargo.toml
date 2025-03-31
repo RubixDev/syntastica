@@ -5,7 +5,7 @@ name = "syntastica-dioxus-demo"
 version = "0.1.0"
 authors = ["RubixDev <silas.groh@t-online.de>"]
 edition = "2021"
-license = "GPL-3.0-only"
+license = "MPL-2.0"
 
 [features]
 default = ["web"]
@@ -14,9 +14,9 @@ desktop = ["dioxus/desktop"]
 mobile = ["dioxus/mobile"]
 
 [dependencies]
-syntastica = { version = "0.5.1", path = "../../..", default-features = false, features = ["runtime-c2rust"] }
-syntastica-parsers-git = { version = "0.5.1", path = "../../../syntastica-parsers-git", default-features = false, features = ["runtime-c2rust", "rust"] }
-syntastica-themes = { version = "0.5.1", path = "../../../syntastica-themes", default-features = false, features = ["runtime-c2rust"] }
+syntastica = { version = "0.6.0", path = "../../..", default-features = false, features = ["runtime-c2rust"] }
+syntastica-parsers-git = { version = "0.6.0", path = "../../../syntastica-parsers-git", default-features = false, features = ["runtime-c2rust", "rust"] }
+syntastica-themes = { version = "0.6.0", path = "../../../syntastica-themes", default-features = false, features = ["runtime-c2rust"] }
 
 dioxus = "0.6.0"
 

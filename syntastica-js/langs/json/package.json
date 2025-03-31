@@ -1,12 +1,12 @@
 {
   "$schema": "https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/package.json",
   "name": "@syntastica/lang-json",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "Json language support for syntastica-js",
   "keywords": ["tree-sitter", "highlight", "parsing", "syntax"],
   "homepage": "https://github.com/RubixDev/syntastica/tree/main/syntastica-js#readme",
   "bugs": "https://github.com/RubixDev/syntastica/issues",
-  "license": "GPL-3.0-only",
+  "license": "MPL-2.0",
   "author": "RubixDev",
   "funding": {
     "url": "https://ko-fi.com/rubixdev",
