@@ -1,0 +1,1 @@
+(nonterminal_name (macro_id)@local.definition)(nonterminal_name (identifier)@local.definition)

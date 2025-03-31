@@ -1,0 +1,296 @@
+name: Main
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: write
+
+env:
+  CARGO_INCREMENTAL: 0
+  CARGO_NET_RETRY: 10
+  CARGO_TERM_COLOR: always
+  RUSTUP_MAX_RETRIES: 10
+
+jobs:
+  # run all cargo tests in workspace
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Restore Cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          cache-on-failure: true
+
+      - name: Run Codegen
+        run: cargo xtask codegen
+
+      - name: Run Tests
+        run: cargo test --workspace --all-features
+
+  # build syntastica-js
+  build-js:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Prepare CI
+        run: |
+          bash _prepare_ci.sh
+
+      - name: Install Toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          target: wasm32-unknown-emscripten
+
+      - name: Setup NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 23
+
+      - name: Setup Emscripten
+        uses: mymindstorm/setup-emsdk@v14
+        with:
+          actions-cache-folder: 'emsdk-cache'
+
+      - name: Restore Cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          cache-on-failure: true
+
+      - name: Run Codegen
+        run: cargo xtask codegen
+
+      - name: Prepare CI
+        run: |
+          bash _prepare_ci.sh
+
+      - name: Build Core Package
+        run: |
+          cd syntastica-js
+          npm ci
+          npm run build
+
+      - name: Build Language Packages
+        run: cargo xtask build-js-langs
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: syntastica-js
+          path: |
+            syntastica-js/pkg
+            syntastica-js/langs/*/*.wasm
+          retention-days: 5
+
+  # run and commit auto-generated code
+  codegen:
+    runs-on: ubuntu-latest
+    if: github.repository == 'RubixDev/syntastica'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Prepare CI
+        run: |
+          bash _prepare_ci.sh
+
+      - name: Install Toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Setup NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 23
+
+      - name: Install Jetbrains Mono
+        run: sudo apt update && sudo apt install -y fonts-jetbrains-mono
+
+      - name: Install Typst
+        uses: typst-community/setup-typst@v4
+        with:
+          typst-version: 'v0.13.0'
+
+      - name: Restore Cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          cache-on-failure: true
+
+      - name: Generate Code
+        run: cargo xtask codegen
+
+      - name: Create SVGs
+        run: cargo xtask theme-svgs
+
+      - name: Update Vite Example
+        run: cargo xtask update-vite-example
+        continue-on-error: true
+
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          add:
+            syntastica-queries/src/lib.rs syntastica-parsers/Cargo.toml
+            syntastica-parsers-gitdep/Cargo.toml syntastica-parsers*/README.md
+            syntastica-js/src/index.ts syntastica-themes/assets/theme-svgs
+            syntastica-themes/theme_list.md examples/wasm/vite/package*.json syntastica-js/langs
+          committer_name: github-actions[bot]
+          committer_email: 41898282+github-actions[bot]@users.noreply.github.com
+          message: 'chore: run codegen'
+
+      - name: Prepare Git Deployment
+        run: |
+          git checkout --orphan new-main main
+          git add --force syntastica-queries/generated_queries
+      - name: Create Git Deploy Commit
+        uses: EndBug/add-and-commit@v9
+        with:
+          committer_name: github-actions[bot]
+          committer_email: 41898282+github-actions[bot]@users.noreply.github.com
+          message: 'chore: git deploy'
+          push: false
+      - name: Push new Git Deployment
+        run: |
+          git branch -M new-main git-deploy
+          git push origin git-deploy --set-upstream --force
+
+      - name: Upload Queries as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: queries
+          path: syntastica-queries/generated_queries
+          retention-days: 10
+
+      - name: Upload Theme List as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: theme-list-md
+          path: syntastica-themes/theme_list.md
+          retention-days: 1
+
+      - name: Upload Vite Demo package.json as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: vite-demo
+          path: examples/wasm/vite/package*.json
+          retention-days: 1
+
+  # build the gh-pages site
+  pages:
+    needs:
+      - codegen
+    if: github.repository == 'RubixDev/syntastica'
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    env:
+      RUSTFLAGS: '--deny warnings -Zwasm_c_abi=spec'
+      DOCS_RS: true
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download Vite Demo package.json
+        uses: actions/download-artifact@v4
+        with:
+          name: vite-demo
+          path: examples/wasm/vite/
+
+      - name: Download theme_list.md
+        uses: actions/download-artifact@v4
+        with:
+          name: theme-list-md
+          path: syntastica-themes/
+
+      - name: Install Rust Toolchain
+        uses: dtolnay/rust-toolchain@nightly
+        with:
+          targets: wasm32-unknown-unknown
+
+      - name: Setup NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 23
+
+      - name: Install Dioxus CLI
+        uses: taiki-e/install-action@v2
+        with:
+          tool: dioxus-cli
+
+      - name: Install wasm-pack
+        uses: taiki-e/install-action@v2
+        with:
+          tool: wasm-pack
+
+      - name: Restore Cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          cache-targets: false
+          cache-on-failure: true
+
+      - name: Run Codegen
+        run: cargo -Zgit xtask codegen
+
+      - name: Build Rust Documentation
+        run: cargo -Zgit doc --workspace --all-features --no-deps
+
+      - name: Build TypeScript Documentation
+        run: |
+          cd syntastica-js
+          npm ci
+          npm run doc
+
+      - name: Build Vite Demo
+        run: |
+          cd examples/wasm/vite
+          # set base directory to `/syntastica/demos/vite/`
+          sed -i 's#defineConfig({#\0base:"/syntastica/demos/vite/",#g' vite.config.ts
+          npm ci
+          npm run build
+
+      - name: Build Dioxus Demo
+        run: |
+          cd examples/wasm/dioxus
+          # set base directory to `/syntastica/demos/dioxus/`
+          sed -i -E 's#(\[web.app\])#\1\nbase_path = "syntastica/demos/dioxus"#g' Dioxus.toml
+          dx build --release
+
+      - name: Build wasm-pack Demo
+        run: |
+          cd examples/wasm/wasm-pack
+          # set base directory to `/syntastica/demos/wasm-pack/`
+          sed -i 's#defineConfig({#\0base:"/syntastica/demos/wasm-pack/",#g' vite.config.ts
+          wasm-pack build --target web .
+          npm ci
+          npm run build
+
+      - name: Prepare GitHub Pages Deployment
+        run: |
+          # redirect to `syntastica` Rust docs from main page
+          echo '<meta http-equiv="Refresh" content="0; url=syntastica" />' >> target/doc/index.html
+          # copy over the TypeScript docs
+          cp -r syntastica-js/docs target/doc/js
+          # create the `demos` folder
+          mkdir -p target/doc/demos
+          # copy over the vite demo
+          cp -r examples/wasm/vite/dist target/doc/demos/vite
+          # copy over the dioxus demo
+          cp -r examples/wasm/dioxus/target/dx/syntastica-dioxus-demo/release/web/public target/doc/demos/dioxus
+          # copy over the wasm-pack demo
+          cp -r examples/wasm/wasm-pack/dist target/doc/demos/wasm-pack
+
+      - name: Deploy Docs
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: ./target/doc
