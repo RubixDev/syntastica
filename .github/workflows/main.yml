@@ -194,7 +194,7 @@ jobs:
     continue-on-error: true
     runs-on: ubuntu-latest
     env:
-      RUSTFLAGS: '--deny warnings'
+      RUSTFLAGS: '--deny warnings -Zwasm_c_abi=spec'
       DOCS_RS: true
 
     steps:

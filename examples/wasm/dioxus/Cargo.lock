@@ -4333,7 +4333,7 @@ dependencies = [
 
 [[package]]
 name = "syntastica"
-version = "0.5.0"
+version = "0.6.0"
 dependencies = [
  "aho-corasick",
  "syntastica-core",
@@ -4343,7 +4343,7 @@ dependencies = [
 
 [[package]]
 name = "syntastica-core"
-version = "0.5.0"
+version = "0.6.0"
 dependencies = [
  "palette",
  "syntastica-highlight",
@@ -4364,7 +4364,7 @@ dependencies = [
 
 [[package]]
 name = "syntastica-highlight"
-version = "0.5.0"
+version = "0.6.0"
 dependencies = [
  "regex",
  "streaming-iterator",
@@ -4374,7 +4374,7 @@ dependencies = [
 
 [[package]]
 name = "syntastica-macros"
-version = "0.5.0"
+version = "0.6.0"
 dependencies = [
  "heck 0.5.0",
  "once_cell",
@@ -4388,7 +4388,7 @@ dependencies = [
 
 [[package]]
 name = "syntastica-parsers-git"
-version = "0.5.0"
+version = "0.6.0"
 dependencies = [
  "cc",
  "once_cell",
@@ -4402,11 +4402,11 @@ dependencies = [
 
 [[package]]
 name = "syntastica-queries"
-version = "0.5.0"
+version = "0.6.0"
 
 [[package]]
 name = "syntastica-themes"
-version = "0.5.0"
+version = "0.6.0"
 dependencies = [
  "syntastica-core",
 ]
