@@ -14,9 +14,9 @@ desktop = ["dioxus/desktop"]
 mobile = ["dioxus/mobile"]
 
 [dependencies]
-syntastica = { version = "0.6.0", path = "../../..", default-features = false, features = ["runtime-c2rust"] }
-syntastica-parsers-git = { version = "0.6.0", path = "../../../syntastica-parsers-git", default-features = false, features = ["runtime-c2rust", "rust"] }
-syntastica-themes = { version = "0.6.0", path = "../../../syntastica-themes", default-features = false, features = ["runtime-c2rust"] }
+syntastica = { version = "0.6.1", path = "../../..", default-features = false, features = ["runtime-c2rust"] }
+syntastica-parsers-git = { version = "0.6.1", path = "../../../syntastica-parsers-git", default-features = false, features = ["runtime-c2rust", "rust"] }
+syntastica-themes = { version = "0.6.1", path = "../../../syntastica-themes", default-features = false, features = ["runtime-c2rust"] }
 
 dioxus = "0.6.0"
 

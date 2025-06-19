@@ -196,23 +196,68 @@
 ; See https://docs.swift.org/swift-book/documentation/the-swift-programming-language/lexicalstructure/#Keywords-and-Punctuation
 [
   (diagnostic)
+  ; crates.io skip
+  "available"
+  ; crates.io skip
+  "unavailable"
+  ; crates.io skip
+  "fileLiteral"
+  ; crates.io skip
+  "colorLiteral"
+  ; crates.io skip
+  "imageLiteral"
+  ; crates.io skip
+  "keyPath"
+  ; crates.io skip
+  "selector"
+  ; crates.io skip
+  "externalMacro"
+  ; non-crates.io skip
   "#available"
+  ; non-crates.io skip
   "#unavailable"
+  ; non-crates.io skip
   "#fileLiteral"
+  ; non-crates.io skip
   "#colorLiteral"
+  ; non-crates.io skip
   "#imageLiteral"
+  ; non-crates.io skip
   "#keyPath"
+  ; non-crates.io skip
   "#selector"
+  ; non-crates.io skip
   "#externalMacro"
 ] @function.macro
 
 [
+  ; crates.io skip
+  "column"
+  ; crates.io skip
+  "dsohandle"
+  ; crates.io skip
+  "fileID"
+  ; crates.io skip
+  "filePath"
+  ; crates.io skip
+  "file"
+  ; crates.io skip
+  "function"
+  ; crates.io skip
+  "line"
+  ; non-crates.io skip
   "#column"
+  ; non-crates.io skip
   "#dsohandle"
+  ; non-crates.io skip
   "#fileID"
+  ; non-crates.io skip
   "#filePath"
+  ; non-crates.io skip
   "#file"
+  ; non-crates.io skip
   "#function"
+  ; non-crates.io skip
   "#line"
 ] @constant.macro
 
