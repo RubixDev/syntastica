@@ -1,0 +1,1707 @@
+# A collection of example programs in various different languages,
+# used by the syntastica examples. The keys specify the language name.
+
+regex = '[a-fA-F0-9_]\s(.*)$'
+printf = '%s = %.3f; %5d, %-5d, %05d'
+luap = '^^charsq+w-e*r?.%.(%a%c%d%g%l%p%s%u%w%x%z%A)[asd]%f[^not]%1%b{}[%]a-z]$$'
+
+rust = '''
+fn fib(n: usize) -> usize {
+    if n < 2 {
+        n
+    } else {
+        fib(n - 1) + fib(n - 2)
+    }
+}
+
+// NOTE: test
+fn main() {
+    Regex::new(r"[a-fA-F0-9_]\s(.*)$");
+    let a = regex!(r"[a-fA-F0-9_]\s(.*)$");
+    if regex_is_match!(/* comment */ r"[a-fA-F0-9_]\s(.*)$"i, r"raw text \s[a-f]") {
+        return;
+    }
+}
+'''
+
+python = '''
+import re
+
+def fib(n: int) -> int:
+    if n < 2:
+        return n
+    return fib(n - 1) + fib(n - 2)
+
+def main():
+    re.compile(r'[a-fA-F0-9_]\s(.*)$')
+    print(f"fib(10) = {fib(10)}")
+'''
+
+c = '''
+int fib(int n) {
+    if (n < 2) {
+        return n;
+    }
+    return fib(n - 1) + fib(n - 2);
+}
+
+int main() {
+    printf("%s = %.3f; %5d, %-5d, %05d", "pi", 3.14159, 42, 42, 42);
+    return 0;
+}
+'''
+
+cpp = '''
+#include <iostream>
+
+int main() {
+    unsigned int a = 1, b = 1;
+    unsigned int target = 48;
+    for (unsigned int n = 3; n <= target; ++n) {
+        unsigned int fib = a + b;
+        std::cout << "F("<< n << ") = " << fib << std::endl;
+        a = b;
+        b = fib;
+    }
+
+    return 0;
+}
+'''
+
+css = '''
+:root {
+    --bg-dark: #000;
+}
+
+#app.dark {
+    background-color: var(--bg-dark);
+}
+'''
+
+go = '''
+import (
+    "math/big"
+    "fmt"
+)
+
+func fib(n uint64) *big.Int {
+    if n < 2 {
+        return big.NewInt(int64(n))
+    }
+    a, b := big.NewInt(0), big.NewInt(1)
+    for n--; n > 0; n-- {
+        a.Add(a, b)
+        a, b = b, a
+    }
+    return b
+}
+
+func main() {
+    regexp.Compile(`[a-fA-F0-9_]\s(.*)$`)
+    fmt.Printf("%s = %.3f; %5d, %-5d, %05d", "pi", 3.14159, 42, 42, 42)
+}
+'''
+
+html = '''
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="icon" type="image/svg+xml" href="/assets/logo.svg" />
+        <link rel="stylesheet" href="/assets/theme.css" />
+        <link rel="stylesheet" href="/src/global.scss" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="The playground for the rush programming language" />
+        <title>rush Playground</title>
+    </head>
+    <body>
+        <div id="app"></div>
+        <script type="module" src="/src/main.ts"></script>
+        <style>
+            :root {
+                --bg-dark: #000;
+            }
+
+            #app.dark {
+                background-color: var(--bg-dark);
+            }
+        </style>
+        <button style="background-color: red" onclick="alert(window.location.href)">Test</button>
+    </body>
+</html>
+'''
+
+java = '''
+class Fibonacci {
+    /**
+    * O(log(n))
+    */
+    public static long fib(long n) {
+        if (n <= 0)
+        return 0;
+
+        long i = (int) (n - 1);
+        long a = 1, b = 0, c = 0, d = 1, tmp1,tmp2;
+
+        while (i > 0) {
+            if (i % 2 != 0) {
+                tmp1 = d * b + c * a;
+                tmp2 = d * (b + a) + c * b;
+                a = tmp1;
+                b = tmp2;
+            }
+
+            tmp1 = (long) (Math.pow(c, 2) + Math.pow(d, 2));
+            tmp2 = d * (2 * c + d);
+
+            c = tmp1;
+            d = tmp2;
+
+            i = i / 2;
+        }
+        return a + b;
+    }
+}
+'''
+
+javascript = '''
+/**
+ * Calculate a number as of the Fibonacci sequence.
+ *
+ * @example
+ * var result = fib(10); // results in 55
+ *
+ * @param {number} n: index of number to calculate
+ */
+var fib = (function(cache){
+    return cache = cache || {}, function(n){
+        if (cache[n]) return cache[n];
+        else return cache[n] = n == 0 ? 0 : n < 0 ? -fib(-n)
+            : n <= 2 ? 1 : fib(n-2) + fib(n-1);
+    };
+})();
+'''
+
+json = '''
+{
+    "key": "value",
+    "good": false,
+    "age": 42,
+    "percentage": 0.3,
+    "nothing": null,
+    "list": [1, 2, 3],
+    "object": {
+        "key": "value"
+    }
+}
+'''
+
+tsx = '''
+interface FooProp {
+  name: string;
+  X: number;
+  Y: number;
+}
+declare function AnotherComponent(prop: { name: string });
+function ComponentFoo(prop: FooProp) {
+  return <AnotherComponent name={prop.name} />;
+}
+const Button = (prop: { value: string }, context: { color: string }) => (
+  <button />
+);
+'''
+
+typescript = '''
+interface User {
+  name: string;
+  id: number;
+}
+
+class UserAccount {
+  name: string;
+  id: number;
+
+  constructor(name: string, id: number) {
+    this.name = name;
+    this.id = id;
+  }
+}
+
+const user: User = new UserAccount("Murphy", 1);
+'''
+
+asm = '''
+.intel_syntax
+.global _start
+
+.section .text
+
+_start:
+    call        main..main
+    mov         %rdi, 0
+    call        exit
+
+main..main:
+    push        %rbp
+    mov         %rbp, %rsp
+    sub         %rsp, 32
+    mov         qword ptr [%rbp-8], 3
+    lea         %rax, qword ptr [%rbp-8]
+    mov         qword ptr [%rbp-16], %rax
+    lea         %rax, qword ptr [%rbp-16]
+    mov         qword ptr [%rbp-24], %rax
+    mov         %rax, qword ptr [%rbp-24]
+    mov         %rax, qword ptr [%rax]
+    mov         qword ptr [%rbp-32], %rax
+    mov         %rdi, qword ptr [%rbp-24]
+    mov         %rdi, qword ptr [%rdi]
+    mov         %rdi, qword ptr [%rdi]
+    mov         %rsi, qword ptr [%rbp-24]
+    mov         %rsi, qword ptr [%rsi]
+    mov         %rsi, qword ptr [%rsi]
+    call        __rush_internal_pow_int
+    mov         %rdi, %rax
+    mov         %rax, qword ptr [%rbp-32]
+    mov         qword ptr [%rax], %rdi
+    mov         %rdi, qword ptr [%rbp-24]
+    mov         %rdi, qword ptr [%rdi]
+    mov         %rdi, qword ptr [%rdi]
+    call        exit
+main..main.return:
+    leave
+    ret
+'''
+
+bash = '''
+#!/bin/bash
+
+fib()
+{
+  if [ $1 -le 0 ]
+  then
+    echo 0
+    return 0
+  fi
+  if [ $1 -le 2 ]
+  then
+    echo 1
+  else
+    a=$(fib $[$1-1])
+    b=$(fib $[$1-2])
+    echo $(($a+$b))
+  fi
+}
+'''
+
+c_sharp = '''
+public static ulong Fib(uint x) {
+    if (x == 0) return 0;
+
+    ulong prev = 0;
+    ulong next = 1;
+    for (int i = 1; i < x; i++)
+    {
+        ulong sum = prev + next;
+        prev = next;
+        next = sum;
+    }
+    return next;
+}
+'''
+
+haskell = '''
+import Data.CReal
+
+phi = (1 + sqrt 5) / 2
+
+fib :: (Integral b) => b -> CReal 0
+fib n = (phi^^n - (-phi)^^(-n))/sqrt 5
+'''
+
+php = '''
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table, th, td {
+    border: 1px solid black;
+}
+</style>
+</head>
+<body>
+
+<?php
+$servername = "localhost";
+$username = "username";
+$password = "password";
+$dbname = "myDB";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+$sql = "SELECT id, firstname, lastname FROM MyGuests";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    echo "<table><tr><th>ID</th><th>Name</th></tr>";
+    // output data of each row
+    while($row = $result->fetch_assoc()) {
+        echo "<tr><td>" . $row["id"]. "</td><td>" . $row["firstname"]. " " . $row["lastname"]. "</td></tr>";
+    }
+    echo "</table>";
+} else {
+    echo "0 results";
+}
+
+$conn->close();
+?>
+
+</body>
+</html>
+'''
+
+ruby = '''
+def fib(n)
+  if n < 2
+    n
+  else
+    prev, fib = 0, 1
+    (n-1).times do
+      prev, fib = fib, fib + prev
+    end
+    fib
+  end
+end
+
+p (0..10).map { |i| fib(i) }
+'''
+
+scala = '''
+import scala.annotation.tailrec
+@tailrec
+final def fib(x: Int, prev: BigInt = 0, next: BigInt = 1): BigInt = x match {
+  case 0 => prev
+  case _ => fib(x - 1, next, next + prev)
+}
+'''
+
+ejs = '''
+<span>
+  <% console.log('Hello, World!') -%>
+</span>
+'''
+
+erb = '''
+<div>
+  <% names.each do |name| _%>
+    <div>
+      <%= name -%>
+      <%== x %>
+      <%|= x %>
+      <%== x %>
+      <%| end %>
+    </div>
+    <span>
+      <% something() -%>
+    </span>
+  <%_ end %>
+</div>
+
+<%graphql
+  fragment HumanFragment on Human {
+    name
+    homePlanet
+  }
+%>
+
+<p><%= human.name %> lives on <%= human.home_planet %>.</p>
+'''
+
+hexdump = '''
+0000:   0061 736d 0100 0000  010d 0360 017f 0060   .asm.......`...`
+0010:   0000 6001 7e01 7e02  2401 1677 6173 695f   ..`.~.~.$..wasi_
+0020:   736e 6170 7368 6f74  5f70 7265 7669 6577   snapshot_preview
+0030:   3109 7072 6f63 5f65  7869 7400 0003 0302   1.proc_exit.....
+0040:   0102 0503 0100 0007  1302 065f 7374 6172   ..........._star
+0050:   7400 0106 6d65 6d6f  7279 0200 0801 010a   t...memory......
+0060:   2902 0a00 420a 1002  a710 0000 0b1c 0020   )...B..........
+0070:   0042 0253 047e 2000  0520 0042 027d 1002   .B.S.~ .. .B.}..
+0080:   2000 4201 7d10 027c  0b0b 002a 046e 616d    .B.}..|...*.nam
+0090:   6501 1903 000b 5f5f  7761 7369 5f65 7869   e.....__wasi_exi
+00a0:   7401 046d 6169 6e02  0366 6962 0208 0201   t..main..fib....
+00b0:   0002 0100 016e                             .....n
+'''
+
+julia = '''
+function fib(n)
+  x,y = (0,1)
+  for i = 1:n x,y = (y, x+y) end
+  x
+end
+'''
+
+ocaml = '''
+open Num
+
+let fib =
+  let rec fib_aux f0 f1 = function
+    | 0 -> f0
+    | 1 -> f1
+    | n -> fib_aux f1 (f1 +/ f0) (n - 1)
+  in
+  fib_aux (num_of_int 0) (num_of_int 1)
+
+(* support for negatives *)
+let fib n =
+      if n < 0 && n mod 2 = 0 then minus_num (fib (abs n))
+      else fib (abs n)
+;;
+(* It can be called from the command line with an argument *)
+(* Result is send to standard output *)
+let n = int_of_string Sys.argv.(1) in
+print_endline (string_of_num (fib n))
+'''
+
+ocaml_interface = '''
+external x : int = "x"
+external x : 'a . 'a = "x"
+
+type t
+type nonrec 'a t = t and ('a, 'b) t = t
+type t = private t
+type t = A | B of t | C of t * t | D of {x : t}
+type _ t =
+  | A : t -> t
+  | B : 'a . 'a -> 'a t
+type t = {
+  mutable x : t;
+}
+type t = t constraint 'a = t
+type t = |
+
+exception E
+exception E of t
+
+module M
+module M : T
+module M (M : T) : E
+module rec M : T and M : T
+
+module M = M
+module M := M
+module M : T = M
+module M (M : T) = M
+module rec M = N and N = M
+
+module _ (_ : T) = M
+
+module type T = T
+module type T := T
+
+open M
+open! M
+open ! M
+
+val x : t
+val x : 'a . 'a
+
+include M
+include t
+include M.M
+include M.t
+include M.M.M
+include M.M.t
+'''
+
+ql = '''
+/**
+ * @name Information disclosure through postMessage
+ * @description Tracks values from an 'authKey' property into a postMessage call with unrestricted origin,
+ *              indicating a leak of sensitive information.
+ * @kind path-problem
+ * @problem.severity warning
+ * @tags security
+ * @id js/examples/information-disclosure
+ */
+
+import javascript
+import DataFlow
+import DataFlow::PathGraph
+
+/**
+ * A dataflow configuration that tracks authentication tokens ("authKey")
+ * to a postMessage call with unrestricted target origin.
+ *
+ * For example:
+ * ```
+ * win.postMessage(JSON.stringify({
+ *  action: 'pause',
+ *  auth: {
+ *    key: window.state.authKey
+ *  }
+ * }), '*');
+ * ```
+ */
+class AuthKeyTracking extends DataFlow::Configuration {
+  AuthKeyTracking() { this = "AuthKeyTracking" }
+
+  override predicate isSource(Node node) { node.(PropRead).getPropertyName() = "authKey" }
+
+  override predicate isSink(Node node) {
+    exists(MethodCallNode call |
+      call.getMethodName() = "postMessage" and
+      call.getArgument(1).getStringValue() = "*" and // no restriction on target origin
+      call.getArgument(0) = node
+    )
+  }
+
+  override predicate isAdditionalFlowStep(Node pred, Node succ) {
+    // Step into objects: x -> { f: x }
+    succ.(SourceNode).getAPropertyWrite().getRhs() = pred
+    or
+    // Step through JSON serialization: x -> JSON.stringify(x)
+    // Note: TaintTracking::Configuration includes this step by default, but not DataFlow::Configuration
+    exists(CallNode call |
+      call = globalVarRef("JSON").getAMethodCall("stringify") and
+      pred = call.getArgument(0) and
+      succ = call
+    )
+  }
+}
+
+from AuthKeyTracking cfg, PathNode source, PathNode sink
+where cfg.hasFlowPath(source, sink)
+select sink.getNode(), source, sink, "Message leaks the authKey from $@.", source.getNode(), "here"
+'''
+
+verilog = '''
+module toplevel(clock,reset);
+  input clock;
+  input reset;
+
+  reg flop1;
+  reg flop2;
+
+  always @ (posedge reset or posedge clock)
+    if (reset)
+      begin
+        flop1 <= 0;
+        flop2 <= 1;
+      end
+    else
+      begin
+        flop1 <= flop2;
+        flop2 <= flop1;
+      end
+endmodule
+'''
+
+rush = '''
+// Calculates a number in the Fibonacci sequence.
+fn main() {
+    // fib(10) = 55
+    exit(fib(10));
+}
+
+fn fib(n: int) -> int {
+    if n < 2 {
+        n
+    } else {
+        fib(n - 2) + fib(n - 1)
+    }
+}
+'''
+
+wat = '''
+(module
+  (type (;0;) (func (param i32)))
+  (type (;1;) (func))
+  (type (;2;) (func (param i64) (result i64)))
+  (import "wasi_snapshot_preview1" "proc_exit" (func $__wasi_exit (;0;) (type 0)))
+  (func $main (;1;) (type 1)
+    i64.const 10
+    call $fib
+    i32.wrap_i64
+    call $__wasi_exit
+    unreachable
+  )
+  (func $fib (;2;) (type 2) (param $n i64) (result i64)
+    local.get $n
+    i64.const 2
+    i64.lt_s
+    if (result i64) ;; label = @1
+      local.get $n
+    else
+      local.get $n
+      i64.const 2
+      i64.sub
+      call $fib
+      local.get $n
+      i64.const 1
+      i64.sub
+      call $fib
+      i64.add
+    end
+  )
+  (memory (;0;) 0)
+  (export "_start" (func $main))
+  (export "memory" (memory 0))
+  (start $main)
+)
+'''
+
+ebnf = '''
+Program = { Item } ;
+
+Item               = FunctionDefinition | LetStmt ;
+FunctionDefinition = 'fn' , ident , '(' , [ ParameterList ] , ')'
+                   , [ '->' , Type ] , Block ;
+ParameterList      = Parameter , { ',' , Parameter } , [ ',' ] ;
+Parameter          = [ 'mut' ] , ident , ':' , Type ;
+
+Block = '{' , { Statement } , [ Expression ] , '}' ;
+Type  = { '*' } , ( ident
+                  | '(' , ')' ) ;
+
+Statement    = LetStmt | ReturnStmt | LoopStmt | WhileStmt | ForStmt
+             | BreakStmt | ContinueStmt | ExprStmt ;
+LetStmt      = 'let' , [ 'mut' ] , ident , [ ':' , Type ] , '='
+             , Expression , ';' ;
+ReturnStmt   = 'return' , [ Expression ] , ';' ;
+LoopStmt     = 'loop' , Block , [ ';' ] ;
+WhileStmt    = 'while' , Expression , Block , [ ';' ] ;
+ForStmt      = 'for' , ident , '=' , Expression , ';' , Expression
+             , ';' , Expression , Block , [ ';' ] ;
+BreakStmt    = 'break' , ';' ;
+ContinueStmt = 'continue' , ';' ;
+ExprStmt     = ExprWithoutBlock , ';'
+             | ExprWithBlock , [ ';' ] ;
+
+Expression       = ExprWithoutBlock | ExprWithBlock ;
+ExprWithBlock    = Block | IfExpr ;
+IfExpr           = 'if' , Expression , Block , [ 'else' , ( IfExpr
+                                                          | Block ) ] ;
+ExprWithoutBlock = int
+                 | float
+                 | bool
+                 | char
+                 | ident
+                 | PrefixExpr
+                 | InfixExpr
+                 | AssignExpr
+                 | CallExpr
+                 | CastExpr
+                 | '(' , Expression , ')' ;
+PrefixExpr       = PREFIX_OPERATOR , Expression ;
+InfixExpr        = Expression , INFIX_OPERATOR , Expression ;
+(* The left hand side can only be an `ident` or a `PrefixExpr` with the `*` operator *)
+AssignExpr       = Expression , ASSIGN_OPERATOR , Expression ;
+CallExpr         = ident , '(' , [ ArgumentList ] , ')' ;
+ArgumentList     = Expression , { ',' , Expression } , [ ',' ] ;
+CastExpr         = Expression , 'as' , Type ;
+
+ident = LETTER , { LETTER | DIGIT } ;
+int   = DIGIT , { DIGIT | '_' }
+      | '0x' , HEX , { HEX | '_' } ;
+float = DIGIT , { DIGIT | '_' } , ( '.' , DIGIT , { DIGIT | '_' }
+                                  | 'f' ) ;
+char  = "'" , ( ASCII_CHAR - '\'
+              | '\' , ( ESCAPE_CHAR
+                      | "'"
+                      | 'x' , 2 * HEX ) ) , "'" ;
+bool  = 'true' | 'false' ;
+
+comment = '//' , { CHAR } , ? LF ?
+        | '/*' , { CHAR } , '*/' ;
+
+LETTER      = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I'
+            | 'J' | 'K' | 'L' | 'M' | 'N' | 'O' | 'P' | 'Q' | 'R'
+            | 'S' | 'T' | 'U' | 'V' | 'W' | 'X' | 'Y' | 'Z' | 'a'
+            | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h' | 'i' | 'j'
+            | 'k' | 'l' | 'm' | 'n' | 'o' | 'p' | 'q' | 'r' | 's'
+            | 't' | 'u' | 'v' | 'w' | 'x' | 'y' | 'z' | '_' ;
+DIGIT       = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8'
+            | '9' ;
+HEX         = DIGIT | 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'a'
+            | 'b' | 'c' | 'd' | 'e' | 'f' ;
+CHAR        = ? any UTF-8 character ? ;
+ASCII_CHAR  = ? any ASCII character ? ;
+ESCAPE_CHAR = '\' | 'b' | 'n' | 'r' | 't' ;
+
+PREFIX_OPERATOR     = '!' | '-' | '&' | '*' ;
+INFIX_OPERATOR      = ARITHMETIC_OPERATOR | RELATIONAL_OPERATOR
+                    | BITWISE_OPERATOR | LOGICAL_OPERATOR ;
+ARITHMETIC_OPERATOR = '+' | '-' | '*' | '/' | '%' | '**' ;
+RELATIONAL_OPERATOR = '==' | '!=' | '<' | '>' | '<=' | '>=' ;
+BITWISE_OPERATOR    = '<<' | '>>' | '|' | '&' | '^' ;
+LOGICAL_OPERATOR    = '&&' | '||' ;
+ASSIGN_OPERATOR     = '=' | '+=' | '-=' | '*=' | '/=' | '%='
+                    | '**=' | '<<=' | '>>=' | '|=' | '&=' | '^=' ;
+'''
+
+llvm = '''
+; ModuleID = 'main'
+source_filename = "main"
+target triple = "x86_64-pc-linux-gnu"
+
+define internal i1 @foo(i64 %0) {
+entry:
+  %i_sum = add i64 %0, 3
+  call void @exit(i64 %i_sum)
+  unreachable
+}
+
+declare void @exit(i64)
+
+define i32 @main() {
+entry:
+  %ret_foo = call i1 @foo(i64 2)
+  ret i32 0
+}
+'''
+
+dart = '''
+int fib(int n) {
+  if (n==0 || n==1) {
+    return n;
+  }
+  var prev=1;
+  var current=1;
+  for (var i=2; i<n; i++) {
+    var next = prev + current;
+    prev = current;
+    current = next;
+  }
+  return current;
+}
+
+int fibRec(int n) => n==0 || n==1 ? n : fibRec(n-1) + fibRec(n-2);
+
+main() {
+  print(fib(11));
+  print(fibRec(11));
+}
+'''
+
+diff = '''
+diff --git a/xtask/src/add_lang.rs b/xtask/src/add_lang.rs
+index 990eae60..f535802a 100644
+--- a/xtask/src/add_lang.rs
++++ b/xtask/src/add_lang.rs
+@@ -13,7 +13,7 @@ use once_cell::sync::Lazy;
+ use serde_json::{Map, Value};
+
+ static URL_REGEX: Lazy<Regex> =
+-    Lazy::new(|| Regex::new(r"https:\/\/github\.com\/([^\/]*)\/([^\/?#]*)").unwrap());
++    Lazy::new(|| Regex::new(r"https:\/\/(github|gitlab)\.com\/([^\/]*)\/([^\/?#]*)").unwrap());
+
+ pub fn run() -> Result<()> {
+     let group = env::args()
+@@ -30,10 +30,17 @@ pub fn run() -> Result<()> {
+     let rev = get_rev(&url).with_context(|| "unable to fetch latest revision of repository")?;
+
+     let content_url = match URL_REGEX.captures(&url) {
+-        Ok(Some(groups)) => Some(format!(
+-            "https://raw.githubusercontent.com/{}/{}/{rev}",
+-            &groups[1], &groups[2],
+-        )),
++        Ok(Some(groups)) => match &groups[1] {
++            "github" => Some(format!(
++                "https://raw.githubusercontent.com/{}/{}/{rev}",
++                &groups[2], &groups[3],
++            )),
++            "gitlab" => Some(format!(
++                "https://gitlab.com/{}/{}/-/raw/{rev}",
++                &groups[2], &groups[3],
++            )),
++            _ => unreachable!("the regex only allows above options"),
++        },
+         _ => None,
+     };
+     let path_in_url = match &path {
+'''
+
+json5 = '''
+{
+    key: "value",
+    good: false,
+    age: 42,
+    percentage: 0.3,
+    nothing: null,
+    list: [1, 2, 3],
+    // NOTE: line comment
+    object: {
+        "key": /* block comment */ "value",
+    },
+}
+'''
+
+jsonc = '''
+{
+    "key": "value",
+    "good": false,
+    "age": 42,
+    "percentage": 0.3,
+    "nothing": null,
+    "list": [1, 2, 3],
+    // line comment
+    "object": {
+        "key": /* block comment */ "value"
+    }
+}
+'''
+
+latex = '''
+\documentclass[english, 12pt, listof=totoc, listof=flat, tablecaptionabove, draft=false, twoside=true]{scrreprt}
+
+\usepackage[a4paper, left=2.5cm, right=2cm, top=1.5cm, bottom=2cm, footskip=.8cm]{geometry}
+
+\begin{document}
+\include{content/titlepage}
+\include{content/abstract}
+\tableofcontents
+
+\chapter{Introduction}\label{chap:introduction}
+\input{content/chapter_0/introduction}
+\end{document}
+'''
+
+lua = '''
+-- more pedantic version, returns 0 for non-integer n
+function pfibs(n)
+  if n ~= math.floor(n) then return 0
+  elseif n < 0 then return pfibs(n + 2) - pfibs(n + 1)
+  elseif n < 2 then return n
+  else return pfibs(n - 1) + pfibs(n - 2)
+  end
+end
+
+'test':gsub('^^charsq+w-e*r?.%.(%a%c%d%g%l%p%s%u%w%x%z%A)[asd]%f[^not]%1%b{}[%]a-z]$$', 'hi')
+'''
+
+markdown = '''
+# Heading 1
+
+## Heading 2
+
+Content.
+
+- list item 1
+- list item 2
+
+---
+
+1. list item 1
+2. list item 2
+
+```rust
+fn main() {}
+```
+'''
+
+markdown_inline = '''
+**strong** _italic_ ~strikethrough~ [link](https://example.com)
+'''
+
+scss = '''
+@use "sass:math";
+
+$font-stack: Helvetica, sans-serif;
+$primary-color: #333;
+
+body {
+  font: 100% $font-stack;
+  color: $primary-color;
+}
+
+nav {
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li { display: inline-block; }
+
+  a {
+    display: block;
+    padding: 6px 12px;
+    text-decoration: none;
+  }
+}
+
+@mixin theme($theme: DarkGray) {
+  background: $theme;
+  box-shadow: 0 0 1px rgba($theme, .25);
+  color: #fff;
+}
+
+.info {
+  @include theme;
+}
+.alert {
+  @include theme($theme: DarkRed);
+}
+.success {
+  @include theme($theme: DarkGreen);
+}
+
+article[role="main"] {
+  width: math.div(600px, 960px) * 100%;
+}
+'''
+
+yaml = '''
+---
+key: value
+good: false
+age: 42
+percentage: 0.3
+nothing:
+list:
+- 1
+- 2
+- 3
+object:
+  key: 'value'
+'''
+
+toml = '''
+[package]
+name = "syntastica"
+version = "0.3.0"
+authors.workspace = true
+edition = "2021"
+keywords = ["tree-sitter", "syntect", "highlight", "parsing", "syntax"]
+license.workspace = true
+repository.workspace = true
+description = "Modern and easy syntax highlighting using tree-sitter"
+'''
+
+ursa = '''
+print("hello, woods!")
+
+let fac = null
+fn fac(x) {
+  if x == 0 {1} else {x * fac(x - 1)}
+}
+fac(6)
+
+let sum = fn(l) {
+  let tot = 0
+  let i = 0
+  loop {
+    if i == l.length { return tot }
+    tot = tot + l[i]
+    i = i + 1
+  }
+}
+sum([10, 30, 50, 5, 5])
+
+let newAccums = fn() {
+  let tot = 0
+  [
+    fn(x) {
+      tot = tot + x
+    },
+    fn(x) {
+      tot = tot + x
+    },
+  ]
+}
+let accums = newAccums()
+let accums2 = newAccums()
+[
+  [accums[0](1), accums[0](1), accums2[0](1)],
+  [accums[1](1), accums[1](1), accums2[1](1)],
+]
+'''
+
+kotlin = '''
+fun fib(n: Int): Int =
+    if (n < 2) n else fib(n - 1) + fib(n - 2)
+
+// NOTE: test
+fun main() {
+    "[a-fA-F0-9_]\s(.*)$".toRegex()
+    println("Hello, World!")
+    "%s = %.3f; %5d, %-5d, %05d".format("pi", 3.14159, 42, 42, 42)
+}
+
+abstract class Person(val name: String) {
+    abstract fun greet()
+}
+
+interface FoodConsumer {
+    fun eat()
+    fun pay(amount: Int) = println("Delicious! Here's $amount bucks!")
+}
+
+class RestaurantCustomer(name: String, val dish: String) : Person(name), FoodConsumer {
+    fun order() = println("$dish, please!")
+    override fun eat() = println("*Eats $dish*")
+    override fun greet() = println("It's me, $name.")
+}
+'''
+
+typst = '''
+#set par(justify: true)
+
+// NOTE: this is a comment
+
+= Introduction
+Glaciers as the one shown in @glaciers will cease
+to exist if we don't take action soon!
+
+#figure(
+  image("glacier.jpg", width: 70%),
+  caption: [
+    _Glaciers_ form an important part
+    of the earth's climate system.
+  ],
+) <glaciers>
+
+== Maths
+Total displaced soil by glacial flow:
+
+$ 7.32 beta + sum_(i=0)^nabla Q_i / 2 $
+
+== Show Rules
+#show "ArtosFlow": name => box[
+  #box(image(
+    "logo.svg",
+    height: 0.7em,
+  ))
+  #name
+]
+
+This report is embedded in the ArtosFlow project.
+ArtosFlow is a project of the Artos Institute.
+
+== Raw Blocks
+
+```rust
+fn main() {}
+```
+'''
+
+comment = '''
+NOTE: this is a note
+WARNING: this is a warning
+FIXME: this should be fixed
+'''
+
+bibtex = '''
+@string{anch-ie = {Angew.~Chem. Int.~Ed.}}
+@string{cup     = {Cambridge University Press}}
+@string{dtv     = {Deutscher Taschenbuch-Verlag}}
+@string{hup     = {Harvard University Press}}
+@string{jams    = {J.~Amer. Math. Soc.}}
+@string{jchph   = {J.~Chem. Phys.}}
+@string{jomch   = {J.~Organomet. Chem.}}
+@string{pup     = {Princeton University Press}}
+
+@incollection{westfahl:space,
+  author       = {Westfahl, Gary},
+  title        = {The True Frontier},
+  subtitle     = {Confronting and Avoiding the Realities of Space in {American}
+                  Science Fiction Films},
+  pages        = {55-65},
+  crossref     = {westfahl:frontier},
+  langid       = {english},
+  langidopts   = {variant=american},
+  indextitle   = {True Frontier, The},
+  annotation   = {A cross-referenced article from a \texttt{collection}. This is
+                  an \texttt{incollection} entry with a \texttt{crossref}
+                  field. Note the \texttt{subtitle} and \texttt{indextitle}
+                  fields},
+}
+'''
+
+sql = '''
+-- NOTE: test
+SELECT MAX(m.id) max
+FROM my_table m
+WHERE m.id > 4
+  AND m.title LIKE '%foo%';
+
+CREATE TEMP SEQUENCE IF NOT EXISTS serial
+AS BIGINT
+INCREMENT BY 3
+MINVALUE 10
+MAXVALUE 9999
+START 101 CACHE 1000 NO CYCLE
+OWNED BY numbers.number_sequences;
+
+CREATE SCHEMA hollywood
+    CREATE TABLE films (title text, release date, awards text[])
+    CREATE VIEW winners AS
+        SELECT title, release FROM films WHERE awards IS NOT NULL;
+'''
+
+zig = '''
+const std = @import("std");
+const parseInt = std.fmt.parseInt;
+
+// NOTE: test
+pub fn main() !void {
+    const stdout = std.io.getStdOut().writer();
+    try stdout.print("hello world!\n", .{});
+}
+
+test "parse integers" {
+    const input = "123 67 89,99";
+    const ally = std.testing.allocator;
+
+    var list = std.ArrayList(u32).init(ally);
+    // Ensure the list is freed at scope exit.
+    // Try commenting out this line!
+    defer list.deinit();
+
+    var it = std.mem.tokenizeAny(u8, input, " ,");
+    while (it.next()) |num| {
+        const n = try parseInt(u32, num, 10);
+        try list.append(n);
+    }
+
+    const expected = [_]u32{ 123, 67, 89, 99 };
+
+    for (expected, list.items) |exp, actual| {
+        try std.testing.expectEqual(exp, actual);
+    }
+}
+'''
+
+dockerfile = '''
+FROM python:3.12
+WORKDIR /usr/local/app
+
+# Install the application dependencies
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy in the source code
+COPY src ./src
+EXPOSE 5000
+
+# Setup an app user so the container doesn't run as the root user
+RUN useradd app
+USER app
+
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
+'''
+
+elixir = '''
+defmodule HelloWorld.Endpoint do
+  use Phoenix.Endpoint, otp_app: :hello_world
+
+  # Serve at "/" the static files from "priv/static" directory.
+  #
+  # You should set gzip to true if you are running phoenix.digest
+  # when deploying your static files in production.
+  plug Plug.Static,
+    at: "/", from: :hello_world, gzip: false,
+    only: ~w(css images js favicon.ico robots.txt)
+
+  # Code reloading can be explicitly enabled under the
+  # :code_reloader configuration of your endpoint.
+  if code_reloading? do
+    plug Phoenix.LiveReloader
+    plug Phoenix.CodeReloader
+  end
+
+  plug Plug.Logger
+
+  plug Plug.Parsers,
+    parsers: [:urlencoded, :multipart, :json],
+    pass: ["*/*"],
+    json_decoder: Poison
+
+  plug Plug.MethodOverride
+  plug Plug.Head
+
+  plug Plug.Session,
+    store: :cookie,
+    key: "_hello_world_key",
+    signing_salt: "0yg9mHDO"
+
+  plug :router, HelloWorld.Router
+end
+'''
+
+fish = '''
+if false
+    echo 0.0 2 3498 e12
+else if true
+    echo 1 >>? /dev/null
+    echo 1 >&0
+    echo && echo
+    echo || echo
+    echo &
+    [ te = st ]
+    [ te != st ]
+    echo $PATH[0..2]
+    test te = st
+    test te != st
+    test 0 -o 1 -a -n 'string' -o -z $PATH
+else
+    echo {1,2}two
+    echo $PATH[1..2]
+    echo (printf 1)
+
+    echo [test 'str' "str"
+
+    $PATH
+    echo $PATH[0]
+
+    echo "$PATH[0]"
+end
+
+for var in 1 2 3
+    break
+end
+
+function fn
+    return 0
+end
+'''
+
+lalrpop = '''
+use string_cache::DefaultAtom as Atom;
+use crate::grammar::parse_tree::*;
+use crate::grammar::pattern::*;
+use std::iter::once;
+use crate::tok::{self, Tok};
+use crate::util::strip;
+use lalrpop_util::ParseError;
+
+use super::Top;
+
+grammar<'input>(text: &'input str);
+
+pub Top: Top = {
+    "StartGrammar" <Grammar> => Top::Grammar(<>),
+    "StartPattern" <Pattern> => Top::Pattern(<>),
+    "StartMatchMapping" <MatchMapping> => Top::MatchMapping(<>),
+    "StartTypeRef" <TypeRef> => Top::TypeRef(<>),
+    "StartGrammarWhereClauses" <GrammarWhereClauses> => Top::GrammarWhereClauses(<>),
+};
+
+Grammar: Grammar =
+    <module_attributes:ShebangAttribute*>
+    <uses:Use*>
+    <attributes:Attribute*>
+    <lo:@L> "grammar" <hi:@R>
+    <tps:GrammarTypeParameters?>
+    <parameters:GrammarParameters?>
+    <where_clauses:GrammarWhereClauses?>
+    ";"
+    <items:GrammarItem*> => {
+        Grammar { prefix: format!("__"), // adjusted by `parse_grammar`
+                  span: Span(lo, hi),
+                  type_parameters: tps.unwrap_or(vec![]),
+                  parameters: parameters.unwrap_or(vec![]),
+                  where_clauses: where_clauses.unwrap_or(vec![]),
+                  items: uses.into_iter().chain(items).collect(),
+                  attributes,
+                  module_attributes }
+    };
+
+GrammarTypeParameters: Vec<TypeParameter> =
+    "<" <Comma<TypeParameter>> ">";
+
+TypeParameter: TypeParameter = {
+    <l:Lifetime> => TypeParameter::Lifetime(l),
+    <l:Id> => TypeParameter::Id(l)
+};
+
+#[inline]
+ForAll: Vec<TypeParameter> = {
+    "for" "<" <Comma<TypeParameter>> ">",
+    () => vec![],
+};
+
+GrammarItem: GrammarItem = {
+    Use,
+    MatchToken,
+    ExternToken,
+    Nonterminal
+};
+
+Use: GrammarItem =
+    <u:"use"> ";" => GrammarItem::Use(strip(u).to_string());
+
+StringConstant: String =
+    <lo:@L> <s:"StringLiteral"> =>? {
+        let text = tok::apply_string_escapes(s, lo + 1)
+            .map_err(|e| ParseError::User { error: e })?;
+        Ok(text.into_owned())
+    };
+
+extern {
+    type Location = usize;
+    type Error = tok::Error;
+    enum Tok<'input> {
+        "enum" => Tok::Enum,
+        "extern" => Tok::Extern,
+        "grammar" => Tok::Grammar,
+    }
+}
+'''
+
+nix = '''
+{
+  or = { or = 1; }.or or 42;
+  the-question = if builtins.true then "to be" else "not to be";
+  null = if null then true else false;
+  pkgs' = { inherit (pkgs) stdenv lib; };
+  thing' =
+    let inherit (pkgs) stdenv lib;
+    in derivation rec {
+      pname = "thing";
+      version = "v1.2.3";
+      name = "${pname}-${version}";
+      buildInputs = with pkgs; [ thing_a thing_b ];
+    };
+  assert_bool = bool: assert lib.isBool bool; bool;
+  import = import ./overlays.nix { inherit pkgs; };
+  uri = https://github.com;
+  test = /* rust */ "fn main() {}";
+}
+'''
+
+make = '''
+ifeq ($(OS),Windows_NT)
+$(error Windows is not supported)
+endif
+
+LANGUAGE_NAME := tree-sitter-rush
+HOMEPAGE_URL := https://github.com/rush-rs/tree-sitter-rush
+VERSION := 0.2.0
+
+# repository
+SRC_DIR := src
+
+TS ?= tree-sitter
+
+# install directory layout
+PREFIX ?= /usr/local
+DATADIR ?= $(PREFIX)/share
+INCLUDEDIR ?= $(PREFIX)/include
+LIBDIR ?= $(PREFIX)/lib
+PCLIBDIR ?= $(LIBDIR)/pkgconfig
+
+# OS-specific bits
+ifeq ($(shell uname),Darwin)
+	SOEXT = dylib
+	SOEXTVER_MAJOR = $(SONAME_MAJOR).$(SOEXT)
+	SOEXTVER = $(SONAME_MAJOR).$(SONAME_MINOR).$(SOEXT)
+	LINKSHARED = -dynamiclib -Wl,-install_name,$(LIBDIR)/lib$(LANGUAGE_NAME).$(SOEXTVER),-rpath,@executable_path/../Frameworks
+else
+	SOEXT = so
+	SOEXTVER_MAJOR = $(SOEXT).$(SONAME_MAJOR)
+	SOEXTVER = $(SOEXT).$(SONAME_MAJOR).$(SONAME_MINOR)
+	LINKSHARED = -shared -Wl,-soname,lib$(LANGUAGE_NAME).$(SOEXTVER)
+endif
+ifneq ($(filter $(shell uname),FreeBSD NetBSD DragonFly),)
+	PCLIBDIR := $(PREFIX)/libdata/pkgconfig
+endif
+
+all: lib$(LANGUAGE_NAME).a lib$(LANGUAGE_NAME).$(SOEXT) $(LANGUAGE_NAME).pc
+
+$(LANGUAGE_NAME).pc: bindings/c/$(LANGUAGE_NAME).pc.in
+	sed -e 's|@PROJECT_VERSION@|$(VERSION)|' \
+		-e 's|@CMAKE_INSTALL_LIBDIR@|$(LIBDIR:$(PREFIX)/%=%)|' \
+		-e 's|@CMAKE_INSTALL_INCLUDEDIR@|$(INCLUDEDIR:$(PREFIX)/%=%)|' \
+		-e 's|@PROJECT_DESCRIPTION@|$(DESCRIPTION)|' \
+		-e 's|@PROJECT_HOMEPAGE_URL@|$(HOMEPAGE_URL)|' \
+		-e 's|@CMAKE_INSTALL_PREFIX@|$(PREFIX)|' $< > $@
+
+$(PARSER): $(SRC_DIR)/grammar.json
+	$(TS) generate $^
+
+.PHONY: all install uninstall clean test
+'''
+
+cmake = '''
+cmake_minimum_required(VERSION 3.13)
+
+project(tree-sitter-cmake
+        VERSION "0.6.1"
+        DESCRIPTION "CMake grammar for tree-sitter"
+        HOMEPAGE_URL "https://github.com/uyha/tree-sitter-cmake"
+        LANGUAGES C)
+
+option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
+option(TREE_SITTER_REUSE_ALLOCATOR "Reuse the library allocator" OFF)
+
+set(TREE_SITTER_ABI_VERSION 15 CACHE STRING "Tree-sitter ABI version")
+if(NOT ${TREE_SITTER_ABI_VERSION} MATCHES "^[0-9]+$")
+    unset(TREE_SITTER_ABI_VERSION CACHE)
+    message(FATAL_ERROR "TREE_SITTER_ABI_VERSION must be an integer")
+endif()
+
+find_program(TREE_SITTER_CLI tree-sitter DOC "Tree-sitter CLI")
+
+add_custom_command(OUTPUT "${CMAKE_CURRENT_SOURCE_DIR}/src/parser.c"
+                   DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/grammar.json"
+                   COMMAND "${TREE_SITTER_CLI}" generate src/grammar.json
+                            --abi=${TREE_SITTER_ABI_VERSION}
+                   WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+                   COMMENT "Generating parser.c")
+
+add_library(tree-sitter-cmake src/parser.c)
+if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/src/scanner.c)
+  target_sources(tree-sitter-cmake PRIVATE src/scanner.c)
+endif()
+target_include_directories(tree-sitter-cmake
+                           PRIVATE src
+                           INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/bindings/c>
+                                     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+
+target_compile_definitions(tree-sitter-cmake PRIVATE
+                           $<$<BOOL:${TREE_SITTER_REUSE_ALLOCATOR}>:TREE_SITTER_REUSE_ALLOCATOR>
+                           $<$<CONFIG:Debug>:TREE_SITTER_DEBUG>)
+
+set_target_properties(tree-sitter-cmake
+                      PROPERTIES
+                      C_STANDARD 11
+                      POSITION_INDEPENDENT_CODE ON
+                      SOVERSION "${TREE_SITTER_ABI_VERSION}.${PROJECT_VERSION_MAJOR}"
+                      DEFINE_SYMBOL "")
+
+configure_file(bindings/c/tree-sitter-cmake.pc.in
+               "${CMAKE_CURRENT_BINARY_DIR}/tree-sitter-cmake.pc" @ONLY)
+
+include(GNUInstallDirs)
+
+install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/bindings/c/tree_sitter"
+        DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+        FILES_MATCHING PATTERN "*.h")
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/tree-sitter-cmake.pc"
+        DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig")
+install(TARGETS tree-sitter-cmake
+        LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}")
+
+file(GLOB QUERIES queries/*.scm)
+install(FILES ${QUERIES}
+        DESTINATION "${CMAKE_INSTALL_DATADIR}/tree-sitter/queries/cmake")
+
+add_custom_target(ts-test "${TREE_SITTER_CLI}" test
+                  WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+                  COMMENT "tree-sitter test")
+'''
+
+clojure = '''
+#!/home/linuxbrew/.linuxbrew/bin/clj -M
+(require '[clojure.java.io :as io])
+
+(when (not= 2 (count *command-line-args*))
+  (println "Usage: bf2c [out-name] [code]")
+  (System/exit 65)
+  )
+
+(def out-name (first *command-line-args*))
+(def code (second *command-line-args*))
+
+(defn write [text]
+  (spit out-name text :append true)
+)
+
+(def start "#include <stdio.h>
+int main(){")
+
+(def setup "int t[512]={0};int p=0;")
+(def end "return 0;}")
+
+(def plus "t[p]++;")
+(def minus "t[p]--;")
+(def arrow-right "p++;")
+(def arrow-left "p--;")
+(def dot "printf(\"%c\",t[p]);")
+(def bracket-right "while(t[p]>0){")
+(def bracket-left "}")
+
+(if (.exists (io/file out-name))
+    (io/delete-file out-name)
+  )
+
+(write start)
+(write setup)
+(doseq[c code]
+ (write
+   (case c
+    \+ plus
+    \- minus
+    \> arrow-right
+    \< arrow-left
+    \. dot
+    \] bracket-left
+    \[ bracket-right
+    "")
+    )
+ )
+(write end)
+'''
+
+gleam = '''
+import gleam/option.{Option, Some, None}
+import gleam/bit_builder
+
+pub type FrameData {
+  Text(String)
+  Binary(BitString)
+  Continuation(BitString)
+  Ping(BitString)
+  Pong(BitString)
+  Close(code: Option(Int), reason: Option(String))
+}
+
+pub type Frame {
+  Frame(reserved: BitString, mask: Option(BitString), data: FrameData, fin: Bool)
+}
+
+fn encode_frame(frame: Frame) -> bit_builder.BitBuilder {
+  let fin =
+    case frame.fin {
+      True -> <<1:size(1)>>
+      False -> <<0:size(1)>>
+    }
+
+  let opcode =
+    case frame.data {
+      Continuation(_) -> <<0x0:size(1)>>
+      Text(_) -> <<0x1:size(1)>>
+      Binary(_) -> <<0x2:size(1)>>
+      // 0x3-7 reserved for future non-control frames
+      Close(..) -> <<0x8:size(1)>>
+      Pong(_) -> <<0x9:size(1)>>
+      Pong(_) -> <<0xA:size(1)>>
+    }
+
+  let is_masked_bit =
+    case frame.mask {
+      Some(_) -> <<1:size(1)>>
+      None -> <<0:size(1)>>
+    }
+
+  bit_builder.new()
+  |> bit_builder.append(fin)
+  |> bit_builder.append(frame.reserved)
+  |> bit_builder.append(opcode)
+  |> bit_builder.append(is_masked_bit)
+  |> bit_builder.append(option.unwrap(frame.mask, <<>>))
+  |> bit_builder.append(mask_data(frame))
+}
+'''
+
+php_only = '''
+<?php
+
+namespace A\B;
+
+use Baz as Baaz;
+use Foo\Baz as Baaz;
+
+use Foo\{Bar, Baz as Baaz};
+
+use function foo as fooo;
+use function Foo\foo as fooo;
+
+use function Foo\{bar, foo as fooo};
+
+use const FOO as FOOO;
+use const Foo\FOO as FOOO;
+
+// TODO: test
+use const Foo\{FOO as FOOO, BAR};
+
+use Foo\Baz\{
+  Bar as Barr,
+  Foo\Bar as Barr,
+  function foo as fooo,
+  function Foo\foo as fooo,
+  const FOO as FOOO,
+  const Foo\FOO as FOOO,
+};
+
+class Foo {
+    public function foo() {
+        Bar::foo();
+        \Bar::foo();
+        Foo\Bar::foo();
+        \Foo\Bar::foo();
+        namespace\Bar::foo();
+        namespace\Foo\Bar::foo();
+        new Bar();
+        new \Bar();
+        new Foo\Bar();
+        new \Foo\Bar();
+        new namespace\Bar();
+        new namespace\Foo\Bar();
+        BAZ;
+        \BAZ;
+        Foo\BAZ;
+        \Foo\BAZ;
+        namespace\BAZ;
+        namespace\Foo\BAZ;
+        foo();
+        \foo();
+        Foo\foo();
+        \Foo\foo();
+        namespace\foo();
+        namespace\Foo\foo();
+  }
+}
+'''
+
+swift = '''
+import Cocoa
+
+func fibonacci(n: Int) -> Int {
+    let square_root_of_5 = sqrt(5.0)
+    let p = (1 + square_root_of_5) / 2
+    let q = 1 / p
+    return Int((pow(p,CDouble(n)) + pow(q,CDouble(n))) / square_root_of_5 + 0.5)
+}
+
+for i in 1...30 {
+    println(fibonacci(i))
+}
+
+import Foundation
+
+extension ImagePipeline {
+    /// The pipeline configuration.
+    public struct Configuration: @unchecked Sendable {
+        /// Image cache used by the pipeline.
+        public var imageCache: (any ImageCaching)? {
+            // This exists simply to ensure we don't init ImageCache.shared if the
+            // user provides their own instance.
+            get { isCustomImageCacheProvided ? customImageCache : ImageCache.shared }
+            set {
+                customImageCache = newValue
+                isCustomImageCacheProvided = true
+            }
+        }
+
+        /// Default implementation uses shared ``ImageDecoderRegistry`` to create
+        /// a decoder that matches the context.
+        public var makeImageDecoder: @Sendable (ImageDecodingContext) -> (any ImageDecoding)? = {
+            ImageDecoderRegistry.shared.decoder(for: $0)
+        }
+
+        /// Instantiates a pipeline configuration.
+        ///
+        /// - parameter dataLoader: `DataLoader()` by default.
+        // NOTE: Surgical change on next line: renamed `dataLoader` to `any` to show it is a contextual keyword
+        public init(any: any DataLoading = DataLoader()) {
+            self.dataLoader = any
+        }
+    }
+}
+'''

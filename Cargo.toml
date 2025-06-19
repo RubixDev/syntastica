@@ -1,0 +1,131 @@
+[workspace]
+members = [
+    "./xtask",
+    "./rsexpr",
+    "./lua-pattern",
+    "./tree-sitter-wasm-build-tool",
+    "./syntastica-core",
+    "./syntastica-query-preprocessor",
+    "./syntastica-queries",
+    "./syntastica-parsers",
+    "./syntastica-parsers-git",
+    "./syntastica-parsers-gitdep",
+    "./syntastica-parsers-dynamic",
+    "./syntastica-macros",
+    "./syntastica-themes",
+    "./syntastica-highlight",
+    "./syntastica-js",
+    "./syntastica-js/langs/*",
+]
+
+package.version = "0.6.1"
+package.authors = ["RubixDev <contact@rubixdev.de>"]
+package.documentation = "https://rubixdev.github.io/syntastica/"
+package.edition = "2021"
+package.license = "MPL-2.0"
+package.repository = "https://github.com/RubixDev/syntastica"
+
+[workspace.metadata.release]
+enable-all-features = true
+sign-commit = true
+sign-tag = true
+shared-version = true
+
+[workspace.dependencies]
+syntastica = { version = "0.6.1", path = "./" }
+syntastica-core = { version = "0.6.1", path = "./syntastica-core", default-features = false }
+syntastica-highlight = { version = "0.6.1", path = "./syntastica-highlight", default-features = false }
+syntastica-macros = { version = "0.6.1", path = "./syntastica-macros" }
+syntastica-parsers = { version = "0.6.1", path = "./syntastica-parsers" }
+syntastica-parsers-dynamic = { version = "0.6.1", path = "./syntastica-parsers-dynamic" }
+syntastica-parsers-git = { version = "0.6.1", path = "./syntastica-parsers-git" }
+syntastica-parsers-gitdep = { version = "0.6.1", path = "./syntastica-parsers-gitdep" }
+syntastica-query-preprocessor = { version = "0.6.1", path = "./syntastica-query-preprocessor" }
+syntastica-queries = { version = "0.6.1", path = "./syntastica-queries" }
+syntastica-themes = { version = "0.6.1", path = "./syntastica-themes" }
+
+tree-sitter = "0.25.2"
+tree-sitter-c2rust = "0.25.2"
+tree-sitter-generate = "0.25.1"
+
+cc = "1.2.12"
+document-features = "0.2.10"
+once_cell = "1.20.2"
+rustc_version = "0.4.1"
+serde = "1.0.217"
+strum = "0.27.1"
+tft = { version = "0.1.1", default-features = false }
+thiserror = "2.0.11"
+toml = "0.8.20"
+
+[workspace.lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(CHANNEL_NIGHTLY)'] }
+
+[workspace.lints.clippy]
+four_forward_slashes = "allow"
+
+# optimize wasm for small code size
+[profile.release-wasm]
+inherits = "release"
+opt-level = "s"
+strip = true
+
+[package]
+name = "syntastica"
+version.workspace = true
+authors.workspace = true
+documentation = "https://rubixdev.github.io/syntastica/syntastica/"
+edition.workspace = true
+keywords = ["tree-sitter", "syntect", "highlight", "parsing", "syntax"]
+license.workspace = true
+repository.workspace = true
+description = "Modern and easy syntax highlighting using tree-sitter"
+
+[lints]
+workspace = true
+
+[features]
+#! ## Features
+default = ["runtime-c"]
+
+## Use the standard tree-sitter C runtime. See [WebAssembly support](#webassembly-support) for more information.
+runtime-c = ["syntastica-core/runtime-c", "syntastica-highlight/runtime-c"]
+## Use the pure Rust tree-sitter runtime. See [WebAssembly support](#webassembly-support) for more information.
+runtime-c2rust = ["syntastica-core/runtime-c2rust", "syntastica-highlight/runtime-c2rust"]
+
+## Provide implementations of serde's `Serialize` and `Deserialize` traits for [`Theme`](theme::Theme)
+## and [`Style`](style::Style)
+serde = ["syntastica-core/serde"]
+
+## Enable this when building the docs
+docs = ["dep:document-features", "dep:rustc_version"]
+
+[dependencies]
+syntastica-core.workspace = true
+syntastica-highlight.workspace = true
+
+aho-corasick = "1.1.3"
+document-features = { workspace = true, optional = true }
+thiserror.workspace = true
+
+[dev-dependencies]
+syntastica-macros.workspace = true
+syntastica-parsers = { workspace = true, features = ["all"] }
+syntastica-parsers-git = { workspace = true, features = ["all"] }
+syntastica-queries.workspace = true
+syntastica-query-preprocessor.workspace = true
+syntastica-themes.workspace = true
+
+tree-sitter.workspace = true
+
+once_cell.workspace = true
+tft = { workspace = true, features = ["detect"] }
+toml.workspace = true
+tree-sitter-language = "0.1.5"
+tree-sitter-xml = "0.7.0"
+
+[build-dependencies]
+rustc_version = { workspace = true, optional = true }
+
+[package.metadata.docs.rs]
+all-features = true

@@ -1,0 +1,37 @@
+[package]
+name = "rsexpr"
+version = "0.2.5"
+authors.workspace = true
+categories = ["parser-implementations"]
+edition = "2021"
+keywords = ["s-expression", "sexp", "sexpr", "parser", "tree-sitter"]
+license.workspace = true
+repository.workspace = true
+description = "Small and simple S-expression parsing and manipulation with support for square-bracketed groups and strings"
+
+[lints]
+workspace = true
+
+[features]
+#! ### Features
+default = []
+
+## Include comments in the parsed tree and pretty-printed output
+comments = []
+
+## Meant to be enabled when building docs
+docs = ["dep:document-features", "dep:rustc_version"]
+
+[dependencies]
+document-features = { workspace = true, optional = true }
+thiserror.workspace = true
+
+[build-dependencies]
+rustc_version = { workspace = true, optional = true }
+
+[package.metadata.docs.rs]
+all-features = true
+
+[package.metadata.release]
+shared-version = false
+release = false

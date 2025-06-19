@@ -1,0 +1,24 @@
+[package]
+name = "syntastica-js-sql"
+version.workspace = true
+authors.workspace = true
+documentation = "https://rubixdev.github.io/syntastica/syntastica_js/"
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Sql language support for syntastica-js"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+syntastica-macros = { workspace = true, features = ["js"] }
+syntastica-queries.workspace = true
+
+tree-sitter.workspace = true
+
+[build-dependencies]
+syntastica-macros = { workspace = true, features = ["js"] }
+
+cc.workspace = true
+tree-sitter-generate.workspace = true

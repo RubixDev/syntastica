@@ -1,0 +1,14 @@
+{
+  "name": "syntastica-node-example",
+  "private": true,
+  "version": "0.0.0",
+  "main": "index.js",
+  "author": "RubixDev",
+  "type": "module",
+  "scripts": {},
+  "dependencies": {
+    "@syntastica/core": "^0.5.1",
+    "@syntastica/lang-javascript": "^0.5.0",
+    "@syntastica/lang-rust": "^0.5.0"
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "$schema": "https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/package.json",
+  "name": "@syntastica/core",
+  "version": "0.6.0",
+  "description": "Modern and easy syntax highlighting using tree-sitter",
+  "keywords": ["tree-sitter", "highlight", "parsing", "syntax"],
+  "homepage": "https://github.com/RubixDev/syntastica/tree/main/syntastica-js#readme",
+  "bugs": "https://github.com/RubixDev/syntastica/issues",
+  "license": "MPL-2.0",
+  "author": "RubixDev",
+  "funding": {
+    "url": "https://ko-fi.com/rubixdev",
+    "type": "ko-fi"
+  },
+  "files": [
+    "src/index.ts",
+    "./pkg/index.js",
+    "./pkg/index.d.ts",
+    "./pkg/syntastica-js.js",
+    "./pkg/syntastica-js.d.ts",
+    "./pkg/syntastica_js.wasm"
+  ],
+  "module": "pkg/index.js",
+  "main": "pkg/index.js",
+  "exports": {
+    ".": {
+      "import": "./pkg/index.js",
+      "require": "./pkg/index.js",
+      "types": "./pkg/index.d.ts"
+    },
+    "./wasm": "./pkg/syntastica_js.wasm"
+  },
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RubixDev/syntastica.git",
+    "directory": "syntastica-js"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "prebuild": "rm -rf pkg && mkdir -p pkg",
+    "build:wasm": "env CFLAGS=-fPIC cargo build --profile release-wasm --target wasm32-unknown-emscripten",
+    "postbuild:wasm": "cpy \"${CARGO_TARGET_DIR:-../target}/wasm32-unknown-emscripten/release-wasm/syntastica*{-js.js,_js.wasm}\" pkg",
+    "prebuild:js": "cpy src/syntastica-js.d.ts pkg --flat",
+    "build:js": "tsc",
+    "build": "npm-run-all build:*",
+    "doc": "typedoc"
+  },
+  "devDependencies": {
+    "@types/emscripten": "^1.40.0",
+    "cpy-cli": "^4.2.0",
+    "npm-run-all": "^4.1.5",
+    "typedoc": "^0.24.8",
+    "typescript": "^5.1.6"
+  }
+}

@@ -1,0 +1,17 @@
+[package]
+name = "syntastica-js"
+version.workspace = true
+authors.workspace = true
+documentation = "https://rubixdev.github.io/syntastica/syntastica_js/"
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Use syntastica from JavaScript"
+
+[dependencies]
+syntastica = { workspace = true, features = ["serde"] }
+syntastica-macros = { workspace = true, features = ["js"] }
+syntastica-themes.workspace = true
+
+serde = { workspace = true, features = ["derive"] }
+serde_json = "1.0.140"
