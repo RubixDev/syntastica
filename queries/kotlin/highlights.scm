@@ -1,6 +1,10 @@
-;; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/kotlin/highlights.scm
-;; Licensed under the Apache License 2.0
-; Identifiers
+;; Forked from https://raw.githubusercontent.com/fwcd/tree-sitter-kotlin/57fb4560ba8641865bc0baa6b3f413b236112c4c/queries/highlights.scm
+;; Based on the nvim-treesitter highlighting, which is under the Apache license.
+;; See https://github.com/nvim-treesitter/nvim-treesitter/blob/f8ab59861eed4a1c168505e3433462ed800f2bae/queries/kotlin/highlights.scm
+;;
+;; The only difference in this file is that queries using #lua-match?
+;; have been removed.
+;;; Identifiers
 (simple_identifier) @variable
 
 ; `it` keyword inside lambdas
@@ -19,44 +23,28 @@
   (#eq? @variable.builtin "field")
 )
 
-[
-  "this"
-  "super"
-  "this@"
-  "super@"
-] @variable.builtin
+; `this` this keyword inside classes
+(this_expression) @variable.builtin
 
-; NOTE: for consistency with "super@"
-(super_expression
-  "@" @variable.builtin
-)
+; `super` keyword inside classes
+(super_expression) @variable.builtin
 
 (class_parameter
-  (simple_identifier) @variable.member
+  (simple_identifier) @property
 )
 
-; NOTE: temporary fix for treesitter bug that causes delay in file opening
-;(class_body
-;  (property_declaration
-;    (variable_declaration
-;      (simple_identifier) @variable.member)))
-; id_1.id_2.id_3: `id_2` and `id_3` are assumed as object properties
-(_
-  (navigation_suffix
-    (simple_identifier) @variable.member
+(class_body
+  (property_declaration
+    (variable_declaration
+      (simple_identifier) @property
+    )
   )
 )
 
-; SCREAMING CASE identifiers are assumed to be constants
-(
-  (simple_identifier) @constant
-  (#lua-match? @constant "^[A-Z][A-Z0-9_]*$")
-)
-
+; id_1.id_2.id_3: `id_2` and `id_3` are assumed as object properties
 (_
   (navigation_suffix
-    (simple_identifier) @constant
-    (#lua-match? @constant "^[A-Z][A-Z0-9_]*$")
+    (simple_identifier) @property
   )
 )
 
@@ -65,13 +53,6 @@
 )
 
 (type_identifier) @type
-
-; '?' operator, replacement for Java @Nullable
-(nullable_type) @punctuation.special
-
-(type_alias
-  (type_identifier) @type.definition
-)
 
 (
   (type_identifier) @type.builtin
@@ -116,61 +97,36 @@
 )
 
 (package_header
-  "package" @keyword
   .
-  (identifier
-    (simple_identifier) @module
-  )
-)
+  (identifier)
+) @namespace
 
 (import_header
-  "import" @keyword.import
+  "import" @include
 )
 
-(wildcard_import) @character.special
-
-; The last `simple_identifier` in a `import_header` will always either be a function
-; or a type. Classes can appear anywhere in the import path, unlike functions
-(import_header
-  (identifier
-    (simple_identifier) @type @_import
-  )
-  (import_alias
-    (type_identifier) @type.definition
-  )?
-  (#lua-match? @_import "^[A-Z]")
-)
-
-(import_header
-  (identifier
-    (simple_identifier) @function @_import
-    .
-  )
-  (import_alias
-    (type_identifier) @function
-  )?
-  (#lua-match? @_import "^[a-z]")
-)
-
+; TODO: Seperate labeled returns/breaks/continue/super/this
+;       Must be implemented in the parser first
 (label) @label
 
-; Function definitions
+;;; Function definitions
 (function_declaration
+  .
   (simple_identifier) @function
 )
 
 (getter
-  "get" @function.builtin
+  ("get") @function.builtin
 )
 
 (setter
-  "set" @function.builtin
+  ("set") @function.builtin
 )
 
 (primary_constructor) @constructor
 
 (secondary_constructor
-  "constructor" @constructor
+  ("constructor") @constructor
 )
 
 (constructor_invocation
@@ -180,44 +136,38 @@
 )
 
 (anonymous_initializer
-  "init" @constructor
+  ("init") @constructor
 )
 
 (parameter
-  (simple_identifier) @variable.parameter
+  (simple_identifier) @parameter
 )
 
 (parameter_with_optional_type
-  (simple_identifier) @variable.parameter
+  (simple_identifier) @parameter
 )
 
 ; lambda parameters
 (lambda_literal
   (lambda_parameters
     (variable_declaration
-      (simple_identifier) @variable.parameter
+      (simple_identifier) @parameter
     )
   )
 )
 
-; Function calls
+;;; Function calls
 ; function()
 (call_expression
   .
-  (simple_identifier) @function.call
-)
-
-; ::function
-(callable_reference
-  .
-  (simple_identifier) @function.call
+  (simple_identifier) @function
 )
 
 ; object.function() or object.property.function()
 (call_expression
   (navigation_expression
     (navigation_suffix
-      (simple_identifier) @function.call
+      (simple_identifier) @function
     )
     .
   )
@@ -274,20 +224,14 @@
   )
 )
 
-; Literals
+;;; Literals
 [
   (line_comment)
   (multiline_comment)
+  (shebang_line)
 ] @comment
 
-(
-  (multiline_comment) @comment.documentation
-  (#lua-match? @comment.documentation "^/[*][*][^*].*[*]/$")
-)
-
-(shebang_line) @keyword.directive
-
-(real_literal) @number.float
+(real_literal) @float
 
 [
   (integer_literal)
@@ -307,16 +251,15 @@
 
 (string_literal) @string
 
-; NOTE: Escapes not allowed in multi-line strings
-(character_literal
-  (character_escape_seq) @string.escape
-)
+(character_escape_seq) @string.escape
 
 ; There are 3 ways to define a regex
 ;    - "[abc]?".toRegex()
 (call_expression
   (navigation_expression
-    (string_literal) @string.regexp
+    (
+      (string_literal) @string.regex
+    )
     (navigation_suffix
       (
         (simple_identifier) @_function
@@ -335,13 +278,13 @@
   (call_suffix
     (value_arguments
       (value_argument
-        (string_literal) @string.regexp
+        (string_literal) @string.regex
       )
     )
   )
 )
 
-;    - Regex.fromLiteral("[abc]?")
+;   - Regex.fromLiteral("[abc]?")
 (call_expression
   (navigation_expression
     (
@@ -358,19 +301,15 @@
   (call_suffix
     (value_arguments
       (value_argument
-        (string_literal) @string.regexp
+        (string_literal) @string.regex
       )
     )
   )
 )
 
-; Keywords
+;;; Keywords
 (type_alias
   "typealias" @keyword
-)
-
-(companion_object
-  "companion" @keyword
 )
 
 [
@@ -384,52 +323,40 @@
   (visibility_modifier)
   (reification_modifier)
   (inheritance_modifier)
-] @keyword.modifier
+] @keyword
 
 [
   "val"
   "var"
-  ;	"typeof" ; NOTE: It is reserved for future use
-] @keyword
-
-[
   "enum"
   "class"
   "object"
   "interface"
-] @keyword.type
+  ;	"typeof" ; NOTE: It is reserved for future use
+] @keyword
 
-[
-  "return"
-  "return@"
-] @keyword.return
+("fun") @keyword.function
 
-"suspend" @keyword.coroutine
-
-"fun" @keyword.function
+(jump_expression) @keyword.return
 
 [
   "if"
   "else"
   "when"
-] @keyword.conditional
+] @conditional
 
 [
   "for"
   "do"
   "while"
-  "continue"
-  "continue@"
-  "break"
-  "break@"
-] @keyword.repeat
+] @repeat
 
 [
   "try"
   "catch"
   "throw"
   "finally"
-] @keyword.exception
+] @exception
 
 (annotation
   "@" @attribute
@@ -470,7 +397,7 @@
   )
 )
 
-; Operators & Punctuation
+;;; Operators & Punctuation
 [
   "!"
   "!="
@@ -526,31 +453,10 @@
   "::"
 ] @punctuation.delimiter
 
-(super_expression
-  [
-    "<"
-    ">"
-  ] @punctuation.delimiter
-)
-
-(type_arguments
-  [
-    "<"
-    ">"
-  ] @punctuation.delimiter
-)
-
-(type_parameters
-  [
-    "<"
-    ">"
-  ] @punctuation.delimiter
-)
-
 ; NOTE: `interpolated_identifier`s can be highlighted in any way
 (string_literal
   "$" @punctuation.special
-  (interpolated_identifier) @none @variable
+  (interpolated_identifier) @none
 )
 
 (string_literal

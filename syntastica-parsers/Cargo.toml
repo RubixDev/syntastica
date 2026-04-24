@@ -49,13 +49,22 @@ some = [
     "c",
     "cpp",
     "css",
+    "dockerfile",
+    "gitattributes",
+    "gitcommit",
+    "gitconfig",
+    "gitdiff",
+    "gitignore",
+    "gitrebase",
     "go",
+    "graphql",
     "html",
     "java",
     "javascript",
     "json",
     "kotlin",
     "lua",
+    "proto",
     "python",
     "rust",
     "toml",
@@ -73,10 +82,14 @@ most = [
     "clojure",
     "cmake",
     "comment",
+    "csv",
     "dart",
     "diff",
     "elixir",
+    "fish",
     "haskell",
+    "hcl",
+    "ini",
     "jsdoc",
     "json5",
     "jsonc",
@@ -84,112 +97,657 @@ most = [
     "make",
     "markdown",
     "markdown_inline",
+    "nginx",
     "nix",
     "php",
     "php_only",
     "printf",
+    "ps1",
     "regex",
     "ruby",
     "scala",
     "scss",
     "sql",
+    "sshconfig",
     "swift",
+    "terraform",
+    "tsv",
     "typst",
+    "xml",
     "zig",
+    "zsh",
 ]
 
 ## Implies <span class="stab portability"><code>most</code></span>.
 ## Include parsers for all supported languages.
 all = [
     "most",
+    "ada",
+    "agda",
+    "apex",
+    "arduino",
+    "asm68k",
+    "astro",
+    "authzed",
+    "awk",
+    "bass",
+    "beancount",
+    "bib",
     "bibtex",
-    "dockerfile",
+    "bicep",
+    "bitbake",
+    "blade",
+    "blueprint",
+    "bp",
+    "bpftrace",
+    "brightscript",
+    "bzl",
+    "c3",
+    "caddy",
+    "cairo",
+    "capnp",
+    "chatito",
+    "circom",
+    "clarity",
+    "cook",
+    "corn",
+    "cpon",
+    "csharp",
+    "cuda",
+    "cue",
+    "cylc",
+    "d",
+    "desktop",
+    "dhall",
+    "disassembly",
+    "djot",
+    "dot",
+    "doxygen",
+    "dtd",
+    "dts",
+    "earthfile",
     "ebnf",
+    "editorconfig",
+    "eds",
+    "eelixir",
     "ejs",
+    "elisp",
+    "elm",
+    "elsa",
+    "elvish",
+    "enforce",
     "erb",
-    "fish",
+    "erlang",
+    "eruby",
+    "faust",
+    "fennel",
+    "fidl",
+    "firrtl",
+    "foam",
+    "forth",
+    "fortran",
+    "fsd",
+    "fsh",
+    "fsharp",
+    "func",
+    "fusion",
+    "gap",
+    "gaptst",
+    "gdresource",
+    "gdscript",
+    "gdshaderinc",
     "gleam",
+    "glimmer_javascript",
+    "glimmer_typescript",
+    "glsl",
+    "gn",
+    "gnuplot",
+    "goctl",
+    "gomod",
+    "gosum",
+    "gotmpl",
+    "gowork",
+    "gpg",
+    "gren",
+    "groovy",
+    "groq",
+    "gstlaunch",
+    "hack",
+    "handlebars",
+    "hare",
+    "haskellpersistent",
+    "haxe",
+    "heex",
+    "helm",
+    "help",
     "hexdump",
+    "hjson",
+    "hlsl",
+    "hlsplaylist",
+    "hocon",
+    "hoon",
+    "htmlangular",
+    "htmldjango",
+    "http",
+    "hurl",
+    "hyprlang",
+    "idl",
+    "idris2",
+    "inko",
+    "ispc",
+    "janet",
+    "javadoc",
+    "jinja",
+    "jinja_inline",
+    "jproperties",
+    "jq",
+    "jsonnet",
     "julia",
+    "just",
+    "kcl",
+    "kconfig",
+    "kdl",
+    "kitty",
+    "kos",
+    "koto",
+    "kusto",
     "lalrpop",
     "latex",
+    "ld",
+    "ledger",
+    "leo",
+    "liquid",
+    "liquidsoap",
+    "lisp",
     "llvm",
+    "luadoc",
+    "luau",
+    "magik",
+    "matlab",
+    "menhir",
+    "mermaid",
+    "meson",
+    "mlir",
+    "muttrc",
+    "nasm",
+    "nickel",
+    "nim",
+    "nim_format_string",
+    "ninja",
+    "nqc",
+    "nu",
+    "objc",
+    "objdump",
     "ocaml",
     "ocaml_interface",
+    "ocamlinterface",
+    "ocamllex",
+    "odin",
+    "pascal",
+    "passwd",
+    "pbtxt",
+    "pem",
+    "perl",
+    "pgn",
+    "phpdoc",
+    "pioasm",
+    "pkl",
+    "po",
+    "pod",
+    "poefilter",
+    "pony",
+    "prisma",
+    "problog",
+    "prolog",
+    "promql",
+    "prql",
+    "psv",
+    "pug",
+    "puppet",
+    "purescript",
+    "pymanifest",
     "ql",
+    "qml",
+    "qmldir",
+    "query",
+    "r",
+    "racket",
+    "ralph",
+    "rasi",
+    "razor",
+    "rbs",
+    "re2c",
+    "readline",
+    "rego",
+    "requirements",
+    "rescript",
+    "rifleconf",
+    "rnoweb",
+    "robot",
+    "robots",
+    "roc",
+    "ron",
+    "rst",
+    "runescript",
     "rush",
+    "scfg",
+    "scheme",
+    "sface",
+    "sflog",
+    "shaderslang",
+    "slim",
+    "slint",
+    "smali",
+    "smithy",
+    "snakemake",
+    "solidity",
+    "soql",
+    "sosl",
+    "sourcepawn",
+    "sparql",
+    "sproto",
+    "squirrel",
+    "strace",
+    "styled",
+    "supercollider",
+    "superhtml",
+    "svelte",
+    "sway",
+    "sxhkdrc",
+    "systemtap",
+    "tablegen",
+    "tact",
+    "tal",
+    "tape",
+    "tcl",
+    "teal",
+    "templ",
+    "tera",
+    "tex",
+    "thrift",
+    "tiger",
+    "tla",
+    "tmux",
+    "todotxt",
+    "trace32",
+    "turtle",
+    "twig",
+    "typespec",
+    "typoscript",
+    "udevrules",
+    "ungrammar",
+    "unison",
     "ursa",
+    "usd",
+    "v",
+    "vala",
     "verilog",
+    "vhdl",
+    "vim",
+    "vrl",
+    "vto",
+    "vue",
     "wat",
+    "wgsl",
+    "wgsl_bevy",
+    "wing",
+    "wit",
+    "wxml",
+    "xcompose",
+    "xdefaults",
+    "yang",
+    "yuck",
+    "zathurarc",
+    "ziggy",
+    "ziggy_schema",
 ]
 
 ## Meant to be enabled when building docs
 docs = ["dep:document-features", "dep:rustc_version"]
 
+ada = []
+agda = []
+apex = []
+arduino = []
 asm = ["dep:tree-sitter-asm"]
+asm68k = []
+astro = []
+authzed = []
+awk = []
 bash = ["dep:tree-sitter-bash"]
+bass = []
+beancount = []
+bib = []
 bibtex = []
+bicep = []
+bitbake = []
+blade = []
+blueprint = []
+bp = []
+bpftrace = []
+brightscript = []
+bzl = []
 c = ["dep:tree-sitter-c"]
+c3 = []
 c_sharp = ["dep:tree-sitter-c-sharp"]
+caddy = []
+cairo = []
+capnp = []
+chatito = []
+circom = []
+clarity = []
 clojure = []
 cmake = ["dep:tree-sitter-cmake"]
 comment = []
+cook = []
+corn = []
+cpon = []
 cpp = ["dep:tree-sitter-cpp"]
+csharp = []
 css = ["dep:tree-sitter-css"]
+csv = []
+cuda = []
+cue = []
+cylc = []
+d = []
 dart = []
+desktop = []
+dhall = []
 diff = ["dep:tree-sitter-diff"]
+disassembly = []
+djot = []
 dockerfile = []
+dot = []
+doxygen = []
+dtd = []
+dts = []
+earthfile = []
 ebnf = []
+editorconfig = []
+eds = []
+eelixir = []
 ejs = ["dep:tree-sitter-embedded-template"]
+elisp = []
 elixir = ["dep:tree-sitter-elixir"]
+elm = []
+elsa = []
+elvish = []
+enforce = []
 erb = ["dep:tree-sitter-embedded-template"]
+erlang = []
+eruby = []
+faust = []
+fennel = []
+fidl = []
+firrtl = []
 fish = ["dep:tree-sitter-fish"]
+foam = []
+forth = []
+fortran = []
+fsd = []
+fsh = []
+fsharp = []
+func = []
+fusion = []
+gap = []
+gaptst = []
+gdresource = []
+gdscript = []
+gdshaderinc = []
+gitattributes = []
+gitcommit = []
+gitconfig = []
+gitdiff = []
+gitignore = []
+gitrebase = []
 gleam = ["dep:tree-sitter-gleam"]
+glimmer_javascript = []
+glimmer_typescript = []
+glsl = []
+gn = []
+gnuplot = []
 go = ["dep:tree-sitter-go"]
+goctl = []
+gomod = []
+gosum = []
+gotmpl = []
+gowork = []
+gpg = []
+graphql = []
+gren = []
+groovy = []
+groq = []
+gstlaunch = []
+hack = []
+handlebars = []
+hare = []
 haskell = ["dep:tree-sitter-haskell"]
+haskellpersistent = []
+haxe = []
+hcl = []
+heex = []
+helm = []
+help = []
 hexdump = []
+hjson = []
+hlsl = []
+hlsplaylist = []
+hocon = []
+hoon = []
 html = ["dep:tree-sitter-html"]
+htmlangular = []
+htmldjango = []
+http = []
+hurl = []
+hyprlang = []
+idl = []
+idris2 = []
+ini = []
+inko = []
+ispc = []
+janet = []
 java = ["dep:tree-sitter-java"]
+javadoc = []
 javascript = ["dep:tree-sitter-javascript"]
+jinja = []
+jinja_inline = []
+jproperties = []
+jq = []
 jsdoc = ["dep:tree-sitter-jsdoc"]
 json = ["dep:tree-sitter-json"]
 json5 = []
 jsonc = []
+jsonnet = []
 julia = ["dep:tree-sitter-julia"]
+just = []
+kcl = []
+kconfig = []
+kdl = []
+kitty = []
+kos = []
 kotlin = []
+koto = []
+kusto = []
 lalrpop = []
 latex = []
+ld = []
+ledger = []
+leo = []
+liquid = []
+liquidsoap = []
+lisp = []
 llvm = []
 lua = ["dep:tree-sitter-lua"]
+luadoc = []
 luap = []
+luau = []
+magik = []
 make = ["dep:tree-sitter-make"]
 markdown = ["dep:tree-sitter-md"]
 markdown_inline = ["dep:tree-sitter-md"]
+matlab = []
+menhir = []
+mermaid = []
+meson = []
+mlir = []
+muttrc = []
+nasm = []
+nginx = []
+nickel = []
+nim = []
+nim_format_string = []
+ninja = []
 nix = ["dep:tree-sitter-nix"]
+nqc = []
+nu = []
+objc = []
+objdump = []
 ocaml = ["dep:tree-sitter-ocaml"]
 ocaml_interface = ["dep:tree-sitter-ocaml"]
+ocamlinterface = []
+ocamllex = []
+odin = []
+pascal = []
+passwd = []
+pbtxt = []
+pem = []
+perl = []
+pgn = []
 php = ["dep:tree-sitter-php"]
 php_only = ["dep:tree-sitter-php"]
+phpdoc = []
+pioasm = []
+pkl = []
+po = []
+pod = []
+poefilter = []
+pony = []
 printf = ["dep:tree-sitter-printf"]
+prisma = []
+problog = []
+prolog = []
+promql = []
+proto = []
+prql = []
+ps1 = []
+psv = []
+pug = []
+puppet = []
+purescript = []
+pymanifest = []
 python = ["dep:tree-sitter-python"]
 ql = ["dep:tree-sitter-ql"]
+qml = []
+qmldir = []
+query = []
+r = []
+racket = []
+ralph = []
+rasi = []
+razor = []
+rbs = []
+re2c = []
+readline = []
 regex = ["dep:tree-sitter-regex"]
+rego = []
+requirements = []
+rescript = []
+rifleconf = []
+rnoweb = []
+robot = []
+robots = []
+roc = []
+ron = []
+rst = []
 ruby = ["dep:tree-sitter-ruby"]
+runescript = []
 rush = ["dep:tree-sitter-rush"]
 rust = ["dep:tree-sitter-rust"]
 scala = ["dep:tree-sitter-scala"]
+scfg = []
+scheme = []
 scss = []
+sface = []
+sflog = []
+shaderslang = []
+slim = []
+slint = []
+smali = []
+smithy = []
+snakemake = []
+solidity = []
+soql = []
+sosl = []
+sourcepawn = []
+sparql = []
+sproto = []
 sql = ["dep:tree-sitter-sequel"]
+squirrel = []
+sshconfig = []
+strace = []
+styled = []
+supercollider = []
+superhtml = []
+svelte = []
+sway = []
 swift = ["dep:tree-sitter-swift"]
+sxhkdrc = []
+systemtap = []
+tablegen = []
+tact = []
+tal = []
+tape = []
+tcl = []
+teal = []
+templ = []
+tera = []
+terraform = []
+tex = []
+thrift = []
+tiger = []
+tla = []
+tmux = []
+todotxt = []
 toml = []
+trace32 = []
+tsv = []
 tsx = ["dep:tree-sitter-typescript"]
+turtle = []
+twig = []
 typescript = ["dep:tree-sitter-typescript"]
+typespec = []
+typoscript = []
 typst = []
+udevrules = []
+ungrammar = []
+unison = []
 ursa = []
+usd = []
+v = []
+vala = []
 verilog = []
+vhdl = []
+vim = []
+vrl = []
+vto = []
+vue = []
 wat = []
+wgsl = []
+wgsl_bevy = []
+wing = []
+wit = []
+wxml = []
+xcompose = []
+xdefaults = []
+xml = []
 yaml = ["dep:tree-sitter-yaml"]
+yang = []
+yuck = []
+zathurarc = []
 zig = ["dep:tree-sitter-zig"]
+ziggy = []
+ziggy_schema = []
+zsh = []
 
 [dependencies.tree-sitter-asm]
 optional = true
@@ -197,7 +755,7 @@ version = "=0.24.0"
 
 [dependencies.tree-sitter-bash]
 optional = true
-version = "=0.25.0"
+version = "=0.25.1"
 
 [dependencies.tree-sitter-c]
 optional = true
@@ -217,7 +775,7 @@ version = "=0.23.4"
 
 [dependencies.tree-sitter-css]
 optional = true
-version = "=0.23.2"
+version = "=0.25.0"
 
 [dependencies.tree-sitter-diff]
 optional = true
@@ -225,7 +783,7 @@ version = "=0.1.0"
 
 [dependencies.tree-sitter-embedded-template]
 optional = true
-version = "=0.23.2"
+version = "=0.25.0"
 
 [dependencies.tree-sitter-elixir]
 optional = true
@@ -241,7 +799,7 @@ version = "=1.0.0"
 
 [dependencies.tree-sitter-go]
 optional = true
-version = "=0.23.4"
+version = "=0.25.0"
 
 [dependencies.tree-sitter-haskell]
 optional = true
@@ -257,11 +815,11 @@ version = "=0.23.5"
 
 [dependencies.tree-sitter-javascript]
 optional = true
-version = "=0.23.1"
+version = "=0.25.0"
 
 [dependencies.tree-sitter-jsdoc]
 optional = true
-version = "=0.23.2"
+version = "=0.25.0"
 
 [dependencies.tree-sitter-json]
 optional = true
@@ -273,7 +831,7 @@ version = "=0.23.1"
 
 [dependencies.tree-sitter-lua]
 optional = true
-version = "=0.2.0"
+version = "=0.4.1"
 
 [dependencies.tree-sitter-make]
 optional = true
@@ -281,11 +839,11 @@ version = "=1.1.1"
 
 [dependencies.tree-sitter-md]
 optional = true
-version = "=0.3.2"
+version = "=0.5.2"
 
 [dependencies.tree-sitter-nix]
 optional = true
-version = "=0.0.2"
+version = "=0.3.0"
 
 [dependencies.tree-sitter-ocaml]
 optional = true
@@ -293,15 +851,15 @@ version = "=0.24.2"
 
 [dependencies.tree-sitter-php]
 optional = true
-version = "=0.23.11"
+version = "=0.24.2"
 
 [dependencies.tree-sitter-printf]
 optional = true
-version = "=0.5.0"
+version = "=0.5.1"
 
 [dependencies.tree-sitter-python]
 optional = true
-version = "=0.23.6"
+version = "=0.25.0"
 
 [dependencies.tree-sitter-ql]
 optional = true
@@ -309,7 +867,7 @@ version = "=0.23.1"
 
 [dependencies.tree-sitter-regex]
 optional = true
-version = "=0.24.3"
+version = "=0.25.0"
 
 [dependencies.tree-sitter-ruby]
 optional = true
@@ -321,7 +879,7 @@ version = "=0.2.0"
 
 [dependencies.tree-sitter-rust]
 optional = true
-version = "=0.24.0"
+version = "=0.23.3"
 
 [dependencies.tree-sitter-scala]
 optional = true
@@ -329,11 +887,11 @@ version = "=0.24.0"
 
 [dependencies.tree-sitter-sequel]
 optional = true
-version = "=0.3.8"
+version = "=0.3.11"
 
 [dependencies.tree-sitter-swift]
 optional = true
-version = "=0.7.0"
+version = "=0.7.1"
 
 [dependencies.tree-sitter-typescript]
 optional = true
@@ -341,7 +899,7 @@ version = "=0.23.2"
 
 [dependencies.tree-sitter-yaml]
 optional = true
-version = "=0.7.1"
+version = "=0.7.2"
 
 [dependencies.tree-sitter-zig]
 optional = true

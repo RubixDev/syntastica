@@ -1,9 +1,69 @@
 [[languages]]
+name = "ada"
+group = "all"
+file-types = ["ada"]
+[languages.parser]
+git = { url = "https://github.com/briot/tree-sitter-ada", rev = "6b58259a08b1a22ba0247a7ce30be384db618da6" , branch = "master"}
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_ada"
+package = "tree-sitter-ada"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "agda"
+group = "all"
+file-types = ["agda"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter/tree-sitter-agda", rev = "e8d47a6987effe34d5595baf321d82d3519a8527" , branch = "master"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_agda"
+package = "tree-sitter-agda"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "apex"
+group = "all"
+file-types = ["apex"]
+[languages.parser]
+git = { url = "https://github.com/aheber/tree-sitter-sfapex", rev = "3597575a429766dd7ecce9f5bb97f6fec4419d5d", path = "apex" , branch = "main"}
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_apex"
+package = "tree-sitter-apex"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "arduino"
+group = "all"
+file-types = ["arduino"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-arduino", rev = "53eb391da4c6c5857f8defa2c583c46c2594f565" , branch = "master"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_arduino"
+package = "tree-sitter-arduino"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
 name = "asm"
 group = "most"
 file-types = ["asm", "vmasm"]
 [languages.parser]
-git = { url = "https://github.com/rush-rs/tree-sitter-asm", rev = "04962e15f6b464cf1d75eada59506dc25090e186" }
+git = { url = "https://github.com/RubixDev/tree-sitter-asm", rev = "839741fef4dab5128952334624905c82b40c7133" }
 external-scanner = { c = false, cpp = false }
 ffi-func = "tree_sitter_asm"
 rust-const = "LANGUAGE"
@@ -15,20 +75,125 @@ injections = true
 locals = false
 
 [[languages]]
-name = "bash"
-group = "some"
-file-types = ["sh", "bash", "ksh"]
+name = "asm68k"
+group = "all"
+file-types = ["asm68k"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-bash", rev = "56b54c61fb48bce0c63e3dfa2240b5d274384763" }
-external-scanner = { c = true, cpp = false }
-ffi-func = "tree_sitter_bash"
-rust-const = "LANGUAGE"
-package = "tree-sitter-bash"
-crates-io = "0.25.0"
+git = { url = "https://github.com/grahambates/tree-sitter-m68k", rev = "e128454c2210c0e0c10b68fe45ddb8fee80182a3" , branch = "master"}
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_m68k"
+package = "tree-sitter-asm68k"
 [languages.queries]
 nvim-like = true
 injections = true
 locals = true
+
+
+[[languages]]
+name = "astro"
+group = "all"
+file-types = ["astro"]
+[languages.parser]
+git = { url = "https://github.com/virchau13/tree-sitter-astro", rev = "213f6e6973d9b456c6e50e86f19f66877e7ef0ee" , branch = "master"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_astro"
+package = "tree-sitter-astro"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "authzed"
+group = "all"
+file-types = ["authzed"]
+[languages.parser]
+git = { url = "https://github.com/mleonidas/tree-sitter-authzed", rev = "83e5c26a8687eb4688fe91d690c735cc3d21ad81" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_authzed"
+package = "tree-sitter-authzed"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "awk"
+group = "all"
+file-types = ["awk"]
+[languages.parser]
+git = { url = "https://github.com/Beaglefoot/tree-sitter-awk", rev = "34bbdc7cce8e803096f47b625979e34c1be38127" , branch = "master"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_awk"
+package = "tree-sitter-awk"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "bash"
+group = "some"
+file-types = ["sh", "bash", "ksh"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter/tree-sitter-bash", rev = "a06c2e4415e9bc0346c6b86d401879ffb44058f7" , branch = "master"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_bash"
+rust-const = "LANGUAGE"
+package = "tree-sitter-bash"
+crates-io = "0.25.1"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+[[languages]]
+name = "bass"
+group = "all"
+file-types = ["bass"]
+[languages.parser]
+git = { url = "https://github.com/vito/tree-sitter-bass", rev = "28dc7059722be090d04cd751aed915b2fee2f89a" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_bass"
+package = "tree-sitter-bass"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "beancount"
+group = "all"
+file-types = ["beancount"]
+[languages.parser]
+git = { url = "https://github.com/polarmutex/tree-sitter-beancount", rev = "23b21252da8b8cb0f03d1d1fc4c8f87d407e1cdf" , branch = "master"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_beancount"
+package = "tree-sitter-beancount"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "bib"
+group = "all"
+file-types = ["bib"]
+[languages.parser]
+git = { url = "https://github.com/latex-lsp/tree-sitter-bibtex", rev = "8d04ed27b3bc7929f14b7df9236797dab9f3fa66" , branch = "master"}
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_bibtex"
+package = "tree-sitter-bib"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
 
 [[languages]]
 name = "bibtex"
@@ -47,11 +212,129 @@ injections = true
 locals = false
 
 [[languages]]
+name = "bicep"
+group = "all"
+file-types = ["bicep"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-bicep", rev = "bff59884307c0ab009bd5e81afd9324b46a6c0f9" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_bicep"
+package = "tree-sitter-bicep"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "bitbake"
+group = "all"
+file-types = ["bitbake"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-bitbake", rev = "a5d04fdb5a69a02b8fa8eb5525a60dfb5309b73b" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_bitbake"
+package = "tree-sitter-bitbake"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "blade"
+group = "all"
+file-types = ["blade"]
+[languages.parser]
+git = { url = "https://github.com/EmranMR/tree-sitter-blade", rev = "cc764dadcbbceb3f259396fef66f970c72e94f96" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_blade"
+package = "tree-sitter-blade"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+[[languages]]
+name = "blueprint"
+group = "all"
+file-types = ["blp", "blueprint"]
+[languages.parser]
+git = { url = "https://gitlab.com/gabmus/tree-sitter-blueprint", rev = "355ef84ef8a958ac822117b652cf4d49bac16c79", branch = "master" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_blueprint"
+package = "tree-sitter-blueprint"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+[[languages]]
+name = "bp"
+group = "all"
+file-types = ["bp"]
+[languages.parser]
+git = { url = "https://github.com/ambroisie/tree-sitter-bp", rev = "ee641d15390183d7535777947ce0f2f1fbcee69f" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_bp"
+package = "tree-sitter-bp"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "bpftrace"
+group = "all"
+file-types = ["bpftrace"]
+[languages.parser]
+git = { url = "https://github.com/sgruszka/tree-sitter-bpftrace", rev = "0978030fdcdab74d49faaee2a60eb94607a367cc" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_bpftrace"
+package = "tree-sitter-bpftrace"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "brightscript"
+group = "all"
+file-types = ["brightscript"]
+[languages.parser]
+git = { url = "https://github.com/ajdelcimmuto/tree-sitter-brightscript", rev = "253fdfaa23814cb46c2d5fc19049fa0f2f62c6da" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_brightscript"
+package = "tree-sitter-brightscript"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "bzl"
+group = "all"
+file-types = ["bzl"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-starlark", rev = "a453dbf3ba433db0e5ec621a38a7e59d72e4dc69" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_starlark"
+package = "tree-sitter-bzl"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
 name = "c"
 group = "some"
 file-types = ["c"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-c", rev = "7fa1be1b694b6e763686793d97da01f36a0e5c12" }
+git = { url = "https://github.com/tree-sitter/tree-sitter-c", rev = "ae19b676b13bdcc13b7665397e6d9b14975473dd" , branch = "master"}
 external-scanner = { c = false, cpp = false }
 ffi-func = "tree_sitter_c"
 rust-const = "LANGUAGE"
@@ -63,11 +346,26 @@ injections = true
 locals = true
 
 [[languages]]
+name = "c3"
+group = "all"
+file-types = ["c3"]
+[languages.parser]
+git = { url = "https://github.com/c3lang/tree-sitter-c3", rev = "7ef54adef1008ce7d943c2cca03aee93a79b2252" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_c3"
+package = "tree-sitter-c3"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
 name = "c_sharp"
 group = "most"
 file-types = ["csharp"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-c-sharp", rev = "b5eb5742f6a7e9438bee22ce8026d6b927be2cd7" }
+git = { url = "https://github.com/tree-sitter/tree-sitter-c-sharp", rev = "f05a2ca99d329de2e6c32f26a21c6169b2bfcbb7" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_c_sharp"
 rust-const = "LANGUAGE"
@@ -79,11 +377,99 @@ injections = true
 locals = true
 
 [[languages]]
+name = "caddy"
+group = "all"
+file-types = ["caddy"]
+[languages.parser]
+git = { url = "https://github.com/opa-oz/tree-sitter-caddy", rev = "2686186edb61be47960431c93a204fb249681360" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_caddy"
+package = "tree-sitter-caddy"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "cairo"
+group = "all"
+file-types = ["cairo"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-cairo", rev = "6238f609bea233040fe927858156dee5515a0745" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_cairo"
+package = "tree-sitter-cairo"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "capnp"
+group = "all"
+file-types = ["capnp"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-capnp", rev = "7b0883c03e5edd34ef7bcf703194204299d7099f" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_capnp"
+package = "tree-sitter-capnp"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "chatito"
+group = "all"
+file-types = ["chatito"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-chatito", rev = "c0ed82c665b732395073f635c74c300f09530a7f" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_chatito"
+package = "tree-sitter-chatito"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "circom"
+group = "all"
+file-types = ["circom"]
+[languages.parser]
+git = { url = "https://github.com/Decurity/tree-sitter-circom", rev = "02150524228b1e6afef96949f2d6b7cc0aaf999e" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_circom"
+package = "tree-sitter-circom"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+[[languages]]
+name = "clarity"
+group = "all"
+file-types = ["clar", "clarity"]
+[languages.parser]
+git = { url = "https://github.com/xlittlerag/tree-sitter-clarity", rev = "cbb3ffe8688aca558286fd45ed46857a1f3207bb" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_clarity"
+package = "tree-sitter-clarity"
+[languages.queries]
+nvim-like = true
+injections = false
+locals = false
+
+[[languages]]
 name = "clojure"
 group = "most"
 file-types = ["clojure"]
 [languages.parser]
-git = { url = "https://github.com/sogaiu/tree-sitter-clojure", rev = "40c5fc2e2a0f511a802a82002553c5de00feeaf4" }
+git = { url = "https://github.com/sogaiu/tree-sitter-clojure", rev = "e43eff80d17cf34852dcd92ca5e6986d23a7040f" , branch = "master"}
 external-scanner = { c = false, cpp = false }
 ffi-func = "tree_sitter_clojure"
 # rust-const = "LANGUAGE"
@@ -99,7 +485,7 @@ name = "cmake"
 group = "most"
 file-types = ["cmake"]
 [languages.parser]
-git = { url = "https://github.com/uyha/tree-sitter-cmake", rev = "cf9799600b2ba5e6620fdabddec3b2db8306bc46" }
+git = { url = "https://github.com/uyha/tree-sitter-cmake", rev = "c7b2a71e7f8ecb167fad4c97227c838439280175" , branch = "master"}
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_cmake"
 rust-const = "LANGUAGE"
@@ -115,7 +501,7 @@ name = "comment"
 group = "most"
 file-types = []
 [languages.parser]
-git = { url = "https://github.com/stsewd/tree-sitter-comment", rev = "689be73775bd2dd57b938b8e12bf50fec35a6ca3" }
+git = { url = "https://github.com/stsewd/tree-sitter-comment", rev = "66272d2b6c73fb61157541b69dd0a7ce7b42a5ad" , branch = "master"}
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_comment"
 # rust-const = "LANGUAGE"
@@ -127,11 +513,56 @@ injections = false
 locals = false
 
 [[languages]]
+name = "cook"
+group = "all"
+file-types = ["cook"]
+[languages.parser]
+git = { url = "https://github.com/addcninblue/tree-sitter-cooklang", rev = "4ebe237c1cf64cf3826fc249e9ec0988fe07e58e" , branch = "master"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_cooklang"
+package = "tree-sitter-cook"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "corn"
+group = "all"
+file-types = ["corn"]
+[languages.parser]
+git = { url = "https://github.com/corn-config/tree-sitter-corn", rev = "464654742cbfd3a3de560aba120998f1d5dfa844" , branch = "master"}
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_corn"
+package = "tree-sitter-corn"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "cpon"
+group = "all"
+file-types = ["cpon"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-cpon", rev = "594289eadfec719198e560f9d7fd243c4db678d5" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_cpon"
+package = "tree-sitter-cpon"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
 name = "cpp"
 group = "some"
 file-types = ["cpp"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-cpp", rev = "56455f4245baf4ea4e0881c5169de69d7edd5ae7" }
+git = { url = "https://github.com/tree-sitter/tree-sitter-cpp", rev = "12bd6f7e96080d2e70ec51d4068f2f66120dde35" , branch = "master"}
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_cpp"
 rust-const = "LANGUAGE"
@@ -143,27 +574,117 @@ injections = true
 locals = true
 
 [[languages]]
+name = "csharp"
+group = "all"
+file-types = ["csharp"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter/tree-sitter-c-sharp", rev = "f05a2ca99d329de2e6c32f26a21c6169b2bfcbb7" , branch = "master"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_c_sharp"
+package = "tree-sitter-csharp"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
 name = "css"
 group = "some"
 file-types = ["css"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-css", rev = "6e327db434fec0ee90f006697782e43ec855adf5" }
+git = { url = "https://github.com/tree-sitter/tree-sitter-css", rev = "dda5cfc5722c429eaba1c910ca32c2c0c5bb1a3f" , branch = "master"}
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_css"
 rust-const = "LANGUAGE"
 package = "tree-sitter-css"
-crates-io = "0.23.2"
+crates-io = "0.25.0"
 [languages.queries]
 nvim-like = true
 injections = true
 locals = false
 
 [[languages]]
+name = "csv"
+group = "most"
+file-types = ["csv"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-csv", rev = "f6bf6e35eb0b95fbadea4bb39cb9709507fcb181", path = "csv" , branch = "master"}
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_csv"
+package = "tree-sitter-csv"
+[languages.queries]
+nvim-like = true
+injections = false
+locals = false
+
+
+[[languages]]
+name = "cuda"
+group = "all"
+file-types = ["cuda"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-cuda", rev = "48b066f334f4cf2174e05a50218ce2ed98b6fd01" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_cuda"
+package = "tree-sitter-cuda"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "cue"
+group = "all"
+file-types = ["cue"]
+[languages.parser]
+git = { url = "https://github.com/eonpatapon/tree-sitter-cue", rev = "770737bcff2c4aa3f624d439e32b07dbb07102d3" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_cue"
+package = "tree-sitter-cue"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "cylc"
+group = "all"
+file-types = ["cylc"]
+[languages.parser]
+git = { url = "https://github.com/elliotfontaine/tree-sitter-cylc", rev = "6d1d81137112299324b526477ce1db989ab58fb8" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_cylc"
+package = "tree-sitter-cylc"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "d"
+group = "all"
+file-types = ["d"]
+[languages.parser]
+git = { url = "https://github.com/gdamore/tree-sitter-d", rev = "fb028c8f14f4188286c2eef143f105def6fbf24f" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_d"
+package = "tree-sitter-d"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
 name = "dart"
 group = "most"
 file-types = ["dart"]
 [languages.parser]
-git = { url = "https://github.com/UserNobody14/tree-sitter-dart", rev = "80e23c07b64494f7e21090bb3450223ef0b192f4" }
+git = { url = "https://github.com/UserNobody14/tree-sitter-dart", rev = "d4d8f3e337d8be23be27ffc35a0aef972343cd54" , branch = "master"}
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_dart"
 # rust-const = "LANGUAGE"
@@ -175,11 +696,41 @@ injections = true
 locals = true
 
 [[languages]]
+name = "desktop"
+group = "all"
+file-types = ["desktop"]
+[languages.parser]
+git = { url = "https://github.com/ValdezFOmar/tree-sitter-desktop", rev = "137292ae28e05011dbc7c5c383e2b25db1cf77c9" , branch = "master"}
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_desktop"
+package = "tree-sitter-desktop"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "dhall"
+group = "all"
+file-types = ["dhall"]
+[languages.parser]
+git = { url = "https://github.com/jbellerb/tree-sitter-dhall", rev = "62013259b26ac210d5de1abf64cf1b047ef88000" , branch = "master"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_dhall"
+package = "tree-sitter-dhall"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
 name = "diff"
 group = "most"
 file-types = ["diff"]
 [languages.parser]
-git = { url = "https://github.com/the-mikedavis/tree-sitter-diff", rev = "e42b8def4f75633568f1aecfe01817bf15164928" }
+git = { url = "https://github.com/the-mikedavis/tree-sitter-diff", rev = "2520c3f934b3179bb540d23e0ef45f75304b5fed" }
 external-scanner = { c = false, cpp = false }
 ffi-func = "tree_sitter_diff"
 rust-const = "LANGUAGE"
@@ -191,8 +742,38 @@ injections = true
 locals = false
 
 [[languages]]
-name = "dockerfile"
+name = "disassembly"
 group = "all"
+file-types = ["disassembly"]
+[languages.parser]
+git = { url = "https://github.com/ColinKennedy/tree-sitter-disassembly", rev = "0229c0211dba909c5d45129ac784a3f4d49c243a" , branch = "master"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_disassembly"
+package = "tree-sitter-disassembly"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "djot"
+group = "all"
+file-types = ["djot"]
+[languages.parser]
+git = { url = "https://github.com/treeman/tree-sitter-djot", rev = "74fac1f53c6d52aeac104b6874e5506be6d0cfe6" , branch = "master"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_djot"
+package = "tree-sitter-djot"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "dockerfile"
+group = "some"
 file-types = ["dockerfile"]
 [languages.parser]
 git = { url = "https://github.com/camdencheek/tree-sitter-dockerfile", rev = "971acdd908568b4531b0ba28a445bf0bb720aba5" }
@@ -205,6 +786,81 @@ package = "tree-sitter-dockerfile"
 nvim-like = true
 injections = true
 locals = false
+
+[[languages]]
+name = "dot"
+group = "all"
+file-types = ["dot"]
+[languages.parser]
+git = { url = "https://github.com/rydesun/tree-sitter-dot", rev = "80327abbba6f47530edeb0df9f11bd5d5c93c14d" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_dot"
+package = "tree-sitter-dot"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "doxygen"
+group = "all"
+file-types = ["doxygen"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-doxygen", rev = "ccd998f378c3f9345ea4eeb223f56d7b84d16687" , branch = "master"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_doxygen"
+package = "tree-sitter-doxygen"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "dtd"
+group = "all"
+file-types = ["dtd"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-xml", rev = "5000ae8f22d11fbe93939b05c1e37cf21117162d", path = "dtd" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_dtd"
+package = "tree-sitter-dtd"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "dts"
+group = "all"
+file-types = ["dts"]
+[languages.parser]
+git = { url = "https://github.com/joelspadin/tree-sitter-devicetree", rev = "e685f1f6ac1702b046415efb476444167d63e41a" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_devicetree"
+package = "tree-sitter-dts"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "earthfile"
+group = "all"
+file-types = ["earthfile"]
+[languages.parser]
+git = { url = "https://github.com/glehmann/tree-sitter-earthfile", rev = "5baef88717ad0156fd29a8b12d0d8245bb1096a8" , branch = "stable"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_earthfile"
+package = "tree-sitter-earthfile"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
 
 [[languages]]
 name = "ebnf"
@@ -223,27 +879,87 @@ injections = true
 locals = false
 
 [[languages]]
+name = "editorconfig"
+group = "all"
+file-types = ["editorconfig"]
+[languages.parser]
+git = { url = "https://github.com/ValdezFOmar/tree-sitter-editorconfig", rev = "851f2c2483239ce62f919bf3408ccd20dc0b5c01" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_editorconfig"
+package = "tree-sitter-editorconfig"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "eds"
+group = "all"
+file-types = ["eds"]
+[languages.parser]
+git = { url = "https://github.com/uyha/tree-sitter-eds", rev = "26d529e6cfecde391a03c21d1474eb51e0285805" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_eds"
+package = "tree-sitter-eds"
+[languages.queries]
+nvim-like = true
+injections = false
+locals = false
+
+
+[[languages]]
+name = "eelixir"
+group = "all"
+file-types = ["eelixir"]
+[languages.parser]
+git = { url = "https://github.com/connorlay/tree-sitter-eex", rev = "f742f2fe327463335e8671a87c0b9b396905d1d1" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_eex"
+package = "tree-sitter-eelixir"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
 name = "ejs"
 group = "all"
 file-types = ["ejavascript"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-embedded-template", rev = "8495d106154741e6d35d37064f864758ece75de6" }
+git = { url = "https://github.com/tree-sitter/tree-sitter-embedded-template", rev = "3499d85f0a0d937c507a4a65368f2f63772786e1" }
 external-scanner = { c = false, cpp = false }
 ffi-func = "tree_sitter_embedded_template"
 rust-const = "LANGUAGE"
 package = "tree-sitter-embedded-template"
-crates-io = "0.23.2"
+crates-io = "0.25.0"
 [languages.queries]
 nvim-like = true
 injections = true
 locals = false
 
 [[languages]]
+name = "elisp"
+group = "all"
+file-types = ["el", "elisp"]
+[languages.parser]
+git = { url = "https://github.com/Wilfred/tree-sitter-elisp", rev = "29b4e49275f4a947ce17c8533bc20a1f97768c70" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_elisp"
+package = "tree-sitter-elisp"
+[languages.queries]
+nvim-like = true
+injections = false
+locals = false
+
+
+[[languages]]
 name = "elixir"
 group = "most"
 file-types = ["elixir"]
 [languages.parser]
-git = { url = "https://github.com/elixir-lang/tree-sitter-elixir", rev = "b848e63e9f2a68accff0332392f07582c046295a" }
+git = { url = "https://github.com/elixir-lang/tree-sitter-elixir", rev = "d24cecee673c4c770f797bac6f87ae4b6d7ddec5" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_elixir"
 rust-const = "LANGUAGE"
@@ -255,27 +971,177 @@ injections = true
 locals = true
 
 [[languages]]
+name = "elm"
+group = "all"
+file-types = ["elm"]
+[languages.parser]
+git = { url = "https://github.com/elm-tooling/tree-sitter-elm", rev = "6d9511c28181db66daee4e883f811f6251220943" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_elm"
+package = "tree-sitter-elm"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "elsa"
+group = "all"
+file-types = ["elsa"]
+[languages.parser]
+git = { url = "https://github.com/glapa-grossklag/tree-sitter-elsa", rev = "0a66b2b3f3c1915e67ad2ef9f7dbd2a84820d9d7" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_elsa"
+package = "tree-sitter-elsa"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "elvish"
+group = "all"
+file-types = ["elvish"]
+[languages.parser]
+git = { url = "https://github.com/elves/tree-sitter-elvish", rev = "5e7210d945425b77f82cbaebc5af4dd3e1ad40f5" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_elvish"
+package = "tree-sitter-elvish"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "enforce"
+group = "all"
+file-types = ["enforce"]
+[languages.parser]
+git = { url = "https://github.com/simonvic/tree-sitter-enforce", rev = "eb2796871d966264cdb041b797416ef1757c8b4f" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_enforce"
+package = "tree-sitter-enforce"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
 name = "erb"
 group = "all"
 file-types = ["eruby"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-embedded-template", rev = "8495d106154741e6d35d37064f864758ece75de6" }
+git = { url = "https://github.com/tree-sitter/tree-sitter-embedded-template", rev = "3499d85f0a0d937c507a4a65368f2f63772786e1" }
 external-scanner = { c = false, cpp = false }
 ffi-func = "tree_sitter_embedded_template"
 rust-const = "LANGUAGE"
 package = "tree-sitter-embedded-template"
-crates-io = "0.23.2"
+crates-io = "0.25.0"
 [languages.queries]
 nvim-like = true
 injections = true
 locals = false
 
 [[languages]]
-name = "fish"
+name = "erlang"
 group = "all"
+file-types = ["erlang"]
+[languages.parser]
+git = { url = "https://github.com/WhatsApp/tree-sitter-erlang", rev = "f21023bbd6cd30cadbc793d80ae4d990d9be86fc" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_erlang"
+package = "tree-sitter-erlang"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "eruby"
+group = "all"
+file-types = ["eruby"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter/tree-sitter-embedded-template", rev = "3499d85f0a0d937c507a4a65368f2f63772786e1" , branch = "master"}
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_embedded_template"
+package = "tree-sitter-eruby"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "faust"
+group = "all"
+file-types = ["faust"]
+[languages.parser]
+git = { url = "https://github.com/khiner/tree-sitter-faust", rev = "122dd101919289ea809bad643712fcb483a1bed0" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_faust"
+package = "tree-sitter-faust"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "fennel"
+group = "all"
+file-types = ["fennel"]
+[languages.parser]
+git = { url = "https://github.com/alexmozaidze/tree-sitter-fennel", rev = "3f0f6b24d599e92460b969aabc4f4c5a914d15a0" , branch = "master"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_fennel"
+package = "tree-sitter-fennel"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "fidl"
+group = "all"
+file-types = ["fidl"]
+[languages.parser]
+git = { url = "https://github.com/google/tree-sitter-fidl", rev = "0a8910f293268e27ff554357c229ba172b0eaed2" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_fidl"
+package = "tree-sitter-fidl"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "firrtl"
+group = "all"
+file-types = ["firrtl"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-firrtl", rev = "8503d3a0fe0f9e427863cb0055699ff2d29ae5f5" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_firrtl"
+package = "tree-sitter-firrtl"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "fish"
+group = "most"
 file-types = ["fish"]
 [languages.parser]
-git = { url = "https://github.com/ram02z/tree-sitter-fish", rev = "aa074a0bacde8b5823c592574d7138f156a95776" }
+git = { url = "https://github.com/ram02z/tree-sitter-fish", rev = "aa074a0bacde8b5823c592574d7138f156a95776" , branch = "master"}
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_fish"
 rust-func = "language"
@@ -287,11 +1153,296 @@ injections = true
 locals = true
 
 [[languages]]
+name = "foam"
+group = "all"
+file-types = ["foam"]
+[languages.parser]
+git = { url = "https://github.com/FoamScience/tree-sitter-foam", rev = "472c24f11a547820327fb1be565bcfff98ea96a4" , branch = "master"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_foam"
+package = "tree-sitter-foam"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "forth"
+group = "all"
+file-types = ["forth"]
+[languages.parser]
+git = { url = "https://github.com/AlexanderBrevig/tree-sitter-forth", rev = "360ef13f8c609ec6d2e80782af69958b84e36cd0" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_forth"
+package = "tree-sitter-forth"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "fortran"
+group = "all"
+file-types = ["fortran"]
+[languages.parser]
+git = { url = "https://github.com/stadelmanma/tree-sitter-fortran", rev = "43cd127cd41ff6e57b3ececb3cc283c5af4796e7" , branch = "master"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_fortran"
+package = "tree-sitter-fortran"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "fsd"
+group = "all"
+file-types = ["fsd"]
+[languages.parser]
+git = { url = "https://github.com/FacilityApi/tree-sitter-facility", rev = "e4bfd3e960de9f4b4648acb1c92e9b95b47d8cfb" , branch = "master"}
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_facility"
+package = "tree-sitter-fsd"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "fsh"
+group = "all"
+file-types = ["fsh"]
+[languages.parser]
+git = { url = "https://github.com/mgramigna/tree-sitter-fsh", rev = "fad2e175099a45efbc98f000cc196d3674cc45e0" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_fsh"
+package = "tree-sitter-fsh"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "fsharp"
+group = "all"
+file-types = ["fsharp"]
+[languages.parser]
+git = { url = "https://github.com/ionide/tree-sitter-fsharp", rev = "5141851c278a99958469eb1736c7afc4ec738e47", path = "fsharp" , branch = "main"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_fsharp"
+package = "tree-sitter-fsharp"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "func"
+group = "all"
+file-types = ["func"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-func", rev = "f780ca55e65e7d7360d0229331763e16c452fc98" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_func"
+package = "tree-sitter-func"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+[[languages]]
+name = "fusion"
+group = "all"
+file-types = ["fusion"]
+[languages.parser]
+git = { url = "https://gitlab.com/jirgn/tree-sitter-fusion", rev = "19db2f47ba4c3a0f6238d4ae0e2abfca16e61dd6" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_fusion"
+package = "tree-sitter-fusion"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+[[languages]]
+name = "gap"
+group = "all"
+file-types = ["gap"]
+[languages.parser]
+git = { url = "https://github.com/gap-system/tree-sitter-gap", rev = "2bac14863b76ad0ff6fd7204c50574732acd66df" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_gap"
+package = "tree-sitter-gap"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "gaptst"
+group = "all"
+file-types = ["gaptst"]
+[languages.parser]
+git = { url = "https://github.com/gap-system/tree-sitter-gaptst", rev = "69086d7627c03e1f4baf766bcef14c60d9e92331" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_gaptst"
+package = "tree-sitter-gaptst"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "gdresource"
+group = "all"
+file-types = ["gdresource"]
+[languages.parser]
+git = { url = "https://github.com/PrestonKnopp/tree-sitter-godot-resource", rev = "302c1895f54bf74d53a08572f7b26a6614209adc" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_godot_resource"
+package = "tree-sitter-gdresource"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "gdscript"
+group = "all"
+file-types = ["gdscript"]
+[languages.parser]
+git = { url = "https://github.com/PrestonKnopp/tree-sitter-gdscript", rev = "9686853b696db07118ad110e440d6de0ca6498b4" , branch = "master"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_gdscript"
+package = "tree-sitter-gdscript"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "gdshaderinc"
+group = "all"
+file-types = ["gdshaderinc"]
+[languages.parser]
+git = { url = "https://github.com/airblast-dev/tree-sitter-gdshader", rev = "68268631c8b6dc093985f1246b099f81b30ea7d1" , branch = "master"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_gdshader"
+package = "tree-sitter-gdshaderinc"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "gitattributes"
+group = "some"
+file-types = ["gitattributes"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-gitattributes", rev = "1b7af09d45b579f9f288453b95ad555f1f431645" , branch = "master"}
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_gitattributes"
+package = "tree-sitter-gitattributes"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "gitcommit"
+group = "some"
+file-types = ["gitcommit"]
+# Excluded from WASM: parser has massive character tables that cause emscripten OOM
+wasm = false
+[languages.parser]
+git = { url = "https://github.com/gbprod/tree-sitter-gitcommit", rev = "a716678c0f00645fed1e6f1d0eb221481dbd6f6d" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_gitcommit"
+package = "tree-sitter-gitcommit"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "gitconfig"
+group = "some"
+file-types = ["gitconfig"]
+[languages.parser]
+git = { url = "https://github.com/the-mikedavis/tree-sitter-git-config", rev = "0fbc9f99d5a28865f9de8427fb0672d66f9d83a5" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_git_config"
+package = "tree-sitter-gitconfig"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "gitdiff"
+group = "some"
+file-types = ["gitdiff"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-diff", rev = "2520c3f934b3179bb540d23e0ef45f75304b5fed" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_diff"
+package = "tree-sitter-gitdiff"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "gitignore"
+group = "some"
+file-types = ["gitignore"]
+[languages.parser]
+git = { url = "https://github.com/shunsambongi/tree-sitter-gitignore", rev = "f4685bf11ac466dd278449bcfe5fd014e94aa504" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_gitignore"
+package = "tree-sitter-gitignore"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "gitrebase"
+group = "some"
+file-types = ["gitrebase"]
+[languages.parser]
+git = { url = "https://github.com/the-mikedavis/tree-sitter-git-rebase", rev = "bff4b66b44b020d918d67e2828eada1974a966aa" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_git_rebase"
+package = "tree-sitter-gitrebase"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
 name = "gleam"
 group = "all"
 file-types = ["gleam"]
 [languages.parser]
-git = { url = "https://github.com/gleam-lang/tree-sitter-gleam", rev = "6ece453acf8b14568c10f629f8cd25d3dde3794f" }
+git = { url = "https://github.com/gleam-lang/tree-sitter-gleam", rev = "dd4e328c5fd5f158d47a22339d8ce0f8be918a0b" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_gleam"
 rust-const = "LANGUAGE"
@@ -303,27 +1454,313 @@ injections = true
 locals = true
 
 [[languages]]
-name = "go"
-group = "some"
-file-types = ["go"]
+name = "glimmer_javascript"
+group = "all"
+file-types = ["javascript.glimmer"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-go", rev = "5e73f476efafe5c768eda19bbe877f188ded6144" }
-external-scanner = { c = false, cpp = false }
-ffi-func = "tree_sitter_go"
-rust-const = "LANGUAGE"
-package = "tree-sitter-go"
-crates-io = "0.23.4"
+git = { url = "https://github.com/ember-tooling/tree-sitter-glimmer-javascript", rev = "5cc865a2a0a77cbfaf5062c8fcf2a9919bd54f87" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_glimmer_javascript"
+package = "tree-sitter-glimmer-javascript"
 [languages.queries]
 nvim-like = true
 injections = true
 locals = true
 
 [[languages]]
+name = "glimmer_typescript"
+group = "all"
+file-types = ["typescript.glimmer"]
+[languages.parser]
+git = { url = "https://github.com/ember-tooling/tree-sitter-glimmer-typescript", rev = "12d98944c1d5077b957cbdb90d663a7c4d50118c" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_glimmer_typescript"
+package = "tree-sitter-glimmer-typescript"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+[[languages]]
+name = "glsl"
+group = "all"
+file-types = ["glsl"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-glsl", rev = "24a6c8ef698e4480fecf8340d771fbcb5de8fbb4" , branch = "master"}
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_glsl"
+package = "tree-sitter-glsl"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "gn"
+group = "all"
+file-types = ["gn"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-gn", rev = "bc06955bc1e3c9ff8e9b2b2a55b38b94da923c05" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_gn"
+package = "tree-sitter-gn"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "gnuplot"
+group = "all"
+file-types = ["gnuplot"]
+# Excluded from WASM: emcc parser compilation is killed in CI (SIGKILL)
+wasm = false
+[languages.parser]
+git = { url = "https://github.com/dpezto/tree-sitter-gnuplot", rev = "8923c1e38b9634a688a6c0dce7c18c8ffb823e79" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_gnuplot"
+package = "tree-sitter-gnuplot"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "go"
+group = "some"
+file-types = ["go"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter/tree-sitter-go", rev = "2346a3ab1bb3857b48b29d779a1ef9799a248cd7" , branch = "master"}
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_go"
+rust-const = "LANGUAGE"
+package = "tree-sitter-go"
+crates-io = "0.25.0"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+[[languages]]
+name = "goctl"
+group = "all"
+file-types = ["goctl"]
+[languages.parser]
+git = { url = "https://github.com/chaozwn/tree-sitter-goctl", rev = "49c43532689fe1f53e8b9e009d0521cab02c432b" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_goctl"
+package = "tree-sitter-goctl"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "gomod"
+group = "all"
+file-types = ["gomod"]
+[languages.parser]
+git = { url = "https://github.com/camdencheek/tree-sitter-go-mod", rev = "2e886870578eeba1927a2dc4bd2e2b3f598c5f9a" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_gomod"
+package = "tree-sitter-gomod"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "gosum"
+group = "all"
+file-types = ["gosum"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-go-sum", rev = "27816eb6b7315746ae9fcf711e4e1396dc1cf237" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_gosum"
+package = "tree-sitter-gosum"
+[languages.queries]
+nvim-like = true
+injections = false
+locals = false
+
+
+[[languages]]
+name = "gotmpl"
+group = "all"
+file-types = ["gotmpl"]
+[languages.parser]
+git = { url = "https://github.com/ngalaiko/tree-sitter-go-template", rev = "04270cd3512e2c7de0c5f2823725d7b0c4c01fda" , branch = "master"}
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_gotmpl"
+package = "tree-sitter-gotmpl"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "gowork"
+group = "all"
+file-types = ["gowork"]
+[languages.parser]
+git = { url = "https://github.com/omertuc/tree-sitter-go-work", rev = "949a8a470559543857a62102c84700d291fc984c" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_gowork"
+package = "tree-sitter-gowork"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "gpg"
+group = "all"
+file-types = ["gpg"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-gpg-config", rev = "4024eb268c59204280f8ac71ef146b8ff5e737f6" , branch = "master"}
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_gpg"
+package = "tree-sitter-gpg"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "graphql"
+group = "some"
+file-types = ["graphql"]
+[languages.parser]
+git = { url = "https://github.com/bkegley/tree-sitter-graphql", rev = "5e66e961eee421786bdda8495ed1db045e06b5fe" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_graphql"
+package = "tree-sitter-graphql"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "gren"
+group = "all"
+file-types = ["gren"]
+[languages.parser]
+git = { url = "https://github.com/MaeBrooks/tree-sitter-gren", rev = "c36aac51a915fdfcaf178128ba1e9c2205b25930" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_gren"
+package = "tree-sitter-gren"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "groovy"
+group = "all"
+file-types = ["groovy"]
+[languages.parser]
+git = { url = "https://github.com/murtaza64/tree-sitter-groovy", rev = "86911590a8e46d71301c66468e5620d9faa5b6af" , branch = "gh-pages"}
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_groovy"
+package = "tree-sitter-groovy"
+generate = false
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "groq"
+group = "all"
+file-types = ["groq"]
+[languages.parser]
+git = { url = "https://github.com/ajrussellaudio/tree-sitter-groq", rev = "1fa1ab0eb391a270957e8ad8c731b492e3645649" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_groq"
+package = "tree-sitter-groq"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "gstlaunch"
+group = "all"
+file-types = ["gstlaunch"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-gstlaunch", rev = "549aef253fd38a53995cda1bf55c501174372bf7" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_gstlaunch"
+package = "tree-sitter-gstlaunch"
+[languages.queries]
+nvim-like = true
+injections = false
+locals = false
+
+
+[[languages]]
+name = "hack"
+group = "all"
+file-types = ["hack"]
+[languages.parser]
+git = { url = "https://github.com/slackhq/tree-sitter-hack", rev = "1a7ded90288189746c54861ac144ede97df95081" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_hack"
+package = "tree-sitter-hack"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "handlebars"
+group = "all"
+file-types = ["handlebars"]
+[languages.parser]
+git = { url = "https://github.com/ember-tooling/tree-sitter-glimmer", rev = "88af85568bde3b91acb5d4c352ed094d0c1f9d84" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_glimmer"
+package = "tree-sitter-handlebars"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "hare"
+group = "all"
+file-types = ["hare"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-hare", rev = "eed7ddf6a66b596906aa8ca3d40521b8278adc6f" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_hare"
+package = "tree-sitter-hare"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
 name = "haskell"
 group = "most"
 file-types = ["haskell"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-haskell", rev = "0975ef72fc3c47b530309ca93937d7d143523628" }
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-haskell", rev = "7fa19f195803a77855f036ee7f49e4b22856e338" , branch = "master"}
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_haskell"
 rust-const = "LANGUAGE"
@@ -333,6 +1770,94 @@ crates-io = "0.23.1"
 nvim-like = true
 injections = true
 locals = true
+
+[[languages]]
+name = "haskellpersistent"
+group = "all"
+file-types = ["haskellpersistent"]
+[languages.parser]
+git = { url = "https://github.com/MercuryTechnologies/tree-sitter-haskell-persistent", rev = "577259b4068b2c281c9ebf94c109bd50a74d5857" , branch = "master"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_haskell_persistent"
+package = "tree-sitter-haskellpersistent"
+[languages.queries]
+nvim-like = true
+injections = false
+locals = false
+
+[[languages]]
+name = "haxe"
+group = "all"
+file-types = ["haxe", "hx"]
+[languages.parser]
+git = { url = "https://github.com/vantreeseba/tree-sitter-haxe", rev = "a55f3e2cf1e4449200fd089a80d3af642bcf5f94" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_haxe"
+package = "tree-sitter-haxe"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+[[languages]]
+name = "hcl"
+group = "most"
+file-types = ["hcl"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-hcl", rev = "64ad62785d442eb4d45df3a1764962dafd5bc98b" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_hcl"
+package = "tree-sitter-hcl"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "heex"
+group = "all"
+file-types = ["heex"]
+[languages.parser]
+git = { url = "https://github.com/phoenixframework/tree-sitter-heex", rev = "b5a7cb5f74dc695a9ff5f04919f872ebc7a895e9" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_heex"
+package = "tree-sitter-heex"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "helm"
+group = "all"
+file-types = ["helm"]
+[languages.parser]
+git = { url = "https://github.com/ngalaiko/tree-sitter-go-template", rev = "04270cd3512e2c7de0c5f2823725d7b0c4c01fda" , branch = "master"}
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_gotmpl"
+package = "tree-sitter-helm"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "help"
+group = "all"
+file-types = ["help"]
+[languages.parser]
+git = { url = "https://github.com/neovim/tree-sitter-vimdoc", rev = "f061895a0eff1d5b90e4fb60d21d87be3267031a" , branch = "master"}
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_vimdoc"
+package = "tree-sitter-help"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
 
 [[languages]]
 name = "hexdump"
@@ -351,11 +1876,86 @@ injections = false
 locals = false
 
 [[languages]]
+name = "hjson"
+group = "all"
+file-types = ["hjson"]
+[languages.parser]
+git = { url = "https://github.com/winston0410/tree-sitter-hjson", rev = "02fa3b79b3ff9a296066da6277adfc3f26cbc9e0" , branch = "master"}
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_hjson"
+package = "tree-sitter-hjson"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "hlsl"
+group = "all"
+file-types = ["hlsl"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-hlsl", rev = "bab9111922d53d43668fabb61869bec51bbcb915" , branch = "master"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_hlsl"
+package = "tree-sitter-hlsl"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "hlsplaylist"
+group = "all"
+file-types = ["hlsplaylist"]
+[languages.parser]
+git = { url = "https://github.com/Freed-Wu/tree-sitter-hlsplaylist", rev = "3bfda9271e3adb08d35f47a2102fe957009e1c55" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_hlsplaylist"
+package = "tree-sitter-hlsplaylist"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "hocon"
+group = "all"
+file-types = ["hocon"]
+[languages.parser]
+git = { url = "https://github.com/antosha417/tree-sitter-hocon", rev = "c390f10519ae69fdb03b3e5764f5592fb6924bcc" , branch = "master"}
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_hocon"
+package = "tree-sitter-hocon"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "hoon"
+group = "all"
+file-types = ["hoon"]
+[languages.parser]
+git = { url = "https://github.com/urbit-pilled/tree-sitter-hoon", rev = "1545137aadcc63660c47db9ad98d02fa602655d0" , branch = "master"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_hoon"
+package = "tree-sitter-hoon"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
 name = "html"
 group = "some"
 file-types = ["html"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-html", rev = "cbb91a0ff3621245e890d1c50cc811bffb77a26b" }
+git = { url = "https://github.com/tree-sitter/tree-sitter-html", rev = "73a3947324f6efddf9e17c0ea58d454843590cc0" , branch = "master"}
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_html"
 rust-const = "LANGUAGE"
@@ -367,11 +1967,176 @@ injections = true
 locals = true
 
 [[languages]]
+name = "htmlangular"
+group = "all"
+file-types = ["htmlangular"]
+[languages.parser]
+git = { url = "https://github.com/dlvandenberg/tree-sitter-angular", rev = "3bd2036e710f609ea08fcfca5a1eb1169ecc114f" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_angular"
+package = "tree-sitter-htmlangular"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "htmldjango"
+group = "all"
+file-types = ["htmldjango"]
+[languages.parser]
+git = { url = "https://github.com/interdependence/tree-sitter-htmldjango", rev = "3a643167ad9afac5d61e092f08ff5b054576fadf" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_htmldjango"
+package = "tree-sitter-htmldjango"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "http"
+group = "all"
+file-types = ["http"]
+[languages.parser]
+git = { url = "https://github.com/rest-nvim/tree-sitter-http", rev = "db8b4398de90b6d0b6c780aba96aaa2cd8e9202c" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_http"
+package = "tree-sitter-http"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "hurl"
+group = "all"
+file-types = ["hurl"]
+[languages.parser]
+git = { url = "https://github.com/pfeiferj/tree-sitter-hurl", rev = "597efbd7ce9a814bb058f48eabd055b1d1e12145" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_hurl"
+package = "tree-sitter-hurl"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "hyprlang"
+group = "all"
+file-types = ["hyprlang"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-hyprlang", rev = "22723f25f3faf329863d952c9601b492afd971c9" , branch = "master"}
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_hyprlang"
+package = "tree-sitter-hyprlang"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "idl"
+group = "all"
+file-types = ["idl"]
+[languages.parser]
+git = { url = "https://github.com/cathaysia/tree-sitter-idl", rev = "e6b8b4d2ba285caacf6f9e931f1f637f5bc02b03" , branch = "master"}
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_idl"
+package = "tree-sitter-idl"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "idris2"
+group = "all"
+file-types = ["idris2"]
+[languages.parser]
+git = { url = "https://github.com/kayhide/tree-sitter-idris", rev = "c56a25cf57c68ff929356db25505c1cc4c7820f6" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_idris"
+package = "tree-sitter-idris2"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "ini"
+group = "most"
+file-types = ["ini", "systemd"]
+[languages.parser]
+git = { url = "https://github.com/justinmk/tree-sitter-ini", rev = "e4018b5176132b4f3c5d6e61cea383f42288d0f5" , branch = "master"}
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_ini"
+package = "tree-sitter-ini"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "inko"
+group = "all"
+file-types = ["inko"]
+[languages.parser]
+git = { url = "https://github.com/inko-lang/tree-sitter-inko", rev = "v0.5.1" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_inko"
+package = "tree-sitter-inko"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "ispc"
+group = "all"
+file-types = ["ispc"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-ispc", rev = "9b2f9aec2106b94b4e099fe75e73ebd8ae707c04" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_ispc"
+package = "tree-sitter-ispc"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "janet"
+group = "all"
+file-types = ["janet"]
+[languages.parser]
+git = { url = "https://github.com/sogaiu/tree-sitter-janet-simple", rev = "7e28cbf1ca061887ea43591a2898001f4245fddf" , branch = "master"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_janet_simple"
+package = "tree-sitter-janet"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
 name = "java"
 group = "some"
 file-types = ["java"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-java", rev = "a7db5227ec40fcfe94489559d8c9bc7c8181e25a" }
+git = { url = "https://github.com/tree-sitter/tree-sitter-java", rev = "e10607b45ff745f5f876bfa3e94fbcc6b44bdc11" , branch = "master"}
 external-scanner = { c = false, cpp = false }
 ffi-func = "tree_sitter_java"
 rust-const = "LANGUAGE"
@@ -383,32 +2148,108 @@ injections = true
 locals = true
 
 [[languages]]
+name = "javadoc"
+group = "all"
+file-types = ["javadoc"]
+[languages.parser]
+git = { url = "https://github.com/rmuir/tree-sitter-javadoc", rev = "141525e73c9ad2fe7df8861047d4068ddbb6c337" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_javadoc"
+package = "tree-sitter-javadoc"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
 name = "javascript"
 group = "some"
 file-types = ["javascript", "jsx"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-javascript", rev = "6fbef40512dcd9f0a61ce03a4c9ae7597b36ab5c" }
+git = { url = "https://github.com/tree-sitter/tree-sitter-javascript", rev = "58404d8cf191d69f2674a8fd507bd5776f46cb11" , branch = "master"}
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_javascript"
 rust-const = "LANGUAGE"
 package = "tree-sitter-javascript"
-crates-io = "0.23.1"
+crates-io = "0.25.0"
 [languages.queries]
 nvim-like = true
 injections = true
 locals = true
+
+
+[[languages]]
+name = "jinja"
+group = "all"
+file-types = ["jinja"]
+[languages.parser]
+git = { url = "https://github.com/cathaysia/tree-sitter-jinja", rev = "e589222a1ad44361bc376d5abdccd08e1fecfee5", path = "tree-sitter-jinja" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_jinja"
+package = "tree-sitter-jinja"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "jinja_inline"
+group = "all"
+file-types = ["jinja_inline"]
+[languages.parser]
+git = { url = "https://github.com/cathaysia/tree-sitter-jinja", rev = "e589222a1ad44361bc376d5abdccd08e1fecfee5", path = "tree-sitter-jinja_inline" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_jinja_inline"
+package = "tree-sitter-jinja-inline"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "jproperties"
+group = "all"
+file-types = ["jproperties"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-properties", rev = "6310671b24d4e04b803577b1c675d765cbd5773b" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_properties"
+package = "tree-sitter-jproperties"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "jq"
+group = "all"
+file-types = ["jq"]
+[languages.parser]
+git = { url = "https://github.com/flurie/tree-sitter-jq", rev = "c204e36d2c3c6fce1f57950b12cabcc24e5cc4d9" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_jq"
+package = "tree-sitter-jq"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
 
 [[languages]]
 name = "jsdoc"
 group = "most"
 file-types = []
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-jsdoc", rev = "a417db5dbdd869fccb6a8b75ec04459e1d4ccd2c" }
+git = { url = "https://github.com/tree-sitter/tree-sitter-jsdoc", rev = "658d18dcdddb75c760363faa4963427a7c6b52db" , branch = "master"}
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_jsdoc"
 rust-const = "LANGUAGE"
 package = "tree-sitter-jsdoc"
-crates-io = "0.23.2"
+crates-io = "0.25.0"
 [languages.queries]
 nvim-like = true
 injections = false
@@ -419,7 +2260,7 @@ name = "json"
 group = "some"
 file-types = ["json"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-json", rev = "46aa487b3ade14b7b05ef92507fdaa3915a662a3" }
+git = { url = "https://github.com/tree-sitter/tree-sitter-json", rev = "001c28d7a29832b06b0e831ec77845553c89b56d" , branch = "master"}
 external-scanner = { c = false, cpp = false }
 ffi-func = "tree_sitter_json"
 rust-const = "LANGUAGE"
@@ -435,7 +2276,7 @@ name = "json5"
 group = "most"
 file-types = ["json5"]
 [languages.parser]
-git = { url = "https://github.com/Joakker/tree-sitter-json5", rev = "ab0ba8229d639ec4f3fa5f674c9133477f4b77bd" }
+git = { url = "https://github.com/Joakker/tree-sitter-json5", rev = "aa630ef48903ab99e406a8acd2e2933077cc34e1" }
 external-scanner = { c = false, cpp = false }
 ffi-func = "tree_sitter_json5"
 # rust-const = "LANGUAGE"
@@ -463,11 +2304,26 @@ injections = true
 locals = true
 
 [[languages]]
+name = "jsonnet"
+group = "all"
+file-types = ["jsonnet"]
+[languages.parser]
+git = { url = "https://github.com/sourcegraph/tree-sitter-jsonnet", rev = "ddd075f1939aed8147b7aa67f042eda3fce22790" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_jsonnet"
+package = "tree-sitter-jsonnet"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
 name = "julia"
 group = "all"
 file-types = ["julia"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-julia", rev = "18b739c1563c83fc816170a4241adfa4b69e5c47" }
+git = { url = "https://github.com/tree-sitter/tree-sitter-julia", rev = "3c1bd7c6c1a7442506b040d17500b69ad52209cd" , branch = "master"}
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_julia"
 rust-const = "LANGUAGE"
@@ -477,6 +2333,98 @@ crates-io = "0.23.1"
 nvim-like = true
 injections = true
 locals = true
+
+[[languages]]
+name = "just"
+group = "all"
+file-types = ["just"]
+[languages.parser]
+git = { url = "https://github.com/casey/tree-sitter-just", rev = "7333f8c150aaac5bb46decc2d225a2d4cde8c51e" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_just"
+package = "tree-sitter-just"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "kcl"
+group = "all"
+file-types = ["kcl"]
+[languages.parser]
+git = { url = "https://github.com/kcl-lang/tree-sitter-kcl", rev = "b0b2eb38009e04035a6e266c7e11e541f3caab7c" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_kcl"
+package = "tree-sitter-kcl"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "kconfig"
+group = "all"
+file-types = ["kconfig"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-kconfig", rev = "9ac99fe4c0c27a35dc6f757cef534c646e944881" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_kconfig"
+package = "tree-sitter-kconfig"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "kdl"
+group = "all"
+file-types = ["kdl"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-kdl", rev = "b37e3d58e5c5cf8d739b315d6114e02d42e66664" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_kdl"
+package = "tree-sitter-kdl"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "kitty"
+group = "all"
+file-types = ["kitty"]
+# wasm = false: parser.c is too large and causes emcc to be OOM-killed on CI
+wasm = false
+[languages.parser]
+git = { url = "https://github.com/OXY2DEV/tree-sitter-kitty", rev = "f821c16397ffab5b776d8781245215811438a624" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_kitty"
+package = "tree-sitter-kitty"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "kos"
+group = "all"
+file-types = ["kos"]
+[languages.parser]
+git = { url = "https://github.com/kos-lang/tree-sitter-kos", rev = "03b261c1a78b71c38cf4616497f253c4a4ce118b" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_kos"
+package = "tree-sitter-kos"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
 
 [[languages]]
 name = "kotlin"
@@ -495,11 +2443,41 @@ injections = true
 locals = true
 
 [[languages]]
+name = "koto"
+group = "all"
+file-types = ["koto"]
+[languages.parser]
+git = { url = "https://github.com/koto-lang/tree-sitter-koto", rev = "f8b3f62c0eed185dca1559789e78759d4bee60e5" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_koto"
+package = "tree-sitter-koto"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "kusto"
+group = "all"
+file-types = ["kusto"]
+[languages.parser]
+git = { url = "https://github.com/Willem-J-an/tree-sitter-kusto", rev = "8353a1296607d6ba33db7c7e312226e5fc83e8ce" , branch = "master"}
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_kusto"
+package = "tree-sitter-kusto"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
 name = "lalrpop"
 group = "all"
 file-types = []
 [languages.parser]
-git = { url = "https://github.com/traxys/tree-sitter-lalrpop", rev = "8d38e9755c05d37df8a24dadb0fc64f6588ac188" }
+git = { url = "https://github.com/traxys/tree-sitter-lalrpop", rev = "27b0f7bb55b4cabd8f01a933d9ee6a49dbfc2192" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_lalrpop"
 rust-const = "LANGUAGE"
@@ -515,7 +2493,7 @@ name = "latex"
 group = "all"
 file-types = ["tex"]
 [languages.parser]
-git = { url = "https://github.com/latex-lsp/tree-sitter-latex", rev = "73c9b8992f72203386092ffd2a05f2dcba02d2cb" }
+git = { url = "https://github.com/latex-lsp/tree-sitter-latex", rev = "7e0ecdc02926c7b9b2e0c76003d4fe7b0944f957" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_latex"
 # rust-const = "LANGUAGE"
@@ -529,12 +2507,102 @@ injections = true
 locals = false
 
 [[languages]]
+name = "ld"
+group = "all"
+file-types = ["ld"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-linkerscript", rev = "f99011a3554213b654985a4b0a65b3b032ec4621" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_linkerscript"
+package = "tree-sitter-ld"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "ledger"
+group = "all"
+file-types = ["ledger"]
+[languages.parser]
+git = { url = "https://github.com/cbarrete/tree-sitter-ledger", rev = "96c92d4908a836bf8f661166721c98439f8afb80" , branch = "master"}
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_ledger"
+package = "tree-sitter-ledger"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "leo"
+group = "all"
+file-types = ["leo"]
+[languages.parser]
+git = { url = "https://github.com/r001/tree-sitter-leo", rev = "6bc5564917edacd070afc4d33cf5e2e677831ea9" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_leo"
+package = "tree-sitter-leo"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "liquid"
+group = "all"
+file-types = ["liquid"]
+[languages.parser]
+git = { url = "https://github.com/hankthetank27/tree-sitter-liquid", rev = "d6ebde3974742cd1b61b55d1d94aab1dacb41056" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_liquid"
+package = "tree-sitter-liquid"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "liquidsoap"
+group = "all"
+file-types = ["liquidsoap"]
+[languages.parser]
+git = { url = "https://github.com/savonet/tree-sitter-liquidsoap", rev = "d092c65598e940564e12214ff7c2097528cfa159" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_liquidsoap"
+package = "tree-sitter-liquidsoap"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "lisp"
+group = "all"
+file-types = ["lisp"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-commonlisp", rev = "32323509b3d9fe96607d151c2da2c9009eb13a2f" , branch = "master"}
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_commonlisp"
+package = "tree-sitter-lisp"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
 name = "llvm"
 group = "all"
 file-types = ["llvm"]
 wasm = false
 [languages.parser]
-git = { url = "https://github.com/benwilliamgraham/tree-sitter-llvm", rev = "1ac83114e71839fa67f4cce2f864ebbbdf6e2a4f" }
+git = { url = "https://github.com/benwilliamgraham/tree-sitter-llvm", rev = "2914786ae6774d4c4e25a230f4afe16aa68fe1c1" }
 external-scanner = { c = false, cpp = false }
 ffi-func = "tree_sitter_llvm"
 # rust-const = "LANGUAGE"
@@ -550,16 +2618,31 @@ name = "lua"
 group = "some"
 file-types = ["lua"]
 [languages.parser]
-git = { url = "https://github.com/muniftanjim/tree-sitter-lua", rev = "4fbec840c34149b7d5fe10097c93a320ee4af053" }
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-lua", rev = "816840c592ab973500ae9750763c707b447e7fef" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_lua"
 rust-const = "LANGUAGE"
 package = "tree-sitter-lua"
-crates-io = "0.2.0"
+crates-io = "0.4.1"
 [languages.queries]
 nvim-like = true
 injections = true
 locals = true
+
+[[languages]]
+name = "luadoc"
+group = "all"
+file-types = ["luadoc"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-luadoc", rev = "873612aadd3f684dd4e631bdf42ea8990c57634e" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_luadoc"
+package = "tree-sitter-luadoc"
+[languages.queries]
+nvim-like = true
+injections = false
+locals = false
+
 
 [[languages]]
 name = "luap"
@@ -572,6 +2655,34 @@ ffi-func = "tree_sitter_luap"
 # rust-const = "LANGUAGE"
 package = "tree-sitter-luap"
 # crates-io = ""
+[languages.queries]
+nvim-like = true
+injections = false
+locals = false
+
+[[languages]]
+name = "luau"
+group = "all"
+file-types = ["luau"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-luau", rev = "a8914d6c1fc5131f8e1c13f769fa704c9f5eb02f" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_luau"
+package = "tree-sitter-luau"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+[[languages]]
+name = "magik"
+group = "all"
+file-types = ["magik"]
+[languages.parser]
+git = { url = "https://github.com/krn-robin/tree-sitter-magik", rev = "0f4f51d372f8f81424e8e5ebf16dab95e8696db6" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_magik"
+package = "tree-sitter-magik"
 [languages.queries]
 nvim-like = true
 injections = false
@@ -598,12 +2709,12 @@ name = "markdown"
 group = "most"
 file-types = ["markdown"]
 [languages.parser]
-git = { url = "https://github.com/MDeiml/tree-sitter-markdown", rev = "7462bb66ac7e90312082269007fac2772fe5efd1", path = "tree-sitter-markdown" }
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-markdown", rev = "da063e1ba4303ff08781eb440cc9a7bd41e55dd8", path = "tree-sitter-markdown" , branch = "split_parser"}
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_markdown"
 rust-const = "LANGUAGE"
 package = "tree-sitter-md"
-crates-io = "0.3.2"
+crates-io = "0.5.2"
 [languages.queries]
 nvim-like = true
 injections = true
@@ -614,39 +2725,279 @@ name = "markdown_inline"
 group = "most"
 file-types = []
 [languages.parser]
-git = { url = "https://github.com/MDeiml/tree-sitter-markdown", rev = "7462bb66ac7e90312082269007fac2772fe5efd1", path = "tree-sitter-markdown-inline" }
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-markdown", rev = "da063e1ba4303ff08781eb440cc9a7bd41e55dd8", path = "tree-sitter-markdown-inline" , branch = "split_parser"}
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_markdown_inline"
 rust-const = "INLINE_LANGUAGE"
 package = "tree-sitter-md"
-crates-io = "0.3.2"
+crates-io = "0.5.2"
 [languages.queries]
 nvim-like = true
 injections = true
 locals = false
 
 [[languages]]
+name = "matlab"
+group = "all"
+file-types = ["matlab"]
+[languages.parser]
+git = { url = "https://github.com/acristoffers/tree-sitter-matlab", rev = "f3eef66526fdae0469207d8e561fb5771eea1721" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_matlab"
+package = "tree-sitter-matlab"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "menhir"
+group = "all"
+file-types = ["menhir"]
+[languages.parser]
+git = { url = "https://github.com/Kerl13/tree-sitter-menhir", rev = "be8866a6bcc2b563ab0de895af69daeffa88fe70" , branch = "master"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_menhir"
+package = "tree-sitter-menhir"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "mermaid"
+group = "all"
+file-types = ["mermaid"]
+[languages.parser]
+git = { url = "https://github.com/monaqa/tree-sitter-mermaid", rev = "90ae195b31933ceb9d079abfa8a3ad0a36fee4cc" , branch = "master"}
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_mermaid"
+package = "tree-sitter-mermaid"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "meson"
+group = "all"
+file-types = ["meson"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-meson", rev = "c84f3540624b81fc44067030afce2ff78d6ede05" , branch = "master"}
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_meson"
+package = "tree-sitter-meson"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "mlir"
+group = "all"
+file-types = ["mlir"]
+[languages.parser]
+git = { url = "https://github.com/artagnon/tree-sitter-mlir", rev = "4ab28ecdacef343af56c09b7981580503e49fadb" , branch = "master"}
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_mlir"
+package = "tree-sitter-mlir"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "muttrc"
+group = "all"
+file-types = ["muttrc"]
+[languages.parser]
+git = { url = "https://github.com/neomutt/tree-sitter-muttrc", rev = "173b0ab53a9c07962c9777189c4c70e90f1c1837" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_muttrc"
+package = "tree-sitter-muttrc"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "nasm"
+group = "all"
+file-types = ["nasm"]
+[languages.parser]
+git = { url = "https://github.com/naclsn/tree-sitter-nasm", rev = "d1b3638d017f2a8585e26dcfc66fe1df94185e30" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_nasm"
+package = "tree-sitter-nasm"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "nginx"
+group = "most"
+file-types = ["nginx"]
+[languages.parser]
+git = { url = "https://github.com/opa-oz/tree-sitter-nginx", rev = "47ade644d754cce57974aac44d2c9450e823d4f4" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_nginx"
+package = "tree-sitter-nginx"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "nickel"
+group = "all"
+file-types = ["nickel"]
+[languages.parser]
+git = { url = "https://github.com/nickel-lang/tree-sitter-nickel", rev = "a0a5d98a6f0edb5d00a18e62e7d1d02a5607c391" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_nickel"
+package = "tree-sitter-nickel"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "nim"
+group = "all"
+file-types = ["nim"]
+[languages.parser]
+git = { url = "https://github.com/alaviss/tree-sitter-nim", rev = "9b4ede21a6ca866d29263f6b66c070961bc622b4" , branch = "main"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_nim"
+package = "tree-sitter-nim"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "nim_format_string"
+group = "all"
+file-types = ["nim_format_string"]
+[languages.parser]
+git = { url = "https://github.com/aMOPel/tree-sitter-nim-format-string", rev = "d45f75022d147cda056e98bfba68222c9c8eca3a" , branch = "master"}
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_nim_format_string"
+package = "tree-sitter-nim-format-string"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "ninja"
+group = "all"
+file-types = ["ninja"]
+[languages.parser]
+git = { url = "https://github.com/alemuller/tree-sitter-ninja", rev = "0a95cfdc0745b6ae82f60d3a339b37f19b7b9267" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_ninja"
+package = "tree-sitter-ninja"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
 name = "nix"
 group = "most"
 file-types = ["nix"]
 [languages.parser]
-git = { url = "https://github.com/nix-community/tree-sitter-nix", rev = "cfc53fd287d23ab7281440a8526c73542984669b" }
+git = { url = "https://github.com/nix-community/tree-sitter-nix", rev = "eabf96807ea4ab6d6c7f09b671a88cd483542840" , branch = "master"}
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_nix"
 rust-const = "LANGUAGE"
 package = "tree-sitter-nix"
-crates-io = "0.0.2"
+crates-io = "0.3.0"
 [languages.queries]
 nvim-like = true
 injections = true
 locals = true
 
 [[languages]]
+name = "nqc"
+group = "all"
+file-types = ["nqc"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-nqc", rev = "14e6da1627aaef21d2b2aa0c37d04269766dcc1d" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_nqc"
+package = "tree-sitter-nqc"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "nu"
+group = "all"
+file-types = ["nu"]
+[languages.parser]
+git = { url = "https://github.com/nushell/tree-sitter-nu", rev = "4c149627cc592560f77ead1c384e27ec85926407" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_nu"
+package = "tree-sitter-nu"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "objc"
+group = "all"
+file-types = ["objc"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-objc", rev = "181a81b8f23a2d593e7ab4259981f50122909fda" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_objc"
+package = "tree-sitter-objc"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "objdump"
+group = "all"
+file-types = ["objdump"]
+[languages.parser]
+git = { url = "https://github.com/ColinKennedy/tree-sitter-objdump", rev = "28d3b2e25a0b1881d1b47ed1924ca276c7003d45" , branch = "master"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_objdump"
+package = "tree-sitter-objdump"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
 name = "ocaml"
 group = "all"
 file-types = ["ocaml"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-ocaml", rev = "3ef7c00b29e41e3a0c1d18e82ea37c64d72b93fc", path = "grammars/ocaml" }
+git = { url = "https://github.com/tree-sitter/tree-sitter-ocaml", rev = "3ef7c00b29e41e3a0c1d18e82ea37c64d72b93fc", path = "grammars/ocaml" , branch = "master"}
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_ocaml"
 rust-const = "LANGUAGE_OCAML"
@@ -674,16 +3025,150 @@ injections = true
 locals = true
 
 [[languages]]
+name = "ocamlinterface"
+group = "all"
+file-types = ["ocamlinterface"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter/tree-sitter-ocaml", rev = "3ef7c00b29e41e3a0c1d18e82ea37c64d72b93fc", path = "grammars/interface" , branch = "master"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_ocaml_interface"
+package = "tree-sitter-ocamlinterface"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "ocamllex"
+group = "all"
+file-types = ["ocamllex"]
+[languages.parser]
+git = { url = "https://github.com/314eter/tree-sitter-ocamllex", rev = "33722b8be73079946a7c6dd9598e3f57956ed36d" , branch = "master"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_ocamllex"
+package = "tree-sitter-ocamllex"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "odin"
+group = "all"
+file-types = ["odin"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-odin", rev = "d2ca8efb4487e156a60d5bd6db2598b872629403" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_odin"
+package = "tree-sitter-odin"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "pascal"
+group = "all"
+file-types = ["pascal"]
+[languages.parser]
+git = { url = "https://github.com/Isopod/tree-sitter-pascal", rev = "042119eca2e18a60e56317fb06ee3ba5c32cb447" , branch = "master"}
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_pascal"
+package = "tree-sitter-pascal"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "passwd"
+group = "all"
+file-types = ["passwd"]
+[languages.parser]
+git = { url = "https://github.com/ath3/tree-sitter-passwd", rev = "20239395eacdc2e0923a7e5683ad3605aee7b716" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_passwd"
+package = "tree-sitter-passwd"
+[languages.queries]
+nvim-like = true
+injections = false
+locals = false
+
+
+[[languages]]
+name = "pbtxt"
+group = "all"
+file-types = ["pbtxt"]
+[languages.parser]
+git = { url = "https://github.com/PorterAtGoogle/tree-sitter-textproto", rev = "568471b80fd8793d37ed01865d8c2208a9fefd1b" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_textproto"
+package = "tree-sitter-pbtxt"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "pem"
+group = "all"
+file-types = ["pem"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-pem", rev = "e525b177a229b1154fd81bc0691f943028d9e685" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_pem"
+package = "tree-sitter-pem"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "perl"
+group = "all"
+file-types = ["perl"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-perl/tree-sitter-perl", rev = "0c24d001dd1921e418fb933d208a7bd7dd3f923a" , branch = "release"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_perl"
+package = "tree-sitter-perl"
+generate = false
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+[[languages]]
+name = "pgn"
+group = "all"
+file-types = ["pgn"]
+[languages.parser]
+git = { url = "https://github.com/rolandwalker/tree-sitter-pgn", rev = "b55128fe93d2b8a5d1edc1ce7de9252d2ea7ed35", branch = "master" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_pgn"
+package = "tree-sitter-pgn"
+[languages.queries]
+nvim-like = true
+injections = false
+locals = false
+
+[[languages]]
 name = "php"
 group = "most"
 file-types = ["php"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-php", rev = "b2278dbac9d58b02653fe6a8530ccebc492e4ed4", path = "php" }
+git = { url = "https://github.com/tree-sitter/tree-sitter-php", rev = "7d07b41ce2d442ca9a90ed85d0075eccc17ae315", path = "php" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_php"
 rust-const = "LANGUAGE_PHP"
 package = "tree-sitter-php"
-crates-io = "0.23.11"
+crates-io = "0.24.2"
 [languages.queries]
 nvim-like = true
 injections = true
@@ -694,44 +3179,330 @@ name = "php_only"
 group = "most"
 file-types = []
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-php", rev = "b2278dbac9d58b02653fe6a8530ccebc492e4ed4", path = "php_only" }
+git = { url = "https://github.com/tree-sitter/tree-sitter-php", rev = "7d07b41ce2d442ca9a90ed85d0075eccc17ae315", path = "php_only" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_php_only"
 rust-const = "LANGUAGE_PHP_ONLY"
 package = "tree-sitter-php"
-crates-io = "0.23.11"
+crates-io = "0.24.2"
 [languages.queries]
 nvim-like = true
 injections = true
 locals = true
 
 [[languages]]
+name = "phpdoc"
+group = "all"
+file-types = ["phpdoc"]
+[languages.parser]
+git = { url = "https://github.com/claytonrcarter/tree-sitter-phpdoc", rev = "12d50307e6c02e5f4f876fa6cf2edea1f7808c0d" , branch = "master"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_phpdoc"
+package = "tree-sitter-phpdoc"
+[languages.queries]
+nvim-like = true
+injections = false
+locals = false
+
+
+[[languages]]
+name = "pioasm"
+group = "all"
+file-types = ["pioasm"]
+[languages.parser]
+git = { url = "https://github.com/leo60228/tree-sitter-pioasm", rev = "afece58efdb30440bddd151ef1347fa8d6f744a9" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_pioasm"
+package = "tree-sitter-pioasm"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "pkl"
+group = "all"
+file-types = ["pkl"]
+[languages.parser]
+git = { url = "https://github.com/apple/tree-sitter-pkl", rev = "d9c591b4e770934fe15c2f1b3658f35553f6cb40" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_pkl"
+package = "tree-sitter-pkl"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "po"
+group = "all"
+file-types = ["po"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-po", rev = "bd860a0f57f697162bf28e576674be9c1500db5e" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_po"
+package = "tree-sitter-po"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "pod"
+group = "all"
+file-types = ["pod"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-perl/tree-sitter-pod", rev = "0bf8387987c21bf2f8ed41d2575a8f22b139687f" , branch = "release"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_pod"
+package = "tree-sitter-pod"
+generate = false
+[languages.queries]
+nvim-like = true
+injections = false
+locals = false
+
+
+[[languages]]
+name = "poefilter"
+group = "all"
+file-types = ["poefilter"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-poe-filter", rev = "205a7d576984feb38a9fc2d8cfe729617f9e0548" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_poe_filter"
+package = "tree-sitter-poefilter"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "pony"
+group = "all"
+file-types = ["pony"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-pony", rev = "73ff874ae4c9e9b45462673cbc0a1e350e2522a7" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_pony"
+package = "tree-sitter-pony"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
 name = "printf"
 group = "most"
 file-types = []
 [languages.parser]
-git = { url = "https://github.com/ObserverOfTime/tree-sitter-printf", rev = "df6b69967db7d74ab338a86a9ab45c0966c5ee3c" }
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-printf", rev = "ec4e5674573d5554fccb87a887c97d4aec489da7" }
 external-scanner = { c = false, cpp = false }
 ffi-func = "tree_sitter_printf"
 rust-const = "LANGUAGE"
 package = "tree-sitter-printf"
-crates-io = "0.5.0"
+crates-io = "0.5.1"
 [languages.queries]
 nvim-like = true
 injections = false
 locals = false
 
 [[languages]]
+name = "prisma"
+group = "all"
+file-types = ["prisma"]
+[languages.parser]
+git = { url = "https://github.com/victorhqc/tree-sitter-prisma", rev = "3556b2c1f20ec9ac91e92d32c43d9d2a0ca3cc49" , branch = "master"}
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_prisma"
+package = "tree-sitter-prisma"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "problog"
+group = "all"
+file-types = ["problog"]
+[languages.parser]
+git = { url = "https://github.com/foxyseta/tree-sitter-prolog", rev = "d8d415f6a1cf80ca138524bcc395810b176d40fa", path = "grammars/problog" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_problog"
+package = "tree-sitter-problog"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "prolog"
+group = "all"
+file-types = ["prolog"]
+[languages.parser]
+git = { url = "https://github.com/foxyseta/tree-sitter-prolog", rev = "d8d415f6a1cf80ca138524bcc395810b176d40fa", path = "grammars/prolog" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_prolog"
+package = "tree-sitter-prolog"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "promql"
+group = "all"
+file-types = ["promql"]
+[languages.parser]
+git = { url = "https://github.com/MichaHoffmann/tree-sitter-promql", rev = "77625d78eebc3ffc44d114a07b2f348dff3061b0" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_promql"
+package = "tree-sitter-promql"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "proto"
+group = "some"
+file-types = ["proto"]
+[languages.parser]
+git = { url = "https://github.com/treywood/tree-sitter-proto", rev = "e9f6b43f6844bd2189b50a422d4e2094313f6aa3" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_proto"
+package = "tree-sitter-proto"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "prql"
+group = "all"
+file-types = ["prql"]
+[languages.parser]
+git = { url = "https://github.com/PRQL/tree-sitter-prql", rev = "09e158cd3650581c0af4c49c2e5b10c4834c8646" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_prql"
+package = "tree-sitter-prql"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "ps1"
+group = "most"
+file-types = ["ps1"]
+[languages.parser]
+git = { url = "https://github.com/airbus-cert/tree-sitter-powershell", rev = "7212f47716ced384ac012b2cc428fd9f52f7c5d4" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_powershell"
+package = "tree-sitter-ps1"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "psv"
+group = "all"
+file-types = ["psv"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-csv", rev = "f6bf6e35eb0b95fbadea4bb39cb9709507fcb181", path = "psv" , branch = "master"}
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_psv"
+package = "tree-sitter-psv"
+[languages.queries]
+nvim-like = true
+injections = false
+locals = false
+
+
+[[languages]]
+name = "pug"
+group = "all"
+file-types = ["pug"]
+[languages.parser]
+git = { url = "https://github.com/zealot128/tree-sitter-pug", rev = "13e9195370172c86a8b88184cc358b23b677cc46" , branch = "master"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_pug"
+package = "tree-sitter-pug"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "puppet"
+group = "all"
+file-types = ["puppet"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-puppet", rev = "15f192929b7d317f5914de2b4accd37b349182a6" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_puppet"
+package = "tree-sitter-puppet"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "purescript"
+group = "all"
+file-types = ["purescript"]
+[languages.parser]
+git = { url = "https://github.com/postsolar/tree-sitter-purescript", rev = "f541f95ffd6852fbbe88636317c613285bc105af" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_purescript"
+package = "tree-sitter-purescript"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "pymanifest"
+group = "all"
+file-types = ["pymanifest"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-pymanifest", rev = "debbdb83fe6356adc7261c41c69b45ba49c97294" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_pymanifest"
+package = "tree-sitter-pymanifest"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
 name = "python"
 group = "some"
 file-types = ["python"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-python", rev = "710796b8b877a970297106e5bbc8e2afa47f86ec" }
+git = { url = "https://github.com/tree-sitter/tree-sitter-python", rev = "v0.25.0" , branch = "master"}
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_python"
 rust-const = "LANGUAGE"
 package = "tree-sitter-python"
-crates-io = "0.23.6"
+crates-io = "0.25.0"
 [languages.queries]
 nvim-like = true
 injections = true
@@ -754,27 +3525,342 @@ injections = true
 locals = true
 
 [[languages]]
+name = "qml"
+group = "all"
+file-types = ["qml"]
+[languages.parser]
+git = { url = "https://github.com/yuja/tree-sitter-qmljs", rev = "0bec4359a7eb2f6c9220cd57372d87d236f66d59" , branch = "master"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_qmljs"
+package = "tree-sitter-qml"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "qmldir"
+group = "all"
+file-types = ["qmldir"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-qmldir", rev = "6b2b5e41734bd6f07ea4c36ac20fb6f14061c841" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_qmldir"
+package = "tree-sitter-qmldir"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "query"
+group = "all"
+file-types = ["query"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-query", rev = "6350ad724e7b17a7eea712d4860b4d2ae892e0b6" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_query"
+package = "tree-sitter-query"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "r"
+group = "all"
+file-types = ["r"]
+[languages.parser]
+git = { url = "https://github.com/r-lib/tree-sitter-r", rev = "0e6ef7741712c09dc3ee6e81c42e919820cc65ef" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_r"
+package = "tree-sitter-r"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "racket"
+group = "all"
+file-types = ["racket"]
+[languages.parser]
+git = { url = "https://github.com/6cdh/tree-sitter-racket", rev = "56b57807f86aa4ddb14892572b318edd4bc90ebe" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_racket"
+package = "tree-sitter-racket"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "ralph"
+group = "all"
+file-types = ["ralph"]
+[languages.parser]
+git = { url = "https://github.com/alephium/tree-sitter-ralph", rev = "f6d81bf7a4599c77388035439cf5801cd461ff77" , branch = "master"}
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_ralph"
+package = "tree-sitter-ralph"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "rasi"
+group = "all"
+file-types = ["rasi"]
+[languages.parser]
+git = { url = "https://github.com/Fymyte/tree-sitter-rasi", rev = "e735c6881d8b475aaa4ef8f0a2bdfd825b438143" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_rasi"
+package = "tree-sitter-rasi"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "razor"
+group = "all"
+file-types = ["razor"]
+[languages.parser]
+git = { url = "https://github.com/tris203/tree-sitter-razor", rev = "fe46ce5ea7d844e53d59bc96f2175d33691c61c5" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_razor"
+package = "tree-sitter-razor"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "rbs"
+group = "all"
+file-types = ["rbs"]
+[languages.parser]
+git = { url = "https://github.com/joker1007/tree-sitter-rbs", rev = "5282e2f36d4109f5315c1d9486b5b0c2044622bb" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_rbs"
+package = "tree-sitter-rbs"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "re2c"
+group = "all"
+file-types = ["re2c"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-re2c", rev = "c18a3c2f4b6665e35b7e50d6048ea3cff770c572" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_re2c"
+package = "tree-sitter-re2c"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "readline"
+group = "all"
+file-types = ["readline"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-readline", rev = "6b744c527aebd12e46a5ecb3aebdb8d621a8e83e" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_readline"
+package = "tree-sitter-readline"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
 name = "regex"
 group = "most"
 file-types = []
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-regex", rev = "b638d29335ef41215b86732dd51be34c701ef683" }
+git = { url = "https://github.com/tree-sitter/tree-sitter-regex", rev = "b2ac15e27fce703d2f37a79ccd94a5c0cbe9720b" }
 external-scanner = { c = false, cpp = false }
 ffi-func = "tree_sitter_regex"
 rust-const = "LANGUAGE"
 package = "tree-sitter-regex"
-crates-io = "0.24.3"
+crates-io = "0.25.0"
 [languages.queries]
 nvim-like = true
 injections = false
 locals = false
 
 [[languages]]
+name = "rego"
+group = "all"
+file-types = ["rego"]
+[languages.parser]
+git = { url = "https://github.com/FallenAngel97/tree-sitter-rego", rev = "ddd39af81fe8b0288102a7cb97959dfce723e0f3" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_rego"
+package = "tree-sitter-rego"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "requirements"
+group = "all"
+file-types = ["requirements"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-requirements", rev = "caeb2ba854dea55931f76034978de1fd79362939" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_requirements"
+package = "tree-sitter-requirements"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "rescript"
+group = "all"
+file-types = ["rescript"]
+[languages.parser]
+git = { url = "https://github.com/rescript-lang/tree-sitter-rescript", rev = "5938ae1578aa559b4fa903f7cabc31da14f71c84" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_rescript"
+package = "tree-sitter-rescript"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "rifleconf"
+group = "all"
+file-types = ["rifleconf"]
+[languages.parser]
+git = { url = "https://github.com/purarue/tree-sitter-rifleconf", rev = "6389ef0fc0d48f0397ec233109c074a0cb685e36" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_rifleconf"
+package = "tree-sitter-rifleconf"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "rnoweb"
+group = "all"
+file-types = ["rnoweb"]
+[languages.parser]
+git = { url = "https://github.com/bamonroe/tree-sitter-rnoweb", rev = "1a74dc0ed731ad07db39f063e2c5a6fe528cae7f" , branch = "master"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_rnoweb"
+package = "tree-sitter-rnoweb"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "robot"
+group = "all"
+file-types = ["robot"]
+[languages.parser]
+git = { url = "https://github.com/Hubro/tree-sitter-robot", rev = "e34def7cb0d8a66a59ec5057fe17bb4e6b17b56a" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_robot"
+package = "tree-sitter-robot"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "robots"
+group = "all"
+file-types = ["robots"]
+[languages.parser]
+git = { url = "https://github.com/opa-oz/tree-sitter-robots-txt", rev = "0c066107e3548de79316a6a4ec771e2f7cf7c468" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_robots_txt"
+package = "tree-sitter-robots"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "roc"
+group = "all"
+file-types = ["roc"]
+[languages.parser]
+git = { url = "https://github.com/faldor20/tree-sitter-roc", rev = "40e52f343f1b1f270d6ecb2ca898ca9b8cba6936" , branch = "master"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_roc"
+package = "tree-sitter-roc"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "ron"
+group = "all"
+file-types = ["ron"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-ron", rev = "78938553b93075e638035f624973083451b29055" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_ron"
+package = "tree-sitter-ron"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "rst"
+group = "all"
+file-types = ["rst"]
+[languages.parser]
+git = { url = "https://github.com/stsewd/tree-sitter-rst", rev = "4e562e1598b95b93db4f3f64fe40ddefbc677a15" , branch = "master"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_rst"
+package = "tree-sitter-rst"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
 name = "ruby"
 group = "most"
 file-types = ["ruby"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-ruby", rev = "89bd7a8e5450cb6a942418a619d30469f259e5d6" }
+git = { url = "https://github.com/tree-sitter/tree-sitter-ruby", rev = "ab6dca77a8184abc94af6e3e82538741b5078d63" , branch = "master"}
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_ruby"
 rust-const = "LANGUAGE"
@@ -784,6 +3870,21 @@ crates-io = "0.23.1"
 nvim-like = true
 injections = true
 locals = true
+
+[[languages]]
+name = "runescript"
+group = "all"
+file-types = ["runescript"]
+[languages.parser]
+git = { url = "https://github.com/LostCityRS/tree-sitter-runescript", rev = "cf85bbd5da0c5ad243301d889c7f84d790a4cae4" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_runescript"
+package = "tree-sitter-runescript"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
 
 [[languages]]
 name = "rush"
@@ -806,12 +3907,12 @@ name = "rust"
 group = "some"
 file-types = ["rust"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-rust", rev = "3691201b01cacb2f96ffca4c632c4e938bfacd88" }
+git = { url = "https://github.com/tree-sitter/tree-sitter-rust", rev = "261b20226c04ef601adbdf185a800512a5f66291" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_rust"
 rust-const = "LANGUAGE"
 package = "tree-sitter-rust"
-crates-io = "0.24.0"
+crates-io = "0.23.3"
 [languages.queries]
 nvim-like = true
 injections = true
@@ -822,7 +3923,7 @@ name = "scala"
 group = "most"
 file-types = ["scala", "sbt"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter/tree-sitter-scala", rev = "2d55e74b0485fe05058ffe5e8155506c9710c767" }
+git = { url = "https://github.com/tree-sitter/tree-sitter-scala", rev = "97aead18d97708190a51d4f551ea9b05b60641c9" , branch = "master"}
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_scala"
 rust-const = "LANGUAGE"
@@ -832,6 +3933,36 @@ crates-io = "0.24.0"
 nvim-like = true
 injections = true
 locals = true
+
+[[languages]]
+name = "scfg"
+group = "all"
+file-types = ["scfg"]
+[languages.parser]
+git = { url = "https://github.com/rockorager/tree-sitter-scfg", rev = "d850fd470445d73de318a21d734d1e09e29b773c" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_scfg"
+package = "tree-sitter-scfg"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "scheme"
+group = "all"
+file-types = ["scheme"]
+[languages.parser]
+git = { url = "https://github.com/6cdh/tree-sitter-scheme", rev = "b5c701148501fa056302827442b5b4956f1edc03" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_scheme"
+package = "tree-sitter-scheme"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
 
 [[languages]]
 name = "scss"
@@ -851,33 +3982,363 @@ injections = true
 locals = false
 
 [[languages]]
+name = "sface"
+group = "all"
+file-types = ["sface"]
+[languages.parser]
+git = { url = "https://github.com/connorlay/tree-sitter-surface", rev = "f4586b35ac8548667a9aaa4eae44456c1f43d032" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_surface"
+package = "tree-sitter-sface"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "sflog"
+group = "all"
+file-types = ["sflog"]
+[languages.parser]
+git = { url = "https://github.com/aheber/tree-sitter-sfapex", rev = "3597575a429766dd7ecce9f5bb97f6fec4419d5d", path = "sflog" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_sflog"
+package = "tree-sitter-sflog"
+[languages.queries]
+nvim-like = true
+injections = false
+locals = false
+
+[[languages]]
+name = "shaderslang"
+group = "all"
+file-types = ["shaderslang"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-slang", rev = "1dbcc4abc7b3cdd663eb03d93031167d6ed19f56" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_slang"
+package = "tree-sitter-shaderslang"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "slim"
+group = "all"
+file-types = ["slim"]
+[languages.parser]
+git = { url = "https://github.com/theoo/tree-sitter-slim", rev = "a06113f5175b805a37d20df0a6f9d722e0ab6cfe" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_slim"
+package = "tree-sitter-slim"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "slint"
+group = "all"
+file-types = ["slint"]
+[languages.parser]
+git = { url = "https://github.com/slint-ui/tree-sitter-slint", rev = "10fb0f188d7950400773c06ba6c31075866e14bf" , branch = "master"}
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_slint"
+package = "tree-sitter-slint"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "smali"
+group = "all"
+file-types = ["smali"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-smali", rev = "fdfa6a1febc43c7467aa7e937b87b607956f2346" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_smali"
+package = "tree-sitter-smali"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "smithy"
+group = "all"
+file-types = ["smithy"]
+[languages.parser]
+git = { url = "https://github.com/indoorvivants/tree-sitter-smithy", rev = "ec4fe14586f2b0a1bc65d6db17f8d8acd8a90433" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_smithy"
+package = "tree-sitter-smithy"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "snakemake"
+group = "all"
+file-types = ["snakemake"]
+[languages.parser]
+git = { url = "https://github.com/osthomas/tree-sitter-snakemake", rev = "68010430c3e51c0e84c1ce21c6551df0e2469f51" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_snakemake"
+package = "tree-sitter-snakemake"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "solidity"
+group = "all"
+file-types = ["solidity"]
+[languages.parser]
+git = { url = "https://github.com/JoranHonig/tree-sitter-solidity", rev = "4e938a46c7030dd001bc99e1ac0f0c750ac98254" , branch = "master"}
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_solidity"
+package = "tree-sitter-solidity"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "soql"
+group = "all"
+file-types = ["soql"]
+[languages.parser]
+git = { url = "https://github.com/aheber/tree-sitter-sfapex", rev = "3597575a429766dd7ecce9f5bb97f6fec4419d5d", path = "soql" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_soql"
+package = "tree-sitter-soql"
+[languages.queries]
+nvim-like = true
+injections = false
+locals = false
+
+
+[[languages]]
+name = "sosl"
+group = "all"
+file-types = ["sosl"]
+[languages.parser]
+git = { url = "https://github.com/aheber/tree-sitter-sfapex", rev = "3597575a429766dd7ecce9f5bb97f6fec4419d5d", path = "sosl" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_sosl"
+package = "tree-sitter-sosl"
+[languages.queries]
+nvim-like = true
+injections = false
+locals = false
+
+
+[[languages]]
+name = "sourcepawn"
+group = "all"
+file-types = ["sourcepawn"]
+[languages.parser]
+git = { url = "https://github.com/nilshelmig/tree-sitter-sourcepawn", rev = "5a8fdd446b516c81e218245c12129c6ad4bccfa2" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_sourcepawn"
+package = "tree-sitter-sourcepawn"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "sparql"
+group = "all"
+file-types = ["sparql"]
+[languages.parser]
+git = { url = "https://github.com/GordianDziwis/tree-sitter-sparql", rev = "1ef52d35a73a2a5f2e433ecfd1c751c1360a923b" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_sparql"
+package = "tree-sitter-sparql"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "sproto"
+group = "all"
+file-types = ["sproto"]
+[languages.parser]
+git = { url = "https://github.com/hanxi/tree-sitter-sproto", rev = "d554c1456e35e7b2690552d52921c987d0cf6799" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_sproto"
+package = "tree-sitter-sproto"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
 name = "sql"
 group = "most"
 file-types = ["sql", "mysql"]
 [languages.parser]
 # has deployments on gh-pages branch
-git = { url = "https://github.com/derekstride/tree-sitter-sql", rev = "b1ec2aa5091624e4729f0a771a6d631afebf1ed4" }
+git = { url = "https://github.com/derekstride/tree-sitter-sql", rev = "4afe285bb142542cee0aa7b689fec00a71df4741" , branch = "gh-pages"}
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_sql"
 rust-const = "LANGUAGE"
 package = "tree-sitter-sequel"
-crates-io = "0.3.8"
+crates-io = "0.3.11"
 [languages.queries]
 nvim-like = true
 injections = true
 locals = false
 
 [[languages]]
+name = "squirrel"
+group = "all"
+file-types = ["squirrel"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-squirrel", rev = "072c969749e66f000dba35a33c387650e203e96e" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_squirrel"
+package = "tree-sitter-squirrel"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "sshconfig"
+group = "most"
+file-types = ["sshconfig"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-ssh-config", rev = "71d2693deadaca8cdc09e38ba41d2f6042da1616" , branch = "master"}
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_ssh_config"
+package = "tree-sitter-sshconfig"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "strace"
+group = "all"
+file-types = ["strace"]
+[languages.parser]
+git = { url = "https://github.com/sigmaSd/tree-sitter-strace", rev = "ac874ddfcc08d689fee1f4533789e06d88388f29" , branch = "master"}
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_strace"
+package = "tree-sitter-strace"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "styled"
+group = "all"
+file-types = ["styled"]
+[languages.parser]
+git = { url = "https://github.com/mskelton/tree-sitter-styled", rev = "319cdcaa0346ba6db668a222d938e5c3569e2a51" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_styled"
+package = "tree-sitter-styled"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "supercollider"
+group = "all"
+file-types = ["supercollider"]
+[languages.parser]
+git = { url = "https://github.com/madskjeldgaard/tree-sitter-supercollider", rev = "76b3cab1773f08bb7d3a185420b0a44c6da8c294" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_supercollider"
+package = "tree-sitter-supercollider"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "superhtml"
+group = "all"
+file-types = ["superhtml"]
+[languages.parser]
+git = { url = "https://github.com/kristoff-it/superhtml", rev = "8b5bb272b269afdd38cdf641c4a707dd92fbe902", path = "tree-sitter-superhtml" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_superhtml"
+package = "tree-sitter-superhtml"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "svelte"
+group = "all"
+file-types = ["svelte"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-svelte", rev = "ae5199db47757f785e43a14b332118a5474de1a2" , branch = "master"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_svelte"
+package = "tree-sitter-svelte"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "sway"
+group = "all"
+file-types = ["sway"]
+[languages.parser]
+git = { url = "https://github.com/FuelLabs/tree-sitter-sway", rev = "9b7845ce06ecb38b040c3940970b4fd0adc331d1" , branch = "master"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_sway"
+package = "tree-sitter-sway"
+generate = false
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
 name = "swift"
 group = "most"
 file-types = ["swift"]
 [languages.parser]
-git = { url = "https://github.com/alex-pinkus/tree-sitter-swift", rev = "d64a733eee0f55dcc9790491e0d534e8a559c20a" }
+git = { url = "https://github.com/alex-pinkus/tree-sitter-swift", rev = "c7287392d610ca9d7c80f9edd2c6ef8f518b377b" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_swift"
 rust-const = "LANGUAGE"
 package = "tree-sitter-swift"
-crates-io = "0.7.0"
+crates-io = "0.7.1"
 generate = true
 [languages.queries]
 nvim-like = true
@@ -885,11 +4346,269 @@ injections = true
 locals = true
 
 [[languages]]
+name = "sxhkdrc"
+group = "all"
+file-types = ["sxhkdrc"]
+[languages.parser]
+git = { url = "https://github.com/RaafatTurki/tree-sitter-sxhkdrc", rev = "440d5f913d9465c9c776a1bd92334d32febcf065" , branch = "master"}
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_sxhkdrc"
+package = "tree-sitter-sxhkdrc"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "systemtap"
+group = "all"
+file-types = ["systemtap"]
+[languages.parser]
+git = { url = "https://github.com/ok-ryoko/tree-sitter-systemtap", rev = "f2b378a9af0b7e1192cff67a5fb45508c927205d" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_systemtap"
+package = "tree-sitter-systemtap"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "tablegen"
+group = "all"
+file-types = ["tablegen"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-tablegen", rev = "b1170880c61355aaf38fc06f4af7d3c55abdabc4" , branch = "master"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_tablegen"
+package = "tree-sitter-tablegen"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "tact"
+group = "all"
+file-types = ["tact"]
+[languages.parser]
+git = { url = "https://github.com/tact-lang/tree-sitter-tact", rev = "a6267c2091ed432c248780cec9f8d42c8766d9ad" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_tact"
+package = "tree-sitter-tact"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "tal"
+group = "all"
+file-types = ["tal"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-uxntal", rev = "ad9b638b914095320de85d59c49ab271603af048" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_uxntal"
+package = "tree-sitter-tal"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "tape"
+group = "all"
+file-types = ["tape"]
+[languages.parser]
+git = { url = "https://github.com/charmbracelet/tree-sitter-vhs", rev = "0c6fae9d2cfc5b217bfd1fe84a7678f5917116db" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_vhs"
+package = "tree-sitter-tape"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "tcl"
+group = "all"
+file-types = ["tcl"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-tcl", rev = "8f11ac7206a54ed11210491cee1e0657e2962c47" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_tcl"
+package = "tree-sitter-tcl"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "teal"
+group = "all"
+file-types = ["teal"]
+[languages.parser]
+git = { url = "https://github.com/euclidianAce/tree-sitter-teal", rev = "05d276e737055e6f77a21335b7573c9d3c091e2f" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_teal"
+package = "tree-sitter-teal"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "templ"
+group = "all"
+file-types = ["templ"]
+[languages.parser]
+git = { url = "https://github.com/vrischmann/tree-sitter-templ", rev = "1c6db04effbcd7773c826bded9783cbc3061bd55" , branch = "master"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_templ"
+package = "tree-sitter-templ"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "tera"
+group = "all"
+file-types = ["tera"]
+[languages.parser]
+git = { url = "https://github.com/uncenter/tree-sitter-tera", rev = "3a38c368e806268daac9923a27e72bcafbbc16bb" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_tera"
+package = "tree-sitter-tera"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "terraform"
+group = "most"
+file-types = ["terraform"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-hcl", rev = "64ad62785d442eb4d45df3a1764962dafd5bc98b", path = "dialects/terraform" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_terraform"
+package = "tree-sitter-terraform"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "tex"
+group = "all"
+file-types = ["tex"]
+[languages.parser]
+git = { url = "https://github.com/latex-lsp/tree-sitter-latex", rev = "7e0ecdc02926c7b9b2e0c76003d4fe7b0944f957" , branch = "master"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_latex"
+package = "tree-sitter-tex"
+generate = true
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "thrift"
+group = "all"
+file-types = ["thrift"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-thrift", rev = "68fd0d80943a828d9e6f49c58a74be1e9ca142cf" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_thrift"
+package = "tree-sitter-thrift"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "tiger"
+group = "all"
+file-types = ["tiger"]
+[languages.parser]
+git = { url = "https://github.com/ambroisie/tree-sitter-tiger", rev = "4a77b2d7a004587646bddc4e854779044b6db459" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_tiger"
+package = "tree-sitter-tiger"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "tla"
+group = "all"
+file-types = ["tla"]
+[languages.parser]
+git = { url = "https://github.com/tlaplus-community/tree-sitter-tlaplus", rev = "8d749f9a598b47b7110c7340006c8eb8a9552566" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_tlaplus"
+package = "tree-sitter-tla"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "tmux"
+group = "all"
+file-types = ["tmux"]
+# Excluded from WASM: emcc parser compilation is killed in CI (SIGKILL)
+wasm = false
+[languages.parser]
+git = { url = "https://github.com/Freed-Wu/tree-sitter-tmux", rev = "75d1b995b0c23400ac8e49db757a2e0386f9fa8f" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_tmux"
+package = "tree-sitter-tmux"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "todotxt"
+group = "all"
+file-types = ["todotxt"]
+[languages.parser]
+git = { url = "https://github.com/arnarg/tree-sitter-todotxt", rev = "3937c5cd105ec4127448651a21aef45f52d19609" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_todotxt"
+package = "tree-sitter-todotxt"
+[languages.queries]
+nvim-like = true
+injections = false
+locals = false
+
+
+[[languages]]
 name = "toml"
 group = "some"
 file-types = ["toml"]
 [languages.parser]
-git = { url = "https://github.com/Mathspy/tree-sitter-toml", rev = "ae4cdb5d27bf876a432b6c30b6a88f56c9b3e761" }
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-toml", rev = "64b56832c2cffe41758f28e05c756a3a98d16f41" , branch = "master"}
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_toml"
 # rust-const = "LANGUAGE"
@@ -899,6 +4618,36 @@ package = "tree-sitter-toml"
 nvim-like = true
 injections = true
 locals = true
+
+[[languages]]
+name = "trace32"
+group = "all"
+file-types = ["trace32"]
+[languages.parser]
+git = { url = "https://github.com/xasc/tree-sitter-t32", rev = "5b5e4336731bda5ea2e6b78b6a2d9e7a89032b75" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_t32"
+package = "tree-sitter-trace32"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "tsv"
+group = "most"
+file-types = ["tsv"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-csv", rev = "f6bf6e35eb0b95fbadea4bb39cb9709507fcb181", path = "tsv" , branch = "master"}
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_tsv"
+package = "tree-sitter-tsv"
+[languages.queries]
+nvim-like = true
+injections = false
+locals = false
+
 
 [[languages]]
 name = "tsx"
@@ -917,6 +4666,36 @@ injections = true
 locals = true
 
 [[languages]]
+name = "turtle"
+group = "all"
+file-types = ["turtle"]
+[languages.parser]
+git = { url = "https://github.com/GordianDziwis/tree-sitter-turtle", rev = "7f789ea7ef765080f71a298fc96b7c957fa24422" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_turtle"
+package = "tree-sitter-turtle"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "twig"
+group = "all"
+file-types = ["twig"]
+[languages.parser]
+git = { url = "https://github.com/gbprod/tree-sitter-twig", rev = "7195ee573ab5c3b3bb0e91b042e6f83ac1b11104" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_twig"
+package = "tree-sitter-twig"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
 name = "typescript"
 group = "some"
 file-types = ["typescript"]
@@ -932,12 +4711,43 @@ nvim-like = true
 injections = true
 locals = true
 
+
+[[languages]]
+name = "typespec"
+group = "all"
+file-types = ["typespec"]
+[languages.parser]
+git = { url = "https://github.com/happenslol/tree-sitter-typespec", rev = "395bef1e1eb4dd18365401642beb534e8a244056" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_typespec"
+package = "tree-sitter-typespec"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "typoscript"
+group = "all"
+file-types = ["typoscript"]
+[languages.parser]
+git = { url = "https://github.com/Teddytrombone/tree-sitter-typoscript", rev = "1811c767f3f72be669891b524a07c58b1eb0db87" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_typoscript"
+package = "tree-sitter-typoscript"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
 [[languages]]
 name = "typst"
 group = "most"
 file-types = ["typst"]
 [languages.parser]
-git = { url = "https://github.com/uben0/tree-sitter-typst", rev = "46cf4ded12ee974a70bf8457263b67ad7ee0379d" }
+git = { url = "https://github.com/uben0/tree-sitter-typst", rev = "46cf4ded12ee974a70bf8457263b67ad7ee0379d" , branch = "master"}
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_typst"
 # rust-const = "LANGUAGE"
@@ -949,11 +4759,56 @@ injections = true
 locals = false
 
 [[languages]]
+name = "udevrules"
+group = "all"
+file-types = ["udevrules"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-udev", rev = "2fcb563a4d56a6b8e8c129252325fc6335e4acbf" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_udev"
+package = "tree-sitter-udevrules"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "ungrammar"
+group = "all"
+file-types = ["ungrammar"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-ungrammar", rev = "debd26fed283d80456ebafa33a06957b0c52e451" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_ungrammar"
+package = "tree-sitter-ungrammar"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "unison"
+group = "all"
+file-types = ["unison"]
+[languages.parser]
+git = { url = "https://github.com/kylegoetz/tree-sitter-unison", rev = "169e7f748a540ec360c0cb086b448faad012caa4" , branch = "master"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_unison"
+package = "tree-sitter-unison"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
 name = "ursa"
 group = "all"
 file-types = ["ursa"]
 [languages.parser]
-git = { url = "https://github.com/ursalang/tree-sitter-ursa", rev = "d023d044590d461bf586c56854b2630fef0d17cc" }
+git = { url = "https://github.com/ursalang/tree-sitter-ursa", rev = "2fc58a4398dafdfb8b79cd72afeff6f35a8ac9b5" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_ursa"
 # rust-const = "LANGUAGE"
@@ -965,29 +4820,144 @@ injections = false
 locals = true
 
 [[languages]]
-name = "verilog"
+name = "usd"
 group = "all"
-file-types = ["verilog"]
+file-types = ["usd"]
 [languages.parser]
-git = { url = "https://github.com/gmlarumbe/tree-sitter-systemverilog", rev = "ba3c1e305caf948f718293c86c6018a82ed5043e" }
+git = { url = "https://github.com/ColinKennedy/tree-sitter-usd", rev = "4e0875f724d94d0c2ff36f9b8cb0b12f8b20d216" , branch = "master"}
 external-scanner = { c = false, cpp = false }
-ffi-func = "tree_sitter_verilog"
-# wrong func name in bindings
-# rust-const = "LANGUAGE"
-package = "tree-sitter-systemverilog"
-# there is a package called "tree-sitter-verilog" on crates.io, but that is a different verilog parser
-# crates-io = ""
+ffi-func = "tree_sitter_usd"
+package = "tree-sitter-usd"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "v"
+group = "all"
+file-types = ["v"]
+[languages.parser]
+git = { url = "https://github.com/vlang/v-analyzer", rev = "9cf6a37689f06b17d170dec644ace81eb8eab280", path = "tree_sitter_v" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_v"
+package = "tree-sitter-v"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "vala"
+group = "all"
+file-types = ["vala"]
+[languages.parser]
+git = { url = "https://github.com/vala-lang/tree-sitter-vala", rev = "97e6db3c8c73b15a9541a458d8e797a07f588ef4" , branch = "master"}
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_vala"
+package = "tree-sitter-vala"
 [languages.queries]
 nvim-like = true
 injections = true
 locals = false
 
 [[languages]]
+name = "verilog"
+group = "all"
+file-types = ["sv", "svh"]
+[languages.parser]
+git = { url = "https://github.com/gmlarumbe/tree-sitter-systemverilog", rev = "7c4b01b7df2f6e7fa1f698c9d30ac8f93af18ed2", branch = "master" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_systemverilog"
+package = "tree-sitter-verilog"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+[[languages]]
+name = "vhdl"
+group = "all"
+file-types = ["vhdl"]
+[languages.parser]
+git = { url = "https://github.com/jpt13653903/tree-sitter-vhdl", rev = "674ed9fe6c13c79c0e7407daaf4518d053e6f0f4" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_vhdl"
+package = "tree-sitter-vhdl"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "vim"
+group = "all"
+file-types = ["vim"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-vim", rev = "1cd0a0892b389bd314a9bd09545160e5ee3c9137" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_vim"
+package = "tree-sitter-vim"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "vrl"
+group = "all"
+file-types = ["vrl"]
+[languages.parser]
+git = { url = "https://github.com/belltoy/tree-sitter-vrl", rev = "274b3ce63f72aa8ffea18e7fc280d3062d28f0ba" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_vrl"
+package = "tree-sitter-vrl"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "vto"
+group = "all"
+file-types = ["vto"]
+[languages.parser]
+git = { url = "https://github.com/ventojs/tree-sitter-vento", rev = "3b32474bc29584ea214e4e84b47102408263fe0e" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_vento"
+package = "tree-sitter-vto"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "vue"
+group = "all"
+file-types = ["vue"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-vue", rev = "ce8011a414fdf8091f4e4071752efc376f4afb08" , branch = "main"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_vue"
+package = "tree-sitter-vue"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
 name = "wat"
 group = "all"
 file-types = ["wat"]
 [languages.parser]
-git = { url = "https://github.com/wasm-lsp/tree-sitter-wasm", rev = "2ca28a9f9d709847bf7a3de0942a84e912f59088", path = "wat" }
+git = { url = "https://github.com/mkatychev/tree-sitter-wasm", rev = "ec42b8446502783edad7f34cbfd0d9051ea672ee", path = "wat" }
 external-scanner = { c = false, cpp = false }
 ffi-func = "tree_sitter_wat"
 # rust-const = "LANGUAGE"
@@ -999,32 +4969,244 @@ injections = false
 locals = false
 
 [[languages]]
+name = "wgsl"
+group = "all"
+file-types = ["wgsl"]
+[languages.parser]
+git = { url = "https://github.com/szebniok/tree-sitter-wgsl", rev = "40259f3c77ea856841a4e0c4c807705f3e4a2b65" , branch = "master"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_wgsl"
+package = "tree-sitter-wgsl"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "wgsl_bevy"
+group = "all"
+file-types = ["wgsl_bevy"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-wgsl-bevy", rev = "d9306a798ede627001a8e5752f775858c8edd7e4" , branch = "master"}
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_wgsl_bevy"
+package = "tree-sitter-wgsl-bevy"
+[languages.queries]
+nvim-like = true
+injections = false
+locals = false
+
+
+[[languages]]
+name = "wing"
+group = "all"
+file-types = ["wing"]
+[languages.parser]
+git = { url = "https://github.com/winglang/tree-sitter-wing", rev = "76e0c25844a66ebc6e866d690fcc5f4e90698947" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_wing"
+package = "tree-sitter-wing"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "wit"
+group = "all"
+file-types = ["wit"]
+[languages.parser]
+git = { url = "https://github.com/bytecodealliance/tree-sitter-wit", rev = "v1.2.0" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_wit"
+package = "tree-sitter-wit"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "wxml"
+group = "all"
+file-types = ["wxml"]
+[languages.parser]
+git = { url = "https://github.com/BlockLune/tree-sitter-wxml", rev = "7b821c748dc410332f59496c0dea2632168c4e5a" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_wxml"
+package = "tree-sitter-wxml"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "xcompose"
+group = "all"
+file-types = ["xcompose"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-xcompose", rev = "a51d6366f041dbefec4da39a7eb3168a9b1cbc0e" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_xcompose"
+package = "tree-sitter-xcompose"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "xdefaults"
+group = "all"
+file-types = ["xdefaults"]
+[languages.parser]
+git = { url = "https://github.com/ValdezFOmar/tree-sitter-xresources", rev = "a81f1ea4478d03c223ef7eace535a36220bddd8c" , branch = "master"}
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_xresources"
+package = "tree-sitter-xdefaults"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "xml"
+group = "most"
+file-types = ["xml"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-xml", rev = "5000ae8f22d11fbe93939b05c1e37cf21117162d", path = "xml" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_xml"
+package = "tree-sitter-xml"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
 name = "yaml"
 group = "some"
 file-types = ["yaml"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-yaml", rev = "3431ec21da1dde751bab55520963cf3a4f1121f3" }
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-yaml", rev = "7708026449bed86239b1cd5bce6e3c34dbca6415" }
 external-scanner = { c = true, cpp = false }
 ffi-func = "tree_sitter_yaml"
 rust-const = "LANGUAGE"
 package = "tree-sitter-yaml"
-crates-io = "0.7.1"
+crates-io = "0.7.2"
 [languages.queries]
 nvim-like = true
 injections = true
 locals = true
 
 [[languages]]
+name = "yang"
+group = "all"
+file-types = ["yang"]
+[languages.parser]
+git = { url = "https://github.com/Hubro/tree-sitter-yang", rev = "2c0e6be8dd4dcb961c345fa35c309ad4f5bd3502" , branch = "master"}
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_yang"
+package = "tree-sitter-yang"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
+name = "yuck"
+group = "all"
+file-types = ["yuck"]
+[languages.parser]
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-yuck", rev = "e877f6ade4b77d5ef8787075141053631ba12318" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_yuck"
+package = "tree-sitter-yuck"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "zathurarc"
+group = "all"
+file-types = ["zathurarc"]
+[languages.parser]
+git = { url = "https://github.com/Freed-Wu/tree-sitter-zathurarc", rev = "0554b4a5d313244b7fc000cbb41c04afae4f4e31" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_zathurarc"
+package = "tree-sitter-zathurarc"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = false
+
+
+[[languages]]
 name = "zig"
 group = "most"
 file-types = ["zig"]
 [languages.parser]
-git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-zig", rev = "b670c8df85a1568f498aa5c8cae42f51a90473c0" }
+git = { url = "https://github.com/tree-sitter-grammars/tree-sitter-zig", rev = "6479aa13f32f701c383083d8b28360ebd682fb7d" }
 external-scanner = { c = false, cpp = false }
 ffi-func = "tree_sitter_zig"
 rust-const = "LANGUAGE"
 package = "tree-sitter-zig"
 crates-io = "1.1.2"
+[languages.queries]
+nvim-like = true
+injections = true
+locals = true
+
+
+[[languages]]
+name = "ziggy"
+group = "all"
+file-types = ["ziggy"]
+[languages.parser]
+git = { url = "https://github.com/kristoff-it/ziggy", rev = "4353b20ef2ac750e35c6d68e4eb2a07c2d7cf901", path = "tree-sitter-ziggy" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_ziggy"
+package = "tree-sitter-ziggy"
+[languages.queries]
+nvim-like = true
+injections = false
+locals = false
+
+
+[[languages]]
+name = "ziggy_schema"
+group = "all"
+file-types = ["ziggy_schema"]
+[languages.parser]
+git = { url = "https://github.com/kristoff-it/ziggy", rev = "4353b20ef2ac750e35c6d68e4eb2a07c2d7cf901", path = "tree-sitter-ziggy-schema" }
+external-scanner = { c = false, cpp = false }
+ffi-func = "tree_sitter_ziggy_schema"
+package = "tree-sitter-ziggy-schema"
+[languages.queries]
+nvim-like = true
+injections = false
+locals = false
+
+
+[[languages]]
+name = "zsh"
+group = "most"
+file-types = ["zsh"]
+# Excluded from WASM: emcc parser compilation is killed in CI (SIGKILL)
+wasm = false
+[languages.parser]
+git = { url = "https://github.com/georgeharker/tree-sitter-zsh", rev = "v0.53.0" }
+external-scanner = { c = true, cpp = false }
+ffi-func = "tree_sitter_zsh"
+package = "tree-sitter-zsh"
 [languages.queries]
 nvim-like = true
 injections = true

@@ -54,7 +54,11 @@ fn parser_list(filter: impl Fn(&Language) -> bool, url: impl Fn(&Language) -> St
     let mut some_list = String::new();
     let mut most_list = String::new();
     let mut all_list = String::new();
+    let mut seen = std::collections::HashSet::new();
     for lang in &crate::LANGUAGE_CONFIG.languages {
+        if !seen.insert(lang.name.clone()) {
+            continue;
+        }
         let str = format!(
             "- [{}]({}){}\n",
             lang.name,

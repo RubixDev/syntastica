@@ -1,5 +1,4 @@
-;; Forked from https://github.com/rush-rs/tree-sitter-asm/blob/main/queries/asm/highlights.scm
-;; Licensed under the MIT license
+;; Forked from https://raw.githubusercontent.com/RubixDev/tree-sitter-asm/839741fef4dab5128952334624905c82b40c7133/queries/asm/highlights.scm
 ; General
 (label
   [
@@ -26,7 +25,7 @@
 [
   (line_comment)
   (block_comment)
-] @comment
+] @comment @spell
 
 ; Literals
 (int) @number

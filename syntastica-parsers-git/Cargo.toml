@@ -57,13 +57,22 @@ some = [
     "c",
     "cpp",
     "css",
+    "dockerfile",
+    "gitattributes",
+    "gitcommit",
+    "gitconfig",
+    "gitdiff",
+    "gitignore",
+    "gitrebase",
     "go",
+    "graphql",
     "html",
     "java",
     "javascript",
     "json",
     "kotlin",
     "lua",
+    "proto",
     "python",
     "rust",
     "toml",
@@ -81,10 +90,14 @@ most = [
     "clojure",
     "cmake",
     "comment",
+    "csv",
     "dart",
     "diff",
     "elixir",
+    "fish",
     "haskell",
+    "hcl",
+    "ini",
     "jsdoc",
     "json5",
     "jsonc",
@@ -92,43 +105,309 @@ most = [
     "make",
     "markdown",
     "markdown_inline",
+    "nginx",
     "nix",
     "php",
     "php_only",
     "printf",
+    "ps1",
     "regex",
     "ruby",
     "scala",
     "scss",
     "sql",
+    "sshconfig",
     "swift",
+    "terraform",
+    "tsv",
     "typst",
+    "xml",
     "zig",
+    "zsh",
 ]
 
 ## Implies <span class="stab portability"><code>most</code></span>.
 ## Include parsers for all supported languages.
 all = [
     "most",
+    "ada",
+    "agda",
+    "apex",
+    "arduino",
+    "asm68k",
+    "astro",
+    "authzed",
+    "awk",
+    "bass",
+    "beancount",
+    "bib",
     "bibtex",
-    "dockerfile",
+    "bicep",
+    "bitbake",
+    "blade",
+    "blueprint",
+    "bp",
+    "bpftrace",
+    "brightscript",
+    "bzl",
+    "c3",
+    "caddy",
+    "cairo",
+    "capnp",
+    "chatito",
+    "circom",
+    "clarity",
+    "cook",
+    "corn",
+    "cpon",
+    "csharp",
+    "cuda",
+    "cue",
+    "cylc",
+    "d",
+    "desktop",
+    "dhall",
+    "disassembly",
+    "djot",
+    "dot",
+    "doxygen",
+    "dtd",
+    "dts",
+    "earthfile",
     "ebnf",
+    "editorconfig",
+    "eds",
+    "eelixir",
     "ejs",
+    "elisp",
+    "elm",
+    "elsa",
+    "elvish",
+    "enforce",
     "erb",
-    "fish",
+    "erlang",
+    "eruby",
+    "faust",
+    "fennel",
+    "fidl",
+    "firrtl",
+    "foam",
+    "forth",
+    "fortran",
+    "fsd",
+    "fsh",
+    "fsharp",
+    "func",
+    "fusion",
+    "gap",
+    "gaptst",
+    "gdresource",
+    "gdscript",
+    "gdshaderinc",
     "gleam",
+    "glimmer_javascript",
+    "glimmer_typescript",
+    "glsl",
+    "gn",
+    "gnuplot",
+    "goctl",
+    "gomod",
+    "gosum",
+    "gotmpl",
+    "gowork",
+    "gpg",
+    "gren",
+    "groovy",
+    "groq",
+    "gstlaunch",
+    "hack",
+    "handlebars",
+    "hare",
+    "haskellpersistent",
+    "haxe",
+    "heex",
+    "helm",
+    "help",
     "hexdump",
+    "hjson",
+    "hlsl",
+    "hlsplaylist",
+    "hocon",
+    "hoon",
+    "htmlangular",
+    "htmldjango",
+    "http",
+    "hurl",
+    "hyprlang",
+    "idl",
+    "idris2",
+    "inko",
+    "ispc",
+    "janet",
+    "javadoc",
+    "jinja",
+    "jinja_inline",
+    "jproperties",
+    "jq",
+    "jsonnet",
     "julia",
+    "just",
+    "kcl",
+    "kconfig",
+    "kdl",
+    "kitty",
+    "kos",
+    "koto",
+    "kusto",
     "lalrpop",
     "latex",
+    "ld",
+    "ledger",
+    "leo",
+    "liquid",
+    "liquidsoap",
+    "lisp",
     "llvm",
+    "luadoc",
+    "luau",
+    "magik",
+    "matlab",
+    "menhir",
+    "mermaid",
+    "meson",
+    "mlir",
+    "muttrc",
+    "nasm",
+    "nickel",
+    "nim",
+    "nim_format_string",
+    "ninja",
+    "nqc",
+    "nu",
+    "objc",
+    "objdump",
     "ocaml",
     "ocaml_interface",
+    "ocamlinterface",
+    "ocamllex",
+    "odin",
+    "pascal",
+    "passwd",
+    "pbtxt",
+    "pem",
+    "perl",
+    "pgn",
+    "phpdoc",
+    "pioasm",
+    "pkl",
+    "po",
+    "pod",
+    "poefilter",
+    "pony",
+    "prisma",
+    "problog",
+    "prolog",
+    "promql",
+    "prql",
+    "psv",
+    "pug",
+    "puppet",
+    "purescript",
+    "pymanifest",
     "ql",
+    "qml",
+    "qmldir",
+    "query",
+    "r",
+    "racket",
+    "ralph",
+    "rasi",
+    "razor",
+    "rbs",
+    "re2c",
+    "readline",
+    "rego",
+    "requirements",
+    "rescript",
+    "rifleconf",
+    "rnoweb",
+    "robot",
+    "robots",
+    "roc",
+    "ron",
+    "rst",
+    "runescript",
     "rush",
+    "scfg",
+    "scheme",
+    "sface",
+    "sflog",
+    "shaderslang",
+    "slim",
+    "slint",
+    "smali",
+    "smithy",
+    "snakemake",
+    "solidity",
+    "soql",
+    "sosl",
+    "sourcepawn",
+    "sparql",
+    "sproto",
+    "squirrel",
+    "strace",
+    "styled",
+    "supercollider",
+    "superhtml",
+    "svelte",
+    "sway",
+    "sxhkdrc",
+    "systemtap",
+    "tablegen",
+    "tact",
+    "tal",
+    "tape",
+    "tcl",
+    "teal",
+    "templ",
+    "tera",
+    "tex",
+    "thrift",
+    "tiger",
+    "tla",
+    "tmux",
+    "todotxt",
+    "trace32",
+    "turtle",
+    "twig",
+    "typespec",
+    "typoscript",
+    "udevrules",
+    "ungrammar",
+    "unison",
     "ursa",
+    "usd",
+    "v",
+    "vala",
     "verilog",
+    "vhdl",
+    "vim",
+    "vrl",
+    "vto",
+    "vue",
     "wat",
+    "wgsl",
+    "wgsl_bevy",
+    "wing",
+    "wit",
+    "wxml",
+    "xcompose",
+    "xdefaults",
+    "yang",
+    "yuck",
+    "zathurarc",
+    "ziggy",
+    "ziggy_schema",
 ]
 
 ## Use the standard tree-sitter C runtime. See `syntastica`'s
@@ -143,67 +422,346 @@ runtime-c2rust = ["syntastica-core/runtime-c2rust"]
 ## Meant to be enabled when building docs
 docs = ["dep:document-features", "dep:rustc_version"]
 
+ada = []
+agda = []
+apex = []
+arduino = []
 asm = []
+asm68k = []
+astro = []
+authzed = []
+awk = []
 bash = []
+bass = []
+beancount = []
+bib = []
 bibtex = []
+bicep = []
+bitbake = []
+blade = []
+blueprint = []
+bp = []
+bpftrace = []
+brightscript = []
+bzl = []
 c = []
+c3 = []
 c_sharp = []
+caddy = []
+cairo = []
+capnp = []
+chatito = []
+circom = []
+clarity = []
 clojure = []
 cmake = []
 comment = []
+cook = []
+corn = []
+cpon = []
 cpp = []
+csharp = []
 css = []
+csv = []
+cuda = []
+cue = []
+cylc = []
+d = []
 dart = []
+desktop = []
+dhall = []
 diff = []
+disassembly = []
+djot = []
 dockerfile = []
+dot = []
+doxygen = []
+dtd = []
+dts = []
+earthfile = []
 ebnf = []
+editorconfig = []
+eds = []
+eelixir = []
 ejs = []
+elisp = []
 elixir = []
+elm = []
+elsa = []
+elvish = []
+enforce = []
 erb = []
+erlang = []
+eruby = []
+faust = []
+fennel = []
+fidl = []
+firrtl = []
 fish = []
+foam = []
+forth = []
+fortran = []
+fsd = []
+fsh = []
+fsharp = []
+func = []
+fusion = []
+gap = []
+gaptst = []
+gdresource = []
+gdscript = []
+gdshaderinc = []
+gitattributes = []
+gitcommit = []
+gitconfig = []
+gitdiff = []
+gitignore = []
+gitrebase = []
 gleam = []
+glimmer_javascript = []
+glimmer_typescript = []
+glsl = []
+gn = []
+gnuplot = []
 go = []
+goctl = []
+gomod = []
+gosum = []
+gotmpl = []
+gowork = []
+gpg = []
+graphql = []
+gren = []
+groovy = []
+groq = []
+gstlaunch = []
+hack = []
+handlebars = []
+hare = []
 haskell = []
+haskellpersistent = []
+haxe = []
+hcl = []
+heex = []
+helm = []
+help = []
 hexdump = []
+hjson = []
+hlsl = []
+hlsplaylist = []
+hocon = []
+hoon = []
 html = []
+htmlangular = []
+htmldjango = []
+http = []
+hurl = []
+hyprlang = []
+idl = []
+idris2 = []
+ini = []
+inko = []
+ispc = []
+janet = []
 java = []
+javadoc = []
 javascript = []
+jinja = []
+jinja_inline = []
+jproperties = []
+jq = []
 jsdoc = []
 json = []
 json5 = []
 jsonc = []
+jsonnet = []
 julia = []
+just = []
+kcl = []
+kconfig = []
+kdl = []
+kitty = []
+kos = []
 kotlin = []
+koto = []
+kusto = []
 lalrpop = []
 latex = []
+ld = []
+ledger = []
+leo = []
+liquid = []
+liquidsoap = []
+lisp = []
 llvm = []
 lua = []
+luadoc = []
 luap = []
+luau = []
+magik = []
 make = []
 markdown = []
 markdown_inline = []
+matlab = []
+menhir = []
+mermaid = []
+meson = []
+mlir = []
+muttrc = []
+nasm = []
+nginx = []
+nickel = []
+nim = []
+nim_format_string = []
+ninja = []
 nix = []
+nqc = []
+nu = []
+objc = []
+objdump = []
 ocaml = []
 ocaml_interface = []
+ocamlinterface = []
+ocamllex = []
+odin = []
+pascal = []
+passwd = []
+pbtxt = []
+pem = []
+perl = []
+pgn = []
 php = []
 php_only = []
+phpdoc = []
+pioasm = []
+pkl = []
+po = []
+pod = []
+poefilter = []
+pony = []
 printf = []
+prisma = []
+problog = []
+prolog = []
+promql = []
+proto = []
+prql = []
+ps1 = []
+psv = []
+pug = []
+puppet = []
+purescript = []
+pymanifest = []
 python = []
 ql = []
+qml = []
+qmldir = []
+query = []
+r = []
+racket = []
+ralph = []
+rasi = []
+razor = []
+rbs = []
+re2c = []
+readline = []
 regex = []
+rego = []
+requirements = []
+rescript = []
+rifleconf = []
+rnoweb = []
+robot = []
+robots = []
+roc = []
+ron = []
+rst = []
 ruby = []
+runescript = []
 rush = []
 rust = []
 scala = []
+scfg = []
+scheme = []
 scss = []
+sface = []
+sflog = []
+shaderslang = []
+slim = []
+slint = []
+smali = []
+smithy = []
+snakemake = []
+solidity = []
+soql = []
+sosl = []
+sourcepawn = []
+sparql = []
+sproto = []
 sql = []
+squirrel = []
+sshconfig = []
+strace = []
+styled = []
+supercollider = []
+superhtml = []
+svelte = []
+sway = []
 swift = []
+sxhkdrc = []
+systemtap = []
+tablegen = []
+tact = []
+tal = []
+tape = []
+tcl = []
+teal = []
+templ = []
+tera = []
+terraform = []
+tex = []
+thrift = []
+tiger = []
+tla = []
+tmux = []
+todotxt = []
 toml = []
+trace32 = []
+tsv = []
 tsx = []
+turtle = []
+twig = []
 typescript = []
+typespec = []
+typoscript = []
 typst = []
+udevrules = []
+ungrammar = []
+unison = []
 ursa = []
+usd = []
+v = []
+vala = []
 verilog = []
+vhdl = []
+vim = []
+vrl = []
+vto = []
+vue = []
 wat = []
+wgsl = []
+wgsl_bevy = []
+wing = []
+wit = []
+wxml = []
+xcompose = []
+xdefaults = []
+xml = []
 yaml = []
+yang = []
+yuck = []
+zathurarc = []
 zig = []
+ziggy = []
+ziggy_schema = []
+zsh = []

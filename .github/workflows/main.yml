@@ -1,13 +1,14 @@
 name: Main
-on:
+"on":
   push:
-    branches: [main]
+    branches: [main, expand-languages]
   pull_request:
-    branches: [main]
+    branches: [main, expand-languages]
 permissions:
   contents: write
 
 env:
+  CARGO_BUILD_JOBS: 4
   CARGO_INCREMENTAL: 0
   CARGO_NET_RETRY: 10
   CARGO_TERM_COLOR: always
@@ -15,12 +16,44 @@ env:
 
 jobs:
   # run all cargo tests in workspace
-  tests:
+  # Uses Hetzner Cloud for more disk space and RAM
+  create-test-runner:
+    name: Create Hetzner runner for tests
     runs-on: ubuntu-latest
 
+    outputs:
+      label: ${{ steps.create-hcloud-runner.outputs.label }}
+      server_id: ${{ steps.create-hcloud-runner.outputs.server_id }}
     steps:
+      - name: Create runner
+        id: create-hcloud-runner
+        uses: Cyclenerd/hcloud-github-runner@v1
+        with:
+          mode: create
+          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
+          server_type: cpx52
+          location: nbg1        # Nuremberg, Germany (more capacity)
+          image: ubuntu-24.04
+
+  tests:
+    name: Run Tests
+    needs: create-test-runner
+    runs-on: ${{ needs.create-test-runner.outputs.label }}
+
+    steps:
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl git build-essential pkg-config libssl-dev
+
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Setup NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 23
 
       - name: Install Toolchain
         uses: dtolnay/rust-toolchain@stable
@@ -36,11 +69,56 @@ jobs:
       - name: Run Tests
         run: cargo test --workspace --all-features
 
-  # build syntastica-js
-  build-js:
+  delete-test-runner:
+    name: Delete Hetzner runner for tests
+    needs:
+      - create-test-runner
+      - tests
     runs-on: ubuntu-latest
+    if: ${{ always() }}
 
     steps:
+      - name: Delete runner
+        uses: Cyclenerd/hcloud-github-runner@v1
+        with:
+          mode: delete
+          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
+          name: ${{ needs.create-test-runner.outputs.label }}
+          server_id: ${{ needs.create-test-runner.outputs.server_id }}
+
+  # build syntastica-js
+  # Uses Hetzner Cloud for more disk space
+  create-build-js-runner:
+    name: Create Hetzner runner for build-js
+    runs-on: ubuntu-latest
+
+    outputs:
+      label: ${{ steps.create-hcloud-runner.outputs.label }}
+      server_id: ${{ steps.create-hcloud-runner.outputs.server_id }}
+    steps:
+      - name: Create runner
+        id: create-hcloud-runner
+        uses: Cyclenerd/hcloud-github-runner@v1
+        with:
+          mode: create
+          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
+          server_type: cpx52
+          location: nbg1        # Nuremberg, Germany (more capacity)
+          image: ubuntu-24.04
+
+  build-js:
+    name: Build JS Package
+    needs: create-build-js-runner
+    runs-on: ${{ needs.create-build-js-runner.outputs.label }}
+
+    steps:
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl git build-essential pkg-config libssl-dev nodejs npm python3 python3-pip cmake unzip
+
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -50,18 +128,6 @@ jobs:
 
       - name: Install Toolchain
         uses: dtolnay/rust-toolchain@stable
-        with:
-          target: wasm32-unknown-emscripten
-
-      - name: Setup NodeJS
-        uses: actions/setup-node@v4
-        with:
-          node-version: 23
-
-      - name: Setup Emscripten
-        uses: mymindstorm/setup-emsdk@v14
-        with:
-          actions-cache-folder: 'emsdk-cache'
 
       - name: Restore Cache
         uses: Swatinem/rust-cache@v2
@@ -74,6 +140,24 @@ jobs:
       - name: Prepare CI
         run: |
           bash _prepare_ci.sh
+
+      - name: Install WASM Target
+        run: rustup target add wasm32-unknown-emscripten
+
+      - name: Setup NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 23
+
+      - name: Install tree-sitter CLI
+        run: npm i -g tree-sitter-cli@0.25.10
+
+      - name: Prime grammar sources
+        run: cargo xtask build-grammars -j 8
+      - name: Setup Emscripten
+        uses: mymindstorm/setup-emsdk@v14
+        with:
+          actions-cache-folder: 'emsdk-cache'
 
       - name: Build Core Package
         run: |
@@ -93,10 +177,28 @@ jobs:
             syntastica-js/langs/*/*.wasm
           retention-days: 5
 
+  delete-build-js-runner:
+    name: Delete Hetzner runner for build-js
+    needs:
+      - create-build-js-runner
+      - build-js
+    runs-on: ubuntu-latest
+    if: ${{ always() }}
+
+    steps:
+      - name: Delete runner
+        uses: Cyclenerd/hcloud-github-runner@v1
+        with:
+          mode: delete
+          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
+          name: ${{ needs.create-build-js-runner.outputs.label }}
+          server_id: ${{ needs.create-build-js-runner.outputs.server_id }}
+
   # run and commit auto-generated code
   codegen:
     runs-on: ubuntu-latest
-    if: github.repository == 'RubixDev/syntastica'
+    if: github.ref_name == 'expand-languages'
 
     steps:
       - name: Checkout repository
@@ -151,7 +253,7 @@ jobs:
 
       - name: Prepare Git Deployment
         run: |
-          git checkout --orphan new-main main
+          git checkout --orphan new-main "$GITHUB_REF_NAME"
           git add --force syntastica-queries/generated_queries
       - name: Create Git Deploy Commit
         uses: EndBug/add-and-commit@v9
@@ -162,8 +264,9 @@ jobs:
           push: false
       - name: Push new Git Deployment
         run: |
-          git branch -M new-main git-deploy
-          git push origin git-deploy --set-upstream --force
+          DEPLOY_BRANCH="${GITHUB_REF_NAME}-git-deploy"
+          git branch -M new-main "$DEPLOY_BRANCH"
+          git push origin "$DEPLOY_BRANCH" --set-upstream --force
 
       - name: Upload Queries as Artifact
         uses: actions/upload-artifact@v4

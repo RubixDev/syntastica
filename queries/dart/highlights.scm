@@ -1,36 +1,94 @@
-;; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/dart/highlights.scm
-;; Licensed under the Apache License 2.0
+;; Forked from https://raw.githubusercontent.com/UserNobody14/tree-sitter-dart/d4d8f3e337d8be23be27ffc35a0aef972343cd54/queries/highlights.scm
+; Variable
 (identifier) @variable
 
-(dotted_identifier_list) @string
+; Keywords
+; --------------------
+[
+  (assert_builtin)
+  (break_builtin)
+  (const_builtin)
+  (part_of_builtin)
+  (rethrow_builtin)
+  (void_type)
+  "abstract"
+  "as"
+  "async"
+  "async*"
+  "await"
+  "base"
+  "case"
+  "catch"
+  "class"
+  "continue"
+  "covariant"
+  "default"
+  "deferred"
+  "do"
+  "else"
+  "enum"
+  "export"
+  "extends"
+  "extension"
+  "external"
+  "factory"
+  "final"
+  "finally"
+  "for"
+  "Function"
+  "get"
+  "hide"
+  "if"
+  "implements"
+  "import"
+  "in"
+  "interface"
+  "is"
+  "late"
+  "library"
+  "mixin"
+  "new"
+  "on"
+  "operator"
+  "part"
+  "required"
+  "return"
+  "sealed"
+  "set"
+  "show"
+  "static"
+  "super"
+  "switch"
+  "sync*"
+  "throw"
+  "try"
+  "typedef"
+  "var"
+  "when"
+  "while"
+  "with"
+  "yield"
+] @keyword
 
 ; Methods
 ; --------------------
-; TODO: add method/call_expression to grammar and
-; distinguish method call from variable access
-(function_expression_body
-  (identifier) @function.call
-)
-
-; ((identifier)(selector (argument_part)) @function)
 ; NOTE: This query is a bit of a work around for the fact that the dart grammar doesn't
 ; specifically identify a node as a function call
 (
   (
-    (identifier) @function.call
-    (#lua-match? @function.call "^_?[%l]")
+    (identifier) @function
+    (#match? @function "^_?[a-z]")
   )
   .
   (selector
     .
     (argument_part)
   )
-) @function.call
+) @function
 
 ; Annotations
 ; --------------------
 (annotation
-  "@" @attribute
   name: (identifier) @attribute
 )
 
@@ -50,12 +108,13 @@
 (escape_sequence) @string.escape
 
 [
+  "@"
   "=>"
   ".."
   "??"
   "=="
-  "!"
   "?"
+  ":"
   "&&"
   "%"
   "<"
@@ -64,27 +123,23 @@
   ">="
   "<="
   "||"
-  ">>>="
-  ">>="
-  "<<="
-  "&="
-  "|="
-  "??="
-  "%="
-  "+="
-  "-="
-  "*="
-  "/="
-  "^="
-  "~/="
-  (shift_operator)
-  (multiplicative_operator)
+  "~/"
   (increment_operator)
   (is_operator)
   (prefix_operator)
   (equality_operator)
   (additive_operator)
 ] @operator
+
+(type_arguments
+  "<" @punctuation.bracket
+  ">" @punctuation.bracket
+)
+
+(type_parameters
+  "<" @punctuation.bracket
+  ">" @punctuation.bracket
+)
 
 [
   "("
@@ -101,13 +156,17 @@
   ";"
   "."
   ","
-  ":"
-  "?."
-  "?"
 ] @punctuation.delimiter
 
 ; Types
 ; --------------------
+(type_identifier) @type
+
+(
+  (type_identifier) @type.builtin
+  (#match? @type.builtin "^(int|double|String|bool|List|Set|Map|Runes|Symbol)$")
+)
+
 (class_definition
   name: (identifier) @type
 )
@@ -121,46 +180,33 @@
 )
 
 (function_signature
-  name: (identifier) @function.method
+  name: (identifier) @function
 )
 
 (getter_signature
-  (identifier) @function.method
+  (identifier) @function
 )
 
 (setter_signature
-  name: (identifier) @function.method
+  name: (identifier) @function
 )
-
-(enum_declaration
-  name: (identifier) @type
-)
-
-(enum_constant
-  name: (identifier) @type
-)
-
-(void_type) @type
 
 (
   (scoped_identifier
     scope: (identifier) @type
     name: (identifier) @type
   )
-  (#lua-match? @type "^[%u%l]")
+  (#match? @type "^[a-zA-Z]")
 )
 
-(type_identifier) @type
-
-(type_alias
-  (type_identifier) @type.definition
+; Enums
+; -------------------
+(enum_declaration
+  name: (identifier) @type
 )
 
-(type_arguments
-  [
-    "<"
-    ">"
-  ] @punctuation.bracket
+(enum_constant
+  name: (identifier) @identifier.constant
 )
 
 ; Variables
@@ -170,11 +216,14 @@
 
 (
   (identifier) @type
-  (#lua-match? @type "^_?[%u].*[%l]")
+  (#match? @type "^_?[A-Z].*[a-z]")
 )
 
-; catch Classes or IClasses not CLASSES
-"Function" @type
+("Function"
+  @type
+)
+
+(this) @variable.builtin
 
 ; properties
 (unconditional_assignable_selector
@@ -185,17 +234,50 @@
   (identifier) @property
 )
 
+(cascade_section
+  (cascade_selector
+    (identifier) @property
+  )
+)
+
+(
+  (selector
+    (unconditional_assignable_selector
+      (identifier) @function
+    )
+  )
+  (selector
+    (argument_part
+      (arguments)
+    )
+  )
+)
+
+(cascade_section
+  (cascade_selector
+    (identifier) @function
+  )
+  (argument_part
+    (arguments)
+  )
+)
+
+; assignments
+(assignment_expression
+  left: (assignable_expression) @variable
+)
+
 (this) @variable.builtin
 
 ; Parameters
 ; --------------------
 (formal_parameter
-  (identifier) @variable.parameter
+  name: (identifier) @identifier.parameter
 )
 
 (named_argument
   (label
-    (identifier) @variable.parameter
+    (identifier) @identifier.parameter
   )
 )
 
@@ -205,154 +287,23 @@
   (hex_integer_literal)
   (decimal_integer_literal)
   (decimal_floating_point_literal)
-  ; TODO: inaccessible nodes
+  ; TODO: inaccessbile nodes
   ; (octal_integer_literal)
   ; (hex_floating_point_literal)
 ] @number
 
-(symbol_literal) @string.special.symbol
-
 (string_literal) @string
+
+(symbol_literal
+  (identifier) @constant
+) @constant
 
 (true) @boolean
 
 (false) @boolean
 
-(null_literal) @constant.builtin
+(null_literal) @constant.null
+
+(documentation_comment) @comment
 
 (comment) @comment
-
-(documentation_comment) @comment.documentation
-
-; Keywords
-; --------------------
-[
-  "import"
-  "library"
-  "export"
-  "as"
-  "show"
-  "hide"
-] @keyword.import
-
-; Reserved words (cannot be used as identifiers)
-[
-  ; TODO:
-  ; "rethrow" cannot be targeted at all and seems to be an invisible node
-  ; TODO:
-  ; the assert keyword cannot be specifically targeted
-  ; because the grammar selects the whole node or the content
-  ; of the assertion not just the keyword
-  ; assert
-  (case_builtin)
-  "late"
-  "required"
-  "on"
-  "extends"
-  "in"
-  "is"
-  "new"
-  "super"
-  "with"
-] @keyword
-
-[
-  "class"
-  "enum"
-  "extension"
-] @keyword.type
-
-"return" @keyword.return
-
-; Built in identifiers:
-; alone these are marked as keywords
-[
-  "deferred"
-  "factory"
-  "get"
-  "implements"
-  "interface"
-  "library"
-  "operator"
-  "mixin"
-  "part"
-  "set"
-  "typedef"
-] @keyword
-
-[
-  "async"
-  "async*"
-  "sync*"
-  "await"
-  "yield"
-] @keyword.coroutine
-
-[
-  (const_builtin)
-  (final_builtin)
-  "abstract"
-  "covariant"
-  "external"
-  "static"
-  "final"
-  "base"
-  "sealed"
-] @keyword.modifier
-
-; when used as an identifier:
-(
-  (identifier) @variable.builtin
-  (#any-of?
-    @variable.builtin
-    "abstract"
-    "as"
-    "covariant"
-    "deferred"
-    "dynamic"
-    "export"
-    "external"
-    "factory"
-    "Function"
-    "get"
-    "implements"
-    "import"
-    "interface"
-    "library"
-    "operator"
-    "mixin"
-    "part"
-    "set"
-    "static"
-    "typedef"
-  )
-)
-
-[
-  "if"
-  "else"
-  "switch"
-  "default"
-] @keyword.conditional
-
-(conditional_expression
-  [
-    "?"
-    ":"
-  ] @keyword.conditional.ternary
-)
-
-[
-  "try"
-  "throw"
-  "catch"
-  "finally"
-  (break_statement)
-] @keyword.exception
-
-[
-  "do"
-  "while"
-  "continue"
-  "for"
-] @keyword.repeat

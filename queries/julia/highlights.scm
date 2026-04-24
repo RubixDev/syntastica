@@ -1,5 +1,4 @@
-;; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/julia/highlights.scm
-;; Licensed under the Apache License 2.0
+;; Forked from https://raw.githubusercontent.com/tree-sitter/tree-sitter-julia/3c1bd7c6c1a7442506b040d17500b69ad52209cd/queries/highlights.scm
 ; Identifiers
 (identifier) @variable
 
@@ -63,7 +62,7 @@
 )
 
 ; Built-in functions
-; filter(name -> Base.eval(Core, name) isa Core.Builtin, names(Core))
+; print.("\"", filter(name -> getglobal(Core, name) isa Core.Builtin, names(Core)), "\" ")
 (
   (identifier) @function.builtin
   (#any-of?
@@ -75,6 +74,7 @@
     "invoke"
     "isa"
     "isdefined"
+    "isdefinedglobal"
     "modifyfield!"
     "modifyglobal!"
     "nfields"
@@ -146,7 +146,7 @@
 )
 
 ; Built-in types
-; filter(name -> typeof(Base.eval(Core, name)) in [DataType, UnionAll], names(Core))
+; print.("\"", filter(name -> typeof(Base.eval(Core, name)) in [DataType, UnionAll], names(Core)), "\" ")
 (
   (identifier) @type.builtin
   (#any-of?
@@ -159,6 +159,8 @@
     "ArgumentError"
     "Array"
     "AssertionError"
+    "AtomicMemory"
+    "AtomicMemoryRef"
     "Bool"
     "BoundsError"
     "Char"
@@ -171,10 +173,13 @@
     "ErrorException"
     "Exception"
     "Expr"
+    "FieldError"
     "Float16"
     "Float32"
     "Float64"
     "Function"
+    "GenericMemory"
+    "GenericMemoryRef"
     "GlobalRef"
     "IO"
     "InexactError"
@@ -189,6 +194,8 @@
     "InterruptException"
     "LineNumberNode"
     "LoadError"
+    "Memory"
+    "MemoryRef"
     "Method"
     "MethodError"
     "Module"

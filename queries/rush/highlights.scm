@@ -1,5 +1,4 @@
-;; Forked from https://github.com/rush-rs/tree-sitter-rush/blob/main/queries/rush/highlights.scm
-;; Licensed under the MIT license
+;; Forked from https://raw.githubusercontent.com/rush-rs/tree-sitter-rush/babbc5c116ce964e89bc9ccc9df36d16c623fba9/queries/rush/highlights.scm
 ; General Identifiers
 (ident) @variable
 
@@ -30,7 +29,7 @@
 [
   (line_comment)
   (block_comment)
-] @comment
+] @comment @spell
 
 (bool) @boolean
 

@@ -400,7 +400,7 @@ This is an alteration of the [first example](#example-highlight-once) showing
 how to detect the language to use based on a file type. See that first example
 for explanations of the rest of the code.
 
-`syntastica` uses [`tft`](https://crates.io/crates/tft) for file types which
+`syntastica` uses [`palate`](https://crates.io/crates/palate) for file types which
 provides automatic detection.
 
 ```rust
@@ -408,8 +408,8 @@ use syntastica::{renderer::TerminalRenderer, language_set::{LanguageSet, Support
 use syntastica_parsers::{Lang, LanguageSetImpl};
 
 // detect the file type given a file's path and content.
-// this requires a dependency on `tft`
-let ft = tft::detect("main.rs", "");
+// this requires a dependency on `palate`
+let ft = palate::detect("main.rs", "");
 
 let language_set = LanguageSetImpl::new();
 let output = syntastica::highlight(

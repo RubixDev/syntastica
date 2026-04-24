@@ -46,22 +46,15 @@
   "protected"
   "public"
   "readonly"
-  (static_modifier)
+  "static"
 ] @keyword.modifier
-
-(function_static_declaration
-  "static" @keyword.modifier
-)
 
 [
   "return"
   "exit"
   "yield"
+  "yield from"
 ] @keyword.return
-
-(yield_expression
-  "from" @keyword.return
-)
 
 [
   "case"
@@ -111,7 +104,7 @@
 
 [
   (php_tag)
-  "?>"
+  (php_end_tag)
   "("
   ")"
   "["
@@ -205,7 +198,6 @@
     (qualified_name
       (name) @type
     )
-    ; crates.io skip
     (relative_name
       (name) @type
     )
@@ -227,7 +219,6 @@
     (qualified_name
       (name) @type
     )
-    ; crates.io skip
     (relative_name
       (name) @type
     )
@@ -314,7 +305,6 @@
     (qualified_name
       (name) @type
     )
-    ; crates.io skip
     (relative_name
       (name) @type
     )
@@ -327,7 +317,6 @@
     (qualified_name
       (name) @type
     )
-    ; crates.io skip
     (relative_name
       (name) @type
     )
@@ -341,7 +330,6 @@
     (qualified_name
       (name) @type
     )
-    ; crates.io skip
     (relative_name
       (name) @type
     )
@@ -355,7 +343,6 @@
     (qualified_name
       (name) @type
     )
-    ; crates.io skip
     (relative_name
       (name) @type
     )
@@ -382,7 +369,6 @@
     (qualified_name
       (name) @type
     )
-    ; crates.io skip
     (relative_name
       (name) @type
     )
@@ -413,7 +399,6 @@
     (qualified_name
       (name) @function.call
     )
-    ; crates.io skip
     (relative_name
       (name) @function.call
     )
@@ -463,7 +448,6 @@
     (qualified_name
       (name) @constructor
     )
-    ; crates.io skip
     (relative_name
       (name) @constructor
     )
@@ -528,7 +512,6 @@
   (name) @module
 )
 
-; crates.io skip
 (relative_name
   "namespace" @module.builtin
 )
@@ -580,6 +563,14 @@
 
 (float) @number.float
 
-(comment) @comment
+(comment) @comment @spell
 
 (named_label_statement) @label
+
+(property_hook
+  (name) @label
+)
+
+(visibility_modifier
+  (operation) @label
+)

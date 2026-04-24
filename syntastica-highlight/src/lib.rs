@@ -1,4 +1,4 @@
-//! Forked from <https://github.com/tree-sitter/tree-sitter/blob/v0.25.2/highlight/src/lib.rs>
+//! Forked from <https://github.com/tree-sitter/tree-sitter/blob/v0.26.3/highlight/src/lib.rs>
 //!
 //! The MIT License (MIT)
 //!

@@ -1,40 +1,17 @@
-;; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/go/highlights.scm
-;; Licensed under the Apache License 2.0
-; Identifiers
-(type_identifier) @type
-
-(type_spec
-  name: (type_identifier) @type.definition
-)
-
-(field_identifier) @property
-
-(identifier) @variable
-
-(package_identifier) @module
-
-(parameter_declaration
-  (identifier) @variable.parameter
-)
-
-(variadic_parameter_declaration
-  (identifier) @variable.parameter
-)
-
-(label_name) @label
-
-(const_spec
-  name: (identifier) @constant
-)
-
+;; Forked from https://raw.githubusercontent.com/tree-sitter/tree-sitter-go/2346a3ab1bb3857b48b29d779a1ef9799a248cd7/queries/highlights.scm
 ; Function calls
 (call_expression
-  function: (identifier) @function.call
+  function: (identifier) @function
+)
+
+(call_expression
+  function: (identifier) @function.builtin
+  (#match? @function.builtin "^(append|cap|close|complex|copy|delete|imag|len|make|new|panic|print|println|real|recover)$")
 )
 
 (call_expression
   function: (selector_expression
-    field: (field_identifier) @function.method.call
+    field: (field_identifier) @function.method
   )
 )
 
@@ -47,24 +24,12 @@
   name: (field_identifier) @function.method
 )
 
-(method_elem
-  name: (field_identifier) @function.method
-)
+; Identifiers
+(type_identifier) @type
 
-; Constructors
-(
-  (call_expression
-    (identifier) @constructor
-  )
-  (#lua-match? @constructor "^[nN]ew.+$")
-)
+(field_identifier) @property
 
-(
-  (call_expression
-    (identifier) @constructor
-  )
-  (#lua-match? @constructor "^[mM]ake.+$")
-)
+(identifier) @variable
 
 ; Operators
 [
@@ -83,8 +48,6 @@
   "&"
   "&&"
   "&="
-  "&^"
-  "&^="
   "%"
   "%="
   "^"
@@ -112,216 +75,52 @@
 ; Keywords
 [
   "break"
+  "case"
+  "chan"
   "const"
   "continue"
   "default"
   "defer"
-  "goto"
-  "range"
-  "select"
-  "var"
+  "else"
   "fallthrough"
+  "for"
+  "func"
+  "go"
+  "goto"
+  "if"
+  "import"
+  "interface"
+  "map"
+  "package"
+  "range"
+  "return"
+  "select"
+  "struct"
+  "switch"
+  "type"
+  "var"
 ] @keyword
 
-[
-  "type"
-  "struct"
-  "interface"
-] @keyword.type
-
-"func" @keyword.function
-
-"return" @keyword.return
-
-"go" @keyword.coroutine
-
-"for" @keyword.repeat
-
-[
-  "import"
-  "package"
-] @keyword.import
-
-[
-  "else"
-  "case"
-  "switch"
-  "if"
-] @keyword.conditional
-
-; Builtin types
-[
-  "chan"
-  "map"
-] @type.builtin
-
-(
-  (type_identifier) @type.builtin
-  (#any-of?
-    @type.builtin
-    "any"
-    "bool"
-    "byte"
-    "comparable"
-    "complex128"
-    "complex64"
-    "error"
-    "float32"
-    "float64"
-    "int"
-    "int16"
-    "int32"
-    "int64"
-    "int8"
-    "rune"
-    "string"
-    "uint"
-    "uint16"
-    "uint32"
-    "uint64"
-    "uint8"
-    "uintptr"
-  )
-)
-
-; Builtin functions
-(
-  (identifier) @function.builtin
-  (#any-of?
-    @function.builtin
-    "append"
-    "cap"
-    "clear"
-    "close"
-    "complex"
-    "copy"
-    "delete"
-    "imag"
-    "len"
-    "make"
-    "max"
-    "min"
-    "new"
-    "panic"
-    "print"
-    "println"
-    "real"
-    "recover"
-  )
-)
-
-; Delimiters
-"." @punctuation.delimiter
-
-"," @punctuation.delimiter
-
-":" @punctuation.delimiter
-
-";" @punctuation.delimiter
-
-"(" @punctuation.bracket
-
-")" @punctuation.bracket
-
-"{" @punctuation.bracket
-
-"}" @punctuation.bracket
-
-"[" @punctuation.bracket
-
-"]" @punctuation.bracket
-
 ; Literals
-(interpreted_string_literal) @string
+[
+  (interpreted_string_literal)
+  (raw_string_literal)
+  (rune_literal)
+] @string
 
-(raw_string_literal) @string
+(escape_sequence) @escape
 
-(rune_literal) @string
-
-(escape_sequence) @string.escape
-
-(int_literal) @number
-
-(float_literal) @number.float
-
-(imaginary_literal) @number
+[
+  (int_literal)
+  (float_literal)
+  (imaginary_literal)
+] @number
 
 [
   (true)
   (false)
-] @boolean
-
-[
   (nil)
   (iota)
 ] @constant.builtin
 
-(keyed_element
-  .
-  (literal_element
-    (identifier) @variable.member
-  )
-)
-
-(field_declaration
-  name: (field_identifier) @variable.member
-)
-
-; Comments
 (comment) @comment
-
-; Doc Comments
-(source_file
-  .
-  (comment)+ @comment.documentation
-)
-
-(source_file
-  (comment)+ @comment.documentation
-  .
-  (const_declaration)
-)
-
-(source_file
-  (comment)+ @comment.documentation
-  .
-  (function_declaration)
-)
-
-(source_file
-  (comment)+ @comment.documentation
-  .
-  (type_declaration)
-)
-
-(source_file
-  (comment)+ @comment.documentation
-  .
-  (var_declaration)
-)
-
-; Regex
-(call_expression
-  (selector_expression) @_function
-  (#any-of?
-    @_function
-    "regexp.Match"
-    "regexp.MatchReader"
-    "regexp.MatchString"
-    "regexp.Compile"
-    "regexp.CompilePOSIX"
-    "regexp.MustCompile"
-    "regexp.MustCompilePOSIX"
-  )
-  (argument_list
-    .
-    [
-      (raw_string_literal
-        (raw_string_literal_content) @string.regexp
-      )
-      (interpreted_string_literal
-        (interpreted_string_literal_content) @string.regexp
-      )
-    ]
-  )
-)

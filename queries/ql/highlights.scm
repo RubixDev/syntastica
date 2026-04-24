@@ -1,75 +1,50 @@
-;; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/ql/highlights.scm
-;; Licensed under the Apache License 2.0
-[
-  "as"
-  "by"
-  "extends"
-  "from"
-  "implies"
-  "in"
-  "module"
-  "order"
-  "select"
-  "where"
-  (predicate)
-  (result)
-  (specialId)
-] @keyword
-
-[
-  "newtype"
-  "class"
-] @keyword.type
-
+;; Forked from https://raw.githubusercontent.com/tree-sitter/tree-sitter-ql/1fd627a4e8bff8c24c11987474bd33112bead857/queries/highlights.scm
 [
   "and"
-  "not"
-  "or"
-] @keyword.operator
-
-[
-  "avg"
   "any"
-  "count"
+  "as"
+  "asc"
+  "avg"
+  "by"
+  "class"
   "concat"
+  "count"
+  "desc"
+  "else"
   "exists"
+  "extends"
+  "forall"
+  "forex"
+  "from"
+  "if"
+  "implements"
+  "implies"
+  "import"
+  "in"
+  "instanceof"
   "max"
   "min"
-  "instanceof"
+  "module"
+  "newtype"
+  "not"
+  "or"
+  "order"
   "rank"
-  "sum"
+  "select"
   "strictconcat"
   "strictcount"
   "strictsum"
-] @function.builtin
-
-"import" @keyword.import
-
-[
-  "if"
+  "sum"
   "then"
-  "else"
-] @keyword.conditional
-
-[
-  "forall"
-  "forex"
-] @keyword.repeat
-
-[
-  "asc"
-  "desc"
-] @keyword.modifier
-
-[
-  (true)
+  "where"
   (false)
-] @boolean
-
-[
-  (this)
+  (predicate)
+  (result)
+  (specialId)
   (super)
-] @variable.builtin
+  (this)
+  (true)
+] @keyword
 
 [
   "boolean"
@@ -110,35 +85,13 @@
   "|"
 ] @punctuation.delimiter
 
-(moduleExpr
-  (simpleId) @module
-)
-
-(module
-  name: (moduleName) @module
-)
-
-(dataclass
-  name: (className) @type
-)
-
-(typeExpr
-  name: (className) @type
-)
-
-(datatype
-  name: (className) @type.definition
-)
-
-(importModuleExpr
-  qualName: (simpleId) @variable
-)
+(className) @type
 
 (varName) @variable
 
 (integer) @number
 
-(float) @number.float
+(float) @number
 
 (string) @string
 
@@ -146,21 +99,10 @@
   (literalId) @function
 )
 
-(memberPredicate
-  name: (predicateName) @function
-)
-
-(classlessPredicate
-  name: (predicateName) @function
-)
-
-(charpred
-  (className) @function
-)
+(predicateName) @function
 
 [
   (line_comment)
   (block_comment)
+  (qldoc)
 ] @comment
-
-(qldoc) @comment.documentation

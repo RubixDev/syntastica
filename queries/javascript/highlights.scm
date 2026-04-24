@@ -1,80 +1,234 @@
-;; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/javascript/highlights.scm
-;; Licensed under the Apache License 2.0
-; inherits: ecma,jsx
-; Parameters
-(formal_parameters
-  (identifier) @variable.parameter
+;; Forked from https://raw.githubusercontent.com/tree-sitter/tree-sitter-javascript/58404d8cf191d69f2674a8fd507bd5776f46cb11/queries/highlights.scm
+; Variables
+;----------
+(identifier) @variable
+
+; Properties
+;-----------
+(property_identifier) @property
+
+; Function and method definitions
+;--------------------------------
+(function_expression
+  name: (identifier) @function
 )
 
-(formal_parameters
-  (rest_pattern
-    (identifier) @variable.parameter
+(function_declaration
+  name: (identifier) @function
+)
+
+(method_definition
+  name: (property_identifier) @function.method
+)
+
+(pair
+  key: (property_identifier) @function.method
+  value: [
+    (function_expression)
+    (arrow_function)
+  ]
+)
+
+(assignment_expression
+  left: (member_expression
+    property: (property_identifier) @function.method
+  )
+  right: [
+    (function_expression)
+    (arrow_function)
+  ]
+)
+
+(variable_declarator
+  name: (identifier) @function
+  value: [
+    (function_expression)
+    (arrow_function)
+  ]
+)
+
+(assignment_expression
+  left: (identifier) @function
+  right: [
+    (function_expression)
+    (arrow_function)
+  ]
+)
+
+; Function and method calls
+;--------------------------
+(call_expression
+  function: (identifier) @function
+)
+
+(call_expression
+  function: (member_expression
+    property: (property_identifier) @function.method
   )
 )
 
-; ({ a }) => null
-(formal_parameters
-  (object_pattern
-    (shorthand_property_identifier_pattern) @variable.parameter
-  )
+; Special identifiers
+;--------------------
+(
+  (identifier) @constructor
+  (#match? @constructor "^[A-Z]")
 )
 
-; ({ a = b }) => null
-(formal_parameters
-  (object_pattern
-    (object_assignment_pattern
-      (shorthand_property_identifier_pattern) @variable.parameter
-    )
-  )
+(
+  [
+    (identifier)
+    (shorthand_property_identifier)
+    (shorthand_property_identifier_pattern)
+  ] @constant
+  (#match? @constant "^[A-Z_][A-Z\\d_]+$")
 )
 
-; ({ a: b }) => null
-(formal_parameters
-  (object_pattern
-    (pair_pattern
-      value: (identifier) @variable.parameter
-    )
-  )
+(
+  (identifier) @variable.builtin
+  (#match? @variable.builtin "^(arguments|module|console|window|document)$")
+  (#is-not? local)
 )
 
-; ([ a ]) => null
-(formal_parameters
-  (array_pattern
-    (identifier) @variable.parameter
-  )
+(
+  (identifier) @function.builtin
+  (#eq? @function.builtin "require")
+  (#is-not? local)
 )
 
-; ({ a } = { a }) => null
-(formal_parameters
-  (assignment_pattern
-    (object_pattern
-      (shorthand_property_identifier_pattern) @variable.parameter
-    )
-  )
-)
+; Literals
+;---------
+(this) @variable.builtin
 
-; ({ a = b } = { a }) => null
-(formal_parameters
-  (assignment_pattern
-    (object_pattern
-      (object_assignment_pattern
-        (shorthand_property_identifier_pattern) @variable.parameter
-      )
-    )
-  )
-)
+(super) @variable.builtin
 
-; a => null
-(arrow_function
-  parameter: (identifier) @variable.parameter
-)
+[
+  (true)
+  (false)
+  (null)
+  (undefined)
+] @constant.builtin
 
-; optional parameters
-(formal_parameters
-  (assignment_pattern
-    left: (identifier) @variable.parameter
-  )
-)
+(comment) @comment
 
-; punctuation
-(optional_chain) @punctuation.delimiter
+[
+  (string)
+  (template_string)
+] @string
+
+(regex) @string.special
+
+(number) @number
+
+; Tokens
+;-------
+[
+  ";"
+  (optional_chain)
+  "."
+  ","
+] @punctuation.delimiter
+
+[
+  "-"
+  "--"
+  "-="
+  "+"
+  "++"
+  "+="
+  "*"
+  "*="
+  "**"
+  "**="
+  "/"
+  "/="
+  "%"
+  "%="
+  "<"
+  "<="
+  "<<"
+  "<<="
+  "="
+  "=="
+  "==="
+  "!"
+  "!="
+  "!=="
+  "=>"
+  ">"
+  ">="
+  ">>"
+  ">>="
+  ">>>"
+  ">>>="
+  "~"
+  "^"
+  "&"
+  "|"
+  "^="
+  "&="
+  "|="
+  "&&"
+  "||"
+  "??"
+  "&&="
+  "||="
+  "??="
+] @operator
+
+[
+  "("
+  ")"
+  "["
+  "]"
+  "{"
+  "}"
+] @punctuation.bracket
+
+(template_substitution
+  "${" @punctuation.special
+  "}" @punctuation.special
+) @embedded
+
+[
+  "as"
+  "async"
+  "await"
+  "break"
+  "case"
+  "catch"
+  "class"
+  "const"
+  "continue"
+  "debugger"
+  "default"
+  "delete"
+  "do"
+  "else"
+  "export"
+  "extends"
+  "finally"
+  "for"
+  "from"
+  "function"
+  "get"
+  "if"
+  "import"
+  "in"
+  "instanceof"
+  "let"
+  "new"
+  "of"
+  "return"
+  "set"
+  "static"
+  "switch"
+  "target"
+  "throw"
+  "try"
+  "typeof"
+  "var"
+  "void"
+  "while"
+  "with"
+  "yield"
+] @keyword

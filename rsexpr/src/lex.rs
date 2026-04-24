@@ -93,8 +93,19 @@ fn lex_string<'src>(input: &'src [u8], index: &mut usize) -> Token<'src> {
                     allocated_string = input[start_index..*index].to_vec();
                     requires_allocation = true;
                 }
-                allocated_string.push(input[*index + 1]);
-                *index += 2;
+                *index += 1;
+                let escaped = input[*index];
+                let unescaped = match escaped {
+                    b'n' => b'\n',
+                    b'r' => b'\r',
+                    b't' => b'\t',
+                    b'\\' => b'\\',
+                    b'"' => b'"',
+                    b'0' => b'\0',
+                    other => other,
+                };
+                allocated_string.push(unescaped);
+                *index += 1;
             }
             _ => {
                 if requires_allocation {
@@ -130,9 +141,11 @@ mod tests {
         // TODO: verify owned/borrowed
         string_test(r#""Hello, World!""#, Cow::Borrowed(b"Hello, World!"));
         string_test(r#""Hello, World!"#, Cow::Borrowed(b"Hello, World!"));
-        string_test(r#""\"\\""#, Cow::Borrowed(b"\"\\"));
-        string_test(r#""\"\"#, Cow::Borrowed(b"\""));
-        string_test(r#""a\"#, Cow::Borrowed(b"a"));
+        string_test(r#""\"\\""#, Cow::Owned(b"\"\\".to_vec()));
+        string_test(r#""\"\"#, Cow::Owned(b"\"".to_vec()));
+        string_test(r#""a\"#, Cow::Owned(b"a".to_vec()));
+        string_test(r#""\n""#, Cow::Owned(b"\n".to_vec()));
+        string_test(r#""\\n""#, Cow::Owned(b"\\n".to_vec()));
     }
 
     #[test]

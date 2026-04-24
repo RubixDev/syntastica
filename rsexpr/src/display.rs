@@ -66,13 +66,7 @@ impl Display for Sexpr<'_> {
                         children.trim_end(),
                     )?;
                 }
-                Sexpr::String(string) => write!(
-                    f,
-                    "\"{}\" ",
-                    String::from_utf8_lossy(string)
-                        .replace('\\', r"\\")
-                        .replace('"', "\\\"")
-                )?,
+                Sexpr::String(string) => write!(f, "\"{}\" ", escape_string(string))?,
                 Sexpr::Atom(atom) => write!(f, "{} ", String::from_utf8_lossy(atom))?,
                 #[cfg(feature = "comments")]
                 Sexpr::Comment(_) => {}
@@ -187,13 +181,7 @@ impl Display for Sexpr<'_> {
                     }
                     write!(f, "{close_paren}")?;
                 }
-                Sexpr::String(string) => write!(
-                    f,
-                    "\"{}\"",
-                    String::from_utf8_lossy(string)
-                        .replace('\\', r"\\")
-                        .replace('"', "\\\"")
-                )?,
+                Sexpr::String(string) => write!(f, "\"{}\"", escape_string(string))?,
                 Sexpr::Atom(atom) => write!(f, "{}", String::from_utf8_lossy(atom))?,
                 #[cfg(feature = "comments")]
                 Sexpr::Comment(comment) => write!(f, "{}", String::from_utf8_lossy(comment))?,
@@ -202,4 +190,13 @@ impl Display for Sexpr<'_> {
 
         Ok(())
     }
+}
+
+fn escape_string(bytes: &[u8]) -> String {
+    let text = String::from_utf8_lossy(bytes);
+    text.replace('\\', r"\\")
+        .replace('"', "\\\"")
+        .replace('\n', "\\n")
+        .replace('\r', "\\r")
+        .replace('\t', "\\t")
 }

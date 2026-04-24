@@ -152,11 +152,15 @@ fn parsers_toml_feature(group: Group) -> String {
     if let Some(group) = group.next_smaller() {
         feature_str += &format!("    \"{group}\",\n");
     }
+    let mut seen = std::collections::HashSet::new();
     for lang in crate::LANGUAGE_CONFIG
         .languages
         .iter()
         .filter(|lang| lang.group == group)
     {
+        if !seen.insert(lang.name.clone()) {
+            continue;
+        }
         feature_str += "    \"";
         feature_str += &lang.name;
         feature_str += "\",\n";
@@ -166,7 +170,11 @@ fn parsers_toml_feature(group: Group) -> String {
 
 fn parsers_toml_lang_features(collection: ParserCollection) -> String {
     let mut out = String::new();
+    let mut seen = std::collections::HashSet::new();
     for lang in &crate::LANGUAGE_CONFIG.languages {
+        if !seen.insert(lang.name.clone()) {
+            continue;
+        }
         out += &lang.name;
         out += " = [";
         if collection != ParserCollection::Git

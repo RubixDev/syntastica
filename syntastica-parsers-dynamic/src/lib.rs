@@ -72,7 +72,7 @@ impl<'loader> SupportedLanguage<'loader, LanguageLoader> for Lang<'loader> {
     }
 
     fn for_file_type(_file_type: FileType, _set: &'loader LanguageLoader) -> Option<Self> {
-        // TODO: detection by filetype when tft allows getting a file name/extension from a
+        // TODO: detection by filetype when palate allows getting a file name/extension from a
         // FileType instance
         None
     }

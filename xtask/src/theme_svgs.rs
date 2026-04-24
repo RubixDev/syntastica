@@ -52,11 +52,12 @@ pub fn run() -> Result<()> {
         );
         fs::write(&tmpfile, typst_file)?;
 
+        let filename = theme_name.replace("::", "-");
         let status = Command::new("typst")
             .args(["compile", "--format=svg", "--root"])
             .arg(&*crate::WORKSPACE_DIR)
             .arg(&tmpfile)
-            .arg(out_dir.join(format!("{theme_name}.svg")))
+            .arg(out_dir.join(format!("{filename}.svg")))
             .current_dir(&*crate::WORKSPACE_DIR)
             .status()
             .with_context(|| "failed to run typst compiler")?;
@@ -68,7 +69,7 @@ pub fn run() -> Result<()> {
             r#"
 ### `{theme_name}`
 
-<img alt="{theme_name}" width="100%" src="https://github.com/RubixDev/syntastica/raw/main/{ASSET_PATH}/{theme_name}.svg"></img>
+<img alt="{theme_name}" width="100%" src="https://github.com/RubixDev/syntastica/raw/main/{ASSET_PATH}/{filename}.svg"></img>
 "#
         )
     }

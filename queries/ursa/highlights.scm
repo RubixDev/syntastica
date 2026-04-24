@@ -1,5 +1,4 @@
-;; Forked from https://github.com/ursalang/tree-sitter-ursa/blob/main/queries/highlights.scm
-;; Licensed under the ISC licence
+;; Forked from https://raw.githubusercontent.com/ursalang/tree-sitter-ursa/2fc58a4398dafdfb8b79cd72afeff6f35a8ac9b5/queries/highlights.scm
 ; Special identifiers
 ;--------------------
 (
@@ -77,6 +76,9 @@
   "!="
   ">"
   ">="
+  "<<"
+  ">>"
+  ">>>"
 ] @operator
 
 [

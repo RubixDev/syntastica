@@ -22,8 +22,8 @@ docs = ["dep:document-features", "dep:rustc_version"]
 syntastica-core = { workspace = true, features = ["runtime-c"] }
 
 tree-sitter.workspace = true
-tree-sitter-loader = "0.25.2"
-tree-sitter-tags = "0.25.2"
+tree-sitter-loader = "0.25.1"
+tree-sitter-tags = "0.25.1"
 
 anyhow = "1.0.96"
 cc.workspace = true

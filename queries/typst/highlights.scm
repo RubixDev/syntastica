@@ -1,142 +1,270 @@
-;; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/typst/highlights.scm
-;; Licensed under the Apache License 2.0
-; punctuation
-"#" @punctuation.special
+;; Forked from https://raw.githubusercontent.com/uben0/tree-sitter-typst/46cf4ded12ee974a70bf8457263b67ad7ee0379d/queries/typst/highlights.scm
+(call
+  item: (ident) @function
+)
 
-[
-  ":"
-  ";"
-  ","
-] @punctuation.delimiter
+(call
+  item: (field
+    field: (ident) @function.method
+  )
+)
 
-; TODO: context blocks for "[" "]"?
+(tagged
+  field: (ident) @tag
+)
+
+(field
+  field: (ident) @tag
+)
+
+(comment) @comment
+
+; CONTROL
+(let
+  "let" @keyword.storage.type
+)
+
+(branch
+  [
+    "if"
+    "else"
+  ] @keyword.control.conditional
+)
+
+(while
+  "while" @keyword.control.repeat
+)
+
+(for
+  [
+    "for"
+    "in"
+  ] @keyword.control.repeat
+)
+
+(import
+  "import" @keyword.control.import
+)
+
+(as
+  "as" @keyword.operator
+)
+
+(include
+  "include" @keyword.control.import
+)
+
+(show
+  "show" @keyword.control
+)
+
+(set
+  "set" @keyword.control
+)
+
+(return
+  "return" @keyword.control
+)
+
+(flow
+  [
+    "break"
+    "continue"
+  ] @keyword.control
+)
+
+; OPERATOR
+(in
+  [
+    "in"
+    "not"
+  ] @keyword.operator
+)
+
+(context
+  "context" @keyword.control
+)
+
+(and
+  "and" @keyword.operator
+)
+
+(or
+  "or" @keyword.operator
+)
+
+(not
+  "not" @keyword.operator
+)
+
+(sign
+  [
+    "+"
+    "-"
+  ] @operator
+)
+
+(add
+  "+" @operator
+)
+
+(sub
+  "-" @operator
+)
+
+(mul
+  "*" @operator
+)
+
+(div
+  "/" @operator
+)
+
+(cmp
+  [
+    "=="
+    "<="
+    ">="
+    "!="
+    "<"
+    ">"
+  ] @operator
+)
+
+(fraction
+  "/" @operator
+)
+
+(fac
+  "!" @operator
+)
+
+(attach
+  [
+    "^"
+    "_"
+  ] @operator
+)
+
+(wildcard) @operator
+
+; VALUE
+(raw_blck
+  "```" @operator
+) @markup.raw.block
+
+(raw_span
+  "`" @operator
+) @markup.raw.block
+
+(raw_blck
+  lang: (ident) @tag
+)
+
+(label) @tag
+
+(ref) @tag
+
+(number) @constant.numeric
+
+(string) @string
+
+(content
+  [
+    "["
+    "]"
+  ] @operator
+)
+
+(bool) @constant.builtin.boolean
+
+(none) @constant.builtin
+
+(auto) @constant.builtin
+
+(ident) @variable
+
+; MARKUP
+(item
+  "-" @markup.list
+)
+
+(term
+  [
+    "/"
+    ":"
+  ] @markup.list
+)
+
+(heading
+  "=" @markup.heading.marker
+) @markup.heading.1
+
+(heading
+  "==" @markup.heading.marker
+) @markup.heading.2
+
+(heading
+  "===" @markup.heading.marker
+) @markup.heading.3
+
+(heading
+  "====" @markup.heading.marker
+) @markup.heading.4
+
+(heading
+  "=====" @markup.heading.marker
+) @markup.heading.5
+
+(heading
+  "======" @markup.heading.marker
+) @markup.heading.6
+
+(url) @tag
+
+(emph) @markup.italic
+
+(strong) @markup.bold
+
+(symbol) @constant.character
+
+(shorthand) @constant.builtin
+
+(quote) @markup.quote
+
+(align) @operator
+
+(letter) @constant.character
+
+(linebreak) @constant.builtin
+
+(math
+  "$" @operator
+)
+
+"#" @operator
+
+"end" @operator
+
+(escape) @constant.character.escape
+
 [
   "("
   ")"
   "{"
   "}"
-  "["
-  "]"
 ] @punctuation.bracket
 
-; operators
 [
-  "-"
-  "+"
-  "*"
-  "/"
-  "=="
-  "!="
-  "<"
-  "<="
-  ">"
-  ">="
-  "="
-  "in"
-  "and"
-  "or"
-  "not"
-] @operator
+  ","
+  ";"
+  ".."
+  ":"
+  "sep"
+] @punctuation.delimiter
 
-; keywords
-[
-  "import"
-  "include"
-] @keyword.import
+"assign" @punctuation
 
-[
-  "let"
-  "set"
-  "show"
-] @keyword
-
-; control flow
-[
-  "for"
-  "while"
-  "break"
-  "continue"
-] @keyword.repeat
-
-[
-  "if"
-  "else"
-] @keyword.conditional
-
-; special case: #for (ident) in (expr)
-(for
-  "in" @keyword.repeat
+(field
+  "." @punctuation
 )
-
-; type literals
-(number) @number
-
-(string) @string
-
-(bool) @boolean
-
-(ident) @constant
-
-; name-value pairs
-(tagged
-  field: (ident) @variable.member
-)
-
-(call
-  item: (ident) @function.call
-)
-
-; text
-(heading
-  "=" @markup.heading.1
-) @markup.heading.1
-
-(heading
-  "==" @markup.heading.2
-) @markup.heading.2
-
-(heading
-  "===" @markup.heading.3
-) @markup.heading.3
-
-(heading
-  "====" @markup.heading.4
-) @markup.heading.4
-
-(heading
-  "=====" @markup.heading.5
-) @markup.heading.5
-
-(heading
-  "======" @markup.heading.6
-) @markup.heading.6
-
-(strong) @markup.strong
-
-(emph) @markup.italic
-
-(url) @markup.link.url
-
-; code blocks
-(raw_span) @markup.raw
-
-(raw_blck) @markup.raw
-
-(raw_blck
-  lang: (ident) @label
-)
-
-(raw_blck
-  (blob) @markup.raw.block
-)
-
-; refs and labels
-(label) @markup.link.label
-
-(ref) @markup.link
-
-; math
-(math) @markup.math
-
-; comments
-(comment) @comment

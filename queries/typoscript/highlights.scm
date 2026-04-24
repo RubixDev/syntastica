@@ -1,0 +1,109 @@
+;; Forked from https://raw.githubusercontent.com/Teddytrombone/tree-sitter-typoscript/1811c767f3f72be669891b524a07c58b1eb0db87/queries/highlights.scm
+(identifier) @variable.member
+
+(symfony_variable) @variable
+
+(constant) @constant
+
+[
+  (modifier_function)
+  (symfony_function)
+  (symfony_method)
+] @function
+
+[
+  (modifier_predefined)
+  (symfony_predefined_function)
+] @function.builtin
+
+(modifier_parameter) @variable.parameter
+
+(symfony_function_parameter
+  (symfony_variable) @variable.parameter
+)
+
+(symfony_method_parameter
+  (symfony_variable) @variable.parameter
+)
+
+[
+  (condition)
+  (condition_end)
+  (condition_else)
+] @keyword.conditional
+
+[
+  "@import"
+  "INCLUDE_TYPOSCRIPT"
+] @keyword.import
+
+(condition_attribute) @attribute
+
+(cobject) @type.builtin
+
+(symfony_built_in_variable) @variable.builtin
+
+(symfony_variable) @variable
+
+[
+  (comment)
+  (single_line_comment)
+] @comment @spell
+
+[
+  (string)
+  (multiline_value_content)
+  (symfony_string)
+] @string
+
+(deletion_line
+  ">" @operator
+)
+
+(copy_line
+  "<" @operator
+)
+
+[
+  "="
+  "=<"
+  ":="
+  "?."
+  (symfony_condition_operator)
+  (condition_bool_legacy)
+  (constant_null_coalescing)
+] @operator
+
+(symfony_ternary_operator) @keyword.conditional.ternary
+
+(
+  (symfony_condition_operator) @keyword.operator
+  (#match? @keyword.operator "and|or|xor|not|not in|in|contains|starts with|ends with|matches")
+)
+
+[
+  ","
+  "."
+] @punctuation.delimiter
+
+[
+  "("
+  ")"
+  "["
+  "]"
+  (block_punctuation)
+] @punctuation.bracket
+
+(condition
+  "[" @punctuation.special
+)
+
+(condition
+  "]" @punctuation.special
+)
+
+(symfony_number) @number
+
+(symfony_boolean) @boolean
+
+(symfony_null) @constant.builtin

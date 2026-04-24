@@ -13,33 +13,30 @@ static LANGUAGE_CONFIG: Lazy<LanguageConfig> = Lazy::new(|| {
     toml::from_str(include_str!("../languages.toml")).expect("invalid `languages.toml`")
 });
 
-#[proc_macro]
-pub fn parsers_git(_: TokenStream) -> TokenStream {
-    let mut dedup_ffi_funcs = LANGUAGE_CONFIG.languages.clone();
-    dedup_ffi_funcs.sort_unstable_by_key(|lang| lang.parser.ffi_func.clone());
-    dedup_ffi_funcs.dedup_by_key(|lang| lang.parser.ffi_func.clone());
-    dedup_ffi_funcs
-        .iter()
-        .map(|lang| {
-            let name = &lang.name;
-            let url = &lang.parser.git.url;
-            let rev = &lang.parser.git.rev;
-            let external_c = lang.parser.external_scanner.c;
-            let external_cpp = lang.parser.external_scanner.cpp;
-            let path = match &lang.parser.git.path {
-                Some(path) => quote_use! { Some(#path) },
-                None => quote_use! { None },
-            };
-            let wasm = lang.wasm;
-            let wasm_unknown = lang.wasm_unknown;
-            let generate = lang.parser.generate;
-            quote! {
-                #[cfg(feature = #name)]
-                compile_parser(#name, #url, #rev, #external_c, #external_cpp, #path, #wasm, #wasm_unknown, #generate)?;
-            }
-        })
-        .collect::<proc_macro2::TokenStream>()
-        .into()
+#[derive(Debug)]
+struct FfiGroup<'a> {
+    representative: &'a Language,
+    aliases: Vec<&'a Language>,
+}
+
+fn ffi_groups(languages: &[Language]) -> Vec<FfiGroup<'_>> {
+    let mut group_indices: std::collections::HashMap<&str, usize> =
+        std::collections::HashMap::new();
+    let mut groups: Vec<FfiGroup<'_>> = Vec::new();
+
+    for lang in languages {
+        if let Some(&idx) = group_indices.get(lang.parser.ffi_func.as_str()) {
+            groups[idx].aliases.push(lang);
+        } else {
+            group_indices.insert(lang.parser.ffi_func.as_str(), groups.len());
+            groups.push(FfiGroup {
+                representative: lang,
+                aliases: vec![lang],
+            });
+        }
+    }
+
+    groups
 }
 
 fn not_wasm_cfg(lang: &Language) -> proc_macro2::TokenStream {
@@ -55,17 +52,63 @@ fn not_wasm_cfg(lang: &Language) -> proc_macro2::TokenStream {
     }
 }
 
+fn lang_feature_target_cfg(lang: &Language) -> proc_macro2::TokenStream {
+    let name_str = &lang.name;
+    let not_wasm_cfg = not_wasm_cfg(lang);
+    quote! { all(feature = #name_str #not_wasm_cfg) }
+}
+
+fn ffi_group_cfg(group: &FfiGroup<'_>) -> proc_macro2::TokenStream {
+    let alias_cfgs = group
+        .aliases
+        .iter()
+        .map(|lang| lang_feature_target_cfg(lang))
+        .collect::<Vec<_>>();
+
+    match alias_cfgs.as_slice() {
+        [cfg] => cfg.clone(),
+        _ => quote! { any(#(#alias_cfgs),*) },
+    }
+}
+
+#[proc_macro]
+pub fn parsers_git(_: TokenStream) -> TokenStream {
+    ffi_groups(&LANGUAGE_CONFIG.languages)
+        .iter()
+        .map(|group| {
+            // The first language keeps the canonical build metadata for the shared FFI symbol;
+            // additional aliases only extend the feature gate.
+            let lang = group.representative;
+            let cfg = ffi_group_cfg(group);
+            let name = &lang.name;
+            let url = &lang.parser.git.url;
+            let rev = &lang.parser.git.rev;
+            let external_c = lang.parser.external_scanner.c;
+            let external_cpp = lang.parser.external_scanner.cpp;
+            let path = match &lang.parser.git.path {
+                Some(path) => quote_use! { Some(#path) },
+                None => quote_use! { None },
+            };
+            let wasm = lang.wasm;
+            let wasm_unknown = lang.wasm_unknown;
+            let generate = lang.parser.generate;
+            quote! {
+                #[cfg(#cfg)]
+                compile_parser(#name, #url, #rev, #external_c, #external_cpp, #path, #wasm, #wasm_unknown, #generate)?;
+            }
+        })
+        .collect::<proc_macro2::TokenStream>()
+        .into()
+}
+
 #[proc_macro]
 pub fn parsers_ffi(_: TokenStream) -> TokenStream {
-    let mut dedup_ffi_funcs = LANGUAGE_CONFIG.languages.clone();
-    dedup_ffi_funcs.sort_unstable_by_key(|lang| lang.parser.ffi_func.clone());
-    dedup_ffi_funcs.dedup_by_key(|lang| lang.parser.ffi_func.clone());
-    let extern_c = dedup_ffi_funcs.iter().map(|lang| {
-        let name_str = &lang.name;
-        let ffi_func = format_ident!("{}", lang.parser.ffi_func);
-        let not_wasm_cfg = not_wasm_cfg(lang);
+    let ffi_groups = ffi_groups(&LANGUAGE_CONFIG.languages);
+    let extern_c = ffi_groups.iter().map(|group| {
+        let ffi_func = format_ident!("{}", group.representative.parser.ffi_func);
+        let cfg = ffi_group_cfg(group);
         quote! {
-            #[cfg(all(feature = #name_str #not_wasm_cfg))]
+            #[cfg(#cfg)]
             fn #ffi_func() -> ::syntastica_core::language_set::Language;
         }
     });
@@ -299,20 +342,34 @@ fn parsers(
         });
     let lang_set_type = quote! { type Language = Lang; };
     let cfg_test = quote! { #[cfg(test)] };
-    let lang_tests = LANGUAGE_CONFIG.languages.iter().filter(&filter).map(|lang| {
-        let name = format_ident!("{}", lang.name);
-        let name_str = &lang.name;
-        let variant = format_ident!("{}", lang.name.to_pascal_case());
-        let not_wasm_cfg = not_wasm_cfg(lang);
-        quote! {
-            #[test]
-            #[cfg(all(feature = #name_str #not_wasm_cfg))]
-            fn #name() {
-                assert_eq!(crate::#name(), crate::Lang::#variant.get());
-                assert!(::syntastica_core::language_set::LanguageSet::get_language(&crate::LanguageSetImpl::new(), crate::Lang::#variant).is_ok());
+    let lang_tests = LANGUAGE_CONFIG
+        .languages
+        .iter()
+        .filter(&filter)
+        .map(|lang| {
+            let name = format_ident!("{}", lang.name);
+            let name_str = &lang.name;
+            let variant = format_ident!("{}", lang.name.to_pascal_case());
+            let not_wasm_cfg = not_wasm_cfg(lang);
+            quote! {
+                #[test]
+                #[cfg(all(feature = #name_str #not_wasm_cfg))]
+                fn #name() {
+                    assert_eq!(crate::#name(), crate::Lang::#variant.get());
+                    let set = crate::LanguageSetImpl::new();
+                    let result = ::syntastica_core::language_set::LanguageSet::get_language(
+                        &set,
+                        crate::Lang::#variant,
+                    );
+                    assert!(
+                        result.is_ok(),
+                        "get_language failed for {}: {:?}",
+                        #name_str,
+                        result.as_ref().err()
+                    );
+                }
             }
-        }
-    });
+        });
 
     quote_use! {
         # use std::{borrow::Cow, collections::HashMap};
@@ -585,6 +642,108 @@ pub fn queries_test_crates_io(_: TokenStream) -> TokenStream {
         })
         .collect::<proc_macro2::TokenStream>()
         .into()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn normalize_tokens(tokens: proc_macro2::TokenStream) -> String {
+        tokens
+            .to_string()
+            .chars()
+            .filter(|ch| !ch.is_whitespace())
+            .collect()
+    }
+
+    #[test]
+    fn ffi_groups_preserve_the_first_alias_as_the_build_representative() {
+        let group = ffi_groups(&LANGUAGE_CONFIG.languages)
+            .into_iter()
+            .find(|group| group.representative.parser.ffi_func == "tree_sitter_c_sharp")
+            .expect("missing c_sharp ffi group");
+
+        assert_eq!(group.representative.name.as_str(), "c_sharp");
+        assert_eq!(
+            group
+                .aliases
+                .iter()
+                .map(|lang| lang.name.as_str())
+                .collect::<Vec<_>>(),
+            vec!["c_sharp", "csharp"],
+        );
+    }
+
+    #[test]
+    fn mixed_group_shared_ffi_cfgs_include_all_alias_features() {
+        for group in ffi_groups(&LANGUAGE_CONFIG.languages)
+            .into_iter()
+            .filter(|group| {
+                group
+                    .aliases
+                    .iter()
+                    .map(|lang| lang.group)
+                    .collect::<std::collections::BTreeSet<_>>()
+                    .len()
+                    > 1
+            })
+        {
+            let cfg = normalize_tokens(ffi_group_cfg(&group));
+            assert!(cfg.starts_with("any("), "{cfg}");
+
+            for alias in &group.aliases {
+                let feature = format!("feature=\"{}\"", alias.name);
+                assert!(
+                    cfg.contains(&feature),
+                    "shared ffi `{}` is missing alias `{}` in cfg `{cfg}`",
+                    group.representative.parser.ffi_func,
+                    alias.name,
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn shared_ffi_groups_keep_build_flags_in_sync() {
+        for group in ffi_groups(&LANGUAGE_CONFIG.languages) {
+            let representative = group.representative;
+            for alias in group.aliases.iter().skip(1) {
+                assert_eq!(
+                    alias.parser.external_scanner, representative.parser.external_scanner,
+                    "shared ffi `{}` must use the same external scanner config for `{}` and `{}`",
+                    representative.parser.ffi_func, representative.name, alias.name,
+                );
+                assert_eq!(
+                    alias.parser.git.rev, representative.parser.git.rev,
+                    "shared ffi `{}` must use the same git rev for `{}` and `{}`",
+                    representative.parser.ffi_func, representative.name, alias.name,
+                );
+                assert_eq!(
+                    alias.parser.git.path, representative.parser.git.path,
+                    "shared ffi `{}` must use the same parser path for `{}` and `{}`",
+                    representative.parser.ffi_func, representative.name, alias.name,
+                );
+                assert_eq!(
+                    alias.parser.generate, representative.parser.generate,
+                    "shared ffi `{}` must use the same codegen setting for `{}` and `{}`",
+                    representative.parser.ffi_func, representative.name, alias.name,
+                );
+                assert_eq!(
+                    alias.wasm, representative.wasm,
+                    "shared ffi `{}` must use the same wasm support for `{}` and `{}`",
+                    representative.parser.ffi_func, representative.name, alias.name,
+                );
+                assert_eq!(
+                    alias.wasm_unknown,
+                    representative.wasm_unknown,
+                    "shared ffi `{}` must use the same wasm32-unknown-unknown support for `{}` and `{}`",
+                    representative.parser.ffi_func,
+                    representative.name,
+                    alias.name,
+                );
+            }
+        }
+    }
 }
 
 #[cfg(feature = "js")]

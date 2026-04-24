@@ -340,7 +340,6 @@
   (hash_operator)
   (indexing_operator)
   (let_operator)
-  (and_operator)
   (match_operator)
 ] @operator
 
@@ -372,6 +371,6 @@
   (comment)
   (line_number_directive)
   (directive)
-] @comment
+] @comment @spell
 
 (shebang) @keyword.directive

@@ -1,8 +1,19 @@
-;; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/html/highlights.scm
-;; Licensed under the Apache License 2.0
-; inherits: html_tags
+;; Forked from https://raw.githubusercontent.com/tree-sitter/tree-sitter-html/73a3947324f6efddf9e17c0ea58d454843590cc0/queries/highlights.scm
+(tag_name) @tag
+
+(erroneous_end_tag_name) @tag.error
+
 (doctype) @constant
 
-"<!" @tag.delimiter
+(attribute_name) @attribute
 
-(entity) @character.special
+(attribute_value) @string
+
+(comment) @comment
+
+[
+  "<"
+  ">"
+  "</"
+  "/>"
+] @punctuation.bracket

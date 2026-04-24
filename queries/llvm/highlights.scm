@@ -1,10 +1,4 @@
-;; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/llvm/highlights.scm
-;; Licensed under the Apache License 2.0
-[
-  (local_var)
-  (global_var)
-] @variable
-
+;; Forked from https://raw.githubusercontent.com/benwilliamgraham/tree-sitter-llvm/2914786ae6774d4c4e25a230f4afe16aa68fe1c1/queries/highlights.scm
 (type) @type
 
 (type_keyword) @type.builtin
@@ -14,10 +8,6 @@
     (local_var)
     (global_var)
   ] @type
-)
-
-(global_type
-  (local_var) @type.definition
 )
 
 (argument) @variable.parameter
@@ -34,9 +24,11 @@
 
 [
   "to"
+  "nneg"
   "nuw"
   "nsw"
   "exact"
+  "disjoint"
   "unwind"
   "from"
   "cleanup"
@@ -44,13 +36,13 @@
   "volatile"
   "inbounds"
   "inrange"
-] @keyword
+] @keyword.control
 
-(icmp_cond) @keyword
+(icmp_cond) @keyword.control
 
-(fcmp_cond) @keyword
+(fcmp_cond) @keyword.control
 
-(fast_math) @keyword
+(fast_math) @keyword.control
 
 (_
   callee:
@@ -95,6 +87,10 @@
   "ifunc"
   "section"
   "comdat"
+  "thread_local"
+  "localdynamic"
+  "initialexec"
+  "localexec"
   "any"
   "exactmatch"
   "largest"
@@ -103,25 +99,20 @@
   "distinct"
   "attributes"
   "vscale"
+  "no_cfi"
 ] @keyword
 
-[
-  "no_cfi"
-  (dso_local)
-  (linkage_aux)
-  (visibility)
-] @keyword.modifier
+(linkage_aux) @keyword
 
-[
-  "thread_local"
-  "localdynamic"
-  "initialexec"
-  "localexec"
-  (unnamed_addr)
-  (dll_storage_class)
-] @keyword.modifier
+(dso_local) @keyword
 
-(attribute_name) @attribute
+(visibility) @keyword
+
+(dll_storage_class) @keyword
+
+(unnamed_addr) @keyword
+
+(attribute_name) @keyword
 
 (function_header
   [
@@ -131,7 +122,7 @@
   ] @keyword.function
 )
 
-(number) @number
+(number) @constant.numeric.integer
 
 (comment) @comment
 
@@ -143,10 +134,15 @@
 
 (_
   inst_name:
-  "ret" @keyword.return
+  "ret" @keyword.control.return
 )
 
-(float) @number.float
+(float) @constant.numeric.float
+
+[
+  (local_var)
+  (global_var)
+] @variable
 
 [
   (struct_value)
@@ -182,7 +178,7 @@
 [
   "true"
   "false"
-] @boolean
+] @constant.builtin.boolean
 
 [
   "undef"
@@ -191,3 +187,5 @@
   "none"
   "zeroinitializer"
 ] @constant.builtin
+
+(ERROR) @error

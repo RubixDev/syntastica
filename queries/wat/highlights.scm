@@ -1,13 +1,12 @@
-;; Forked from https://github.com/rush-rs/tree-sitter-wasm-queries/blob/main/queries/wat/highlights.scm
-;; Licensed under the MIT license
+;; Forked from https://raw.githubusercontent.com/rush-rs/tree-sitter-wasm-queries/main/queries/wat/highlights.scm
 [
   (int)
   (nat)
 ] @number
 
-(float) @number.float
+(float) @float
 
-(identifier) @string.special.symbol
+(identifier) @symbol
 
 (string) @string
 
@@ -16,7 +15,7 @@
 [
   (comment_line)
   (comment_block)
-] @comment
+] @comment @spell
 
 (value_type) @type.builtin
 

@@ -1,5 +1,4 @@
-;; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/swift/highlights.scm
-;; Licensed under the Apache License 2.0
+;; Forked from https://raw.githubusercontent.com/alex-pinkus/tree-sitter-swift/c7287392d610ca9d7c80f9edd2c6ef8f518b377b/queries/highlights.scm
 [
   "."
   ";"
@@ -188,7 +187,7 @@
     (simple_identifier) @type
   )
   ; SomeType.method(): highlight SomeType as a type
-  (#lua-match? @type "^[A-Z]")
+  (#match? @type "^[A-Z]")
 )
 
 (directive) @keyword.directive
@@ -196,70 +195,14 @@
 ; See https://docs.swift.org/swift-book/documentation/the-swift-programming-language/lexicalstructure/#Keywords-and-Punctuation
 [
   (diagnostic)
-  ; crates.io skip
-  "available"
-  ; crates.io skip
-  "unavailable"
-  ; crates.io skip
-  "fileLiteral"
-  ; crates.io skip
-  "colorLiteral"
-  ; crates.io skip
-  "imageLiteral"
-  ; crates.io skip
-  "keyPath"
-  ; crates.io skip
-  "selector"
-  ; crates.io skip
-  "externalMacro"
-  ; non-crates.io skip
-  "#available"
-  ; non-crates.io skip
-  "#unavailable"
-  ; non-crates.io skip
-  "#fileLiteral"
-  ; non-crates.io skip
-  "#colorLiteral"
-  ; non-crates.io skip
-  "#imageLiteral"
-  ; non-crates.io skip
-  "#keyPath"
-  ; non-crates.io skip
-  "#selector"
-  ; non-crates.io skip
-  "#externalMacro"
+  (availability_condition)
+  (playground_literal)
+  (key_path_string_expression)
+  (selector_expression)
+  (external_macro_definition)
 ] @function.macro
 
-[
-  ; crates.io skip
-  "column"
-  ; crates.io skip
-  "dsohandle"
-  ; crates.io skip
-  "fileID"
-  ; crates.io skip
-  "filePath"
-  ; crates.io skip
-  "file"
-  ; crates.io skip
-  "function"
-  ; crates.io skip
-  "line"
-  ; non-crates.io skip
-  "#column"
-  ; non-crates.io skip
-  "#dsohandle"
-  ; non-crates.io skip
-  "#fileID"
-  ; non-crates.io skip
-  "#filePath"
-  ; non-crates.io skip
-  "#file"
-  ; non-crates.io skip
-  "#function"
-  ; non-crates.io skip
-  "#line"
-] @constant.macro
+(special_literal) @constant.macro
 
 ; Statements
 (for_statement
@@ -323,21 +266,21 @@
 [
   (comment)
   (multiline_comment)
-] @comment
+] @comment @spell
 
 (
   (comment) @comment.documentation
-  (#lua-match? @comment.documentation "^///[^/]")
+  (#match? @comment.documentation "^///[^/]")
 )
 
 (
   (comment) @comment.documentation
-  (#lua-match? @comment.documentation "^///$")
+  (#match? @comment.documentation "^///$")
 )
 
 (
   (multiline_comment) @comment.documentation
-  (#lua-match? @comment.documentation "^/[*][*][^*].*[*]/$")
+  (#match? @comment.documentation "^/[*][*][^*].*[*]/$")
 )
 
 ; String literals

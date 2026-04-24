@@ -2,7 +2,7 @@
 #![warn(rust_2018_idioms)]
 #![deny(missing_docs)]
 
-use std::{fmt::Write as _, fs};
+use std::{borrow::Cow, fmt::Write as _, fs};
 
 use lazy_regex::regex_replace_all;
 use rsexpr::{OwnedSexpr, OwnedSexprs};
@@ -281,6 +281,8 @@ fn strip(queries: &mut OwnedSexprs, skip_comment: &[u8]) {
 fn _process_locals(queries: &mut OwnedSexprs) {
     for query in queries {
         replace_locals_captures(query);
+        strip_invalid_set_predicates(query);
+        wrap_string_patterns(query);
         replace_predicates(query);
     }
 }
@@ -313,6 +315,8 @@ fn replace_locals_captures(tree: &mut OwnedSexpr) {
 fn _process_injections(queries: &mut OwnedSexprs) {
     for query in queries {
         replace_injection_captures(query, 0);
+        strip_invalid_set_predicates(query);
+        wrap_string_patterns(query);
         replace_predicates(query);
     }
 }
@@ -379,6 +383,8 @@ fn replace_injection_captures(
 
 fn _process_highlights(queries: &mut OwnedSexprs) {
     for query in queries {
+        strip_invalid_set_predicates(query);
+        wrap_string_patterns(query);
         replace_predicates(query);
     }
 }
@@ -392,6 +398,9 @@ fn replace_predicates(tree: &mut OwnedSexpr) {
                     true => b"#not-match?".to_vec(),
                 });
                 match atom.as_slice() {
+                    b"#match?" | b"#not-match?" => {
+                        normalize_match_predicate(list);
+                    }
                     b"#gsub!" => {
                         list[0] = OwnedSexpr::Atom(b"#replace!".to_vec());
                         list[2] = OwnedSexpr::String(
@@ -419,6 +428,7 @@ fn replace_predicates(tree: &mut OwnedSexpr) {
                                 .into_bytes(),
                         );
                         list.truncate(3);
+                        normalize_match_predicate(list);
                     }
                     b"#any-of?" | b"#not-any-of?" => {
                         list[0] = match_predicate;
@@ -445,6 +455,7 @@ fn replace_predicates(tree: &mut OwnedSexpr) {
                             .into_bytes(),
                         );
                         list.truncate(3);
+                        normalize_match_predicate(list);
                     }
                     b"#contains?" | b"#not-contains?" => list[0] = match_predicate,
                     _ => {}
@@ -456,6 +467,76 @@ fn replace_predicates(tree: &mut OwnedSexpr) {
                 }
             }
         }
+    }
+}
+
+fn strip_invalid_set_predicates(tree: &mut OwnedSexpr) {
+    match tree {
+        OwnedSexpr::List(list) | OwnedSexpr::Group(list) => {
+            list.retain(|sexpr| !is_invalid_set_predicate(sexpr));
+            for subtree in list {
+                strip_invalid_set_predicates(subtree);
+            }
+        }
+        _ => {}
+    }
+}
+
+fn is_invalid_set_predicate(sexpr: &OwnedSexpr) -> bool {
+    let (OwnedSexpr::List(list) | OwnedSexpr::Group(list)) = sexpr else {
+        return false;
+    };
+    let Some(OwnedSexpr::Atom(atom)) = list.first() else {
+        return false;
+    };
+    if atom.as_slice() != b"#set!" {
+        return false;
+    }
+    list.iter().skip(1).any(|arg| match arg {
+        OwnedSexpr::Atom(arg_atom) => arg_atom.starts_with(b"@"),
+        _ => false,
+    })
+}
+
+fn normalize_match_predicate(list: &mut [OwnedSexpr]) {
+    let Some(OwnedSexpr::String(pattern)) = list.get_mut(2) else {
+        return;
+    };
+    let Ok(text) = std::str::from_utf8(pattern) else {
+        return;
+    };
+    let normalized = normalize_regex_flags(text);
+    if let Cow::Owned(new_text) = normalized {
+        *pattern = new_text.into_bytes();
+    }
+}
+
+fn normalize_regex_flags(pattern: &str) -> Cow<'_, str> {
+    if !pattern.contains("\\c") && !pattern.contains("\\C") {
+        return Cow::Borrowed(pattern);
+    }
+    Cow::Owned(pattern.replace("\\c", "(?i)").replace("\\C", "(?-i)"))
+}
+
+fn wrap_string_patterns(tree: &mut OwnedSexpr) {
+    match tree {
+        OwnedSexpr::List(list) | OwnedSexpr::Group(list) => {
+            let should_wrap = list.len() > 1
+                && matches!(list.first(), Some(OwnedSexpr::String(_)))
+                && list[1..]
+                    .iter()
+                    .all(|item| matches!(item, OwnedSexpr::Atom(_)));
+            if should_wrap {
+                if let Some(OwnedSexpr::String(first)) = list.first_mut() {
+                    let string = std::mem::take(first);
+                    list[0] = OwnedSexpr::Group(vec![OwnedSexpr::String(string)].into());
+                }
+            }
+            for subtree in list {
+                wrap_string_patterns(subtree);
+            }
+        }
+        _ => {}
     }
 }
 

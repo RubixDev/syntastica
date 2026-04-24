@@ -232,6 +232,14 @@
   )
 )
 
+(call_expression
+  (field_expression
+    (template_method
+      (field_identifier) @function.method.call
+    )
+  )
+)
+
 ; constructors
 (
   (function_declarator

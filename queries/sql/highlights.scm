@@ -1,5 +1,8 @@
-;; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/sql/highlights.scm
-;; Licensed under the Apache License 2.0
+;; Forked from https://raw.githubusercontent.com/derekstride/tree-sitter-sql/4afe285bb142542cee0aa7b689fec00a71df4741/queries/highlights.scm
+(object_reference
+  name: (identifier) @type
+)
+
 (invocation
   (object_reference
     name: (identifier) @function.call
@@ -14,52 +17,49 @@
   (keyword_gin)
   (keyword_brin)
   (keyword_array)
+  (keyword_object_id)
 ] @function.call
-
-(object_reference
-  name: (identifier) @type
-)
 
 (relation
   alias: (identifier) @variable
 )
 
 (field
-  name: (identifier) @variable.member
-)
-
-(column_definition
-  name: (identifier) @variable.member
+  name: (identifier) @field
 )
 
 (term
   alias: (identifier) @variable
 )
 
-(term
-  value: (cast
-    name: (keyword_cast) @function.call
-    parameter: (literal)?
+(
+  (term
+    value: (cast
+      name: (keyword_cast) @function.call
+      parameter: [
+        (literal)
+      ]?
+    )
   )
 )
 
 (literal) @string
 
-(comment) @comment
+(comment) @comment @spell
 
 (marginalia) @comment
 
 (
   (literal) @number
-  (#lua-match? @number "^%d+$")
+  (#match? @number "^[-+]?%d+$")
 )
 
 (
-  (literal) @number.float
-  (#lua-match? @number.float "^[-]?%d*.%d*$")
+  (literal) @float
+  (#match? @float "^[-+]?%d*.%d*$")
 )
 
-(parameter) @variable.parameter
+(parameter) @parameter
 
 [
   (keyword_true)
@@ -112,14 +112,14 @@
   (keyword_jsonfile)
   (keyword_sequencefile)
   (keyword_volatile)
-] @keyword.modifier
+] @storageclass
 
 [
   (keyword_case)
   (keyword_when)
   (keyword_then)
   (keyword_else)
-] @keyword.conditional
+] @conditional
 
 [
   (keyword_select)
@@ -130,6 +130,8 @@
   (keyword_primary)
   (keyword_delete)
   (keyword_create)
+  (keyword_show)
+  (keyword_unload)
   (keyword_insert)
   (keyword_merge)
   (keyword_distinct)
@@ -287,6 +289,7 @@
   (keyword_out)
   (keyword_inout)
   (keyword_variadic)
+  (keyword_ordinality)
   (keyword_session)
   (keyword_isolation)
   (keyword_level)
@@ -317,6 +320,25 @@
   (keyword_statement)
   (keyword_execute)
   (keyword_procedure)
+  (keyword_copy)
+  (keyword_delimiter)
+  (keyword_encoding)
+  (keyword_escape)
+  (keyword_force_not_null)
+  (keyword_force_null)
+  (keyword_force_quote)
+  (keyword_freeze)
+  (keyword_header)
+  (keyword_match)
+  (keyword_program)
+  (keyword_quote)
+  (keyword_stdin)
+  (keyword_extended)
+  (keyword_main)
+  (keyword_plain)
+  (keyword_storage)
+  (keyword_compression)
+  (keyword_duplicate)
 ] @keyword
 
 [
@@ -343,7 +365,7 @@
   (keyword_statistics)
   (keyword_maxvalue)
   (keyword_minvalue)
-] @keyword.modifier
+] @type.qualifier
 
 [
   (keyword_int)

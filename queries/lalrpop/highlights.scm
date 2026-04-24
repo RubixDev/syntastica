@@ -1,115 +1,81 @@
-;; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/lalrpop/highlights.scm
-;; Licensed under the Apache License 2.0
-(comment) @comment
-
-"grammar" @keyword
-
-[
-  "type"
-  "enum"
-] @keyword.type
-
+;; Forked from https://raw.githubusercontent.com/traxys/tree-sitter-lalrpop/27b0f7bb55b4cabd8f01a933d9ee6a49dbfc2192/queries/highlights.scm
 [
   "pub"
-  "extern"
-  (mut)
-] @keyword.modifier
-
-[
+  "grammar"
   "match"
-  "else"
-] @keyword.conditional
+  "extern"
+  "type"
+  "enum"
+] @keyword
 
 [
   "+"
   "*"
   "?"
-  ; TODO: inaccessible node
-  ; =>
-  "=>@L"
-  "=>@R"
-  "="
-  "&"
 ] @operator
+
+(grammar_type_params
+  "<" @punctuation.bracket
+  ">" @punctuation.bracket
+)
+
+(symbol
+  "<" @punctuation.bracket
+  ">" @punctuation.bracket
+)
+
+(binding_symbol
+  "<" @punctuation.bracket
+  ">" @punctuation.bracket
+)
 
 (binding_symbol
   name: (identifier) @variable.parameter
 )
 
-(annotation
-  "#" @punctuation.special
-)
-
-(grammar_parameter
-  (identifier) @variable.parameter
-)
-
-(associated_type
-  (identifier) @type
-)
-
-(parametrized_type
-  (path
-    (identifier) @type
-  )
-)
-
 (bare_symbol
   (macro
-    (macro_id) @type.definition
+    (
+      (macro_id) @function.macro
+    )
   )
 )
 
 (bare_symbol
-  (identifier) @type.definition
+  (identifier) @constant
 )
 
 (nonterminal_name
-  (macro_id) @type.definition
+  (macro_id) @function.macro
 )
 
 (nonterminal_name
-  (identifier) @type.definition
+  (identifier) @constant
 )
 
 (nonterminal
-  (type_ref) @type.builtin
+  (type_ref) @type
 )
 
-[
-  "("
-  ")"
-  "["
-  "]"
-  "}"
-  "{"
-  ">"
-  "<"
-] @punctuation.bracket
+"(" @punctuation.bracket
 
-[
-  ";"
-  ":"
-  "::"
-  ","
-] @punctuation.delimiter
+")" @punctuation.bracket
+
+"[" @punctuation.bracket
+
+"]" @punctuation.bracket
+
+";" @punctuation.delimiter
 
 (lifetime
-  "'" @keyword.modifier
-)
-
-(lifetime
-  (identifier) @attribute
-)
-
-(lifetime
-  (identifier) @attribute.builtin
-  (#any-of? @attribute.builtin "static" "_")
+  (identifier) @label
 )
 
 (string_literal) @string
 
 (regex_literal) @string
+
+(comment) @comment @spell
 
 (annotation
   (id) @function.macro

@@ -1,0 +1,72 @@
+;; Forked from https://raw.githubusercontent.com/antosha417/tree-sitter-hocon/c390f10519ae69fdb03b3e5764f5592fb6924bcc/queries/highlights.scm
+(comment) @comment
+
+[
+  (null)
+  (true)
+  (false)
+] @constant.builtin
+
+(number) @number
+
+(unit) @keyword
+
+(string) @string
+
+(multiline_string) @string
+
+(string
+  (escape_sequence) @string.escape
+)
+
+(unquoted_string) @string
+
+[
+  "url"
+  "file"
+  "classpath"
+  "required"
+] @keyword
+
+(include
+  "include" @include
+)
+
+(substitution
+  [
+    "${"
+    "${?"
+    "}"
+  ] @punctuation.special
+)
+
+(substitution
+  (_) @field
+)
+
+(path
+  (_) @field
+)
+
+(value
+  [
+    ":"
+    "="
+    "+="
+  ] @operator
+)
+
+[
+  "("
+  ")"
+  "["
+  "]"
+  "{"
+  "}"
+] @punctuation.bracket
+
+[","] @punctuation.delimiter
+
+(unquoted_path
+  "." @punctuation.delimiter
+)

@@ -1,6 +1,16 @@
-;; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/scala/highlights.scm
-;; Licensed under the Apache License 2.0
+;; Forked from https://raw.githubusercontent.com/tree-sitter/tree-sitter-scala/97aead18d97708190a51d4f551ea9b05b60641c9/queries/highlights.scm
 ; CREDITS @stumash (stuart.mashaal@gmail.com)
+(field_expression
+  field: (identifier) @property
+)
+
+(field_expression
+  value: (identifier) @type
+  (#match? @type "^[A-Z]")
+)
+
+(type_identifier) @type
+
 (class_definition
   name: (identifier) @type
 )
@@ -25,13 +35,13 @@
   name: (identifier) @type
 )
 
-; variables
+;; variables
 (class_parameter
-  name: (identifier) @variable.parameter
+  name: (identifier) @parameter
 )
 
 (self_type
-  (identifier) @variable.parameter
+  (identifier) @parameter
 )
 
 (interpolation
@@ -42,14 +52,12 @@
   (block) @none
 )
 
-; types
+;; types
 (type_definition
   name: (type_identifier) @type.definition
 )
 
-(type_identifier) @type
-
-; val/var definitions/declarations
+;; val/var definitions/declarations
 (val_definition
   pattern: (identifier) @variable
 )
@@ -66,65 +74,60 @@
   name: (identifier) @variable
 )
 
-; method definition
-(function_declaration
-  name: (identifier) @function.method
-)
-
-(function_definition
-  name: (identifier) @function.method
-)
-
 ; imports/exports
 (import_declaration
-  path: (identifier) @module
+  path: (identifier) @namespace
 )
 
-(stable_identifier
-  (identifier) @module
+(
+  (stable_identifier
+    (identifier) @namespace
+  )
 )
 
 (
   (import_declaration
     path: (identifier) @type
   )
-  (#lua-match? @type "^[A-Z]")
+  (#match? @type "^[A-Z]")
 )
 
 (
   (stable_identifier
     (identifier) @type
   )
-  (#lua-match? @type "^[A-Z]")
+  (#match? @type "^[A-Z]")
 )
 
 (export_declaration
-  path: (identifier) @module
+  path: (identifier) @namespace
 )
 
-(stable_identifier
-  (identifier) @module
+(
+  (stable_identifier
+    (identifier) @namespace
+  )
 )
 
 (
   (export_declaration
     path: (identifier) @type
   )
-  (#lua-match? @type "^[A-Z]")
+  (#match? @type "^[A-Z]")
 )
 
 (
   (stable_identifier
     (identifier) @type
   )
-  (#lua-match? @type "^[A-Z]")
+  (#match? @type "^[A-Z]")
 )
 
 (
   (namespace_selectors
     (identifier) @type
   )
-  (#lua-match? @type "^[A-Z]")
+  (#match? @type "^[A-Z]")
 )
 
 ; method invocation
@@ -138,7 +141,7 @@
 
 (call_expression
   function: (field_expression
-    field: (identifier) @function.method.call
+    field: (identifier) @method.call
   )
 )
 
@@ -146,7 +149,7 @@
   (call_expression
     function: (identifier) @constructor
   )
-  (#lua-match? @constructor "^[A-Z]")
+  (#match? @constructor "^[A-Z]")
 )
 
 (generic_function
@@ -163,27 +166,23 @@
 )
 
 (parameter
-  name: (identifier) @variable.parameter
+  name: (identifier) @parameter
 )
 
 (binding
-  name: (identifier) @variable.parameter
+  name: (identifier) @parameter
 )
 
-(lambda_expression
-  parameters: (identifier) @variable.parameter
+; method definition
+(function_declaration
+  name: (identifier) @method
+)
+
+(function_definition
+  name: (identifier) @method
 )
 
 ; expressions
-(field_expression
-  field: (identifier) @variable.member
-)
-
-(field_expression
-  value: (identifier) @type
-  (#lua-match? @type "^[A-Z]")
-)
-
 (infix_expression
   operator: (identifier) @operator
 )
@@ -205,37 +204,41 @@
 
 (integer_literal) @number
 
-(floating_point_literal) @number.float
+(floating_point_literal) @float
 
 [
   (string)
+  (character_literal)
   (interpolated_string_expression)
 ] @string
-
-(character_literal) @character
 
 (interpolation
   "$" @punctuation.special
 )
 
-; keywords
-(opaque_modifier) @keyword.modifier
+;; keywords
+(opaque_modifier) @type.qualifier
 
 (infix_modifier) @keyword
 
-(transparent_modifier) @keyword.modifier
+(transparent_modifier) @type.qualifier
 
-(open_modifier) @keyword.modifier
+(open_modifier) @type.qualifier
 
 [
   "case"
+  "class"
+  "enum"
   "extends"
   "derives"
   "finally"
-  ; `forSome` existential types not implemented yet
-  ; `macro` not implemented yet
+  ;; `forSome` existential types not implemented yet
+  ;; `macro` not implemented yet
   "object"
   "override"
+  "package"
+  "trait"
+  "type"
   "val"
   "var"
   "with"
@@ -248,39 +251,23 @@
 ] @keyword
 
 [
-  "enum"
-  "class"
-  "trait"
-  "type"
-] @keyword.type
-
-[
   "abstract"
   "final"
   "lazy"
   "sealed"
   "private"
   "protected"
-] @keyword.modifier
+] @type.qualifier
 
-(inline_modifier) @keyword.modifier
+(inline_modifier) @storageclass
 
 (null_literal) @constant.builtin
 
-(wildcard
-  "_"
-) @character.special
-
-(namespace_wildcard
-  [
-    "*"
-    "_"
-  ] @character.special
-)
+(wildcard) @parameter
 
 (annotation) @attribute
 
-; special keywords
+;; special keywords
 "new" @keyword.operator
 
 [
@@ -288,7 +275,7 @@
   "if"
   "match"
   "then"
-] @keyword.conditional
+] @conditional
 
 [
   "("
@@ -302,7 +289,6 @@
 [
   "."
   ","
-  ":"
 ] @punctuation.delimiter
 
 [
@@ -310,15 +296,12 @@
   "for"
   "while"
   "yield"
-] @keyword.repeat
+] @repeat
 
 "def" @keyword.function
 
 [
   "=>"
-  "?=>"
-  "="
-  "!"
   "<-"
   "@"
 ] @operator
@@ -326,37 +309,30 @@
 [
   "import"
   "export"
-  "package"
-] @keyword.import
+] @include
 
 [
   "try"
   "catch"
   "throw"
-] @keyword.exception
+] @exception
 
 "return" @keyword.return
 
-[
-  (comment)
-  (block_comment)
-] @comment
+(comment) @spell @comment
 
-(
-  (block_comment) @comment.documentation
-  (#lua-match? @comment.documentation "^/[*][*][^*].*[*]/$")
-)
+(block_comment) @spell @comment
 
-; `case` is a conditional keyword in case_block
+;; `case` is a conditional keyword in case_block
 (case_block
   (case_clause
-    "case" @keyword.conditional
+    ("case") @conditional
   )
 )
 
-(case_block
+(indented_cases
   (case_clause
-    "=>" @punctuation.delimiter
+    ("case") @conditional
   )
 )
 
@@ -364,20 +340,20 @@
 
 (
   (identifier) @type
-  (#lua-match? @type "^[A-Z]")
+  (#match? @type "^[A-Z]")
 )
 
 (
   (identifier) @variable.builtin
-  (#lua-match? @variable.builtin "^this$")
+  (#match? @variable.builtin "^this$")
 )
 
 (
   (identifier) @function.builtin
-  (#lua-match? @function.builtin "^super$")
+  (#match? @function.builtin "^super$")
 )
 
-; Scala CLI using directives
-(using_directive_key) @variable.parameter
+;; Scala CLI using directives
+(using_directive_key) @parameter
 
 (using_directive_value) @string

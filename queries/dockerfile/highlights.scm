@@ -1,5 +1,4 @@
-;; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/dockerfile/highlights.scm
-;; Licensed under the Apache License 2.0
+;; Forked from https://raw.githubusercontent.com/camdencheek/tree-sitter-dockerfile/971acdd908568b4531b0ba28a445bf0bb720aba5/queries/highlights.scm
 [
   "FROM"
   "AS"
@@ -21,6 +20,8 @@
   "SHELL"
   "MAINTAINER"
   "CROSS_BUILD"
+  (heredoc_marker)
+  (heredoc_end)
 ] @keyword
 
 [
@@ -39,21 +40,12 @@
   )
 )
 
-(json_string) @string
-
-(double_quoted_string) @string
-
 [
-  (heredoc_marker)
-  (heredoc_end)
-] @label
-
-(
-  (heredoc_block
-    (heredoc_line) @string
-  )
-  (#set! priority 90)
-)
+  (double_quoted_string)
+  (single_quoted_string)
+  (json_string)
+  (heredoc_line)
+] @string
 
 (expansion
   [
@@ -61,32 +53,9 @@
     "{"
     "}"
   ] @punctuation.special
-)
+) @none
 
 (
   (variable) @constant
-  (#lua-match? @constant "^[A-Z][A-Z_0-9]*$")
+  (#match? @constant "^[A-Z][A-Z_0-9]*$")
 )
-
-(arg_instruction
-  .
-  (unquoted_string) @property
-)
-
-(env_instruction
-  (env_pair
-    .
-    (unquoted_string) @property
-  )
-)
-
-(expose_instruction
-  (expose_port) @number
-)
-
-[
-  "["
-  "]"
-] @punctuation.bracket
-
-"," @punctuation.delimiter

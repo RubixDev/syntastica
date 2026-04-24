@@ -7,7 +7,7 @@
 
 (integer) @number
 
-(comment) @comment
+(comment) @comment @spell
 
 ; Identifiers ;;;;
 ; Allow different highlighting for specific casings

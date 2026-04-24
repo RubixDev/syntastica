@@ -14,6 +14,7 @@ mod build_js_langs;
 mod codegen;
 mod fetch_queries;
 mod set_version;
+mod sync_breeze;
 mod theme_svgs;
 mod update_langs;
 mod update_vite_example;
@@ -61,6 +62,7 @@ Usage: Run with `cargo xtask <task>`, eg. `cargo xtask codegen`.
         add-lang <group> <name> <url> [path]: Add boilerplate code for a new language called <name> with sources at <url>/[path] in the feature group <group>
         update-langs                          Search for new versions of languages
         fetch-queries                         Fetch latest upstream versions of forked queries
+        sync-breeze [--dry-run]               Add languages from ../breeze-tree-sitter-parsers (only when nvim-treesitter runtime queries exist)
         theme-svgs                            Create SVGs for all themes using Typst and the `custom_renderer` example
         build-js-langs                        Build all JS language packages in the generated `syntastica-js/langs` directory
         update-vite-example                   Update the vite example project to include all languages
@@ -72,6 +74,7 @@ Usage: Run with `cargo xtask <task>`, eg. `cargo xtask codegen`.
         "add-lang" => add_lang::run()?,
         "update-langs" => update_langs::run()?,
         "fetch-queries" => fetch_queries::run()?,
+        "sync-breeze" => sync_breeze::run()?,
         "theme-svgs" => theme_svgs::run()?,
         "build-js-langs" => build_js_langs::run()?,
         "update-vite-example" => update_vite_example::run()?,

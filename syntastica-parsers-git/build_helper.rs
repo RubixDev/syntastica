@@ -116,6 +116,7 @@ fn compile_parser(
         .flag_if_supported("-Wno-trigraphs")
         .flag_if_supported("-w");
     let parser_path = src_dir.join("parser.c");
+    fix_parser_symbol_collisions(&parser_path)?;
     c_config.file(&parser_path);
 
     if external_c {
@@ -168,5 +169,29 @@ fn compile_parser(
         }
     }
 
+    Ok(())
+}
+
+fn fix_parser_symbol_collisions(path: &Path) -> Result<(), Box<dyn std::error::Error>> {
+    let content = fs::read_to_string(path)?;
+    let mut changed = false;
+    let mut out = String::with_capacity(content.len());
+    for line in content.lines() {
+        let trimmed = line.trim_start();
+        if trimmed.starts_with("const TSCharacterRange sym_identifier_character_set_") {
+            let indent = line.len() - trimmed.len();
+            out.push_str(&" ".repeat(indent));
+            out.push_str("static ");
+            out.push_str(trimmed);
+            out.push('\n');
+            changed = true;
+        } else {
+            out.push_str(line);
+            out.push('\n');
+        }
+    }
+    if changed {
+        fs::write(path, out)?;
+    }
     Ok(())
 }

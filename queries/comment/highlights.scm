@@ -2,7 +2,7 @@
 ;; Licensed under the Apache License 2.0
 (
   (tag
-    (name) @comment.todo
+    (name) @comment.todo @nospell
     ("("
       @punctuation.bracket
       (user) @constant
@@ -14,13 +14,13 @@
 )
 
 ("text"
-  @comment.todo
+  @comment.todo @nospell
   (#any-of? @comment.todo "TODO" "WIP")
 )
 
 (
   (tag
-    (name) @comment.note
+    (name) @comment.note @nospell
     ("("
       @punctuation.bracket
       (user) @constant
@@ -40,7 +40,7 @@
 )
 
 ("text"
-  @comment.note
+  @comment.note @nospell
   (#any-of?
     @comment.note
     "NOTE"
@@ -54,7 +54,7 @@
 
 (
   (tag
-    (name) @comment.warning
+    (name) @comment.warning @nospell
     ("("
       @punctuation.bracket
       (user) @constant
@@ -66,13 +66,13 @@
 )
 
 ("text"
-  @comment.warning
+  @comment.warning @nospell
   (#any-of? @comment.warning "HACK" "WARNING" "WARN" "FIX")
 )
 
 (
   (tag
-    (name) @comment.error
+    (name) @comment.error @nospell
     ("("
       @punctuation.bracket
       (user) @constant
@@ -84,7 +84,7 @@
 )
 
 ("text"
-  @comment.error
+  @comment.error @nospell
   (#any-of? @comment.error "FIXME" "BUG" "ERROR")
 )
 
@@ -94,4 +94,4 @@
   (#lua-match? @number "^#[0-9]+$")
 )
 
-(uri) @string.special.url
+(uri) @string.special.url @nospell

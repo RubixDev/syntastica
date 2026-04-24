@@ -1,3 +1,15 @@
-;; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/printf/highlights.scm
-;; Licensed under the Apache License 2.0
-(format) @character
+;; Forked from https://raw.githubusercontent.com/tree-sitter-grammars/tree-sitter-printf/ec4e5674573d5554fccb87a887c97d4aec489da7/queries/highlights.scm
+[
+  "%"
+  "%%"
+  (type)
+] @embedded
+
+(flags) @boolean
+
+[
+  (width)
+  (precision)
+] @number
+
+(size) @type

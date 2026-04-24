@@ -1,15 +1,11 @@
-;; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/luap/highlights.scm
-;; Licensed under the Apache License 2.0
+;; Forked from https://raw.githubusercontent.com/tree-sitter-grammars/tree-sitter-luap/c134aaec6acf4fa95fe4aa0dc9aba3eacdbbe55a/queries/highlights.scm
+; adapted from https://github.com/vhyrro/tree-sitter-luap
+(".") @character
+
 [
   (anchor_begin)
   (anchor_end)
-] @punctuation.delimiter
-
-(pattern
-  (character
-    "." @variable.builtin
-  )
-)
+] @string.escape
 
 [
   "["
@@ -27,7 +23,7 @@
 
 (range
   from: (character) @constant
-  "-" @operator
+  "-" @punctuation.delimiter
   to: (character) @constant
 )
 
@@ -35,21 +31,13 @@
   (character) @constant
 )
 
+(class) @keyword
+
 (negated_set
+  "^" @string.regex
   (character) @constant
 )
 
-(class) @string.escape
-
-(class
-  "%" @string.regexp
-  (escape_char) @string.regexp
-)
-
-(negated_set
-  "^" @operator
-)
-
 (balanced_match
-  (character) @variable.parameter
+  (character) @parameter
 )

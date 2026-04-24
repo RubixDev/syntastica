@@ -1,5 +1,4 @@
-;; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/zig/highlights.scm
-;; Licensed under the Apache License 2.0
+;; Forked from https://raw.githubusercontent.com/tree-sitter-grammars/tree-sitter-zig/6479aa13f32f701c383083d8b28360ebd682fb7d/queries/highlights.scm
 ; Variables
 (identifier) @variable
 
@@ -310,7 +309,7 @@
 )
 
 ; Comments
-(comment) @comment
+(comment) @comment @spell
 
 (
   (comment) @comment.documentation

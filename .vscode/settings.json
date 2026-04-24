@@ -1,0 +1,5 @@
+{
+  "debug.javascript.defaultRuntimeExecutable": {
+    "pwa-node": "/home/ivan/.local/share/mise/shims/node"
+  }
+}

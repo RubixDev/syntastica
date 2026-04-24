@@ -1,12 +1,12 @@
 //! Defines the [`LanguageSet`] trait and some related types.
 //!
 //! Also re-exports [`syntastica_highlight::HighlightConfiguration`], [`tree_sitter::Language`],
-//! and [`tft::FileType`].
+//! and [`palate::FileType`].
 
 use std::{borrow::Cow, path::Path};
 
+pub use palate::FileType;
 pub use syntastica_highlight::HighlightConfiguration;
-pub use tft::FileType;
 
 pub use crate::ts_runtime::Language;
 
@@ -60,8 +60,8 @@ pub trait SupportedLanguage<'set, S>: Sized {
         let name = name.as_ref();
         // try to detect a file type, once using the name as a full path and once using it as the
         // extension, and if one is found, pass it to `self.for_file_type`
-        tft::try_detect(Path::new(name), "")
-            .or_else(|| tft::try_detect(Path::new(&format!("file.{name}")), ""))
+        palate::try_detect(Path::new(name), "")
+            .or_else(|| palate::try_detect(Path::new(&format!("file.{name}")), ""))
             .and_then(|ft| Self::for_file_type(ft, set))
     }
 }

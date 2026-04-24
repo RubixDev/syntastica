@@ -1,18 +1,15 @@
-;; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/json5/highlights.scm
-;; Licensed under the Apache License 2.0
+;; Forked from https://raw.githubusercontent.com/Joakker/tree-sitter-json5/aa630ef48903ab99e406a8acd2e2933077cc34e1/queries/highlights.scm
+(string) @string
+
+(identifier) @constant
+
+(number) @constant.numeric
+
+(null) @constant.builtin
+
 [
   (true)
   (false)
-] @boolean
-
-(null) @constant
-
-(string) @string
-
-(number) @number
+] @constant.builtin.boolean
 
 (comment) @comment
-
-(member
-  name: (_) @keyword
-)

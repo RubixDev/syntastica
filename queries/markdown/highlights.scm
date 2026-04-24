@@ -1,5 +1,6 @@
 ;; Forked from https://github.com/nvim-treesitter/nvim-treesitter/blob/master/queries/markdown/highlights.scm
 ;; Licensed under the Apache License 2.0
+;From MDeiml/tree-sitter-markdown & Helix
 (setext_heading
   (paragraph) @markup.heading.1
   (setext_h1_underline) @markup.heading.1
@@ -64,11 +65,15 @@
 
 (fenced_code_block
   (fenced_code_block_delimiter) @markup.raw.block
+  (#set! conceal "")
+  (#set! conceal_lines "")
 )
 
 (fenced_code_block
   (info_string
     (language) @label
+    (#set! conceal "")
+    (#set! conceal_lines "")
   )
 )
 
@@ -139,3 +144,5 @@
 ] @punctuation.special
 
 (backslash_escape) @string.escape
+
+(inline) @spell
