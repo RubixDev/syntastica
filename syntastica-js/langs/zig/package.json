@@ -1,0 +1,28 @@
+{
+  "$schema": "https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/package.json",
+  "name": "@syntastica/lang-zig",
+  "version": "0.6.1",
+  "description": "Zig language support for syntastica-js",
+  "keywords": ["tree-sitter", "highlight", "parsing", "syntax"],
+  "homepage": "https://github.com/RubixDev/syntastica/tree/main/syntastica-js#readme",
+  "bugs": "https://github.com/RubixDev/syntastica/issues",
+  "license": "MPL-2.0",
+  "author": "RubixDev",
+  "funding": {
+    "url": "https://ko-fi.com/rubixdev",
+    "type": "ko-fi"
+  },
+  "files": ["zig.wasm"],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RubixDev/syntastica.git",
+    "directory": "syntastica-js/langs/zig"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "env CFLAGS=-fPIC cargo build --profile release-wasm --target wasm32-unknown-emscripten",
+    "postbuild": "cp \"${CARGO_TARGET_DIR:-../../../target}/wasm32-unknown-emscripten/release-wasm/syntastica_js_zig.wasm\" zig.wasm"
+  }
+}

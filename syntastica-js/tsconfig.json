@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    /* Visit https://aka.ms/tsconfig to read more about this file */
+    "strict": true,
+    "target": "es2016", /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
+    "module": "es6", /* Specify what module code is generated. */
+    "declaration": true, /* Generate .d.ts files from TypeScript and JavaScript files in your project. */
+    "outDir": "./pkg/", /* Specify an output folder for all emitted files. */
+    "esModuleInterop": true, /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */
+    "forceConsistentCasingInFileNames": true, /* Ensure that casing is correct in imports. */
+    "skipLibCheck": true /* Skip type checking all .d.ts files. */
+  },
+  "include": ["src/**/*"]
+}

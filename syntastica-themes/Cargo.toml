@@ -1,0 +1,37 @@
+[package]
+name = "syntastica-themes"
+version.workspace = true
+authors.workspace = true
+documentation = "https://rubixdev.github.io/syntastica/syntastica_themes/"
+edition.workspace = true
+exclude = ["assets/theme-svgs"]
+license.workspace = true
+repository.workspace = true
+description = "A collection of themes for syntastica"
+
+[lints]
+workspace = true
+
+[features]
+#! ## Features
+default = ["runtime-c"]
+
+## Use the standard tree-sitter C runtime. See `syntastica`'s
+## [WebAssembly support](https://rubixdev.github.io/syntastica/syntastica/#webassembly-support)
+## for more information.
+runtime-c = ["syntastica-core/runtime-c"]
+## Use the pure Rust tree-sitter runtime. See `syntastica`'s
+## [WebAssembly support](https://rubixdev.github.io/syntastica/syntastica/#webassembly-support)
+## for more information.
+runtime-c2rust = ["syntastica-core/runtime-c2rust"]
+
+## Enable this when building the docs
+docs = ["dep:document-features", "dep:rustc_version"]
+
+[dependencies]
+syntastica-core.workspace = true
+
+document-features = { workspace = true, optional = true }
+
+[build-dependencies]
+rustc_version = { workspace = true, optional = true }

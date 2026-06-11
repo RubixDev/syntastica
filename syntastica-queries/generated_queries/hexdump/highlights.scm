@@ -1,0 +1,1 @@
+(line_comment)@comment (int)@number (string)@string ":" @punctuation.delimiter 

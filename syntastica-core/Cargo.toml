@@ -1,0 +1,47 @@
+[package]
+name = "syntastica-core"
+version.workspace = true
+authors.workspace = true
+documentation = "https://rubixdev.github.io/syntastica/syntastica_core/"
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Shared types and traits used by other syntastica crates"
+
+[lints]
+workspace = true
+
+[features]
+#! ## Features
+default = ["runtime-c"]
+
+## Use the standard tree-sitter C runtime. See `syntastica`'s
+## [WebAssembly support](https://rubixdev.github.io/syntastica/syntastica/#webassembly-support)
+## for more information.
+runtime-c = ["dep:tree-sitter", "syntastica-highlight/runtime-c"]
+## Use the pure Rust tree-sitter runtime. See `syntastica`'s
+## [WebAssembly support](https://rubixdev.github.io/syntastica/syntastica/#webassembly-support)
+## for more information.
+runtime-c2rust = ["dep:tree-sitter-c2rust", "syntastica-highlight/runtime-c2rust"]
+
+## Provide implementations of serde's `Serialize` and `Deserialize` traits for [`Theme`](theme::Theme)
+## and [`Style`](style::Style)
+serde = ["dep:serde", "palette/serializing"]
+
+## Enable this when building the docs
+docs = ["dep:document-features", "dep:rustc_version"]
+
+[dependencies]
+syntastica-highlight.workspace = true
+
+tree-sitter = { workspace = true, optional = true }
+tree-sitter-c2rust = { workspace = true, optional = true }
+
+document-features = { workspace = true, optional = true }
+palette = { version = "0.7.6", default-features = false, features = ["std"] }
+serde = { workspace = true, features = ["derive"], optional = true }
+tft = { workspace = true, features = ["detect"] }
+thiserror.workspace = true
+
+[build-dependencies]
+rustc_version = { workspace = true, optional = true }
