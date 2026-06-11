@@ -121,6 +121,7 @@ all = [
     "ursa",
     "verilog",
     "wat",
+    "wit",
 ]
 
 ## Meant to be enabled when building docs
@@ -188,6 +189,7 @@ typst = []
 ursa = []
 verilog = []
 wat = []
+wit = []
 yaml = ["dep:tree-sitter-yaml"]
 zig = ["dep:tree-sitter-zig"]
 

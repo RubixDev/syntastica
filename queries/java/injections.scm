@@ -6,9 +6,9 @@
     (line_comment)
   ] @injection.content
   (#set! injection.language "comment")
-)
+) @markup.raw
 
- @markup.raw(
+(
   (block_comment) @injection.content
   (#lua-match? @injection.content "/[*][*][%s]")
   (#set! injection.language "javadoc")

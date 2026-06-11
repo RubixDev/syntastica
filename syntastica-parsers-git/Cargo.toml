@@ -129,6 +129,7 @@ all = [
     "ursa",
     "verilog",
     "wat",
+    "wit",
 ]
 
 ## Use the standard tree-sitter C runtime. See `syntastica`'s
@@ -205,5 +206,6 @@ typst = []
 ursa = []
 verilog = []
 wat = []
+wit = []
 yaml = []
 zig = []

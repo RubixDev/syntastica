@@ -94,6 +94,7 @@ for more information on all parser collections.
 - [ursa](https://github.com/ursalang/tree-sitter-ursa) (not supported by this collection)
 - [verilog](https://github.com/gmlarumbe/tree-sitter-systemverilog) (not supported by this collection)
 - [wat](https://github.com/wasm-lsp/tree-sitter-wasm) (not supported by this collection)
+- [wit](https://github.com/bytecodealliance/tree-sitter-wit) (not supported by this collection)
 
 </details>
 

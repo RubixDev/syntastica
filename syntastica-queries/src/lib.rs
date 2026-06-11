@@ -436,6 +436,13 @@ pub const WAT_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_queries/wa
 pub const WAT_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/wat/injections_crates_io.scm");
 pub const WAT_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/wat/locals_crates_io.scm");
 
+pub const WIT_HIGHLIGHTS: &str = include_str!("../generated_queries/wit/highlights.scm");
+pub const WIT_INJECTIONS: &str = include_str!("../generated_queries/wit/injections.scm");
+pub const WIT_LOCALS: &str = include_str!("../generated_queries/wit/locals.scm");
+pub const WIT_HIGHLIGHTS_CRATES_IO: &str = include_str!("../generated_queries/wit/highlights_crates_io.scm");
+pub const WIT_INJECTIONS_CRATES_IO: &str = include_str!("../generated_queries/wit/injections_crates_io.scm");
+pub const WIT_LOCALS_CRATES_IO: &str = include_str!("../generated_queries/wit/locals_crates_io.scm");
+
 pub const YAML_HIGHLIGHTS: &str = include_str!("../generated_queries/yaml/highlights.scm");
 pub const YAML_INJECTIONS: &str = include_str!("../generated_queries/yaml/injections.scm");
 pub const YAML_LOCALS: &str = include_str!("../generated_queries/yaml/locals.scm");

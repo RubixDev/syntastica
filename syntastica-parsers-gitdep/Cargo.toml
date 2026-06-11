@@ -124,6 +124,7 @@ all = [
     "ursa",
     "verilog",
     "wat",
+    "wit",
 ]
 
 ## Meant to be enabled when building docs
@@ -191,6 +192,7 @@ typst = []
 ursa = []
 verilog = []
 wat = []
+wit = ["dep:tree-sitter-wit"]
 yaml = ["dep:tree-sitter-yaml"]
 zig = ["dep:tree-sitter-zig"]
 
@@ -383,6 +385,11 @@ rev = "b1ec2aa5091624e4729f0a771a6d631afebf1ed4"
 optional = true
 git = "https://github.com/tree-sitter/tree-sitter-typescript"
 rev = "75b3874edb2dc714fb1fd77a32013d0f8699989f"
+
+[dependencies.tree-sitter-wit]
+optional = true
+git = "https://github.com/bytecodealliance/tree-sitter-wit"
+rev = "ae17db1678681a8e75c1ac48107d6efb95343cb3"
 
 [dependencies.tree-sitter-yaml]
 optional = true
